@@ -1,0 +1,24 @@
+  - data:
+      at:
+        step:   "GC"
+      xout:
+        direct:
+          key:  "derived.xout.*"
+      xin:
+        interpolated:
+          key:  "derived.xin.*"
+          step: 0
+  - transform:
+      Xp:
+        conversion:
+          xin:     "xin"
+          xout:    "xout"
+          feed:    "C3H8"
+          type:    "product"
+          element: "C"
+      Xr:
+        conversion:
+          xin:     "xin"
+          xout:    "xout"
+          feed:    "C3H8"
+          type:    "reactant"
