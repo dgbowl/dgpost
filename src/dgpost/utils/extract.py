@@ -5,7 +5,6 @@ The function :func:`dgpost.utils.extract.extract` processes the below specificat
 in order do extract the required data from the supplied datagram.
 
 .. code-block:: yaml
-   :emphasize-lines: 2,3
 
   extract:
     - from:      !!str          # datagram name from "load.as" 
@@ -32,11 +31,11 @@ in order do extract the required data from the supplied datagram.
             timestamps: [!!float, ...]
           as:    !!str
 
+
 .. note::
-    The highlighted keys ``from`` and ``as`` are not processed by 
-    :func:`dgpost.utils.extract.extract`, they should be used by its caller to identify 
-    the requested ``datagram`` and assign the returned :class:`pd.DataFrame` into the 
-    correct variable.
+    The keys ``from`` and ``as`` are not processed by :func:`dgpost.utils.extract.extract`, 
+    they should be used by its caller to identify the requested ``datagram`` and assign 
+    the returned :class:`pd.DataFrame` into the correct variable.
 
 Handling of sparse data depends on the extraction format specified:
 

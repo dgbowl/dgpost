@@ -11,7 +11,7 @@ image: python:3.9-slim-bullseye
 stages:
   - build
   - test
-#  - pages
+  - pages
 
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
@@ -55,27 +55,27 @@ test:
     - pip install dist/*
     - pytest
 
-#pages-master:
-#  stage: pages
-#  only:
-#    - master
-#  needs: [build]
-#  script:
-#    - pip install dist/*
-#    - pip install sphinx sphinx-rtd-theme sphinx-autodoc-typehints
-#    - sphinx-apidoc -o docs/source src/yadg -T -M
-#    - sphinx-build -W -b html docs/source public
-#  artifacts:
-#    paths:
-#      - public
+pages-master:
+  stage: pages
+  only:
+    - master
+  needs: [build]
+  script:
+    - pip install dist/*
+    - pip install sphinx sphinx-rtd-theme sphinx-autodoc-typehints
+    - sphinx-apidoc -o docs/source src/dgpost -T -M
+    - sphinx-build -W -b html docs/source public
+  artifacts:
+    paths:
+      - public
 
-#pages-mr:
-#  stage: pages
-#  only:
-#    - merge_requests
-#  needs: [build]
-#  script:
-#    - pip install dist/*
-#    - pip install sphinx sphinx-rtd-theme sphinx-autodoc-typehints
-#    - sphinx-apidoc -o docs/source src/yadg -T -M
-#    - sphinx-build -W -b html docs/source public
+pages-mr:
+  stage: pages
+  only:
+    - merge_requests
+  needs: [build]
+  script:
+    - pip install dist/*
+    - pip install sphinx sphinx-rtd-theme sphinx-autodoc-typehints
+    - sphinx-apidoc -o docs/source src/dgpost -T -M
+    - sphinx-build -W -b html docs/source public
