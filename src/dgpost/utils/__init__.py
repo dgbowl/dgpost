@@ -1,1 +1,1 @@
-from .main import extract
+from .extract import extract
