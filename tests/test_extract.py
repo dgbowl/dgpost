@@ -5,6 +5,7 @@ import os
 import pandas as pd
 
 from tests.utils import datadir
+import dgpost.utils
 
 
 def test_valid_datagram(datadir):
@@ -12,9 +13,6 @@ def test_valid_datagram(datadir):
     with open("normalized.dg.json", "r") as infile:
         dg = json.load(infile)
     assert yadg.core.validators.validate_datagram(dg)
-
-
-import dgpost.utils
 
 
 @pytest.mark.parametrize(
@@ -144,15 +142,13 @@ import dgpost.utils
         (  # ts12 - constant with float, str(ufloat) values
             "normalized.dg.json",
             {
-                "at": {
-                    "timestamps": [1575360000.0 + i * 200.0 for i in range(10)]
-                },
+                "at": {"timestamps": [1575360000.0 + i * 200.0 for i in range(10)]},
                 "constant": [
                     {"as": "volume", "value": "5.546(0)"},
                 ],
                 "interpolated": [
                     {"key": "derived->xin->O2", "as": "xin->O2", "keyat": {"step": "a"}}
-                ]
+                ],
             },
             "interpolated.timestamps.pkl",
         ),
@@ -163,8 +159,5 @@ def test_extract(inpath, spec, outpath, datadir):
     with open(inpath, "r") as infile:
         dg = json.load(infile)
     df = dgpost.utils.extract(dg, spec)
-    print(df.head(10))
-    #if outpath == "interpolated.timestamps.pkl":
-    #    df.to_pickle(f"C:\\Users\\krpe\\postprocess\\tests\\test_extract\\{outpath}")
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)

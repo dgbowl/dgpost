@@ -34,6 +34,8 @@ setuptools.setup(
         "uncertainties",
         "pytest",
         "pandas",
+        "strictyaml",
+        "chemicals",
         "yadg>=4.0rc1",
     ],
     #entry_points={"console_scripts": ["yadg=yadg:run_with_arguments"]},

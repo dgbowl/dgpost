@@ -1,0 +1,7 @@
+load:
+  - as: sparse
+    path: sparse.dg.json
+    check: True
+  - as: normalized
+    path: normalized.dg.json
+    check: False

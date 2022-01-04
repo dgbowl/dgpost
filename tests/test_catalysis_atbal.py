@@ -1,0 +1,81 @@
+import os
+import pytest
+import pandas as pd
+import uncertainties as uc
+from tests.utils import datadir
+
+from dgpost.transform import catalysis
+from dgpost.utils import transform
+
+
+@pytest.mark.parametrize(
+    "inpath, spec, outpath",
+    [
+        (  # ts0 - dataframe with floats
+            "xinxout.df.pkl",
+            [
+                {"element": "C"},
+                {"element": "O"},
+            ],
+            "atbal.float.pkl",
+        ),
+        (  # ts1 - dataframe with ufloats
+            "xinxout.u.df.pkl",
+            [{}],
+            "atbal.ufloat.pkl",
+        ),
+    ],
+)
+def test_cat_atbal_floats(inpath, spec, outpath, datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle(inpath)
+    for args in spec:
+        catalysis.atom_balance(df, **args)
+    pd.set_option("display.max_columns", None)
+    print(df.head())
+    pd.to_pickle(df, f"C:\\Users\\krpe\\postprocess\\tests\\{outpath}")
+    ref = pd.read_pickle(outpath)
+    pd.testing.assert_frame_equal(ref, df, check_like=True)
+
+
+@pytest.mark.parametrize(
+    "inpath, spec, outpath",
+    [
+        (  # ts0 - dataframe with ufloats
+            "xinxout.u.df.pkl",
+            [
+                {"xin": "xin", "xout": "xout", "element": "C"},
+            ],
+            "atbal.ufloat.pkl",
+        ),
+    ],
+)
+def test_with_transform(inpath, spec, outpath, datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle(inpath)
+    for args in spec:
+        transform(df, "catalysis.atom_balance", using=args)
+    ref = pd.read_pickle(outpath)
+    pd.testing.assert_frame_equal(ref, df, check_like=True)
+
+
+@pytest.mark.parametrize(
+    "inpath, spec, outkeys",
+    [
+        (  # ts0 - dataframe with ufloats
+            "catalysis.xlsx",
+            [
+                {"element": "C"},
+                {"element": "O"},
+            ],
+            ["atbal_C", "atbal_O"],
+        ),
+    ],
+)
+def test_against_excel(inpath, spec, outkeys, datadir):
+    os.chdir(datadir)
+    df = pd.read_excel(inpath)
+    for args in spec:
+        transform(df, "catalysis.atom_balance", using=args)
+    for col in outkeys:
+        pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)

@@ -218,7 +218,7 @@ def extract(datagram: dict, spec: dict) -> pd.DataFrame:
     """
     Data extracting function.
 
-    Given a loaded ``datagram`` and extraction ``spec``, this routine creates, extracts, 
+    Given a loaded ``datagram`` and extraction ``spec``, this routine creates, extracts,
     or interpolates the specified columns into a single :class:`pd.DataFrame`, using the
     extracted or specified timestamps.
 
@@ -229,7 +229,7 @@ def extract(datagram: dict, spec: dict) -> pd.DataFrame:
 
     spec
         The ``extract`` component of the job specification.
-    
+
     Returns
     -------
     pd.DataFrame
