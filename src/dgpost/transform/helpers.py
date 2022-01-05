@@ -1,8 +1,9 @@
 """
-Module of helper functions for chemicals and elements.
+Module of helper functions for chemicals, elements, and unit handling.
 
 """
 import re
+import pint
 import pandas as pd
 
 from collections import defaultdict
@@ -70,3 +71,66 @@ def columns_to_smiles(df: pd.DataFrame, prefix: Union[list[str], str]) -> dict:
                 chem = search_chemical(col.split("->")[1])
                 smiles[chem.smiles].update({"chem": chem, p: col})
     return smiles
+
+
+def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
+    """
+    Unit-aware dataframe accessor function.
+
+    Given a dataframe in ``df`` and a column name in ``col``, the function looks
+    through the units stored in ``df.attrs["units"]`` and returns a unit-annotated
+    :class:`pint.Quantity` containing the column data.
+
+    .. note::
+        If ``df.attrs`` has no units, or ``col`` is not in ``df.attrs["units"]``,
+        the returned :class:`pint.Quantity` is dimensionless.
+
+    Parameters
+    ----------
+    df
+        Pandas dataframe, optionally annotated with units.
+
+    col
+        Column from the dataframe.
+
+    Returns
+    -------
+    :class:`pint.Quantity`
+        Unit-aware numpy-like object containing the data from ``df[col]``.
+
+    """
+    vals = df[col].array
+    unit = df.attrs.get("units", {}).get(col, "")
+    return pint.Quantity(vals, unit)
+
+
+def save(df: pd.DataFrame, tag: str, col: pint.Quantity) -> None:
+    """
+    Unit aware dataframe storing function.
+
+    Given a dataframe in ``df``, and the new column header in ``tag`` and the data
+    in ``col``, this function stores the data portion of ``col`` in the dataframe
+    as ``df[tag]``, and annotates the dataframe with the units.
+
+    If the units of ``col`` are dimensionless, the unit is not stored.
+
+    Parameters
+    ----------
+    df
+        Pandas dataframe, optionally annotated with units.
+
+    tag
+        Name of the new column.
+
+    col
+        Data of the new column.
+
+    """
+    df[tag] = col.m
+    if col.u != pint.Unit(""):
+        if "units" not in df.attrs:
+            df.attrs["units"] = {}
+        df.attrs["units"][tag] = str(col.u)
+
+
+# pd.to_pickle(df, f"C:\\Users\\krpe\\postprocess\\tests\\{outpath}")

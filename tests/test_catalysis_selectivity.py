@@ -12,7 +12,7 @@ from dgpost.utils import transform
     "inpath, spec, outpath",
     [
         (  # ts0 - dataframe with floats
-            "xinxout.df.pkl",
+            "xinxout.float.df.pkl",
             [
                 {"feedstock": "C3H8", "element": "C"},
                 {"feedstock": "O2", "element": "O"},
@@ -20,7 +20,7 @@ from dgpost.utils import transform
             "Sp.float.pkl",
         ),
         (  # ts1 - dataframe with ufloats
-            "xinxout.u.df.pkl",
+            "xinxout.ufloat.df.pkl",
             [
                 {"feedstock": "propane", "element": "C"},
                 {"feedstock": "O2", "element": "O"},
@@ -28,16 +28,32 @@ from dgpost.utils import transform
             "Sp.ufloat.pkl",
         ),
         (  # ts2 - dataframe with floats, elements implicit
-            "xinxout.df.pkl",
+            "xinxout.float.df.pkl",
             [
                 {"feedstock": "C3H8"},
                 {"feedstock": "O2"},
             ],
             "Sp.float.pkl",
         ),
+        (  # ts3 - dataframe with units and floats
+            "ndot.units.float.df.pkl",
+            [
+                {"feedstock": "propane", "xin": "nin", "xout": "nout"},
+                {"feedstock": "O2", "xin": "nin", "xout": "nout"},
+            ],
+            "Sp.units.float.pkl",
+        ),
+        (  # ts4 - dataframe with units and ufloats
+            "ndot.units.ufloat.df.pkl",
+            [
+                {"feedstock": "propane", "xin": "nin", "xout": "nout"},
+                {"feedstock": "O2", "xin": "nin", "xout": "nout"},
+            ],
+            "Sp.units.ufloat.pkl",
+        ),
     ],
 )
-def test_cat_sel_floats(inpath, spec, outpath, datadir):
+def test_against_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
@@ -45,13 +61,14 @@ def test_cat_sel_floats(inpath, spec, outpath, datadir):
     pd.to_pickle(df, f"C:\\Users\\krpe\\postprocess\\tests\\{outpath}")
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
+    assert ref.attrs == df.attrs
 
 
 @pytest.mark.parametrize(
     "inpath, spec, outpath",
     [
         (  # ts0 - dataframe with ufloats
-            "xinxout.u.df.pkl",
+            "xinxout.ufloat.df.pkl",
             [
                 {"feedstock": "propane", "element": "C"},
                 {"feedstock": "O2", "element": "O"},
@@ -67,6 +84,7 @@ def test_with_transform(inpath, spec, outpath, datadir):
         transform(df, "catalysis.selectivity", using=args)
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
+    assert ref.attrs == df.attrs
 
 
 @pytest.mark.parametrize(

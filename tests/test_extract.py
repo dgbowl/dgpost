@@ -132,9 +132,9 @@ def test_valid_datagram(datadir):
             {
                 "at": {"indices": [1, 2, 3]},
                 "constant": [
-                    {"as": "mass", "value": 6.35},
+                    {"as": "mass", "value": 6.35, "units": "kg"},
                     {"as": "element", "value": 12},
-                    {"as": "volume", "value": "5.546(0)"},
+                    {"as": "volume", "value": "5.546(0)", "units": "l"},
                 ],
             },
             "constant.multiple.pkl",
@@ -144,7 +144,7 @@ def test_valid_datagram(datadir):
             {
                 "at": {"timestamps": [1575360000.0 + i * 200.0 for i in range(10)]},
                 "constant": [
-                    {"as": "volume", "value": "5.546(0)"},
+                    {"as": "volume", "value": "5.546(0)", "units": "l"},
                 ],
                 "interpolated": [
                     {"key": "derived->xin->O2", "as": "xin->O2", "keyat": {"step": "a"}}
@@ -161,3 +161,4 @@ def test_extract(inpath, spec, outpath, datadir):
     df = dgpost.utils.extract(dg, spec)
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
+    assert ref.attrs == df.attrs

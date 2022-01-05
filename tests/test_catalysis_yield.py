@@ -12,14 +12,14 @@ from dgpost.utils import transform
     "inpath, spec, outpath",
     [
         (  # ts0 - dataframe with floats
-            "xinxout.df.pkl",
+            "xinxout.float.df.pkl",
             [
                 {"feedstock": "C3H8"},
             ],
             "Yp.float.pkl",
         ),
         (  # ts1 - dataframe with ufloats
-            "xinxout.u.df.pkl",
+            "xinxout.ufloat.df.pkl",
             [
                 {"feedstock": "propane", "element": "C"},
             ],
@@ -42,7 +42,7 @@ def test_cat_yield_floats(inpath, spec, outpath, datadir):
     "inpath, spec, outpath",
     [
         (  # ts0 - dataframe with ufloats
-            "xinxout.u.df.pkl",
+            "xinxout.ufloat.df.pkl",
             [
                 {"feedstock": "propane"},
             ],

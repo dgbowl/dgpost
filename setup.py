@@ -34,6 +34,7 @@ setuptools.setup(
         "uncertainties",
         "pytest",
         "pandas",
+        "pint",
         "strictyaml",
         "chemicals",
         "yadg>=4.0rc1",

@@ -48,6 +48,9 @@ Handling of sparse data depends on the extraction format specified:
 Interpolation of :class:`uc.ufloat` is performed separately for the nominal and error
 component.
 
+Units are added into the ``attrs`` dictionary of the :class:`pd.DataFrame` on a 
+per-column basis.
+
 .. code-author: Peter Kraus <peter.kraus@empa.ch>
 """
 
@@ -56,7 +59,7 @@ import pandas as pd
 import uncertainties as uc
 from uncertainties import unumpy as unp
 from uncertainties.core import str_to_number_with_uncert as tuple_fromstr
-from typing import Union
+import pint
 
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:
@@ -121,7 +124,6 @@ def _get_key(datagram: dict, steps: list[int], keyspec: str) -> tuple:
     keyspec = keyspec.split("->")
     data = []
     for si in steps:
-        print(si)
         for tstep in datagram["steps"][si]["data"]:
             data.append(tstep)
     return _get_key_recurse(data, keyspec)
@@ -140,19 +142,22 @@ def _get_constant(spec, ts):
     nts = ts.size
     colvals = []
     colnames = []
+    colunits = []
     for el in spec:
         colnames.append(el["as"])
+        colunits.append(el.get("units", ""))
         if isinstance(el["value"], str):
             val = uc.ufloat_fromstr(el["value"])
         elif isinstance(el["value"], (int, float)):
             val = uc.ufloat(el["value"], 0)
         colvals.append(np.ones(nts) * val)
-    return colnames, colvals
+    return colnames, colvals, colunits
 
 
 def _get_direct(spec, datagram, at):
     colvals = []
     colnames = []
+    colunits = []
     steps = _get_steps(datagram, at)
     for el in spec:
         keys, vals = _get_key(datagram, steps, el["key"])
@@ -162,22 +167,30 @@ def _get_direct(spec, datagram, at):
             else:
                 colnames.append(f"{el['as']}->{kk}")
             uvals = []
+            units = None
             for i in vv:
                 if i is None:
                     uvals.append(float("NaN"))
+                    continue
                 elif isinstance(i, dict) and isinstance(i["n"], float):
                     uvals.append(uc.ufloat(i["n"], i["s"]))
                 elif isinstance(i, dict) and isinstance(i["n"], list):
                     uvals.append(unp.uarray(i["n"], i["s"]))
                 else:
                     raise ValueError
+                if units is None:
+                    units = i["u"]
+                else:
+                    assert i["u"] == units
             colvals.append(uvals)
-    return colnames, colvals
+            colunits.append("" if units in [None, "-"] else units)
+    return colnames, colvals, colunits
 
 
 def _get_interpolated(spec, datagram, ts):
     colvals = []
     colnames = []
+    colunits = []
     for el in spec:
         _steps = _get_steps(datagram, el["keyat"])
         keys, vals = _get_key(datagram, _steps, el["key"])
@@ -190,11 +203,13 @@ def _get_interpolated(spec, datagram, ts):
             unoms = []
             usigs = []
             masks = []
+            units = None
             for i in vv:
                 if i is None:
                     unoms.append(float("NaN"))
                     usigs.append(float("NaN"))
                     masks.append(1)
+                    continue
                 elif isinstance(i, dict) and isinstance(i["n"], float):
                     unoms.append(i["n"])
                     usigs.append(i["s"])
@@ -205,13 +220,18 @@ def _get_interpolated(spec, datagram, ts):
                     )
                 else:
                     raise ValueError
+                if units is None:
+                    units = i["u"]
+                else:
+                    assert i["u"] == units
             mts = np.ma.array(_ts, mask=masks)
             mun = np.ma.array(unoms, mask=masks)
             mus = np.ma.array(usigs, mask=masks)
             inoms = np.interp(ts, mts[mts.mask == False], mun[mun.mask == False])
             isigs = np.interp(ts, mts[mts.mask == False], mus[mus.mask == False])
             colvals.append(unp.uarray(inoms, isigs))
-    return colnames, colvals
+            colunits.append("" if units in [None, "-"] else units)
+    return colnames, colvals, colunits
 
 
 def extract(datagram: dict, spec: dict) -> pd.DataFrame:
@@ -240,23 +260,29 @@ def extract(datagram: dict, spec: dict) -> pd.DataFrame:
     ts = _get_ts(datagram, at)
     colnames = []
     colvals = []
+    colunits = []
     if "constant" in spec.keys():
-        cns, cvs = _get_constant(spec.pop("constant"), ts)
+        cns, cvs, cus = _get_constant(spec.pop("constant"), ts)
         colnames += cns
         colvals += cvs
+        colunits += cus
     if "direct" in spec.keys():
         assert "timestamps" not in at, (
             "extract: cannot do a 'direct' extraction "
             "when 'at' contains arbitrary 'timestamps'"
         )
-        cns, cvs = _get_direct(spec.pop("direct"), datagram, at)
+        cns, cvs, cus = _get_direct(spec.pop("direct"), datagram, at)
         colnames += cns
         colvals += cvs
+        colunits += cus
     if "interpolated" in spec.keys():
-        cns, cvs = _get_interpolated(spec.pop("interpolated"), datagram, ts)
+        cns, cvs, cus = _get_interpolated(spec.pop("interpolated"), datagram, ts)
         colnames += cns
         colvals += cvs
+        colunits += cus
     df = pd.DataFrame(index=ts)
-    for name, vals in zip(colnames, colvals):
+    df.attrs["units"] = {}
+    for name, vals, unit in zip(colnames, colvals, colunits):
         df[name] = vals
+        df.attrs["units"][name] = unit
     return df

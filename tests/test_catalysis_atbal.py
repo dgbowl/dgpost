@@ -12,7 +12,7 @@ from dgpost.utils import transform
     "inpath, spec, outpath",
     [
         (  # ts0 - dataframe with floats
-            "xinxout.df.pkl",
+            "xinxout.float.df.pkl",
             [
                 {"element": "C"},
                 {"element": "O"},
@@ -20,9 +20,25 @@ from dgpost.utils import transform
             "atbal.float.pkl",
         ),
         (  # ts1 - dataframe with ufloats
-            "xinxout.u.df.pkl",
+            "xinxout.ufloat.df.pkl",
             [{}],
             "atbal.ufloat.pkl",
+        ),
+        (  # ts2 - dataframe with units and floats
+            "ndot.units.float.df.pkl",
+            [
+                {"element": "C", "xin": "nin", "xout": "nout"},
+                {"element": "O", "xin": "nin", "xout": "nout"},
+            ],
+            "atbal.units.float.pkl",
+        ),
+        (  # ts3 - dataframe with units and ufloats
+            "ndot.units.ufloat.df.pkl",
+            [
+                {"element": "C", "xin": "nin", "xout": "nout"},
+                {"element": "O", "xin": "nin", "xout": "nout"},
+            ],
+            "atbal.units.ufloat.pkl",
         ),
     ],
 )
@@ -42,7 +58,7 @@ def test_cat_atbal_floats(inpath, spec, outpath, datadir):
     "inpath, spec, outpath",
     [
         (  # ts0 - dataframe with ufloats
-            "xinxout.u.df.pkl",
+            "xinxout.ufloat.df.pkl",
             [
                 {"xin": "xin", "xout": "xout", "element": "C"},
             ],

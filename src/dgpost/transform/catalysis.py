@@ -20,12 +20,15 @@ and ``xout`` is performed using these SMILES.
 import pandas as pd
 import uncertainties as uc
 import numpy as np
+import pint
 
-from dgpost.transform.chemhelpers import (
+
+from dgpost.transform.helpers import (
     columns_to_smiles,
     default_element,
     element_from_formula,
 )
+from dgpost.transform.helpers import pQ, save
 from chemicals.identifiers import search_chemical
 
 
@@ -72,36 +75,43 @@ def conversion(
 
     f = search_chemical(feedstock)
     fsm = f.smiles
+    fd = smiles[fsm]
     assert fsm in smiles, f"conversion: Feedstock '{feedstock}' not present."
     assert xin in smiles[fsm], f"conversion: Feedstock '{feedstock}' not in inlet."
 
     if element is None:
         element = default_element(f.formula)
 
-    s = search_chemical(standard)
-    exp = df[smiles[s.smiles]["xin"]] / df[smiles[s.smiles]["xout"]]
+    # expansion factor
+    sd = smiles[search_chemical(standard).smiles]
+    exp = pQ(df, sd[xin]) / pQ(df, sd[xout])
 
     # reactant-based conversion
     if not product:
-        dfsm = df[smiles[fsm]["xin"]] - df[smiles[fsm]["xout"]] * exp
-        Xr = dfsm / df[smiles[fsm]["xin"]]
+        dfsm = pQ(df, fd[xin]) - pQ(df, fd[xout]) * exp
+        Xr = dfsm / pQ(df, fd[xin])
         tag = f"Xr->{feedstock}"
-        df[tag] = Xr
+        assert Xr.u == pint.Unit(""), (
+            f"conversion: Error in units: " f"'{tag}' should be dimensionless."
+        )
+        save(df, tag, Xr)
+
     # product-based conversion
     else:
         formula = f.formula
-        f_out = df[smiles[fsm]["xout"]] * element_from_formula(formula, element)
-        nat_out = np.zeros(f_out.shape[0])
-        if isinstance(f_out.iloc[0], uc.UFloat):
-            nat_out = nat_out * uc.ufloat(0, 0)
+        f_out = pQ(df, fd[xout]) * element_from_formula(formula, element)
+        nat_out = f_out * 0.0
         for k, v in smiles.items():
-            if "xout" in v:
+            if xout in v:
                 formula = v["chem"].formula
-                dnat = df[v["xout"]] * element_from_formula(formula, element)
+                dnat = pQ(df, v[xout]) * element_from_formula(formula, element)
                 nat_out += dnat
         Xp = (nat_out - f_out) / nat_out
         tag = f"Xp_{element}->{feedstock}"
-        df[tag] = Xp
+        assert Xp.u == pint.Unit(""), (
+            f"conversion: Error in units: " f"'{tag}' should be dimensionless."
+        )
+        save(df, tag, Xp)
     return None
 
 
@@ -140,29 +150,34 @@ def selectivity(
 
     f = search_chemical(feedstock)
     fsm = f.smiles
+    fd = smiles[fsm]
     assert fsm in smiles, f"selectivity: Feedstock '{feedstock}' not present."
 
     if element is None:
         element = default_element(f.formula)
 
-    nat_out = np.zeros(df.shape[0])
-    if isinstance(df[smiles[fsm]["xin"]].iloc[0], uc.UFloat):
-        nat_out = nat_out * uc.ufloat(0, 0)
+    nat_out = None
     for k, v in smiles.items():
-        if k != fsm and "xout" in v:
+        if k != fsm and xout in v:
             formula = v["chem"].formula
-            dnat = df[v["xout"]] * element_from_formula(formula, element)
-            nat_out += dnat
+            dnat = pQ(df, v[xout]) * element_from_formula(formula, element)
+            if nat_out is None:
+                nat_out = dnat
+            else:
+                nat_out += dnat
 
     for k, v in smiles.items():
-        if k != fsm and "xout" in v:
+        if k != fsm and xout in v:
             formula = v["chem"].formula
             els = element_from_formula(formula, element)
             if els > 0:
-                Sp = df[v["xout"]] * els / nat_out
-                name = v["xout"].split(xout)[1]
+                Sp = pQ(df, v[xout]) * els / nat_out
+                name = v[xout].split(xout)[1]
                 tag = f"Sp_{element}{name}"
-                df[tag] = Sp
+                assert Sp.u == pint.Unit(""), (
+                    f"selectivity: Error in units: " f"'{tag}' should be dimensionless."
+                )
+                save(df, tag, Sp)
     return None
 
 
@@ -210,16 +225,18 @@ def catalytic_yield(
     conversion(df, feedstock, xin, xout, element, True, standard)
     selectivity(df, feedstock, xin, xout, element)
 
-    Xp = df[f"Xp_{element}->{feedstock}"]
+    Xp = pQ(df, f"Xp_{element}->{feedstock}")
     smiles = columns_to_smiles(df, f"Sp_{element}")
 
     for k, v in smiles.items():
-        Sp = df[v[f"Sp_{element}"]]
+        Sp = pQ(df, v[f"Sp_{element}"])
         Yp = Sp * Xp
         name = v[f"Sp_{element}"].split("->")[1]
         tag = f"Yp_{element}->{name}"
-        df[tag] = Yp
-
+        assert Yp.u == pint.Unit(""), (
+            f"yield: Error in units: " f"'{tag}' should be dimensionless."
+        )
+        save(df, tag, Yp)
     return None
 
 
@@ -269,26 +286,27 @@ def atom_balance(
     ), f"atom_balance: Neither 'standard' nor 'fin' and 'fout' are defined. "
 
     if fin is None or fout is None:
-        s = search_chemical(standard)
-        exp = df[smiles[s.smiles]["xin"]] / df[smiles[s.smiles]["xout"]]
+        sd = smiles[search_chemical(standard).smiles]
+        exp = pQ(df, sd[xin]) / pQ(df, sd[xout])
     else:
-        exp = df[fin] / df[fout]
+        exp = pQ(df, fin) / pQ(df, fout)
 
-    nat_in = np.zeros(exp.shape[0])
-    nat_out = np.zeros(exp.shape[0])
-    if isinstance(exp.iloc[0], uc.UFloat):
-        nat_in = nat_in * uc.ufloat(0, 0)
-        nat_out = nat_out * uc.ufloat(0, 0)
-
+    nat_in = None
+    nat_out = None
     for k, v in smiles.items():
         formula = v["chem"].formula
-        if "xin" in v:
-            nat_in += df[v["xin"]] * element_from_formula(formula, element)
-        if "xout" in v:
-            nat_out += exp * df[v["xout"]] * element_from_formula(formula, element)
+        if xin in v:
+            din = pQ(df, v[xin]) * element_from_formula(formula, element)
+            nat_in = din if nat_in is None else nat_in + din
+        if xout in v:
+            dout = exp * pQ(df, v[xout]) * element_from_formula(formula, element)
+            nat_out = dout if nat_out is None else nat_out + dout
     dnat = nat_in - nat_out
-    abal = 1 - dnat / nat_in
-
-    df[f"atbal_{element}"] = abal
+    atbal = 1 - dnat / nat_in
+    tag = f"atbal_{element}"
+    assert atbal.u == pint.Unit(""), (
+        f"atom_balance: Error in units: " f"'{tag}' should be dimensionless."
+    )
+    save(df, tag, atbal)
 
     return None
