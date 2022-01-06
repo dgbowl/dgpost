@@ -47,8 +47,6 @@ def test_cat_atbal_floats(inpath, spec, outpath, datadir):
     df = pd.read_pickle(inpath)
     for args in spec:
         catalysis.atom_balance(df, **args)
-    pd.set_option("display.max_columns", None)
-    print(df.head())
     pd.to_pickle(df, f"C:\\Users\\krpe\\postprocess\\tests\\{outpath}")
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)

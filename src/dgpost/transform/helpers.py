@@ -126,8 +126,9 @@ def save(df: pd.DataFrame, tag: str, col: pint.Quantity) -> None:
         Data of the new column.
 
     """
+    col.ito_base_units()
     df[tag] = col.m
-    if col.u != pint.Unit(""):
+    if not col.dimensionless:
         if "units" not in df.attrs:
             df.attrs["units"] = {}
         df.attrs["units"][tag] = str(col.u)

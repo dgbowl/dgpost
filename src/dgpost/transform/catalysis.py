@@ -18,8 +18,6 @@ and ``xout`` is performed using these SMILES.
 
 """
 import pandas as pd
-import uncertainties as uc
-import numpy as np
 import pint
 
 
