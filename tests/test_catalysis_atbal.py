@@ -47,7 +47,6 @@ def test_cat_atbal_floats(inpath, spec, outpath, datadir):
     df = pd.read_pickle(inpath)
     for args in spec:
         catalysis.atom_balance(df, **args)
-    pd.to_pickle(df, f"C:\\Users\\krpe\\postprocess\\tests\\{outpath}")
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
 
@@ -67,8 +66,7 @@ def test_cat_atbal_floats(inpath, spec, outpath, datadir):
 def test_with_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
-    for args in spec:
-        transform(df, "catalysis.atom_balance", using=args)
+    transform(df, "catalysis.atom_balance", using=spec)
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
 
@@ -89,7 +87,6 @@ def test_with_transform(inpath, spec, outpath, datadir):
 def test_against_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
-    for args in spec:
-        transform(df, "catalysis.atom_balance", using=args)
+    transform(df, "catalysis.atom_balance", using=spec)
     for col in outkeys:
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)

@@ -1,0 +1,26 @@
+load:
+  - as: dg
+    path: normalized.dg.json
+extract:
+  - as: df
+    from: dg
+    at:
+      steps: b1, b2, b3
+    direct:
+      - key: derived->xout->*
+        as: xout
+    interpolated:
+      - key: derived->xin->*
+        as: xin
+        keyat:
+          step: a
+transform:
+  - table: df
+    with: catalysis.selectivity
+    using:
+      - feedstock: propane
+  - table: df
+    with: catalysis.atom_balance
+    using:
+      - xin: xin
+        xout: xout

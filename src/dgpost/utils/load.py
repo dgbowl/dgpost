@@ -1,69 +1,40 @@
 """
-YAML processing schema and loader/parser function.
+``load``: Datagram loading routine.
+
+The function :func:`dgpost.utils.load.load` processes the below specification
+in order to load the datagram json file:
+
+.. code-block:: yaml
+
+  load:
+    - as:      !!str          # internal datagram name
+      path:    !!str          # path to the datagram file
+      check:   True           # whether the datagram is to be checked using ``yadg``
+
+.. note::
+    The key ``as`` are not processed by :func:`load`, they should be used by its caller 
+    to store the returned ``datagram`` :class:`dict` into the correct variable.
+
+.. code-author: Peter Kraus <peter.kraus@empa.ch>
 """
-import strictyaml as sy
 import os
-
-load = sy.Map(
-    {"as": sy.Str(), "path": sy.Str(), sy.Optional("check", default=True): sy.Bool()}
-)
-
-at = sy.Map(
-    {
-        sy.Optional("step"): sy.Str(),
-        sy.Optional("steps"): sy.CommaSeparated(sy.Str()),
-        sy.Optional("index"): sy.Int(),
-        sy.Optional("indices"): sy.CommaSeparated(sy.Int()),
-        sy.Optional("timestamps"): sy.Seq(sy.Float()),
-    }
-)
-
-constant = sy.Map({"value": sy.Any(), "as": sy.Str()})
-
-direct = sy.Map({"key": sy.Str(), "as": sy.Str()})
-
-interpolated = sy.Map({"key": sy.Str(), "as": sy.Str(), "keyat": at})
-
-extract = sy.Map(
-    {
-        "as": sy.Str(),
-        "from": sy.Str(),
-        "at": at,
-        sy.Optional("constant"): sy.Seq(constant),
-        sy.Optional("direct"): sy.Seq(direct),
-        sy.Optional("interpolated"): sy.Seq(interpolated),
-    }
-)
-
-schema = sy.Map(
-    {
-        sy.Optional("load"): sy.Seq(load),
-        sy.Optional("extract"): sy.Seq(extract),
-    }
-)
+import json
+from yadg.core import validate_datagram
 
 
-def load_yaml(fn: str) -> dict:
+def load(path: str, check: bool = True) -> dict:
     """
-    Loads the yaml file in ``fn``, parses it according to the schema, and returns
-    the resulting specification dictionary.
+    Datagram loading function.
 
-    Parameters
-    ----------
-    fn
-        Path to the yaml file to load.
-
-    Returns
-    -------
-    dict
-        The parsed job specification as a dictionary.
-
+    Given the ``path`` to the datagram json file, this routine
     """
-    assert os.path.exists(fn) and os.path.isfile(fn), (
-        f"load_yaml: provided file namen '{fn}' does not exist "
-        f"or is not a valid file"
-    )
-    with open(fn, "r") as infile:
-        yaml = infile.read()
+    assert os.path.exists(path), f"load: Provided 'path' '{path}' does not exist."
+    assert os.path.isfile(path), f"load: Provided 'path' '{path}' is not a file."
 
-    return sy.load(yaml, schema)
+    with open(path, "r") as infile:
+        dg = json.load(infile)
+
+    if check:
+        validate_datagram(dg)
+
+    return dg

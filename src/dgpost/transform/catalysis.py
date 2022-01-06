@@ -19,6 +19,8 @@ and ``xout`` is performed using these SMILES.
 """
 import pandas as pd
 import pint
+from typing import Union
+from distutils.util import strtobool
 
 
 from dgpost.transform.helpers import (
@@ -36,7 +38,7 @@ def conversion(
     xin: str = "xin",
     xout: str = "xout",
     element: str = None,
-    product: bool = True,
+    product: Union[bool, str] = True,
     standard: str = "N2",
 ) -> None:
     """
@@ -69,6 +71,10 @@ def conversion(
         Internal standard for normalizing flows. By default set to "N2".
 
     """
+    # coerce types
+    if isinstance(product, str):
+        product = bool(strtobool(product))
+
     smiles = columns_to_smiles(df, [xin, xout])
 
     f = search_chemical(feedstock)

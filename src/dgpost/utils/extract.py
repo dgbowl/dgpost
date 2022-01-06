@@ -2,7 +2,7 @@
 ``extract``: Data extraction and interpolation routine.
 
 The function :func:`dgpost.utils.extract.extract` processes the below specification
-in order do extract the required data from the supplied datagram.
+in order to extract the required data from the supplied datagram.
 
 .. code-block:: yaml
 
@@ -11,7 +11,7 @@ in order do extract the required data from the supplied datagram.
       as:        !!str          # name of the extracted DataFrame
       at:                       # specifies timestamps to form index of the DataFrame
         step:       !!str
-        index:      !int
+        index:      !!int
         steps:      [!!str, ...]
         indices:    [!!int, ...]
         timestamps: [!!float, ...]
@@ -33,9 +33,9 @@ in order do extract the required data from the supplied datagram.
 
 
 .. note::
-    The keys ``from`` and ``as`` are not processed by :func:`dgpost.utils.extract.extract`, 
-    they should be used by its caller to identify the requested ``datagram`` and assign 
-    the returned :class:`pd.DataFrame` into the correct variable.
+    The keys ``from`` and ``as`` are not processed by :func:`extract`, they should be 
+    used by its caller to supply the requested ``datagram`` and assign the returned 
+    :class:`pd.DataFrame` into the correct variable.
 
 Handling of sparse data depends on the extraction format specified:
 

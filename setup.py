@@ -39,5 +39,5 @@ setuptools.setup(
         "chemicals",
         "yadg>=4.0rc1",
     ],
-    #entry_points={"console_scripts": ["yadg=yadg:run_with_arguments"]},
+    entry_points={"console_scripts": ["dgpost=dgpost:run_with_arguments"]},
 )
