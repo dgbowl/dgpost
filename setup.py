@@ -34,10 +34,11 @@ setuptools.setup(
         "uncertainties",
         "pytest",
         "pandas",
+        "openpyxl",
         "pint",
         "strictyaml",
         "chemicals",
-        "yadg>=4.0rc1",
+        "yadg>=4.0rc3",
     ],
     entry_points={"console_scripts": ["dgpost=dgpost:run_with_arguments"]},
 )
