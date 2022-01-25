@@ -18,11 +18,10 @@ and ``xout`` is performed using these SMILES.
 
 """
 import pandas as pd
-import pint
 from typing import Union
 from distutils.util import strtobool
 
-
+from yadg.dgutils import ureg
 from dgpost.transform.helpers import (
     columns_to_smiles,
     default_element,
@@ -95,7 +94,7 @@ def conversion(
         dfsm = pQ(df, fd[xin]) - pQ(df, fd[xout]) * exp
         Xr = dfsm / pQ(df, fd[xin])
         tag = f"Xr->{feedstock}"
-        assert Xr.u == pint.Unit(""), (
+        assert Xr.u == ureg.Unit(""), (
             f"conversion: Error in units: " f"'{tag}' should be dimensionless."
         )
         save(df, tag, Xr)
@@ -112,7 +111,7 @@ def conversion(
                 nat_out += dnat
         Xp = (nat_out - f_out) / nat_out
         tag = f"Xp_{element}->{feedstock}"
-        assert Xp.u == pint.Unit(""), (
+        assert Xp.u == ureg.Unit(""), (
             f"conversion: Error in units: " f"'{tag}' should be dimensionless."
         )
         save(df, tag, Xp)
@@ -178,7 +177,7 @@ def selectivity(
                 Sp = pQ(df, v[xout]) * els / nat_out
                 name = v[xout].split(xout)[1]
                 tag = f"Sp_{element}{name}"
-                assert Sp.u == pint.Unit(""), (
+                assert Sp.u == ureg.Unit(""), (
                     f"selectivity: Error in units: " f"'{tag}' should be dimensionless."
                 )
                 save(df, tag, Sp)
@@ -237,7 +236,7 @@ def catalytic_yield(
         Yp = Sp * Xp
         name = v[f"Sp_{element}"].split("->")[1]
         tag = f"Yp_{element}->{name}"
-        assert Yp.u == pint.Unit(""), (
+        assert Yp.u == ureg.Unit(""), (
             f"yield: Error in units: " f"'{tag}' should be dimensionless."
         )
         save(df, tag, Yp)
@@ -308,7 +307,7 @@ def atom_balance(
     dnat = nat_in - nat_out
     atbal = 1 - dnat / nat_in
     tag = f"atbal_{element}"
-    assert atbal.u == pint.Unit(""), (
+    assert atbal.u == ureg.Unit(""), (
         f"atom_balance: Error in units: " f"'{tag}' should be dimensionless."
     )
     save(df, tag, atbal)

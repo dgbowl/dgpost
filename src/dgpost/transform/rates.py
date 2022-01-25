@@ -7,6 +7,7 @@ import pint
 from typing import Union
 
 from dgpost.transform.helpers import pQ, save
+from yadg.dgutils import ureg
 
 
 def flow_to_molar(
@@ -103,19 +104,23 @@ def flow_to_molar(
                 if x.check("[substance]/[volume]"):
                     r = flow * x
                 elif x.dimensionless:
+                    print(Tref, type(Tref))
                     if isinstance(Tref, str):
-                        RTref = pQ(df, Tref).to("K") * pint.Quantity(1, "R")
+                        RTref = pQ(df, Tref).to("K") * ureg.Quantity(1, "R")
+                    elif isinstance(Tref, pint.Quantity):
+                        Tref = ureg.Quantity(Tref.m, Tref.u).to("K")
+                        RTref = Tref * ureg.Quantity(1, "R")
                     elif Tref is not None:
-                        RTref = pint.Quantity(Tref, "kelvin") * pint.Quantity(1, "R")
+                        RTref = ureg.Quantity(Tref, "kelvin") * ureg.Quantity(1, "R")
                     else:
-                        RTref = pint.Quantity(0, "degC").to("K") * pint.Quantity(1, "R")
+                        RTref = ureg.Quantity(0, "degC").to("K") * ureg.Quantity(1, "R")
 
                     if isinstance(pref, str):
                         pref = pQ(df, pref)
                     elif pref is not None:
-                        pref = pint.Quantity(pref, "pascal")
+                        pref = ureg.Quantity(pref, "pascal")
                     else:
-                        pref = pint.Quantity(1, "atm")
+                        pref = ureg.Quantity(1, "atm")
 
                     r = flow * (pref / (RTref)) * x
 

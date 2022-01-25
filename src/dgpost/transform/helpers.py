@@ -9,6 +9,7 @@ import pandas as pd
 from collections import defaultdict
 from typing import Union
 from chemicals.identifiers import search_chemical
+from yadg.dgutils import ureg
 
 
 def element_from_formula(f: str, el: str) -> int:
@@ -101,7 +102,7 @@ def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
     """
     vals = df[col].array
     unit = df.attrs.get("units", {}).get(col, "")
-    return pint.Quantity(vals, unit)
+    return ureg.Quantity(vals, unit)
 
 
 def save(df: pd.DataFrame, tag: str, col: pint.Quantity) -> None:

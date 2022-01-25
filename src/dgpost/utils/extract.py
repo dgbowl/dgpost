@@ -59,7 +59,6 @@ import pandas as pd
 import uncertainties as uc
 from uncertainties import unumpy as unp
 from uncertainties.core import str_to_number_with_uncert as tuple_fromstr
-import pint
 
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:

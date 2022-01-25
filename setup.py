@@ -38,7 +38,7 @@ setuptools.setup(
         "pint",
         "strictyaml",
         "chemicals",
-        "yadg>=4.0rc3",
+        "yadg>=4.0.0",
     ],
     entry_points={"console_scripts": ["dgpost=dgpost:run_with_arguments"]},
 )
