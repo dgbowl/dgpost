@@ -5,6 +5,7 @@ import os
 import pandas as pd
 import numpy as np
 from uncertainties import unumpy as unp
+import uncertainties as uc
 
 from tests.utils import datadir
 import dgpost
@@ -67,13 +68,9 @@ def test_run_withna(inpath, tname, outpath, datadir):
     os.chdir(datadir)
     dg, tab = dgpost.run(inpath)
     df = tab[tname]
-    print(df.head())
-    pd.to_pickle(df, f"C:\\Users\\krpe\\postprocess\\tests\\{outpath}")
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref.isna(), df.isna(), check_like=True)
-    for col in df.columns:
-        r = ref[col].dropna()
-        t = df[col].dropna()
-        assert np.allclose(unp.nominal_values(r), unp.nominal_values(t))
-        assert np.allclose(unp.std_devs(r), unp.std_devs(t))
+    r = ref.fillna(uc.ufloat(0,0))
+    t = df.fillna(uc.ufloat(0,0))
+    pd.testing.assert_frame_equal(ref, df, check_like=True)
     assert ref.attrs == df.attrs
