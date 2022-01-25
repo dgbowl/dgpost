@@ -51,6 +51,38 @@ component.
 Units are added into the ``attrs`` dictionary of the :class:`pd.DataFrame` on a 
 per-column basis.
 
+Data from multiple datagrams can be combined into one :class:`pd.DataFrame` using a
+YAML such as the following example:
+
+.. code-block:: yaml
+
+    load:
+      - as: norm
+        path: normalized.dg.json
+      - as: sparse
+        path: sparse.dg.json
+    extract:
+      - as: df
+        from: norm
+        at:
+        step: "a"
+        direct:
+          - key: raw->T_f
+            as: rawT
+      - as: df
+        from: sparse
+        at:
+        step: "a"
+        interpolated:
+          - key: derived->xout->*
+            as: xout
+            keyat:
+              steps: b1, b2, b3
+
+In this example, the concatenation of the two tables is straightforward, as the 
+indices of the tables (defined using `"step"`) are the same. If the indices differ,
+the concatenation raises a warning, and the resulting table will contain `NaNs`.
+
 .. code-author: Peter Kraus <peter.kraus@empa.ch>
 """
 

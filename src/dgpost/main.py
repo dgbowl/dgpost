@@ -6,6 +6,7 @@ import argparse
 import logging
 import os
 from importlib import metadata
+import pandas as pd
 
 from dgpost.utils import parse, load, extract, transform
 
@@ -35,7 +36,22 @@ def run(path: str) -> tuple[dict, dict]:
     tables = {}
     e = spec.pop("extract")
     for el in e:
-        tables[el.pop("as")] = extract(datagrams[el.pop("from")], el)
+        saveas = el.pop("as")
+        newdf = extract(datagrams[el.pop("from")], el)
+        if saveas in tables:
+            if tables[saveas].index.equals(newdf.index):
+                logging.debug(
+                    f"run: Concatenating columns into table '{saveas}', "
+                    f"both tables have the same index."
+                )
+            else:
+                logging.warning(
+                    f"run: Concatenating columns into table '{saveas}', "
+                    f"the new table has a different index!"
+                )
+            tables[saveas] = pd.concat([tables[saveas], newdf], axis=1)
+        else:
+            tables[saveas] = newdf
 
     t = spec.get("transform", [])
     for el in t:
