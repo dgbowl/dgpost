@@ -5,6 +5,14 @@ load = sy.Map(
     {"as": sy.Str(), "path": sy.Str(), sy.Optional("check", default=True): sy.Bool()}
 )
 
+save = sy.Map(
+    {
+        "table": sy.Str(),
+        "as": sy.Str(),
+        sy.Optional("type"): sy.Enum(["pkl", "json", "csv", "xlsx"]),
+    }
+)
+
 at = sy.Map(
     {
         sy.Optional("step"): sy.Str(),
