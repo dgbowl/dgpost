@@ -51,11 +51,41 @@ transform = sy.Map(
     }
 )
 
+lines = sy.MapCombined(
+    {
+        "y": sy.Str(),
+        sy.Optional("x"): sy.Str()
+    },
+    sy.Str(),
+    sy.Any(),
+)
+
+axes = sy.MapCombined(
+    {
+        "lines": sy.Seq(lines),
+    },
+    sy.Str(),
+    sy.Any(),
+)
+
+plot = sy.MapCombined(
+    {
+        "style": sy.Str(),
+        "table": sy.Str(),
+        "axes": sy.Seq(axes),
+        sy.Optional("show", default=False): sy.Bool(),
+        sy.Optional("save", default=""): sy.Str(),
+    },
+    sy.Str(),
+    sy.Any(),
+)
+
 schema = sy.Map(
     {
         sy.Optional("load"): sy.Seq(load),
         sy.Optional("extract"): sy.Seq(extract),
         sy.Optional("transform"): sy.Seq(transform),
         sy.Optional("save"): sy.Seq(save),
+        sy.Optional("plot"): sy.Seq(plot),
     }
 )

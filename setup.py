@@ -39,6 +39,7 @@ setuptools.setup(
         "chemicals>=1.0.0",
         "rdkit-pypi>=2021",
         "yadg>=4.1.0rc1",
+        "matplotlib",
     ],
     extras_require={
         "testing": [
