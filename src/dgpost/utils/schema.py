@@ -52,10 +52,7 @@ transform = sy.Map(
 )
 
 lines = sy.MapCombined(
-    {
-        "y": sy.Str(),
-        sy.Optional("x"): sy.Str()
-    },
+    {"y": sy.Str(), sy.Optional("x"): sy.Str()},
     sy.Str(),
     sy.Any(),
 )

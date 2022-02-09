@@ -41,7 +41,7 @@ def plot(table, style, axes, show, save, **figargs):
         return
 
     if not os.path.isdir(os.path.dirname(save)):
-        raise ValueError(f"The path \'{save}\' is not a valid directory")
+        raise ValueError(f"The path '{save}' is not a valid directory")
 
     fig.savefig(save)
     return
