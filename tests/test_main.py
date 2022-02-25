@@ -39,6 +39,16 @@ import dgpost
             "df",
             "lee_1.pkl",
         ),
+        (  # ts5 - load, extract, save in 4 formats 
+            "les_1.yaml",
+            "table 1",
+            "les_1.pkl",
+        ),
+        (  # ts5 - load, extract, save, strip sigma
+            "les_2.yaml",
+            "table 1",
+            "les_2.pkl",
+        ),
     ],
 )
 def test_run(inpath, tname, outpath, datadir):

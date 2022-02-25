@@ -8,7 +8,7 @@ import os
 from importlib import metadata
 import pandas as pd
 
-from dgpost.utils import parse, load, extract, transform
+from dgpost.utils import parse, load, extract, transform, save
 
 
 def run(path: str) -> tuple[dict, dict]:
@@ -56,7 +56,10 @@ def run(path: str) -> tuple[dict, dict]:
     t = spec.get("transform", [])
     for el in t:
         transform(tables[el["table"]], el["with"], el["using"])
-
+    
+    s = spec.get("save", [])
+    for el in s:
+        save(tables[el["table"]], el["as"], el.get("type"), el.get("sigma", True))
     return datagrams, tables
 
 
