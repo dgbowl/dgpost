@@ -71,7 +71,7 @@ def save(table: pd.DataFrame, path: str, type: str = None, sigma: bool = True) -
         name = col + f" [{ureg.Unit(unit):~P}]"
         names[col] = name
 
-    dframe = table.rename(columns=names)
+    dframe = table.rename(columns=names).sort_index(axis=1)
 
     if type == "csv":
         dframe.to_csv(path)
