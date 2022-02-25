@@ -44,7 +44,7 @@ import dgpost
             "table 1",
             "les_1.pkl",
         ),
-        (  # ts5 - load, extract, save, strip sigma
+        (  # ts6 - load, extract, save, strip sigma
             "les_2.yaml",
             "table 1",
             "les_2.pkl",
@@ -83,3 +83,21 @@ def test_run_withna(inpath, tname, outpath, datadir):
     t = df.fillna(uc.ufloat(0,0))
     pd.testing.assert_frame_equal(ref, df, check_like=True)
     assert ref.attrs == df.attrs
+
+@pytest.mark.parametrize(
+    "inpath, outpaths",
+    [
+        (  # ts0 - test saving to implicit formats
+            "les_1.yaml", ["sparse.pkl", "sparse.json", "sparse.csv", "sparse.xlsx"]
+        ),
+        (
+           # ts1 - test saving with explicit format and sigma = false
+           "les_2.yaml", ["sparse.extension"]
+        )
+    ]
+)
+def test_save(inpath, outpaths, datadir):
+    os.chdir(datadir)
+    dgpost.run(inpath)
+    for of in outpaths:
+        assert os.path.exists(of) and os.path.isfile(of)

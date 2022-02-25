@@ -14,5 +14,6 @@ extract:
         as: derT
 save:
   - table: table 1
-    as: sparse.pkl
+    as: sparse.extension
+    type: csv
     sigma: false
