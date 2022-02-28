@@ -28,7 +28,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-master
-      - run: pip install --pre --find-links=. yadg[testing]
+      - run: pip install --pre --find-links=. dgpost[testing]
         shell: bash
       - uses: ./.github/workflows/test-job
   pages:
@@ -43,7 +43,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-master
-      - run: pip install --pre --find-links=. yadg[docs]
+      - run: pip install --pre --find-links=. dgpost[docs]
         shell: bash
       - uses: ./.github/workflows/docs-job
       - uses: actions/upload-artifact@v2
@@ -66,4 +66,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          keep_files: true
+          keep_files: false
