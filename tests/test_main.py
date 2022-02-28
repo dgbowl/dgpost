@@ -46,7 +46,6 @@ def test_run(inpath, tname, outpath, datadir):
     dg, tab = dgpost.run(inpath)
     df = tab[tname]
     print(df.head())
-    pd.to_pickle(df, f"C:\\Users\\krpe\\postprocess\\tests\\{outpath}")
     ref = pd.read_pickle(outpath)
     for col in df.columns:
         assert np.allclose(unp.nominal_values(ref[col]), unp.nominal_values(df[col]))
