@@ -58,7 +58,6 @@ def test_against_df(inpath, spec, outpath, datadir):
     df = pd.read_pickle(inpath)
     for args in spec:
         catalysis.selectivity(df, **args)
-    pd.to_pickle(df, f"C:\\Users\\krpe\\postprocess\\tests\\{outpath}")
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
     assert ref.attrs == df.attrs
