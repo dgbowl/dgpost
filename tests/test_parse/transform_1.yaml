@@ -1,8 +1,0 @@
-transform:
-  - table: t1
-    with: catalysis.conversion
-    using: 
-      - feedstock: propane
-        product: False
-      - feedstock: C3H8
-        element: C

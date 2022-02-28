@@ -1,8 +1,0 @@
-extract:
-  - as: table 2
-    from: norm
-    at:
-      indices: 1, 2, 3
-    constant:
-      - value: 5.0
-        as: mass

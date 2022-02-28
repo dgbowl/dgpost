@@ -1,0 +1,27 @@
+dgpost package
+==============
+
+.. automodule:: dgpost
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dgpost.transform
+   dgpost.utils
+
+Submodules
+----------
+
+dgpost.main module
+------------------
+
+.. automodule:: dgpost.main
+   :members:
+   :undoc-members:
+   :show-inheritance:
