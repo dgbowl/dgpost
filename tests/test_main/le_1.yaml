@@ -1,0 +1,14 @@
+load:
+  - as: sparse
+    path: sparse.dg.json
+    check: True
+extract:
+  - as: table 1
+    from: sparse
+    at:
+      step: "a"
+    direct:
+      - key: raw->T_f
+        as: rawT
+      - key: derived->T
+        as: derT

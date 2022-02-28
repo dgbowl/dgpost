@@ -1,0 +1,10 @@
+extract:
+  - as: table 2
+    from: norm
+    at:
+      steps: b1, b2, b3
+    interpolated:
+      - key: derived->xin->*
+        as: xin
+        keyat:
+          step: a

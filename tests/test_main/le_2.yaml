@@ -1,0 +1,24 @@
+load:
+  - as: sparse
+    path: sparse.dg.json
+  - as: norm
+    path: normalized.dg.json
+extract:
+  - as: table 1
+    from: sparse
+    at:
+      step: "a"
+    direct:
+      - key: raw->T_f
+        as: rawT
+      - key: derived->T
+        as: derT
+  - as: table 2
+    from: norm
+    at:
+      steps: b1, b2, b3
+    interpolated:
+      - key: derived->xin->*
+        as: xin
+        keyat:
+          step: a

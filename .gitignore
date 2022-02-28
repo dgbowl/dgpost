@@ -1,0 +1,10 @@
+*__pycache__
+*.py[cod]
+*$py.class
+dist/
+*.egg-info
+*.egg
+build/
+public/
+docs/source/dgpost.*
+tests/*.pkl
