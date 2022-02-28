@@ -32,7 +32,6 @@ setuptools.setup(
     install_requires=[
         "numpy",
         "uncertainties",
-        "pytest",
         "pandas",
         "openpyxl",
         "pint",
@@ -40,5 +39,15 @@ setuptools.setup(
         "chemicals",
         "yadg>=4.0.0",
     ],
+    extras_require={
+        "testing": [
+            "pytest"
+        ],
+        "docs": [
+            "sphinx",
+            "sphinx-rtd-theme",
+            "sphinx-autodoc-typehints"
+        ]
+    },
     entry_points={"console_scripts": ["dgpost=dgpost:run_with_arguments"]},
 )
