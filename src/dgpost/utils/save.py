@@ -18,18 +18,25 @@ import json
 import logging
 import os
 from yadg.dgutils.pintutils import ureg
+from uncertainties import unumpy as unp
 
 import pandas as pd
 
 logger = logging.getLogger(__name__)
 
 
-def save(table: pd.DataFrame, path: str, type: str = None) -> None:
+def save(table: pd.DataFrame, path: str, type: str = None, sigma: bool = True) -> None:
     """
     DataFrame saving function
     """
     if os.path.isdir(os.path.dirname(path)):
         logger.warning(f"save: Provided 'path' '{path}' does not exist.")
+
+    # strip uncertainties if required
+    if not sigma:
+        logger.warning(f"save: Stripping uncertainties from table.")
+        for col in table.columns:
+            table[col] = unp.nominal_values(table[col].array)
 
     # find type of file in path or use default 'pkl'
     if type is None:
@@ -52,19 +59,19 @@ def save(table: pd.DataFrame, path: str, type: str = None) -> None:
         return None
 
     # for excel and csv the unit gets added to the column names
-
+    
     units = table.attrs["units"]
     names = {}
 
     for col in table.columns:
-        unit = units.get(col)
-        if unit is None:
+        unit = units.get(col, " ")
+        if unit == " ":
             continue
 
-        name = col + f" [{ureg[unit].units:~P}]"
+        name = col + f" [{ureg.Unit(unit):~P}]"
         names[col] = name
 
-    dframe = table.rename(columns=names)
+    dframe = table.rename(columns=names).sort_index(axis=1)
 
     if type == "csv":
         dframe.to_csv(path)

@@ -10,6 +10,7 @@ save = sy.Map(
         "table": sy.Str(),
         "as": sy.Str(),
         sy.Optional("type"): sy.Enum(["pkl", "json", "csv", "xlsx"]),
+        sy.Optional("sigma", default=True): sy.Bool(),
     }
 )
 
@@ -23,7 +24,7 @@ at = sy.Map(
     }
 )
 
-constant = sy.Map({"value": sy.Any(), "as": sy.Str()})
+constant = sy.Map({"value": sy.Any(), "as": sy.Str(), sy.Optional("units"): sy.Str()})
 
 direct = sy.Map({"key": sy.Str(), "as": sy.Str()})
 
@@ -53,5 +54,6 @@ schema = sy.Map(
         sy.Optional("load"): sy.Seq(load),
         sy.Optional("extract"): sy.Seq(extract),
         sy.Optional("transform"): sy.Seq(transform),
+        sy.Optional("save"): sy.Seq(save),
     }
 )
