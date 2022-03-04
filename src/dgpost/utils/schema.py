@@ -57,9 +57,24 @@ lines = sy.MapCombined(
     sy.Any(),
 )
 
+plot_legend = sy.MapCombined(
+    {},
+    sy.Str(),
+    sy.Any(),
+)
+
 axes = sy.MapCombined(
     {
         "lines": sy.Seq(lines),
+        "legend": plot_legend,
+    },
+    sy.Str(),
+    sy.Any(),
+)
+
+plot_save = sy.MapCombined(
+    {
+        "fname": sy.Str,
     },
     sy.Str(),
     sy.Any(),
@@ -71,7 +86,7 @@ plot = sy.MapCombined(
         "table": sy.Str(),
         "axes": sy.Seq(axes),
         sy.Optional("show", default=False): sy.Bool(),
-        sy.Optional("save", default=""): sy.Str(),
+        sy.Optional("save"): plot_save,
     },
     sy.Str(),
     sy.Any(),
