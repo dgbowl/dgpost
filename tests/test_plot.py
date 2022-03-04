@@ -18,6 +18,7 @@ def are_images_equal(path_one, path_two):
     img2 = Image.open(path_two)
 
     equal_size = img1.height == img2.height and img1.width == img2.width
+    assert equal_size
 
     if img1.mode == img2.mode == "RGBA":
         img1_alphas = [pixel[3] for pixel in img1.getdata()]
@@ -25,36 +26,104 @@ def are_images_equal(path_one, path_two):
         equal_alphas = img1_alphas == img2_alphas
     else:
         equal_alphas = True
+    assert equal_alphas
+    difference = ImageChops.difference(img1.convert("RGB"), img2.convert("RGB"))
+    # difference.show()
+    equal_content = not difference.getbbox()
 
-    equal_content = not ImageChops.difference(
-        img1.convert("RGB"), img2.convert("RGB")
-    ).getbbox()
-
-    return equal_size and equal_alphas and equal_content
+    assert equal_content
 
 
 @pytest.mark.parametrize(
     "input",
     [
         {
-            "style": "style",
-            "axes": [
+            "ax_args": [
                 {
                     "lines": [
                         {
                             "y": "sin1",
                             "color": "r",
+                            "label": "indices",
+                            "kind": "line",
                         },
                         {
                             "y": "sin2",
+                            "x": "ind",
                             "color": "b",
+                            "label": "x_values",
+                            "kind": "line",
                         },
                     ],
-                    "xlim": (0, 7),
+                    "xlim": (0, 15),
+                    "xlabel": "xlabel",
+                    "ylabel": "ylabel",
                 },
             ],
+            "style": "style",
             "show": True,
             "save": {"fname": "test.trigo.png"},
+        },
+        {
+            "ax_args": [
+                {
+                    "lines": [
+                        {
+                            "y": "sin1",
+                            "color": "r",
+                            "label": "indices",
+                            "kind": "line",
+                        },
+                        {
+                            "y": "sin2",
+                            "x": "ind",
+                            "color": "b",
+                            "label": "x_values",
+                            "kind": "line",
+                        },
+                    ],
+                    "xlim": (0, 15),
+                    "ylabel": "ylabel line",
+                    "methods": {
+                        "tick_params": {
+                            "top": True,
+                            "right": True,
+                        },
+                    },
+                },
+                {
+                    "lines": [
+                        {
+                            "y": "sin1",
+                            "color": "r",
+                            "label": "indices",
+                            "kind": "scatter",
+                        },
+                        {
+                            "y": "sin2",
+                            "x": "ind",
+                            "color": "b",
+                            "label": "x_values",
+                            "kind": "scatter",
+                        },
+                    ],
+                    "xlim": (0, 15),
+                    "xlabel": "xlabel",
+                    "ylabel": "ylabel scatter",
+                    "methods": {
+                        "tick_params": {
+                            "top": True,
+                            "right": True,
+                            "labelright": True,
+                        },
+                    },
+                },
+            ],
+            "style": "style",
+            "nrows": 2,
+            "sharex": True,
+            "show": True,
+            "save": {"fname": "test.complex.png"},
         },
     ],
 )
@@ -65,4 +134,4 @@ def test_plot(input, datadir):
     input["table"] = pd.DataFrame({"ind": x_val, "sin1": y_val, "sin2": -y_val})
     dgpost.utils.plot(**input)
     img_name = input["save"]["fname"]
-    assert are_images_equal(img_name, f"ref.{img_name}")
+    are_images_equal(img_name, f"ref.{img_name}")
