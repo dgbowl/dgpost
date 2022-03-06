@@ -29,7 +29,7 @@ def plt_axes(ax: axes.Axes, table: pd.DataFrame, axargs: dict):
 
 
 def plot(
-    table: pd.DataFrame, style: dict, ax_args: list[dict], show, save: dict, **figargs
+    table: pd.DataFrame, style: dict, ax_args: list[dict], save: dict, **figargs
 ):
     apply_plot_style(style)
 
@@ -43,9 +43,6 @@ def plot(
 
     for i, ax in enumerate(ax_args):
         plt_axes(axs[i % 2, i // 2], table, ax)
-
-    if show:
-        fig.show()
 
     if not save:
         return

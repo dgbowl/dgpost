@@ -61,7 +61,6 @@ def are_images_equal(path_one, path_two):
                 },
             ],
             "style": "style",
-            "show": True,
             "save": {"fname": "test.trigo.png"},
         },
         {
@@ -122,7 +121,6 @@ def are_images_equal(path_one, path_two):
             "style": "style",
             "nrows": 2,
             "sharex": True,
-            "show": True,
             "save": {"fname": "test.complex.png"},
         },
     ],
