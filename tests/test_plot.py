@@ -34,6 +34,40 @@ def are_images_equal(path_one, path_two):
     assert equal_content
 
 
+test_style_1 = {
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Arial"],
+    "font.size": 22,
+    "axes.linewidth": 1.1,
+    "axes.labelpad": 4.0,
+    "axes.xmargin": 0.1,
+    "axes.ymargin": 0.1,
+    "figure.subplot.hspace": 0,
+    "figure.subplot.left": 0.11,
+    "figure.subplot.right": 0.946,
+    "figure.subplot.bottom": 0.156,
+    "figure.subplot.top": 0.965,
+    "xtick.major.size": 4,
+    "xtick.minor.size": 2.5,
+    "xtick.major.width": 1.1,
+    "xtick.minor.width": 1.1,
+    "xtick.major.pad": 5,
+    "xtick.minor.visible": True,
+    "xtick.direction": "in",
+    "xtick.top": True,
+    "ytick.major.size": 4,
+    "ytick.minor.size": 2.5,
+    "ytick.major.width": 1.1,
+    "ytick.minor.width": 1.1,
+    "ytick.major.pad": 5,
+    "ytick.minor.visible": True,
+    "ytick.direction": "in",
+    "ytick.right": True,
+    "lines.markersize": 10,
+    "lines.markeredgewidth": 0.8,
+}
+
+
 @pytest.mark.parametrize(
     "input",
     [
@@ -60,7 +94,7 @@ def are_images_equal(path_one, path_two):
                     "ylabel": "ylabel",
                 },
             ],
-            "style": "style",
+            "style": test_style_1,
             "save": {"fname": "test.trigo.png"},
         },
         {
@@ -118,7 +152,6 @@ def are_images_equal(path_one, path_two):
                     },
                 },
             ],
-            "style": "style",
             "nrows": 2,
             "sharex": True,
             "save": {"fname": "test.complex.png"},

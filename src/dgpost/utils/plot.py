@@ -1,9 +1,13 @@
+import matplotlib
 import pandas as pd
 from matplotlib import pyplot as plt, axes
 
 
 def apply_plot_style(style: dict):
-    pass
+    if style is not None:
+        matplotlib.rcParams.update(style)
+    else:
+        matplotlib.rcdefaults()
 
 
 def plt_axes(ax: axes.Axes, table: pd.DataFrame, axargs: dict):
@@ -29,7 +33,7 @@ def plt_axes(ax: axes.Axes, table: pd.DataFrame, axargs: dict):
 
 
 def plot(
-    table: pd.DataFrame, style: dict, ax_args: list[dict], save: dict, **figargs
+    table: pd.DataFrame, ax_args: list[dict], save: dict, style: dict = None,  **figargs
 ):
     apply_plot_style(style)
 

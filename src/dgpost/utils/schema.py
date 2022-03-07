@@ -83,9 +83,9 @@ plot_save = sy.MapCombined(
 
 plot = sy.MapCombined(
     {
-        "style": sy.Str(),
         "table": sy.Str(),
         "ax_args": sy.Seq(axes),
+        sy.Optional("style"): sy.MapPattern(sy.Str(), sy.Any()),
         sy.Optional("save"): plot_save,
     },
     sy.Str(),
