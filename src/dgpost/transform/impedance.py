@@ -292,17 +292,17 @@ def lowest_real_impedance(
     s = np.argsort(real)
     real = real[s]
     imag = imag[s]
-    izeros = np.flatnonzero(imag < threshold)
+    if imag[0] > 0:
+        izeros = np.flatnonzero(imag < threshold)
+    else:
+        izeros = np.flatnonzero(imag > threshold)
     if izeros.size == 0:
         logger.warning(
             "No real impedance found. Returning real part of impedance "
             "with the smallest complex component."
         )
-        iz = imag.argmin()
+        iz = abs(imag).argmin()
         z, u = real[iz].m, real[iz].u
-
-    elif izeros[0] == 0:
-        z, u = real[0].m, real[0].u
     else:
         iz = izeros[0]
         if iz == real.size:
