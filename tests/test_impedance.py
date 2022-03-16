@@ -8,8 +8,6 @@ import pytest
 from dgpost.transform import impedance
 from dgpost.utils import extract, transform
 
-from tests.utils import datadir
-
 
 @pytest.mark.parametrize(
     "filepath, fit_info, expected",
@@ -200,7 +198,7 @@ def test_dg_fit_circuit(data_info, fit_info, expected, datadir):
     df = extract(dg, data_info["spec"])
 
     transform(df, "impedance.fit_circuit", using=fit_info)
-    
+
     cols = [col for col in df if col.startswith("fit")]
     for index, expect in enumerate(expected):
         assert len(cols) == len(expect)
@@ -275,22 +273,23 @@ def test_calc_circuit(datadir):
         np.testing.assert_array_equal(df[col].iloc[0], ref[name].iloc[0])
         assert df.attrs["units"][col] == ref.attrs["units"][name]
 
+
 @pytest.mark.parametrize(
     "filepath, inp_extr, inp_using, expected",
     [
         (
             "peis.dg.json",
             {
-                "at": {"index": 0}, 
+                "at": {"index": 0},
                 "direct": [
                     {"key": "raw->traces->PEIS->Re(Z)", "as": "Re(Z)"},
                     {"key": "raw->traces->PEIS->-Im(Z)", "as": "-Im(Z)"},
-                ]
+                ],
             },
             [{"real": "Re(Z)", "imag": "-Im(Z)"}],
-            [14.800329, 10.928267]
+            [14.800329, 10.928267],
         )
-    ]
+    ],
 )
 def test_lowest_real(filepath, inp_extr, inp_using, expected, datadir):
     os.chdir(datadir)
@@ -299,4 +298,3 @@ def test_lowest_real(filepath, inp_extr, inp_using, expected, datadir):
     df = extract(dg, inp_extr)
     transform(df, "impedance.lowest_real_impedance", using=inp_using)
     np.testing.assert_allclose(expected, unp.nominal_values(df["Zmin"]))
-    

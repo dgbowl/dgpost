@@ -165,6 +165,7 @@ def separate_data(
     data = data.m
     return unp.nominal_values(data), unp.std_devs(data), old_unit
 
+
 def load_data(*cols: str):
     """
     Decorator factory for data loading
@@ -173,14 +174,14 @@ def load_data(*cols: str):
     and calls the wrapped function for each row entry.
 
     The load_data decorator handles the following three cases:
-    
+
     - decorated function launched directly with kwargs only -> the kwargs
       that correspond to the cols listed in the decorator are converted
       to pint.Quantity
-    
+
     - decorated function launched using a mixture of args and kwargs -> the
       args are assigned into kwargs using cols and converted to pint.Quantity
-    
+
     - decorated function launched with pd.DataFrame and kwargs -> the cols
       specify column names in the pd.DataFrame, which are pulled out and converted
       to pint.Quantity
@@ -189,7 +190,7 @@ def load_data(*cols: str):
     ----------
     cols
         list of strings with the col names used to call the function
-    
+
     Returns
     -------
     loading: Callable
@@ -205,7 +206,7 @@ def load_data(*cols: str):
             if len(args) > 0 and isinstance(args[0], pd.DataFrame):
                 if len(args) > 1:
                     raise ValueError("Only the DataFrame should be given as argument")
-                
+
                 df = args[0]
                 # check if the dataframe has a units attribute else create it
                 if "units" not in df.attrs:
@@ -232,7 +233,7 @@ def load_data(*cols: str):
                     # Union[pint.Quantity, int, str]
                     retvals = func(**data, **kwargs)
                     for name, qty in retvals.items():
-                        # check if the column already exists in the dataframe, 
+                        # check if the column already exists in the dataframe,
                         # if not create empty column
                         if name not in df.columns:
                             df[name] = ""
@@ -242,13 +243,13 @@ def load_data(*cols: str):
                             df.attrs["units"][name] = f"{qty.u:~P}"
                         else:
                             df[name].iloc[index] = qty
-            
+
             else:
                 # Merge args into kwargs using cols
                 if len(cols) == len(args):
                     for col, arg in zip(cols, args):
                         kwargs[col] = arg
-                
+
                 # Validate that all cols are pint.Quantity
                 for k in cols:
                     v = kwargs[k]
@@ -260,7 +261,9 @@ def load_data(*cols: str):
                         raise ValueError(
                             f"The provided argument '{k}' is neither a pint.Quantity "
                             f"nor an np.ndarray: '{type(v)}'."
-                        )   
+                        )
                 return func(**kwargs)
+
         return wrapper
+
     return loading

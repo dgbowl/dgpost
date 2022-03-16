@@ -1,13 +1,10 @@
 import pytest
-import yadg.core
-import json
 import os
 import pandas as pd
 import numpy as np
 from uncertainties import unumpy as unp
 import uncertainties as uc
 
-from tests.utils import datadir
 import dgpost
 
 
@@ -69,6 +66,28 @@ def test_run(inpath, tname, outpath, datadir):
     for col in df.columns:
         assert np.allclose(unp.nominal_values(ref[col]), unp.nominal_values(df[col]))
         assert np.allclose(unp.std_devs(ref[col]), unp.std_devs(df[col]))
+    assert ref.attrs == df.attrs
+
+
+@pytest.mark.parametrize(
+    "inpath, tname, outpath",
+    [
+        (  # ts0 - load & double extract, different index
+            "lee_2.yaml",
+            "df",
+            "lee_2.pkl",
+        )
+    ],
+)
+def test_run_withna(inpath, tname, outpath, datadir):
+    os.chdir(datadir)
+    dg, tab = dgpost.run(inpath)
+    df = tab[tname]
+    ref = pd.read_pickle(outpath)
+    pd.testing.assert_frame_equal(ref.isna(), df.isna(), check_like=True)
+    r = ref.fillna(uc.ufloat(0, 0))
+    t = df.fillna(uc.ufloat(0, 0))
+    pd.testing.assert_frame_equal(ref, df, check_like=True)
     assert ref.attrs == df.attrs
 
 

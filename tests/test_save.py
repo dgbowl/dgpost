@@ -7,8 +7,6 @@ import pandas as pd
 import pytest
 from uncertainties import ufloat_fromstr
 
-from tests.utils import datadir
-
 
 def parse_ufloat(d):
     for k, v in d.items():
