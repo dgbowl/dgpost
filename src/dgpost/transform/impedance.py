@@ -342,7 +342,7 @@ def calc_circuit(
 def lowest_real_impedance(
     real: pint.Quantity,
     imag: pint.Quantity,
-    output: str = "Z",
+    output: str = "Zmin",
     threshold: float = 0.0,
 ) -> dict[str, Union[int, str, pint.Quantity]]:
     """
