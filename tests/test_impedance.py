@@ -199,7 +199,7 @@ def test_dg_fit_circuit(data_info, fit_info, expected, datadir):
     df = extract(dg, data_info["spec"])
 
     transform(df, "impedance.fit_circuit", using=fit_info)
-
+    
     cols = [col for col in df if col.startswith("fit")]
     for index, expect in enumerate(expected):
         assert len(cols) == len(expect)
@@ -229,7 +229,7 @@ def test_direct_fit_circuit(datadir):
         },
     }
 
-    parameters, units = impedance.fit_circuit(real, imag, freq, **fit_info)
+    retvals = impedance.fit_circuit(real, imag, freq, **fit_info)
 
     expected = {
         "circuit": "R0-p(R1,C1)-p(R2,C2)",
@@ -240,10 +240,9 @@ def test_direct_fit_circuit(datadir):
         "C2": 1e-6,
     }
 
-    for key in parameters:
-        ret = parameters.get(key)
+    for key, val in retvals.items():
         ref = expected.get(key.split(">")[-1])
-        assert ret == pytest.approx(ref)
+        assert val == ref or val.m == pytest.approx(ref)
 
 
 def test_calc_circuit(datadir):
@@ -271,6 +270,24 @@ def test_calc_circuit(datadir):
 
     cols = [col for col in df if col.startswith("test")]
     for col in cols:
-        name = col.split(">")[-1]
+        name = col.split("->")[-1]
         np.testing.assert_array_equal(df[col].iloc[0], ref[name].iloc[0])
         assert df.attrs["units"][col] == ref.attrs["units"][name]
+
+
+#def test_lowest_real(datadir):
+#    os.chdir(datadir)
+#    with open("peis.dg.json", "r") as infile:
+#        dg = json.load(infile)
+#    
+#    input_extract = {
+#        "at": {"index": 0},
+#        "direct": [{"key": "raw->traces->PEIS->*", "as": "PEIS"}]
+#   }
+#    input_using = [{"real": "PEIS->Re(Z)", "imag": "PEIS->-Im(Z)"}]
+#
+#    df = extract(dg, input_extract)
+#    transform(df, "impedance.lowest_real_impedance", using=input_using)
+#    print(df.head())
+#
+#    assert False

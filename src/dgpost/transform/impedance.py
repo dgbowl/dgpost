@@ -1,4 +1,3 @@
-import functools
 import logging
 import warnings
 from typing import Callable, Union
@@ -7,94 +6,13 @@ import numpy as np
 import pandas as pd
 import pint
 import uncertainties.unumpy as unp
+from uncertainties import ufloat
 from scipy.optimize import least_squares, minimize
 
 from .circuit_utils.circuit_parser import parse_circuit
-from .helpers import pQ
+from .helpers import separate_data, load_data
 
 logger = logging.getLogger(__name__)
-
-
-def load_data(*cols: str):
-    """
-    Decorator factory for data loading
-
-    Creates a decorator that will load the columns specified in ``cols``
-    and calls the wrapped function for each row entry.
-
-    Parameters
-    ----------
-    cols
-        list of strings with the col names used to call the function
-    """
-
-    def loading(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            # check if there is an output name in kwargs, if not take func name
-            if "output" not in kwargs:
-                kwargs["output"] = func.__name__
-
-            if len(args) == 0:
-                # if there are no argument, it means the function is not called with a dataframe
-                return func(**kwargs)
-            else:
-                # check if the first argument is a dataframe then break and there should only be one kwarg
-                # or check if all the arguments are np.ndarray
-                for arg in args:
-                    if isinstance(arg, pd.DataFrame):
-                        if len(args) != 1:
-                            raise ValueError(
-                                "Only the DataFrame should be given as argument"
-                            )
-                        df = arg
-                        break
-                    elif isinstance(arg, np.ndarray):
-                        continue
-                    else:
-                        raise ValueError(
-                            "The argument is neither a DataFrame or an ndarray"
-                        )
-                else:
-                    if len(cols) == len(args):
-                        return func(*args, **kwargs)
-                    else:
-                        raise ValueError("Not enough data rows given")
-
-                # check if the dataframe has a units attribute else create it
-                if "units" not in df.attrs:
-                    df.attrs["units"] = {}
-
-                # each kwarg to get a data colum specified in cols should be a string
-                # create a list for each data column that should get past to the function
-                raw_data = []
-                for col in cols:
-                    if isinstance(col, str):
-                        raw_data.append(pQ(df, kwargs.pop(col)))
-                    else:
-                        raise ValueError(f"Provided value for {col} is not a string")
-
-                # transpose the list and iterate over it
-                # so that we iterate over each time step
-                for index, row in enumerate(zip(*raw_data)):
-                    # create kwargs for each data col
-                    data = {col: r for col, r in zip(cols, row)}
-
-                    # call the function for each row in the data
-                    # the function should return two dicts, which contain the values
-                    # and units of the data with the same key
-                    vals, units = func(**data, **kwargs)
-                    for val_name in vals:
-                        # check if the column already exists in the dataframe, if not create empty column
-                        if val_name not in df:
-                            df[val_name] = ""
-                        # fill the column and units attribute with the given values
-                        df[val_name].iloc[index] = vals[val_name]
-                        df.attrs["units"][val_name] = units[val_name]
-
-        return wrapper
-
-    return loading
 
 
 def fit_routine(
@@ -170,50 +88,21 @@ def fit_routine(
     return opt_result
 
 
-def separate_data(
-    data: Union[np.ndarray, pint.Quantity], unit: str
-) -> tuple[np.ndarray, np.ndarray, str]:
-    """Separates the data into values, errors and unit
-
-    Parameters
-    ----------
-    data
-        List of data points which are either floats or ufloats
-
-    unit
-        converts the input quantity to this unit
-
-    Returns
-    -------
-    (values, errors, old_unit)
-        returns the values with the corresponding errors and the unit of the input array
-    """
-    old_unit = ""
-    if isinstance(data, pint.Quantity):
-        old_unit = data.u
-        data = data.to(unit)
-        data = data.m
-
-    data_values = unp.nominal_values(data)
-    data_errors = unp.std_devs(data)
-    return data_values, data_errors, old_unit
-
-
 @load_data("real", "imag", "freq")
 def fit_circuit(
-    real: Union[np.ndarray, pint.Quantity],
-    imag: Union[np.ndarray, pint.Quantity],
-    freq: Union[np.ndarray, pint.Quantity],
+    real: pint.Quantity,
+    imag: pint.Quantity,
+    freq: pint.Quantity,
     circuit: str,
     initial_values: dict[str, float],
-    output: str,
+    output: str = "fit_circuit",
     fit_bounds: dict[str, tuple[float, float]] = None,
     fit_constants: list[str] = None,
     ignore_neg_res: bool = True,
     upper_freq: float = np.inf,
     lower_freq: float = 0,
     repeat: int = 1,
-) -> tuple[dict[str, float], dict[str, str]]:
+) -> dict[str, Union[int, str, pint.Quantity]]:
     """
     Fitting function for equivalent circuits of electrochemical impedance spectroscopy (EIS) data.
 
@@ -256,15 +145,15 @@ def fit_circuit(
     Parameters
     ----------
     real
-        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the real part of the impedance data
+        pint.Quantity containing the real part of the impedance data
         The unit of the provided data should be or gets converted to 'Ω'
 
     imag
-        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the negative imaginary part of the impedance data
+        pint.Quantity containing the negative imaginary part of the impedance data
         The unit of the provided data should be or gets converted to 'Ω'
 
     freq
-        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the frequency of the impedance data
+        pint.Quantitycontaining the frequency of the impedance data
         The unit of the provided data should be or gets converted to 'Hz'
 
     circuit
@@ -306,7 +195,7 @@ def fit_circuit(
          - parameters, contains all the values of the parameters accessible by their names
          - units, contains all the units of the parameters accessible by their names
     """
-    # separate the data into nominal values and uncertainties and normalize the units.
+    # normalise input units and get nominal values of the input data
     real_data = separate_data(real, "Ω")[0]
     imag_data = separate_data(imag, "Ω")[0]
     freq_data = separate_data(freq, "Hz")[0]
@@ -336,14 +225,13 @@ def fit_circuit(
     variable_bounds = []  # bounds of the parameters that are not fixed
 
     for p in param_info:
-        p_name = p["name"]
-        if p_name in initial_values:
-            if p_name not in fit_constants:
-                variable_bounds.append(fit_bounds.get(p_name, p["bounds"]))
-                variable_guess.append(initial_values.get(p_name))
-                variable_names.append(p_name)
+        if p["name"] in initial_values:
+            if p["name"] not in fit_constants:
+                variable_bounds.append(fit_bounds.get(p["name"], p["bounds"]))
+                variable_guess.append(initial_values.get(p["name"]))
+                variable_names.append(p["name"])
         else:
-            raise ValueError(f"No initial value given for {p_name}")
+            raise ValueError(f"No initial value given for {p['name']}")
 
     # calculate the weight of each datapoint
     def weight(error, value):
@@ -380,26 +268,23 @@ def fit_circuit(
     param_values.update(dict(zip(variable_names, opt_result.x)))
 
     # create output dictionaries
-    parameters = {f"{output}->circuit": circuit}
-    units = {f"{output}->circuit": ""}
+    retval = {f"{output}->circuit": circuit}
 
-    # iterate over param_info to make sure every parameter of the circuit gets added
-    # necessary since we need the unit of the parameter
+    # iterate over param_info, construct parameter name, and convert parameter
+    # values to pint.Quantities
     for p in param_info:
-        p_name = p["name"]
-        col_name = f"{output}->{p_name}"
-        parameters[col_name] = param_values[p_name]
-        units[col_name] = p["unit"]
+        col_name = f"{output}->{p['name']}"
+        retval[col_name] = pint.Quantity(param_values[p["name"]], p["unit"])
 
-    return parameters, units
+    return retval
 
 
 @load_data("freq")
 def calc_circuit(
+    freq: pint.Quantity,
     circuit: str,
     parameters: dict[str, float],
-    output: str,
-    freq: Union[np.ndarray, pint.Quantity],
+    output: str = "calc_circuit",
 ) -> tuple[dict[str, float], dict[str, str]]:
     """
     Calculate and adds the impedance as columns to the given dataframe for the given parameters, frequency and circuit.
@@ -428,7 +313,7 @@ def calc_circuit(
          - units, contains the corresponding units of the impedance
     """
     # separate the freq data into values, errors and normalize the unit
-    freq_data, freq_error, freq_unit = separate_data(freq, "Hz")
+    freq_data = separate_data(freq, "Hz")[0]
 
     # parse the circuit
     param_info, circ_calc = parse_circuit(circuit)
@@ -445,23 +330,46 @@ def calc_circuit(
     real_name = f"{output}->Re(Z)"
     imag_name = f"{output}->-Im(Z)"
 
-    values = {
-        real_name: impedance.real.tolist(),
-        imag_name: (-impedance.imag).tolist(),
+    retval = {
+        real_name: pint.Quantity(impedance.real, "Ω"),
+        imag_name: pint.Quantity(-impedance.imag, "Ω"),
     }
-    units = {
-        real_name: "Ω",
-        imag_name: "Ω",
-    }
-    return values, units
+
+    return retval
 
 
 @load_data("real", "imag")
 def lowest_real_impedance(
-    real: Union[np.ndarray, pint.Quantity],
-    imag: Union[np.ndarray, pint.Quantity],
+    real: pint.Quantity,
+    imag: pint.Quantity,
+    output: str = "Z",
     threshold: float = 0.0,
-) -> pint.Quantity:
+) -> dict[str, Union[int, str, pint.Quantity]]:
+    """
+    Parameters
+    ----------
+    real
+        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the real part of
+        the impedance data. The units of ``real`` and ``imag`` are assumed to match.
+
+    imag
+        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the negative of the
+        imaginary part of the impedance data. The units of ``real`` and ``imag`` are
+        assumed to match.
+
+    output
+        The name of the output column, defaults to "Z".
+
+    Returns
+    -------
+    (parameters, units): tuple[dict]
+        A tuple containing a dictionary with the impedance, and the corresponding units
+        of the real part of the impedance.
+    """
+
+    s = np.argsort(real)
+    real = real[s]
+    imag = imag[s]
     izeros = np.flatnonzero(imag < threshold)
     if izeros.size == 0:
         logger.warning(
@@ -469,8 +377,25 @@ def lowest_real_impedance(
             "with the smallest complex component."
         )
         iz = imag.argmin()
-        return real[iz]
-    else:
-        iz = izeros.pop()
-        return np.interp(0, imag[iz-1:iz], real[iz-1:iz])
+        z, u = real[iz].m, real[iz].u
 
+    elif izeros[0] == 0:
+        z, u = real[0].m, real[0].u
+    else:
+        iz = izeros[0]
+        if iz == real.size:
+            im = imag[iz - 1 :]
+            re = real[iz - 1 :]
+        else:
+            im = imag[iz - 1 : iz + 1]
+            re = real[iz - 1 : iz + 1]
+
+        imv, ime, imu = separate_data(im)
+        rev, ree, reu = separate_data(re)
+
+        zv = np.interp(0, imv, rev)
+        ze = np.interp(0, ime, ree)
+        z = ufloat(zv, ze)
+        u = reu
+
+    return {output: pint.Quantity(z, u)}

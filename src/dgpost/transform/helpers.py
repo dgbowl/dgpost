@@ -4,7 +4,10 @@ Module of helper functions for chemicals, elements, and unit handling.
 """
 import re
 import pint
+import functools
 import pandas as pd
+import numpy as np
+from uncertainties import unumpy as unp
 
 from collections import defaultdict
 from typing import Union
@@ -132,7 +135,132 @@ def save(df: pd.DataFrame, tag: str, col: pint.Quantity) -> None:
     if not col.dimensionless:
         if "units" not in df.attrs:
             df.attrs["units"] = {}
-        df.attrs["units"][tag] = str(col.u)
+        df.attrs["units"][tag] = f"{col.u:~P}"
 
 
 # pd.to_pickle(df, f"C:\\Users\\krpe\\postprocess\\tests\\{outpath}")
+
+
+def separate_data(
+    data: pint.Quantity, unit: str = None
+) -> tuple[np.ndarray, np.ndarray, str]:
+    """Separates the data into values, errors and unit
+
+    Parameters
+    ----------
+    data
+        pint.Quantity containing the data points which are either floats or ufloats
+
+    unit
+        When specified, converts the data to this unit
+
+    Returns
+    -------
+    (values, errors, old_unit)
+        Converted nominal values and errors, and the original unit of the data.
+    """
+    old_unit = data.u
+    if not data.dimensionless and unit is not None:
+        data = data.to(unit)
+    data = data.m
+    return unp.nominal_values(data), unp.std_devs(data), old_unit
+
+def load_data(*cols: str):
+    """
+    Decorator factory for data loading
+
+    Creates a decorator that will load the columns specified in ``cols``
+    and calls the wrapped function for each row entry.
+
+    The load_data decorator handles the following three cases:
+    
+    - decorated function launched directly with kwargs only -> the kwargs
+      that correspond to the cols listed in the decorator are converted
+      to pint.Quantity
+    
+    - decorated function launched using a mixture of args and kwargs -> the
+      args are assigned into kwargs using cols and converted to pint.Quantity
+    
+    - decorated function launched with pd.DataFrame and kwargs -> the cols
+      specify column names in the pd.DataFrame, which are pulled out and converted
+      to pint.Quantity
+
+    Parameters
+    ----------
+    cols
+        list of strings with the col names used to call the function
+    
+    Returns
+    -------
+    loading: Callable
+        A wrapped version of the decorated function
+
+    """
+
+    def loading(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # Function is called with a dataframe as the only positional argument and
+            # all other parameters in kwargs:
+            if len(args) > 0 and isinstance(args[0], pd.DataFrame):
+                if len(args) > 1:
+                    raise ValueError("Only the DataFrame should be given as argument")
+                
+                df = args[0]
+                # check if the dataframe has a units attribute else create it
+                if "units" not in df.attrs:
+                    df.attrs["units"] = {}
+
+                # each kwarg to get a data column specified in cols should be a string
+                # create a list for each data column that should get past to the function
+                raw_data = []
+                for col in cols:
+                    if isinstance(col, str):
+                        raw_data.append(pQ(df, kwargs.pop(col)))
+                    else:
+                        raise ValueError(f"Provided value for {col} is not a string")
+
+                # transpose the list of pint.Quantity and iterate over it
+                # so that we iterate over each timestep
+                for index, row in enumerate(zip(*raw_data)):
+                    # create kwargs for each data col
+                    data = {col: r for col, r in zip(cols, row)}
+
+                    # call the function for each row in the data
+                    # the function should return a dict with keys that are
+                    # the names of the target columns and values that are
+                    # Union[pint.Quantity, int, str]
+                    retvals = func(**data, **kwargs)
+                    for name, qty in retvals.items():
+                        # check if the column already exists in the dataframe, 
+                        # if not create empty column
+                        if name not in df.columns:
+                            df[name] = ""
+                        # fill the column and units attribute with the given values
+                        if isinstance(qty, pint.Quantity):
+                            df[name].iloc[index] = qty.m
+                            df.attrs["units"][name] = f"{qty.u:~P}"
+                        else:
+                            df[name].iloc[index] = qty
+            
+            else:
+                # Merge args into kwargs using cols
+                if len(cols) == len(args):
+                    for col, arg in zip(cols, args):
+                        kwargs[col] = arg
+                
+                # Validate that all cols are pint.Quantity
+                for k in cols:
+                    v = kwargs[k]
+                    if isinstance(v, pint.Quantity):
+                        continue
+                    elif isinstance(v, np.ndarray):
+                        kwargs[k] = pint.Quantity(v)
+                    else:
+                        raise ValueError(
+                            f"The provided argument '{k}' is neither a pint.Quantity "
+                            f"nor an np.ndarray: '{type(v)}'."
+                        )   
+                return func(**kwargs)
+        return wrapper
+    return loading
