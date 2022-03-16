@@ -454,3 +454,23 @@ def calc_circuit(
         imag_name: "Ω",
     }
     return values, units
+
+
+@load_data("real", "imag")
+def lowest_real_impedance(
+    real: Union[np.ndarray, pint.Quantity],
+    imag: Union[np.ndarray, pint.Quantity],
+    threshold: float = 0.0,
+) -> pint.Quantity:
+    izeros = np.flatnonzero(imag < threshold)
+    if izeros.size == 0:
+        logger.warning(
+            "No real impedance found. Returning real part of impedance "
+            "with the smallest complex component."
+        )
+        iz = imag.argmin()
+        return real[iz]
+    else:
+        iz = izeros.pop()
+        return np.interp(0, imag[iz-1:iz], real[iz-1:iz])
+
