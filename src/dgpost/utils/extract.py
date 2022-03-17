@@ -91,6 +91,7 @@ import pandas as pd
 import uncertainties as uc
 from uncertainties import unumpy as unp
 from uncertainties.core import str_to_number_with_uncert as tuple_fromstr
+from typing import Union
 
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:
@@ -160,13 +161,19 @@ def _get_key(datagram: dict, steps: list[int], keyspec: str) -> tuple:
     return _get_key_recurse(data, keyspec)
 
 
-def _get_ts(datagram: dict, at: dict) -> np.ndarray:
-    if "timestamps" in at:
+def _get_ts(obj: Union[dict, pd.DataFrame], at: Union[dict, None]) -> np.ndarray:
+    if at is not None and "timestamps" in at:
         return np.array(at["timestamps"])
-    else:
-        steps = _get_steps(datagram, at)
-        _, ts = _get_key(datagram, steps, "uts")
+    elif isinstance(obj, dict):
+        steps = _get_steps(obj, at)
+        _, ts = _get_key(obj, steps, "uts")
         return np.ravel(ts)
+    elif isinstance(obj, pd.DataFrame):
+        return np.array(obj.index)
+    else:
+        raise ValueError(
+            "Object passed to '_get_ts' is neither a datagram nor pd.DataFrame"
+        )
 
 
 def _get_constant(spec, ts):
@@ -185,7 +192,21 @@ def _get_constant(spec, ts):
     return colnames, colvals, colunits
 
 
-def _get_direct(spec, datagram, at):
+def _get_direct_df(spec, df):
+    colvals = []
+    colnames = []
+    colunits = []
+    for el in spec:
+        assert el["key"] in df.columns
+        colnames.append(el["as"])
+        colvals.append(df[el["key"]])
+        if el["key"] in df.attrs["units"]:
+            colunits.append(df.attrs["units"][el["key"]])
+        else:
+            colunits.append("")
+
+
+def _get_direct_dg(spec, datagram, at):
     colvals = []
     colnames = []
     colunits = []
@@ -218,14 +239,21 @@ def _get_direct(spec, datagram, at):
     return colnames, colvals, colunits
 
 
-def _get_interpolated(spec, datagram, ts):
+def _get_direct(spec, obj, at):
+    if isinstance(obj, dict):
+        return _get_direct_dg(spec, obj, at)
+    elif isinstance(obj, pd.DataFrame):
+        return _get_direct_df(spec, obj)
+
+
+def _get_interpolated(spec, datagram, at, ts):
     colvals = []
     colnames = []
     colunits = []
     for el in spec:
-        _steps = _get_steps(datagram, el["keyat"])
+        _steps = _get_steps(datagram, at)
         keys, vals = _get_key(datagram, _steps, el["key"])
-        _ts = _get_ts(datagram, el["keyat"])
+        _ts = _get_ts(datagram, at)
         for kk, vv in zip(keys, vals):
             if kk is None:
                 colnames.append(el["as"])
@@ -265,7 +293,9 @@ def _get_interpolated(spec, datagram, ts):
     return colnames, colvals, colunits
 
 
-def extract(datagram: dict, spec: dict) -> pd.DataFrame:
+def extract(
+    obj: Union[dict, pd.DataFrame, None], spec: dict, index: list = None
+) -> pd.DataFrame:
     """
     Data extracting function.
 
@@ -275,8 +305,8 @@ def extract(datagram: dict, spec: dict) -> pd.DataFrame:
 
     Parameters
     ----------
-    datagram
-        Loaded datagram in :class:`dict` format.
+    object
+        The loaded datagram in :class:`dict` format or a table as :class:`pd.Dataframe`.
 
     spec
         The ``extract`` component of the job specification.
@@ -287,33 +317,27 @@ def extract(datagram: dict, spec: dict) -> pd.DataFrame:
         The requested tabulated data.
 
     """
-    at = spec.pop("at")
-    ts = _get_ts(datagram, at)
-    colnames = []
-    colvals = []
-    colunits = []
+    cns = cvs = cus = []
+
+    if index is None and obj is None:
+        raise RuntimeError("Cannot deduce index.")
+    elif index is None:
+        ts = _get_ts(obj, spec.get("at", None))
+    else:
+        ts = index
+
     if "constant" in spec.keys():
         cns, cvs, cus = _get_constant(spec.pop("constant"), ts)
-        colnames += cns
-        colvals += cvs
-        colunits += cus
-    if "direct" in spec.keys():
-        assert "timestamps" not in at, (
-            "extract: cannot do a 'direct' extraction "
-            "when 'at' contains arbitrary 'timestamps'"
+    elif index is None and "columns" in spec:
+        cns, cvs, cus = _get_direct(spec.pop("columns"), obj, spec.pop("at", None))
+    elif "columns" in spec:
+        cns, cvs, cus = _get_interpolated(
+            spec.pop("columns"), obj, spec.pop("at", None), ts
         )
-        cns, cvs, cus = _get_direct(spec.pop("direct"), datagram, at)
-        colnames += cns
-        colvals += cvs
-        colunits += cus
-    if "interpolated" in spec.keys():
-        cns, cvs, cus = _get_interpolated(spec.pop("interpolated"), datagram, ts)
-        colnames += cns
-        colvals += cvs
-        colunits += cus
+
     df = pd.DataFrame(index=ts)
     df.attrs["units"] = {}
-    for name, vals, unit in zip(colnames, colvals, colunits):
+    for name, vals, unit in zip(cns, cvs, cus):
         df[name] = vals
         df.attrs["units"][name] = unit
     return df

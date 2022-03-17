@@ -103,7 +103,7 @@ def test_pkl_fit_circuit(filepath, fit_info, expected, datadir):
                 "filepath": "peis.single.data.dg.json",
                 "spec": {
                     "at": {"index": 0},
-                    "direct": [
+                    "columns": [
                         {"key": "raw->traces->PEIS->Re(Z)", "as": "Re(Z)"},
                         {"key": "raw->traces->PEIS->-Im(Z)", "as": "-Im(Z)"},
                         {"key": "raw->traces->PEIS->freq", "as": "freq"},
@@ -141,7 +141,7 @@ def test_pkl_fit_circuit(filepath, fit_info, expected, datadir):
                 "filepath": "peis.multiple.data.dg.json",
                 "spec": {
                     "at": {"index": 0},
-                    "direct": [
+                    "columns": [
                         {"key": "raw->traces->PEIS->Re(Z)", "as": "Re(Z)"},
                         {"key": "raw->traces->PEIS->-Im(Z)", "as": "-Im(Z)"},
                         {"key": "raw->traces->PEIS->freq", "as": "freq"},

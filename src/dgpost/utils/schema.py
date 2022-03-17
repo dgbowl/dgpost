@@ -31,18 +31,16 @@ at = sy.Map(
 
 constant = sy.Map({"value": sy.Any(), "as": sy.Str(), sy.Optional("units"): sy.Str()})
 
-direct = sy.Map({"key": sy.Str(), "as": sy.Str()})
+column = sy.Map({"key": sy.Str(), "as": sy.Str()})
 
-interpolated = sy.Map({"key": sy.Str(), "as": sy.Str(), "keyat": at})
 
 extract = sy.Map(
     {
-        "as": sy.Str(),
-        "from": sy.Str(),
-        "at": at,
+        "into": sy.Str(),
+        sy.Optional("from", default=None): sy.Str(),
+        sy.Optional("at", default=None): at,
         sy.Optional("constant"): sy.Seq(constant),
-        sy.Optional("direct"): sy.Seq(direct),
-        sy.Optional("interpolated"): sy.Seq(interpolated),
+        sy.Optional("columns"): sy.Seq(column),
     }
 )
 

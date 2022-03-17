@@ -22,7 +22,7 @@ def test_valid_datagram(datadir):
             "normalized.dg.json",
             {
                 "at": {"index": 0},
-                "direct": [
+                "columns": [
                     {"key": "raw->T_f", "as": "rawT"},
                     {"key": "derived->T", "as": "derT"},
                 ],
@@ -33,7 +33,7 @@ def test_valid_datagram(datadir):
             "normalized.dg.json",
             {
                 "at": {"step": "a"},
-                "direct": [
+                "columns": [
                     {"key": "raw->T_f", "as": "rawT"},
                     {"key": "derived->T", "as": "derT"},
                 ],
@@ -44,7 +44,7 @@ def test_valid_datagram(datadir):
             "normalized.dg.json",
             {
                 "at": {"indices": [1, 2, 3]},
-                "direct": [{"key": "derived->xout->O2", "as": "O2"}],
+                "columns": [{"key": "derived->xout->O2", "as": "O2"}],
             },
             "direct.multiple.pkl",
         ),
@@ -52,7 +52,7 @@ def test_valid_datagram(datadir):
             "normalized.dg.json",
             {
                 "at": {"steps": ["b1", "b2", "b3"]},
-                "direct": [{"key": "derived->xout->O2", "as": "O2"}],
+                "columns": [{"key": "derived->xout->O2", "as": "O2"}],
             },
             "direct.multiple.pkl",
         ),
@@ -60,7 +60,7 @@ def test_valid_datagram(datadir):
             "normalized.dg.json",
             {
                 "at": {"indices": [1, 2, 3]},
-                "direct": [{"key": "derived->xout->*", "as": "xout"}],
+                "columns": [{"key": "derived->xout->*", "as": "xout"}],
             },
             "direct.starred.pkl",
         ),
@@ -68,7 +68,7 @@ def test_valid_datagram(datadir):
             "sparse.dg.json",
             {
                 "at": {"indices": [1, 2, 3]},
-                "direct": [
+                "columns": [
                     {"key": "derived->xout->propane", "as": "propane"},
                     {"key": "derived->xout->propylene", "as": "propylene"},
                 ],
@@ -79,7 +79,7 @@ def test_valid_datagram(datadir):
             "normalized.dg.json",
             {
                 "at": {"step": "c"},
-                "direct": [
+                "columns": [
                     {"key": "raw->traces->FID->*", "as": "traces->FID"},
                     {"key": "raw->traces->TCD->*", "as": "traces->TCD"},
                 ],
@@ -90,44 +90,11 @@ def test_valid_datagram(datadir):
             "normalized.dg.json",
             {
                 "at": {"step": "c"},
-                "direct": [{"key": "raw->traces->*", "as": "traces"}],
+                "columns": [{"key": "raw->traces->*", "as": "traces"}],
             },
             "direct.traces.pkl",
         ),
-        (  # ts8 - interpolate explicit variable on one step
-            "normalized.dg.json",
-            {
-                "at": {"step": "b1"},
-                "direct": [{"key": "derived->xout->O2", "as": "xout->O2"}],
-                "interpolated": [
-                    {"key": "derived->xin->O2", "as": "xin->O2", "keyat": {"step": 0}}
-                ],
-            },
-            "interpolated.single.pkl",
-        ),
-        (  # ts9 - interpolate explicit variable on multiple steps
-            "normalized.dg.json",
-            {
-                "at": {"indices": [1, 2, 3]},
-                "direct": [{"key": "derived->xout->O2", "as": "xout->O2"}],
-                "interpolated": [
-                    {"key": "derived->xin->O2", "as": "xin->O2", "keyat": {"step": "a"}}
-                ],
-            },
-            "interpolated.multiple.pkl",
-        ),
-        (  # ts10 - interpolate a dict using * on multiple steps
-            "normalized.dg.json",
-            {
-                "at": {"indices": [1, 2, 3]},
-                "direct": [{"key": "derived->xout->*", "as": "xout"}],
-                "interpolated": [
-                    {"key": "derived->xin->*", "as": "xin", "keyat": {"step": "a"}}
-                ],
-            },
-            "interpolated.starred.pkl",
-        ),
-        (  # ts11 - constant with float, str(ufloat) values
+        (  # ts8 - constant with float, str(ufloat) values
             "normalized.dg.json",
             {
                 "at": {"indices": [1, 2, 3]},
@@ -139,26 +106,93 @@ def test_valid_datagram(datadir):
             },
             "constant.multiple.pkl",
         ),
-        (  # ts12 - constant with float, str(ufloat) values
-            "normalized.dg.json",
-            {
-                "at": {"timestamps": [1575360000.0 + i * 200.0 for i in range(10)]},
-                "constant": [
-                    {"as": "volume", "value": "5.546(0)", "units": "l"},
-                ],
-                "interpolated": [
-                    {"key": "derived->xin->O2", "as": "xin->O2", "keyat": {"step": "a"}}
-                ],
-            },
-            "interpolated.timestamps.pkl",
-        ),
     ],
 )
-def test_extract(inpath, spec, outpath, datadir):
+def test_extract_single(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     with open(inpath, "r") as infile:
         dg = json.load(infile)
     df = dgpost.utils.extract(dg, spec)
+    ref = pd.read_pickle(outpath)
+    pd.testing.assert_frame_equal(ref, df, check_like=True)
+    assert ref.attrs == df.attrs
+
+
+@pytest.mark.parametrize(
+    "inpath, spec, outpath",
+    [
+        (  # ts0 - interpolate explicit variable on one step
+            "normalized.dg.json",
+            [
+                {
+                    "at": {"step": "b1"},
+                    "columns": [{"key": "derived->xout->O2", "as": "xout->O2"}],
+                },
+                {
+                    "at": {"step": 0},
+                    "columns": [{"key": "derived->xin->O2", "as": "xin->O2"}],
+                },
+            ],
+            "interpolated.single.pkl",
+        ),
+        (  # ts1 - interpolate explicit variable on multiple steps
+            "normalized.dg.json",
+            [
+                {
+                    "at": {"indices": [1, 2, 3]},
+                    "columns": [{"key": "derived->xout->O2", "as": "xout->O2"}],
+                },
+                {
+                    "at": {"step": "a"},
+                    "columns": [{"key": "derived->xin->O2", "as": "xin->O2"}],
+                },
+            ],
+            "interpolated.multiple.pkl",
+        ),
+        (  # ts2 - interpolate a dict using * on multiple steps
+            "normalized.dg.json",
+            [
+                {
+                    "at": {"indices": [1, 2, 3]},
+                    "columns": [{"key": "derived->xout->*", "as": "xout"}],
+                },
+                {
+                    "at": {"step": "a"},
+                    "columns": [{"key": "derived->xin->*", "as": "xin"}],
+                },
+            ],
+            "interpolated.starred.pkl",
+        ),
+        (  # ts12 - constant with float, str(ufloat) values
+            "normalized.dg.json",
+            [
+                {
+                    "at": {"timestamps": [1575360000.0 + i * 200.0 for i in range(10)]},
+                    "constant": [{"as": "volume", "value": "5.546(0)", "units": "l"}],
+                },
+                {
+                    "at": {"step": "a"},
+                    "columns": [{"key": "derived->xin->O2", "as": "xin->O2"}],
+                },
+            ],
+            "interpolated.timestamps.pkl",
+        ),
+    ],
+)
+def test_extract_multiple(inpath, spec, outpath, datadir):
+    os.chdir(datadir)
+    with open(inpath, "r") as infile:
+        dg = json.load(infile)
+    for si in range(len(spec)):
+        if si == 0:
+            ret = dgpost.utils.extract(dg, spec[si])
+            df = ret
+        else:
+            ret = dgpost.utils.extract(dg, spec[si], ret.index)
+            temp = pd.concat([df, ret], axis=1)
+            temp.attrs = df.attrs
+            temp.attrs["units"].update(ret.attrs["units"])
+            df = temp
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
     assert ref.attrs == df.attrs

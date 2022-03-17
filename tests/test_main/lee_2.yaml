@@ -4,20 +4,20 @@ load:
   - as: sparse
     path: sparse.dg.json
 extract:
-  - as: df
+  - into: df
     from: norm
     at:
       step: "a"
-    direct:
+    columns:
       - key: raw->T_f
         as: rawT
       - key: derived->T
         as: derT
-  - as: df
+  - into: df
     from: sparse
     at:
       steps: b1, b2, b3
-    direct:
+    columns:
       - key: derived->xout->*
         as: xout
   

@@ -1,9 +1,9 @@
 extract:
-  - as: table 1
+  - into: table 1
     from: sparse
     at:
       step: "a"
-    direct:
+    columns:
       - key: raw->T_f
         as: rawT
       - key: derived->T

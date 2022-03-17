@@ -39,20 +39,32 @@ def run(path: str) -> tuple[dict, dict]:
 
     e = spec.pop("extract")
     for el in e:
-        saveas = el.pop("as")
-        newdf = extract(datagrams[el.pop("from")], el)
-        if saveas in tables:
-            if tables[saveas].index.equals(newdf.index):
-                logging.debug(
-                    f"run: Concatenating columns into table '{saveas}', "
-                    f"both tables have the same index."
-                )
+        saveas = el.pop("into")
+        if "from" in el and el["from"] is not None:
+            objname = el.pop("from")
+            if objname in datagrams:
+                obj = datagrams[objname]
+            elif objname in tables:
+                obj = tables[objname]
             else:
-                logging.warning(
-                    f"run: Concatenating columns into table '{saveas}', "
-                    f"the new table has a different index!"
+                raise RuntimeError(
+                    f"Object name '{objname}' is neither a valid datagram nor table."
                 )
-            tables[saveas] = pd.concat([tables[saveas], newdf], axis=1)
+        else:
+            obj = None
+
+        if saveas not in tables:
+            index = None
+        else:
+            index = tables[saveas].index.tolist()
+
+        newdf = extract(obj, el, index)
+
+        if saveas in tables:
+            temp = pd.concat([tables[saveas], newdf], axis=1)
+            temp.attrs = tables[saveas].attrs
+            temp.attrs["units"].update(newdf.attrs["units"])
+            tables[saveas] = temp
         else:
             tables[saveas] = newdf
 

@@ -3,11 +3,11 @@ load:
     path: sparse.dg.json
     check: True
 extract:
-  - as: df
+  - into: df
     from: sparse
     at:
       step: "a"
-    direct:
+    columns:
       - key: raw->T_f
         as: rawT
 save:

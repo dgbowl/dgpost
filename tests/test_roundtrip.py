@@ -18,7 +18,7 @@ from copy import deepcopy
     [
         (  # ts0 - load with check = True
             {"path": "sparse.dg.json"},
-            {"at": {"step": "a"}, "direct": [{"key": "raw->T_f", "as": "T"}]},
+            {"at": {"step": "a"}, "columns": [{"key": "raw->T_f", "as": "T"}]},
         )
     ],
 )

@@ -2,18 +2,20 @@ load:
   - as: dg
     path: normalized.dg.json
 extract:
-  - as: df
+  - into: df
     from: dg
     at:
       steps: b1, b2, b3
-    direct:
+    columns:
       - key: derived->xout->*
         as: xout
-    interpolated:
+  - into: df
+    from: dg
+    at:
+      step: a
+    columns:
       - key: derived->xin->*
         as: xin
-        keyat:
-          step: a
 transform:
   - table: df
     with: catalysis.selectivity
