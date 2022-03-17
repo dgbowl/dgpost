@@ -1,5 +1,4 @@
 import strictyaml as sy
-import os
 
 load = sy.Map(
     {

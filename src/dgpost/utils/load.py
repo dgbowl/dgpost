@@ -10,6 +10,7 @@ in order to load the datagram json file:
     - as:      !!str          # internal datagram or table name
       path:    !!str          # path to the datagram file
       check:   True           # whether the datagram is to be checked using ``yadg``
+      type:    !!str          # one of "datagram" or "table"
 
 .. note::
     The key ``as`` are not processed by :func:`load`, they should be used by its caller 
@@ -39,7 +40,9 @@ def parse_ufloat(d: dict) -> dict:
 
 
 def load(
-    path: str, check: bool = True, type: str = "datagram"
+    path: str, 
+    check: bool = True, 
+    type: str = "datagram",
 ) -> Union[dict, pd.DataFrame]:
     """
     Datagram and :class:`pd.DataFrame` loading function.

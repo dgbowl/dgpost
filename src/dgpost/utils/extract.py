@@ -7,8 +7,8 @@ in order to extract the required data from the supplied datagram.
 .. code-block:: yaml
 
   extract:
-    - from:      !!str          # datagram name from "load.as" 
-      as:        !!str          # name of the extracted DataFrame
+    - from:      !!str          # datagram or pd.DataFrame name from "load.as"
+      into:        !!str        # name of the target pd.DataFrame
       at:                       # specifies timestamps to form index of the DataFrame
         step:       !!str
         index:      !!int
@@ -18,32 +18,22 @@ in order to extract the required data from the supplied datagram.
       constant:                 # add a constant 'value' at 'at', save as 'as'
         - value: !!str
           as:    !!str
-      direct:                   # extract 'key' from 'at', save as 'as'
+      columns:                  # extract 'key' from 'at', save as 'as'
         - key:   !!str
           as:    !!str
-      interpolated:             # interpolate 'key' along 'keyat' to 'at', save as 'as'
-        - key:   !!str
-          keyat:
-            step:        !!str
-            index:       !!int
-            steps:      [!!str, ...]
-            indices:    [!!int, ...]
-            timestamps: [!!float, ...]
-          as:    !!str
-
 
 .. note::
-    The keys ``from`` and ``as`` are not processed by :func:`extract`, they should be 
-    used by its caller to supply the requested ``datagram`` and assign the returned 
+    The keys ``from`` and ``into`` are not processed by :func:`extract`, they should 
+    be used by its caller to supply the requested ``datagram`` and assign the returned 
     :class:`pd.DataFrame` into the correct variable.
 
 Handling of sparse data depends on the extraction format specified:
 
-  - for ``direct`` keys, if the value is not present at any of the timesteps specified
-    in ``at``, a :class:`NaN` is added instead
-  - for ``interpolated`` keys, if a value is missing at any of the timesteps specified
-    in ``keyat``, that timestep is masked and the interpolation is performed from 
-    neighbouring points
+  - for direct extraction, if the value is not present at any of the timesteps 
+    specified in ``at``, a :class:`NaN` is added instead
+  - for interpolation, if a value is missing at any of the timesteps specified
+    in ``at`` or in the :class:`pd.DataFrame` index, that timestep is masked and 
+    the interpolation is performed from neighbouring points
 
 Interpolation of :class:`uc.ufloat` is performed separately for the nominal and error
 component.
@@ -62,26 +52,27 @@ YAML such as the following example:
       - as: sparse
         path: sparse.dg.json
     extract:
-      - as: df
+      - into: df
         from: norm
         at:
-        step: "a"
-        direct:
+            step: "a"
+        columns:
           - key: raw->T_f
             as: rawT
-      - as: df
+      - into: df
         from: sparse
         at:
-        step: "a"
-        interpolated:
+            steps: b1, b2, b3
+        direct:
           - key: derived->xout->*
             as: xout
-            keyat:
-              steps: b1, b2, b3
 
-In this example, the concatenation of the two tables is straightforward, as the 
-indices of the tables (defined using `"step"`) are the same. If the indices differ,
-the concatenation raises a warning, and the resulting table will contain `NaNs`.
+In this example, the :class:`pd.DataFrame` is created with an index corresponding to
+the timestamps of ``step: "a"`` of the datagram. The values specified using ``columns``
+in the first section are entered directly, after renaming the column names.
+
+The data pulled out of the datagram in the second step using the prescription in ``at``
+are interpolated onto the index of the existing :class:`pd.DataFrame`.
 
 .. code-author: Peter Kraus <peter.kraus@empa.ch>
 """
@@ -257,90 +248,46 @@ def _get_direct(spec, obj, at):
         return _get_direct_df(spec, obj)
 
 
-def _get_interpolated_df(spec, df, ts):
-    colnames, colvals, colunits = _get_direct_df(spec, df)
+def _get_interp(spec, obj, at, ts):
+    if isinstance(obj, dict):
+        index = _get_ts(obj, at)
+        colnames, colvals, colunits = _get_direct_dg(spec, obj, at)
+    elif isinstance(obj, pd.DataFrame):
+        index = obj.index
+        colnames, colvals, colunits = _get_direct_df(spec, obj)
     colint = []
     for vals in colvals:
         noms = unp.nominal_values(vals)
         sigs = unp.std_devs(vals)
         mask = ~np.isnan(noms) & ~np.isnan(sigs)
-        inoms = np.interp(ts, df.index[mask], noms[mask])
-        isigs = np.interp(ts, df.index[mask], sigs[mask])
+        inoms = np.interp(ts, index[mask], noms[mask])
+        isigs = np.interp(ts, index[mask], sigs[mask])
         colint.append(unp.uarray(inoms, isigs))
     return colnames, colint, colunits
 
 
-def _get_interpolated_dg(spec, datagram, at, ts):
-    colvals = []
-    colnames = []
-    colunits = []
-    for el in spec:
-        _steps = _get_steps(datagram, at)
-        keys, vals = _get_key(datagram, _steps, el["key"])
-        _ts = _get_ts(datagram, at)
-        for kk, vv in zip(keys, vals):
-            if kk is None:
-                colnames.append(el["as"])
-            else:
-                colnames.append(f"{el['as']}->{kk}")
-            unoms = []
-            usigs = []
-            masks = []
-            units = None
-            for i in vv:
-                if i is None:
-                    unoms.append(float("NaN"))
-                    usigs.append(float("NaN"))
-                    masks.append(False)
-                    continue
-                elif isinstance(i, dict) and isinstance(i["n"], float):
-                    unoms.append(i["n"])
-                    usigs.append(i["s"])
-                    masks.append(True)
-                elif isinstance(i, dict) and isinstance(i["n"], list):
-                    raise ValueError(
-                        "Interpolation of array variables is not yet supported"
-                    )
-                else:
-                    raise ValueError
-                if units is None:
-                    units = i["u"]
-                else:
-                    assert i["u"] == units
-            mts = np.array(_ts)
-            mun = np.array(unoms)
-            mus = np.array(usigs)
-            inoms = np.interp(ts, mts[masks], mun[masks])
-            isigs = np.interp(ts, mts[masks], mus[masks])
-            colvals.append(unp.uarray(inoms, isigs))
-            colunits.append("" if units in [None, "-"] else units)
-    return colnames, colvals, colunits
-
-
-def _get_interp(spec, obj, at, ts):
-    if isinstance(obj, dict):
-        return _get_interpolated_dg(spec, obj, at, ts)
-    elif isinstance(obj, pd.DataFrame):
-        return _get_interpolated_df(spec, obj, ts)
-
-
 def extract(
-    obj: Union[dict, pd.DataFrame, None], spec: dict, index: list = None
+    obj: Union[dict, pd.DataFrame, None], 
+    spec: dict, 
+    index: list = None,
 ) -> pd.DataFrame:
     """
     Data extracting function.
 
-    Given a loaded ``datagram`` and extraction ``spec``, this routine creates, extracts,
-    or interpolates the specified columns into a single :class:`pd.DataFrame`, using the
-    extracted or specified timestamps.
+    Given a loaded ``datagram`` or a :class:`pd.DataFrame`, extraction ``spec``,
+    and an optional list of indices, this routine creates, extracts, or interpolates 
+    the specified columns into a single :class:`pd.DataFrame`.
 
     Parameters
     ----------
     object
-        The loaded datagram in :class:`dict` format or a table as :class:`pd.Dataframe`.
+        Either a datagram in :class:`dict` format or a table as :class:`pd.Dataframe`.
 
     spec
         The ``extract`` component of the job specification.
+    
+    index
+        Optional :class:`list` of timestamps to interpolate values onto.
 
     Returns
     -------
