@@ -162,9 +162,7 @@ def _get_key(datagram: dict, steps: list[int], keyspec: str) -> tuple:
 
 
 def _get_ts(obj: Union[dict, pd.DataFrame], at: Union[dict, None]) -> np.ndarray:
-    if at is not None and "timestamps" in at:
-        return np.array(at["timestamps"])
-    elif isinstance(obj, dict):
+    if isinstance(obj, dict):
         steps = _get_steps(obj, at)
         _, ts = _get_key(obj, steps, "uts")
         return np.ravel(ts)
@@ -197,13 +195,26 @@ def _get_direct_df(spec, df):
     colnames = []
     colunits = []
     for el in spec:
-        assert el["key"] in df.columns
-        colnames.append(el["as"])
-        colvals.append(df[el["key"]])
-        if el["key"] in df.attrs["units"]:
-            colunits.append(df.attrs["units"][el["key"]])
-        else:
-            colunits.append("")
+        if el["key"] in df.columns:
+            keys = [el["key"]]
+        elif el["key"].endswith("*"):
+            keys = []
+            for k in df.columns:
+                if k.startswith(el["key"][:-1]):
+                    keys.append(k)
+        for k in keys:
+
+            if k == el["key"]:
+                asname = el["as"]
+            else:
+                asname = el["as"] + "->" + k.split("->")[-1]
+            colnames.append(asname)
+            colvals.append(df[k])
+            if k in df.attrs["units"]:
+                colunits.append(df.attrs["units"][k])
+            else:
+                colunits.append("")
+    return colnames, colvals, colunits
 
 
 def _get_direct_dg(spec, datagram, at):
@@ -246,7 +257,20 @@ def _get_direct(spec, obj, at):
         return _get_direct_df(spec, obj)
 
 
-def _get_interpolated(spec, datagram, at, ts):
+def _get_interpolated_df(spec, df, ts):
+    colnames, colvals, colunits = _get_direct_df(spec, df)
+    colint = []
+    for vals in colvals:
+        noms = unp.nominal_values(vals)
+        sigs = unp.std_devs(vals)
+        mask = ~np.isnan(noms) & ~np.isnan(sigs)
+        inoms = np.interp(ts, df.index[mask], noms[mask])
+        isigs = np.interp(ts, df.index[mask], sigs[mask])
+        colint.append(unp.uarray(inoms, isigs))
+    return colnames, colint, colunits
+
+
+def _get_interpolated_dg(spec, datagram, at, ts):
     colvals = []
     colnames = []
     colunits = []
@@ -267,12 +291,12 @@ def _get_interpolated(spec, datagram, at, ts):
                 if i is None:
                     unoms.append(float("NaN"))
                     usigs.append(float("NaN"))
-                    masks.append(1)
+                    masks.append(False)
                     continue
                 elif isinstance(i, dict) and isinstance(i["n"], float):
                     unoms.append(i["n"])
                     usigs.append(i["s"])
-                    masks.append(0)
+                    masks.append(True)
                 elif isinstance(i, dict) and isinstance(i["n"], list):
                     raise ValueError(
                         "Interpolation of array variables is not yet supported"
@@ -283,14 +307,21 @@ def _get_interpolated(spec, datagram, at, ts):
                     units = i["u"]
                 else:
                     assert i["u"] == units
-            mts = np.ma.array(_ts, mask=masks)
-            mun = np.ma.array(unoms, mask=masks)
-            mus = np.ma.array(usigs, mask=masks)
-            inoms = np.interp(ts, mts[mts.mask == False], mun[mun.mask == False])
-            isigs = np.interp(ts, mts[mts.mask == False], mus[mus.mask == False])
+            mts = np.array(_ts)
+            mun = np.array(unoms)
+            mus = np.array(usigs)
+            inoms = np.interp(ts, mts[masks], mun[masks])
+            isigs = np.interp(ts, mts[masks], mus[masks])
             colvals.append(unp.uarray(inoms, isigs))
             colunits.append("" if units in [None, "-"] else units)
     return colnames, colvals, colunits
+
+
+def _get_interp(spec, obj, at, ts):
+    if isinstance(obj, dict):
+        return _get_interpolated_dg(spec, obj, at, ts)
+    elif isinstance(obj, pd.DataFrame):
+        return _get_interpolated_df(spec, obj, ts)
 
 
 def extract(
@@ -318,22 +349,25 @@ def extract(
 
     """
     cns = cvs = cus = []
-
-    if index is None and obj is None:
-        raise RuntimeError("Cannot deduce index.")
-    elif index is None:
-        ts = _get_ts(obj, spec.get("at", None))
-    else:
+    at = spec.get("at", None)
+    if at is not None and "timestamps" in at:
+        ts = np.array(at.pop("timestamps"))
+        interpolate = True
+    elif index is not None:
         ts = index
+        interpolate = True
+    elif obj is not None:
+        ts = _get_ts(obj, at)
+        interpolate = False
+    else:
+        raise RuntimeError("Cannot deduce timestamps.")
 
     if "constant" in spec.keys():
         cns, cvs, cus = _get_constant(spec.pop("constant"), ts)
-    elif index is None and "columns" in spec:
-        cns, cvs, cus = _get_direct(spec.pop("columns"), obj, spec.pop("at", None))
+    elif interpolate and "columns" in spec:
+        cns, cvs, cus = _get_interp(spec.pop("columns"), obj, spec.pop("at", None), ts)
     elif "columns" in spec:
-        cns, cvs, cus = _get_interpolated(
-            spec.pop("columns"), obj, spec.pop("at", None), ts
-        )
+        cns, cvs, cus = _get_direct(spec.pop("columns"), obj, spec.pop("at", None))
 
     df = pd.DataFrame(index=ts)
     df.attrs["units"] = {}

@@ -106,6 +106,17 @@ def test_valid_datagram(datadir):
             },
             "constant.multiple.pkl",
         ),
+        (  # ts9 - interpolate from datagram onto explicit timestamps
+            "normalized.dg.json",
+            {
+                "at": {
+                    "timestamps": [1575360000.0 + i * 200.0 for i in range(10)],
+                    "step": "a",
+                },
+                "columns": [{"key": "derived->xin->O2", "as": "xin->O2"}],
+            },
+            "interpolated.at.single.pkl",
+        ),
     ],
 )
 def test_extract_single(inpath, spec, outpath, datadir):
@@ -135,7 +146,7 @@ def test_extract_single(inpath, spec, outpath, datadir):
             ],
             "interpolated.single.pkl",
         ),
-        (  # ts1 - interpolate explicit variable on multiple steps
+        (  # ts1 - interpolate explicit variable onto multiple steps
             "normalized.dg.json",
             [
                 {
@@ -149,7 +160,7 @@ def test_extract_single(inpath, spec, outpath, datadir):
             ],
             "interpolated.multiple.pkl",
         ),
-        (  # ts2 - interpolate a dict using * on multiple steps
+        (  # ts2 - interpolate a dict using * onto multiple steps
             "normalized.dg.json",
             [
                 {
@@ -196,3 +207,47 @@ def test_extract_multiple(inpath, spec, outpath, datadir):
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
     assert ref.attrs == df.attrs
+
+
+@pytest.mark.parametrize(
+    "infile, spec, outfile",
+    [
+        (  # ts0 - extract single column
+            "ndot.units.ufloat.df.pkl",
+            {
+                "columns": [{"key": "nin->C3H8", "as": "C3H8"}],
+            },
+            "table.direct.named.pkl",
+        ),
+        (  # ts1 - extract starred columns
+            "ndot.units.ufloat.df.pkl",
+            {
+                "columns": [{"key": "nin->*", "as": "in"}],
+            },
+            "table.direct.starred.pkl",
+        ),
+        (  # ts2 - extract & interpolate on explicit timesteps
+            "ndot.units.ufloat.df.pkl",
+            {
+                "at": {"timestamps": [0.9, 1.1]},
+                "columns": [{"key": "nin->C3H8", "as": "C3H8"}],
+            },
+            "table.interpolated.named.pkl",
+        ),
+        (  # ts3 - extract & interpolate on explicit timesteps OOB
+            "ndot.units.ufloat.df.pkl",
+            {
+                "at": {"timestamps": [2, 2.5, 3.0]},
+                "columns": [{"key": "nin->*", "as": "in"}],
+            },
+            "table.interpolated.starred.pkl",
+        ),
+    ],
+)
+def test_extract_from_table(infile, spec, outfile, datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle(infile)
+    ret = dgpost.utils.extract(df, spec)
+    ref = pd.read_pickle(outfile)
+    pd.testing.assert_frame_equal(ret, ref, check_like=True)
+    assert ret.attrs == ref.attrs

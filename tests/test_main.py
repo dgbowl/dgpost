@@ -49,12 +49,24 @@ import dgpost
             "table 1",
             "les_2.pkl",
         ),
+        (  # ts7 - load, extract and interpolate directly
+            "lee_2a.yaml",
+            "df",
+            "lee_2.pkl",
+        ),
+        (  # ts8 - load, extract and interpolate via temp
+            "lee_2b.yaml",
+            "df",
+            "lee_2.pkl",
+        ),
     ],
 )
 def test_run(inpath, tname, outpath, datadir):
     os.chdir(datadir)
     dg, tab = dgpost.run(inpath)
+    print(tab)
     df = tab[tname]
+    df.to_pickle(f"C:\\Users\\krpe\\dgpost\\{outpath}")
     ref = pd.read_pickle(outpath)
     for col in df.columns:
         assert np.allclose(unp.nominal_values(ref[col]), unp.nominal_values(df[col]))

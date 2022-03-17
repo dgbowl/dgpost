@@ -25,7 +25,6 @@ from copy import deepcopy
 def test_roundtrip_direct(input, filetype, datadir):
     os.chdir(datadir)
     l, e = deepcopy(input)
-    print(l, e)
     outpath = l["path"] + "." + filetype
     dg = dgpost.utils.load(**l)
     df = dgpost.utils.extract(dg, spec=e)
@@ -34,10 +33,6 @@ def test_roundtrip_direct(input, filetype, datadir):
     assert os.path.exists(outpath)
     ret = dgpost.utils.load(**{"path": outpath, "type": "table"})
 
-    print(df.head())
-    print(ret.head())
-    print(df.index)
-    print(ret.index)
     pd.testing.assert_frame_equal(df, ret, check_like=True)
     assert df.attrs == ret.attrs
 
