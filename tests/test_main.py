@@ -64,9 +64,7 @@ import dgpost
 def test_run(inpath, tname, outpath, datadir):
     os.chdir(datadir)
     dg, tab = dgpost.run(inpath)
-    print(tab)
     df = tab[tname]
-    df.to_pickle(f"C:\\Users\\krpe\\dgpost\\{outpath}")
     ref = pd.read_pickle(outpath)
     for col in df.columns:
         assert np.allclose(unp.nominal_values(ref[col]), unp.nominal_values(df[col]))
