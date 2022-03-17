@@ -13,12 +13,16 @@ from dgpost.utils import transform
     [
         (  # ts0 - dataframe with floats
             "xinxout.float.df.pkl",
-            [{"feedstock": "C3H8"},],
+            [
+                {"feedstock": "C3H8"},
+            ],
             "Yp.float.pkl",
         ),
         (  # ts1 - dataframe with ufloats
             "xinxout.ufloat.df.pkl",
-            [{"feedstock": "propane", "element": "C"},],
+            [
+                {"feedstock": "propane", "element": "C"},
+            ],
             "Yp.ufloat.pkl",
         ),
     ],
@@ -38,7 +42,9 @@ def test_cat_yield_floats(inpath, spec, outpath, datadir):
     [
         (  # ts0 - dataframe with ufloats
             "xinxout.ufloat.df.pkl",
-            [{"feedstock": "propane"},],
+            [
+                {"feedstock": "propane"},
+            ],
             "Yp.ufloat.pkl",
         ),
     ],
@@ -56,7 +62,9 @@ def test_with_transform(inpath, spec, outpath, datadir):
     [
         (  # ts0 - dataframe with ufloats
             "catalysis.xlsx",
-            [{"feedstock": "propane", "element": "C"},],
+            [
+                {"feedstock": "propane", "element": "C"},
+            ],
             ["Yp_C->CO2", "Yp_C->CO", "Yp_C->C3H6"],
         ),
     ],

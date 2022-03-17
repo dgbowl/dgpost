@@ -220,7 +220,13 @@ def test_direct_fit_circuit(datadir):
 
     fit_info = {
         "circuit": "R0-p(R1,C1)-p(R2,C2)",
-        "initial_values": {"R0": 90, "R1": 240, "C1": 3e-8, "R2": 140, "C2": 3e-6,},
+        "initial_values": {
+            "R0": 90,
+            "R1": 240,
+            "C1": 3e-8,
+            "R2": 140,
+            "C2": 3e-6,
+        },
     }
 
     parameters, units = impedance.fit_circuit(real, imag, freq, **fit_info)
@@ -245,7 +251,13 @@ def test_calc_circuit(datadir):
     calc_info = [
         {
             "circuit": "R0-p(R1,C1)-p(R2,C2)",
-            "parameters": {"R0": 100, "R1": 250, "C1": 1e-8, "R2": 150, "C2": 1e-6,},
+            "parameters": {
+                "R0": 100,
+                "R1": 250,
+                "C1": 1e-8,
+                "R2": 150,
+                "C2": 1e-6,
+            },
             "output": "test",
             "freq": "freq",
         }

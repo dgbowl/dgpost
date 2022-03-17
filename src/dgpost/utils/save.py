@@ -59,7 +59,7 @@ def save(table: pd.DataFrame, path: str, type: str = None, sigma: bool = True) -
         return None
 
     # for excel and csv the unit gets added to the column names
-    
+
     units = table.attrs["units"]
     names = {}
 
