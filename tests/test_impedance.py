@@ -311,4 +311,4 @@ def test_lowest_real(filepath, inp_extr, inp_using, expected, datadir):
         dg = json.load(infile)
     df = extract(dg, inp_extr)
     transform(df, "impedance.lowest_real_impedance", using=inp_using)
-    np.testing.assert_allclose(expected, unp.nominal_values(df["Zmin"]))
+    np.testing.assert_allclose(expected, unp.nominal_values(df["min Re(Z)"]))

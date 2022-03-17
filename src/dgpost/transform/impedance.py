@@ -1,3 +1,20 @@
+"""
+Impedance-related transformations
+=================================
+
+This module contains functions relevant to Electrochemical Impedance Spectroscopy (EIS).
+
+The main functions in this module are two functions relevant for the fitting and 
+evaluation of equivalent circuits, :func:`fit_circuit` and :func:`calc_circuit`,
+respectively. The two functions expect frequency-resolved complex impedance data.
+
+For less rigorous analysis, the :func:`lowest_real_impedance` can be used, to
+find and/or interpolate the lowest real-valued point of the complex impedance.
+
+.. codeauthor:: Ueli Sauter
+.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
+
+"""
 import logging
 from typing import Union
 import numpy as np
@@ -5,12 +22,12 @@ import pint
 import uncertainties as uc
 
 from .circuit_utils.circuit_parser import parse_circuit, fit_routine
-from .helpers import separate_data, load_data
+from .helpers import separate_data, load_array_data
 
 logger = logging.getLogger(__name__)
 
 
-@load_data("real", "imag", "freq")
+@load_array_data("real", "imag", "freq")
 def fit_circuit(
     real: pint.Quantity,
     imag: pint.Quantity,
@@ -26,67 +43,71 @@ def fit_circuit(
     repeat: int = 1,
 ) -> dict[str, Union[int, str, pint.Quantity]]:
     """
-    Fitting function for equivalent circuits of electrochemical impedance spectroscopy (EIS) data.
+    Fits an equivalent circuit to the frequency-resolved EIS data.
 
-    For the fitting an equivalent circuit is needed, defined as a string. The circuit may be composed of multiple elements.
-    To combine elements in series a dash (-) is used. Elements in parallel are wrapped by p( , ).
-    An element is defined by an identifier (usually letters) followed by a digit.
-    Already implemented elements are located in :class:`circuit_components<circuit_utils.circuit_components>`:
+    For the fitting an equivalent circuit is needed, defined as a :class:`str`. 
+    The circuit may be composed of multiple circuit elements. To combine elements 
+    in a series a dash (``-``) is used. Elements in parallel are wrapped by 
+    ``p( , )``. An element is defined by an identifier (usually letters) followed 
+    by a digit. Already implemented elements are located in the 
+    :mod:`.circuit_utils.circuit_components` module:
 
     +------------------------+--------+------------+---------------+--------------+
     | Name                   | Symbol | Parameters | Bounds        | Units        |
+    +========================+========+============+===============+==============+
+    | Resistor               | ``R``  | ``R``      | (1e-6, 1e6)   | Ω            |
     +------------------------+--------+------------+---------------+--------------+
-    | Resistor               | R      | R          | (1e-6, 1e6)   | Ohm          |
+    | Capacitance            | ``C``  | ``C``      | (1e-20, 1)    | F            |
     +------------------------+--------+------------+---------------+--------------+
-    | Capacitance            | C      | C          | (1e-20, 1)    | Farad        |
-    +------------------------+--------+------------+---------------+--------------+
-    | Constant Phase Element | CPE    | CPE_Q      | (1e-20, 1)    | Ohm^-1 s^a   |
+    | Constant Phase Element | ``CPE``| ``CPE_Q``  | (1e-20, 1)    | Ω⁻¹sᵃ        |
     |                        |        +------------+---------------+--------------+
-    |                        |        | CPE_a      | (0, 1)        |              |
+    |                        |        | ``CPE_a``  | (0, 1)        |              |
     +------------------------+--------+------------+---------------+--------------+
-    | Warburg element        | W      | W          | (0, 1e10)     | Ohm^-1 s^0.5 |
+    | Warburg element        | ``W``  | ``W``      | (0, 1e10)     | Ω⁻¹s¹ᐟ²      |
     +------------------------+--------+------------+---------------+--------------+
-    | Warburg short element  | Ws     | Ws_R       | (0, 1e10)     | Ohm          |
+    | Warburg short element  | ``Ws`` | ``Ws_R``   | (0, 1e10)     | Ω            |
     |                        |        +------------+---------------+--------------+
-    |                        |        | Ws_T       | (1e-10, 1e10) | s            |
+    |                        |        | ``Ws_T``   | (1e-10, 1e10) | s            |
     +------------------------+--------+------------+---------------+--------------+
-    | Warburg open element   | Wo     | Wo_R       | (0, 1e10)     | Ohm          |
+    | Warburg open element   | ``Wo`` | ``Wo_R``   | (0, 1e10)     | Ω            |
     |                        |        +------------+---------------+--------------+
-    |                        |        | Wo_T       | (1e-10, 1e10) | s            |
+    |                        |        | ``Wo_T``   | (1e-10, 1e10) | s            |
     +------------------------+--------+------------+---------------+--------------+
 
-    Additionally an initial guess for the fitting parameters is needed.
-    The initial guess is given as a dictionary where each key is the parameters name and
-    the corresponding value is the guessed value for the circuit.
+    Additionally an initial guess for the fitting parameters is needed. The initial 
+    guess is given as a :class:`dict` where each key is the parameter name and the 
+    corresponding value is the initial value for the circuit.
 
     The bounds of each parameter can be customized by the ``fit_bounds`` parameter.
-    This parameter is a dictionary, where each key is the parameter name and the value consists of a tuple for the lower and upper bound (lb, ub).
+    This parameter is a :class:`dict`, where each key is the parameter name and the
+    value consists of a :class:`tuple` for the lower and upper bound (lb, ub).
 
-    To hold a parameter constant, add the name of the parameter to a list and pass it as ``fit_constants``
+    To hold a parameter constant, add the name of the parameter to a :class:`list` 
+    and pass it as ``fit_constants``
 
     Parameters
     ----------
     real
-        pint.Quantity containing the real part of the impedance data
-        The unit of the provided data should be or gets converted to 'Ω'
+        A :class:`pint.Quantity` object containing the real part of the impedance data,
+        :math:`\\text{Re}(Z)`. The unit of the provided gets converted to 'Ω'.
 
     imag
-        pint.Quantity containing the negative imaginary part of the impedance data
-        The unit of the provided data should be or gets converted to 'Ω'
+        A :class:`pint.Quantity` object containing the imaginary part of the impedance 
+        data, :math:`-\\text{Im}(Z)`. The unit of the provided gets converted to 'Ω'.
 
     freq
-        pint.Quantitycontaining the frequency of the impedance data
-        The unit of the provided data should be or gets converted to 'Hz'
+        A :class:`pint.Quantity` object containing the frequency :math:`f` of the 
+        impedance data. The unit of the provided data should gets converted to 'Hz'.
 
     circuit
-        Equivalent circuit for the fit
+        A :class:`str` description of the equivalent circuit.
 
     initial_values
-        dictionary with initial values
+        A :class:`dict` with the initial (guess) values.
         Structure: {"param name": value, ... }
 
     output
-        the name of the output
+        A :class:`str` prefix 
 
     fit_bounds
         Custom bounds for a parameter if default bounds are not wanted
@@ -201,7 +222,7 @@ def fit_circuit(
     return retval
 
 
-@load_data("freq")
+@load_array_data("freq")
 def calc_circuit(
     freq: pint.Quantity,
     circuit: str,
@@ -209,30 +230,33 @@ def calc_circuit(
     output: str = "calc_circuit",
 ) -> tuple[dict[str, float], dict[str, str]]:
     """
-    Calculate and adds the impedance as columns to the given dataframe for the given parameters, frequency and circuit.
+    Calculates the complex impedance :math:`\\text{Re}(Z)` and :math:`-\\text{Im}(Z)`
+    of the prescribed equivalent circuit as a function of frequency :math:`f`.
 
     Parameters
     ----------
+    freq
+        A :class:`pint.Quantity` containing the frequencies :math:`f` at which the 
+        equivalent circuit is to be evaluated. The provided data should be in "Hz".
+
     circuit
-        string describing the circuit. For more info see impedance.fit_circuit
+        A :class:`str` description of the equivalent circuit. For more details see 
+        :func:`fit_circuit`.
 
     parameters
-        dictionary with initial values
+        A :class:`dict` containing the values defining the equivalent circuit.
         Structure: {"param name": value, ... }
 
     output
-        the name of the output
+        A :class:`str` prefix for the ``Re(Z)`` and ``-Im(Z)`` values calculated 
+        in this function. Defaults to ``"calc_circuit"``.
 
-    freq
-        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the frequency
-        The provided data should be in the unit of "Hz"
-
+    
     Returns
     -------
-    (parameters, units)
-        A tuple containing two dicts.
-         - values, containing the two lists of the real and the negative imaginary part of the impedance ce
-         - units, contains the corresponding units of the impedance
+    retvals: dict[str, pint.Quantity]
+        A dictionary containing the :class:`pint.Quantity` arrays with the 
+        output-prefixed :math:`\\text{Re}(Z)` and :math:`-\\text{Im}(Z)` as keys.
     """
     # separate the freq data into values, errors and normalize the unit
     freq_data = separate_data(freq, "Hz")[0]
@@ -260,33 +284,39 @@ def calc_circuit(
     return retval
 
 
-@load_data("real", "imag")
+@load_array_data("real", "imag")
 def lowest_real_impedance(
     real: pint.Quantity,
     imag: pint.Quantity,
-    output: str = "Zmin",
+    output: str = "min Re(Z)",
     threshold: float = 0.0,
 ) -> dict[str, Union[int, str, pint.Quantity]]:
     """
+    A function that finds and interpolates the lowest :math:`\\text{Re}(Z)` value
+    at which the complex impedance :math:`Z = \\text{Re}(Z) - j \\text{Im}(Z)` is a 
+    real number (i.e. :math:`\\text{Im}(Z) \\approx 0`). If the impedance does not
+    cross the real-zero axis, the :math:`\\text{Re}(Z)` at which the 
+    :math:`\\text{abs}(\\text{Im}(Z))` is the smallest is returned.
+
     Parameters
     ----------
     real
-        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the real part of
-        the impedance data. The units of ``real`` and ``imag`` are assumed to match.
+        A :class:`pint.Quantity` object containing the real part of the impedance data,
+        :math:`\\text{Re}(Z)`. The units of ``real`` and ``imag`` are assumed to match.
 
     imag
-        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the negative of the
-        imaginary part of the impedance data. The units of ``real`` and ``imag`` are
-        assumed to match.
+        A :class:`pint.Quantity` object containing the imaginary part of the impedance 
+        data, :math:`-\\text{Im}(Z)`. The units of ``real`` and ``imag`` are assumed to 
+        match.
 
     output
-        The name of the output column, defaults to "Z".
+        A :class:`str` name for the output column, defaults to ``"min Re(Z)"``.
 
     Returns
     -------
-    (parameters, units): tuple[dict]
-        A tuple containing a dictionary with the impedance, and the corresponding units
-        of the real part of the impedance.
+    retvals: dict[str, pint.Quantity]
+        A dictionary containing the :class:`pint.Quantity` values of the real impedances
+        with the output as keys.
     """
 
     s = np.argsort(real)

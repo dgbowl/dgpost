@@ -34,8 +34,8 @@ def element_from_formula(f: str, el: str) -> int:
 
 def default_element(f: str) -> str:
     """
-    Given a formula ``f``, return the default element for conversion. Priority is:
-    ``"C" > "O" > "H" > ...``.
+    Given a formula ``f``, return the default element for calculating 
+    conversion. Priority is: ``"C" > "O" > "H" > ...``.
     """
     split = re.split("(?=[A-Z]|(?<!\\d)\\d)", f)
     for el in ["C", "O", "H"]:
@@ -48,9 +48,9 @@ def default_element(f: str) -> str:
 
 def columns_to_smiles(df: pd.DataFrame, prefix: Union[list[str], str]) -> dict:
     """
-    Creates a dictionary with SMILES representation of all chemicals, in the dataframe
-    matched by the prefix, storing the returned :class:`chemicals.ChemicalMetadata` as
-    well as the full name of the column.
+    Creates a dictionary with SMILES representation of all chemicals present among the 
+    columns of the dataframe and matched by the prefix, storing the returned 
+    :class:`chemicals.ChemicalMetadata` as well as the full name of the column.
 
     Parameters
     ----------
@@ -62,7 +62,7 @@ def columns_to_smiles(df: pd.DataFrame, prefix: Union[list[str], str]) -> dict:
 
     Returns
     -------
-    :class:`dict`
+    smiles: dict
         A new dictionary containing the SMILES of all prefixed chemicals as keys,
         and the metadata and column specification as values.
     """
@@ -99,8 +99,8 @@ def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
 
     Returns
     -------
-    :class:`pint.Quantity`
-        Unit-aware numpy-like object containing the data from ``df[col]``.
+    Quantity: pint.Quantity
+        Unit-aware :class:`ping.Quantity` object containing the data from ``df[col]``.
 
     """
     vals = df[col].array
@@ -144,15 +144,17 @@ def save(df: pd.DataFrame, tag: str, col: pint.Quantity) -> None:
 def separate_data(
     data: pint.Quantity, unit: str = None
 ) -> tuple[np.ndarray, np.ndarray, str]:
-    """Separates the data into values, errors and unit
+    """
+    Separates the data into values, errors and unit
 
     Parameters
     ----------
     data
-        pint.Quantity containing the data points which are either floats or ufloats
+        A :class:`pint.Quantity` object containing the data points. Can be either 
+        :class:`float` or :class:`uc.ufloat`.
 
     unit
-        When specified, converts the data to this unit
+        When specified, converts the data to this unit.
 
     Returns
     -------
@@ -166,9 +168,9 @@ def separate_data(
     return unp.nominal_values(data), unp.std_devs(data), old_unit
 
 
-def load_data(*cols: str):
+def load_array_data(*cols: str):
     """
-    Decorator factory for data loading
+    Decorator factory for data loading. Intended to load arrays.a
 
     Creates a decorator that will load the columns specified in ``cols``
     and calls the wrapped function for each row entry.
