@@ -21,13 +21,31 @@ import os
 import json
 import pandas as pd
 from yadg.core import validate_datagram
+from uncertainties import ufloat_fromstr
+import re
+from typing import Union
 
 
-def load(path: str, check: bool = True, type: str = "datagram") -> dict:
+def parse_ufloat(d: dict) -> dict:
+    ret = {}
+    for k, v in d.items():
+        new_v = v
+        if type(v) is str:
+            # match for ufloat
+            if re.match(r"[0-9\.]+\+/-[0-9\.]+", v):
+                new_v = ufloat_fromstr(v)
+        ret[k] = new_v
+    return ret
+
+
+def load(
+    path: str, check: bool = True, type: str = "datagram"
+) -> Union[dict, pd.DataFrame]:
     """
-    Datagram and dataframe loading function.
+    Datagram and :class:`pd.DataFrame` loading function.
 
-    Given the ``path`` to the datagram json file, this routine
+    Given the ``path`` to the datagram (json file) or the table (pkl or json file),
+    this routine loads the object present at ``path``.
     """
     assert os.path.exists(path), f"Provided 'path' '{path}' does not exist."
     assert os.path.isfile(path), f"Provided 'path' '{path}' is not a file."
@@ -41,6 +59,13 @@ def load(path: str, check: bool = True, type: str = "datagram") -> dict:
     else:
         if path.endswith("pkl"):
             df = pd.read_pickle(path)
+            return df
+        elif path.endswith("json"):
+            with open(path, "r") as f:
+                json_file = json.load(f, object_hook=parse_ufloat)
+            df = pd.DataFrame.from_dict(json_file["table"])
+            df.index = [float(i) for i in df.index]
+            df.attrs.update(json_file["attrs"])
             return df
         else:
             raise RuntimeError(f"File type of '{path}' is not yet supported.")

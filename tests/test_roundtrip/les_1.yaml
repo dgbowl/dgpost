@@ -1,0 +1,17 @@
+load:
+  - as: sparse
+    path: sparse.dg.json
+    check: True
+extract:
+  - as: df
+    from: sparse
+    at:
+      step: "a"
+    direct:
+      - key: raw->T_f
+        as: rawT
+save:
+  - table: df
+    as: sparse.dg.json.pkl
+  - table: df
+    as: sparse.dg.json.json
