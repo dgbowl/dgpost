@@ -29,17 +29,9 @@ import dgpost
             "df",
             "let_1.pkl",
         ),
-        (  # ts3 - load & extract, multiple transforms
-            "let_2.yaml",
-            "df",
-            "let_2.pkl",
-        ),
-        (  # ts4 - load & double extract, same index
-            "lee_1.yaml",
-            "df",
-            "lee_1.pkl",
-        ),
-        (  # ts5 - load, extract, save in 4 formats 
+        ("let_2.yaml", "df", "let_2.pkl",),  # ts3 - load & extract, multiple transforms
+        ("lee_1.yaml", "df", "lee_1.pkl",),  # ts4 - load & double extract, same index
+        (  # ts5 - load, extract, save in 4 formats
             "les_1.yaml",
             "table 1",
             "les_1.pkl",
@@ -79,22 +71,25 @@ def test_run_withna(inpath, tname, outpath, datadir):
     df = tab[tname]
     ref = pd.read_pickle(outpath)
     pd.testing.assert_frame_equal(ref.isna(), df.isna(), check_like=True)
-    r = ref.fillna(uc.ufloat(0,0))
-    t = df.fillna(uc.ufloat(0,0))
+    r = ref.fillna(uc.ufloat(0, 0))
+    t = df.fillna(uc.ufloat(0, 0))
     pd.testing.assert_frame_equal(ref, df, check_like=True)
     assert ref.attrs == df.attrs
+
 
 @pytest.mark.parametrize(
     "inpath, outpaths",
     [
         (  # ts0 - test saving to implicit formats
-            "les_1.yaml", ["sparse.pkl", "sparse.json", "sparse.csv", "sparse.xlsx"]
+            "les_1.yaml",
+            ["sparse.pkl", "sparse.json", "sparse.csv", "sparse.xlsx"],
         ),
         (
-           # ts1 - test saving with explicit format and sigma = false
-           "les_2.yaml", ["sparse.extension"]
-        )
-    ]
+            # ts1 - test saving with explicit format and sigma = false
+            "les_2.yaml",
+            ["sparse.extension"],
+        ),
+    ],
 )
 def test_save(inpath, outpaths, datadir):
     os.chdir(datadir)

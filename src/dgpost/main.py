@@ -29,11 +29,14 @@ def run(path: str) -> tuple[dict, dict]:
     spec = parse(path)
 
     datagrams = {}
+    tables = {}
     l = spec.pop("load")
     for el in l:
-        datagrams[el["as"]] = load(el["path"], el["check"])
+        if el["type"] == "datagram":
+            datagrams[el["as"]] = load(el["path"], el["check"], el["type"])
+        else:
+            tables[el["as"]] = load(el["path"], el["check"], el["type"])
 
-    tables = {}
     e = spec.pop("extract")
     for el in e:
         saveas = el.pop("as")

@@ -48,15 +48,7 @@ def multiple_df():
     cols = setup()
     df = pd.DataFrame.from_dict(cols)
     df = df.append(
-        setup(
-            params={
-                "R0": 300,
-                "R1": 550,
-                "C1": 1e-9,
-                "R2": 250,
-                "C2": 1e-5,
-            }
-        ),
+        setup(params={"R0": 300, "R1": 550, "C1": 1e-9, "R2": 250, "C2": 1e-5,}),
         ignore_index=True,
     )
     df.attrs["units"] = {"freq": "Hz", "Re(Z)": "Ω", "-Im(Z)": "Ω"}

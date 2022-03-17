@@ -2,7 +2,12 @@ import strictyaml as sy
 import os
 
 load = sy.Map(
-    {"as": sy.Str(), "path": sy.Str(), sy.Optional("check", default=True): sy.Bool()}
+    {
+        "as": sy.Str(), 
+        "path": sy.Str(), 
+        sy.Optional("type", default="datagram"): sy.Enum(["datagram", "table"]),
+        sy.Optional("check", default=True): sy.Bool(),
+    }
 )
 
 save = sy.Map(

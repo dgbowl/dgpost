@@ -143,9 +143,7 @@ def test_valid_datagram(datadir):
             "normalized.dg.json",
             {
                 "at": {"timestamps": [1575360000.0 + i * 200.0 for i in range(10)]},
-                "constant": [
-                    {"as": "volume", "value": "5.546(0)", "units": "l"},
-                ],
+                "constant": [{"as": "volume", "value": "5.546(0)", "units": "l"},],
                 "interpolated": [
                     {"key": "derived->xin->O2", "as": "xin->O2", "keyat": {"step": "a"}}
                 ],

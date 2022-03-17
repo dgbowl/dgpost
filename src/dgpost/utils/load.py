@@ -1,5 +1,5 @@
 """
-``load``: Datagram loading routine.
+``load``: Datagram and dataframe loading routine.
 
 The function :func:`dgpost.utils.load.load` processes the below specification
 in order to load the datagram json file:
@@ -7,7 +7,7 @@ in order to load the datagram json file:
 .. code-block:: yaml
 
   load:
-    - as:      !!str          # internal datagram name
+    - as:      !!str          # internal datagram or table name
       path:    !!str          # path to the datagram file
       check:   True           # whether the datagram is to be checked using ``yadg``
 
@@ -19,22 +19,28 @@ in order to load the datagram json file:
 """
 import os
 import json
+import pandas as pd
 from yadg.core import validate_datagram
 
 
-def load(path: str, check: bool = True) -> dict:
+def load(path: str, check: bool = True, type: str = "datagram") -> dict:
     """
-    Datagram loading function.
+    Datagram and dataframe loading function.
 
     Given the ``path`` to the datagram json file, this routine
     """
-    assert os.path.exists(path), f"load: Provided 'path' '{path}' does not exist."
-    assert os.path.isfile(path), f"load: Provided 'path' '{path}' is not a file."
+    assert os.path.exists(path), f"Provided 'path' '{path}' does not exist."
+    assert os.path.isfile(path), f"Provided 'path' '{path}' is not a file."
 
-    with open(path, "r") as infile:
-        dg = json.load(infile)
-
-    if check:
-        validate_datagram(dg)
-
-    return dg
+    if type == "datagram":
+        with open(path, "r") as infile:
+            dg = json.load(infile)
+        if check:
+            validate_datagram(dg)
+        return dg
+    else:
+        if path.endswith("pkl"):
+            df = pd.read_pickle(path)
+            return df
+        else:
+            raise RuntimeError(f"File type of '{path}' is not yet supported.")

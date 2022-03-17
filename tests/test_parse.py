@@ -19,6 +19,7 @@ import dgpost.utils
                         "as": "sparse",
                         "path": r"C:\Users\krpe\postprocess\tests\common\sparse.dg.json",
                         "check": True,
+                        "type": "datagram",
                     }
                 ]
             },
@@ -27,8 +28,18 @@ import dgpost.utils
             "load_2.yaml",
             {
                 "load": [
-                    {"as": "sparse", "path": "sparse.dg.json", "check": True},
-                    {"as": "normalized", "path": "normalized.dg.json", "check": False},
+                    {
+                        "as": "sparse",
+                        "path": "sparse.dg.json",
+                        "check": True,
+                        "type": "datagram",
+                    },
+                    {
+                        "as": "normalized",
+                        "path": "normalized.dg.json",
+                        "check": False,
+                        "type": "datagram",
+                    },
                 ]
             },
         ),
@@ -40,6 +51,7 @@ import dgpost.utils
                         "as": "normalized",
                         "path": "/home/test/normalized.dg.json",
                         "check": True,
+                        "type": "datagram",
                     },
                 ]
             },
