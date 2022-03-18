@@ -26,8 +26,16 @@ import dgpost
             "df",
             "let_1.pkl",
         ),
-        ("let_2.yaml", "df", "let_2.pkl",),  # ts3 - load & extract, multiple transforms
-        ("lee_1.yaml", "df", "lee_1.pkl",),  # ts4 - load & double extract, same index
+        (
+            "let_2.yaml",
+            "df",
+            "let_2.pkl",
+        ),  # ts3 - load & extract, multiple transforms
+        (
+            "lee_1.yaml",
+            "df",
+            "lee_1.pkl",
+        ),  # ts4 - load & double extract, same index
         (  # ts5 - load, extract, save in 4 formats
             "les_1.yaml",
             "table 1",
@@ -65,9 +73,9 @@ def test_run(inpath, tname, outpath, datadir):
     "inpath, tname, outpath",
     [
         (  # ts0 - load & double extract, different index
-            "lee_2.yaml",
+            "lee_na.yaml",
             "df",
-            "lee_2.pkl",
+            "lee_na.pkl",
         )
     ],
 )

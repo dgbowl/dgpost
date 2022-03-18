@@ -27,7 +27,10 @@ from dgpost.utils import transform
         ),
         (  # ts2 - dataframe with floats, elements implicit
             "xinxout.float.df.pkl",
-            [{"feedstock": "C3H8"}, {"feedstock": "O2"},],
+            [
+                {"feedstock": "C3H8"},
+                {"feedstock": "O2"},
+            ],
             "Sp.float.pkl",
         ),
         (  # ts3 - dataframe with units and floats
@@ -85,7 +88,9 @@ def test_with_transform(inpath, spec, outpath, datadir):
     [
         (  # ts0 - dataframe with ufloats
             "catalysis.xlsx",
-            [{"feedstock": "propane", "element": "C"},],
+            [
+                {"feedstock": "propane", "element": "C"},
+            ],
             ["Sp_C->CO2", "Sp_C->CO", "Sp_C->C3H6"],
         ),
     ],

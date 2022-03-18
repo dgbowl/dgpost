@@ -11,6 +11,7 @@ from .circuit_components import circuit_components
 
 logger = logging.getLogger(__name__)
 
+
 def parse_circuit(
     circ: str,
 ) -> Tuple[list[dict], Callable[[dict, np.ndarray], np.ndarray]]:

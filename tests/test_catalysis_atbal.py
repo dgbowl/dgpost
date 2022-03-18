@@ -11,7 +11,10 @@ from dgpost.utils import transform
     [
         (  # ts0 - dataframe with floats
             "xinxout.float.df.pkl",
-            [{"element": "C"}, {"element": "O"},],
+            [
+                {"element": "C"},
+                {"element": "O"},
+            ],
             "atbal.float.pkl",
         ),
         (  # ts1 - dataframe with ufloats
@@ -51,7 +54,9 @@ def test_cat_atbal_floats(inpath, spec, outpath, datadir):
     [
         (  # ts0 - dataframe with ufloats
             "xinxout.ufloat.df.pkl",
-            [{"xin": "xin", "xout": "xout", "element": "C"},],
+            [
+                {"xin": "xin", "xout": "xout", "element": "C"},
+            ],
             "atbal.ufloat.pkl",
         ),
     ],
@@ -69,7 +74,10 @@ def test_with_transform(inpath, spec, outpath, datadir):
     [
         (  # ts0 - dataframe with ufloats
             "catalysis.xlsx",
-            [{"element": "C"}, {"element": "O"},],
+            [
+                {"element": "C"},
+                {"element": "O"},
+            ],
             ["atbal_C", "atbal_O"],
         ),
     ],

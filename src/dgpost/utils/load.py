@@ -40,8 +40,8 @@ def parse_ufloat(d: dict) -> dict:
 
 
 def load(
-    path: str, 
-    check: bool = True, 
+    path: str,
+    check: bool = True,
     type: str = "datagram",
 ) -> Union[dict, pd.DataFrame]:
     """

@@ -8,12 +8,17 @@ import dgpost.utils
 @pytest.mark.parametrize(
     "input",
     [
-        {"path": "sparse.dg.json", "check": True,},  # ts0 - load with check = True
+        {  # ts0 - load with check = True
+            "path": "sparse.dg.json",
+            "check": True,
+        }, 
         {  # ts1 - load with check = False
             "path": "normalized.dg.json",
             "check": False,
         },
-        {"path": "sparse.dg.json",},  # ts2 - load without check
+        {  # ts2 - load without check
+            "path": "sparse.dg.json",
+        },  
     ],
 )
 def test_load(input, datadir):

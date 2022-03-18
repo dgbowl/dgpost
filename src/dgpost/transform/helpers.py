@@ -34,7 +34,7 @@ def element_from_formula(f: str, el: str) -> int:
 
 def default_element(f: str) -> str:
     """
-    Given a formula ``f``, return the default element for calculating 
+    Given a formula ``f``, return the default element for calculating
     conversion. Priority is: ``"C" > "O" > "H" > ...``.
     """
     split = re.split("(?=[A-Z]|(?<!\\d)\\d)", f)
@@ -48,8 +48,8 @@ def default_element(f: str) -> str:
 
 def columns_to_smiles(df: pd.DataFrame, prefix: Union[list[str], str]) -> dict:
     """
-    Creates a dictionary with SMILES representation of all chemicals present among the 
-    columns of the dataframe and matched by the prefix, storing the returned 
+    Creates a dictionary with SMILES representation of all chemicals present among the
+    columns of the dataframe and matched by the prefix, storing the returned
     :class:`chemicals.ChemicalMetadata` as well as the full name of the column.
 
     Parameters
@@ -150,7 +150,7 @@ def separate_data(
     Parameters
     ----------
     data
-        A :class:`pint.Quantity` object containing the data points. Can be either 
+        A :class:`pint.Quantity` object containing the data points. Can be either
         :class:`float` or :class:`uc.ufloat`.
 
     unit

@@ -219,7 +219,13 @@ def test_direct_fit_circuit(datadir):
 
     fit_info = {
         "circuit": "R0-p(R1,C1)-p(R2,C2)",
-        "initial_values": {"R0": 90, "R1": 240, "C1": 3e-8, "R2": 140, "C2": 3e-6,},
+        "initial_values": {
+            "R0": 90,
+            "R1": 240,
+            "C1": 3e-8,
+            "R2": 140,
+            "C2": 3e-6,
+        },
     }
 
     retvals = impedance.fit_circuit(real, imag, freq, **fit_info)
@@ -243,7 +249,13 @@ def test_calc_circuit(datadir):
     calc_info = [
         {
             "circuit": "R0-p(R1,C1)-p(R2,C2)",
-            "parameters": {"R0": 100, "R1": 250, "C1": 1e-8, "R2": 150, "C2": 1e-6,},
+            "parameters": {
+                "R0": 100,
+                "R1": 250,
+                "C1": 1e-8,
+                "R2": 150,
+                "C2": 1e-6,
+            },
             "output": "test",
             "freq": "freq",
         }
@@ -269,19 +281,22 @@ def test_calc_circuit(datadir):
             "peis.dg.json",
             {
                 "at": {"index": 0},
-                "direct": [
+                "columns": [
                     {"key": "raw->traces->PEIS->Re(Z)", "as": "Re(Z)"},
                     {"key": "raw->traces->PEIS->-Im(Z)", "as": "-Im(Z)"},
                 ],
             },
             [{"real": "Re(Z)", "imag": "-Im(Z)"}],
-            [14.800329, 11.044216,],
+            [
+                14.800329,
+                11.044216,
+            ],
         ),
         (
             "peis2.dg.json",
             {
                 "at": {"index": 0},
-                "direct": [
+                "columns": [
                     {"key": "raw->traces->PEIS->Re(Z)", "as": "real"},
                     {"key": "raw->traces->PEIS->-Im(Z)", "as": "imag"},
                 ],

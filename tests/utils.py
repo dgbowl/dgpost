@@ -53,7 +53,8 @@ def pars_datagram_test(datagram, testspec):
                 len(tstep[rd][tk].keys()) == 3
             ), "value not in [val, dev, unit] format"
             compare_result_dicts(
-                tstep[rd][tk], {"n": tv["value"], "s": tv["sigma"], "u": tv["unit"]},
+                tstep[rd][tk],
+                {"n": tv["value"], "s": tv["sigma"], "u": tv["unit"]},
             )
         else:
             assert tstep[tk] == tv["value"], "wrong uts"

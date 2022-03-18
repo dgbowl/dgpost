@@ -45,11 +45,11 @@ def fit_circuit(
     """
     Fits an equivalent circuit to the frequency-resolved EIS data.
 
-    For the fitting an equivalent circuit is needed, defined as a :class:`str`. 
-    The circuit may be composed of multiple circuit elements. To combine elements 
-    in a series a dash (``-``) is used. Elements in parallel are wrapped by 
-    ``p( , )``. An element is defined by an identifier (usually letters) followed 
-    by a digit. Already implemented elements are located in the 
+    For the fitting an equivalent circuit is needed, defined as a :class:`str`.
+    The circuit may be composed of multiple circuit elements. To combine elements
+    in a series a dash (``-``) is used. Elements in parallel are wrapped by
+    ``p( , )``. An element is defined by an identifier (usually letters) followed
+    by a digit. Already implemented elements are located in the
     :mod:`.circuit_utils.circuit_components` module:
 
     +------------------------+--------+------------+---------------+--------------+
@@ -74,15 +74,15 @@ def fit_circuit(
     |                        |        | ``Wo_T``   | (1e-10, 1e10) | s            |
     +------------------------+--------+------------+---------------+--------------+
 
-    Additionally an initial guess for the fitting parameters is needed. The initial 
-    guess is given as a :class:`dict` where each key is the parameter name and the 
+    Additionally an initial guess for the fitting parameters is needed. The initial
+    guess is given as a :class:`dict` where each key is the parameter name and the
     corresponding value is the initial value for the circuit.
 
     The bounds of each parameter can be customized by the ``fit_bounds`` parameter.
     This parameter is a :class:`dict`, where each key is the parameter name and the
     value consists of a :class:`tuple` for the lower and upper bound (lb, ub).
 
-    To hold a parameter constant, add the name of the parameter to a :class:`list` 
+    To hold a parameter constant, add the name of the parameter to a :class:`list`
     and pass it as ``fit_constants``
 
     Parameters
@@ -92,11 +92,11 @@ def fit_circuit(
         :math:`\\text{Re}(Z)`. The unit of the provided gets converted to 'Ω'.
 
     imag
-        A :class:`pint.Quantity` object containing the imaginary part of the impedance 
+        A :class:`pint.Quantity` object containing the imaginary part of the impedance
         data, :math:`-\\text{Im}(Z)`. The unit of the provided gets converted to 'Ω'.
 
     freq
-        A :class:`pint.Quantity` object containing the frequency :math:`f` of the 
+        A :class:`pint.Quantity` object containing the frequency :math:`f` of the
         impedance data. The unit of the provided data should gets converted to 'Hz'.
 
     circuit
@@ -107,7 +107,7 @@ def fit_circuit(
         Structure: {"param name": value, ... }
 
     output
-        A :class:`str` prefix 
+        A :class:`str` prefix
 
     fit_bounds
         Custom bounds for a parameter if default bounds are not wanted
@@ -236,11 +236,11 @@ def calc_circuit(
     Parameters
     ----------
     freq
-        A :class:`pint.Quantity` containing the frequencies :math:`f` at which the 
+        A :class:`pint.Quantity` containing the frequencies :math:`f` at which the
         equivalent circuit is to be evaluated. The provided data should be in "Hz".
 
     circuit
-        A :class:`str` description of the equivalent circuit. For more details see 
+        A :class:`str` description of the equivalent circuit. For more details see
         :func:`fit_circuit`.
 
     parameters
@@ -248,14 +248,14 @@ def calc_circuit(
         Structure: {"param name": value, ... }
 
     output
-        A :class:`str` prefix for the ``Re(Z)`` and ``-Im(Z)`` values calculated 
+        A :class:`str` prefix for the ``Re(Z)`` and ``-Im(Z)`` values calculated
         in this function. Defaults to ``"calc_circuit"``.
 
-    
+
     Returns
     -------
     retvals: dict[str, pint.Quantity]
-        A dictionary containing the :class:`pint.Quantity` arrays with the 
+        A dictionary containing the :class:`pint.Quantity` arrays with the
         output-prefixed :math:`\\text{Re}(Z)` and :math:`-\\text{Im}(Z)` as keys.
     """
     # separate the freq data into values, errors and normalize the unit
@@ -293,9 +293,9 @@ def lowest_real_impedance(
 ) -> dict[str, Union[int, str, pint.Quantity]]:
     """
     A function that finds and interpolates the lowest :math:`\\text{Re}(Z)` value
-    at which the complex impedance :math:`Z = \\text{Re}(Z) - j \\text{Im}(Z)` is a 
+    at which the complex impedance :math:`Z = \\text{Re}(Z) - j \\text{Im}(Z)` is a
     real number (i.e. :math:`\\text{Im}(Z) \\approx 0`). If the impedance does not
-    cross the real-zero axis, the :math:`\\text{Re}(Z)` at which the 
+    cross the real-zero axis, the :math:`\\text{Re}(Z)` at which the
     :math:`\\text{abs}(\\text{Im}(Z))` is the smallest is returned.
 
     Parameters
@@ -305,8 +305,8 @@ def lowest_real_impedance(
         :math:`\\text{Re}(Z)`. The units of ``real`` and ``imag`` are assumed to match.
 
     imag
-        A :class:`pint.Quantity` object containing the imaginary part of the impedance 
-        data, :math:`-\\text{Im}(Z)`. The units of ``real`` and ``imag`` are assumed to 
+        A :class:`pint.Quantity` object containing the imaginary part of the impedance
+        data, :math:`-\\text{Im}(Z)`. The units of ``real`` and ``imag`` are assumed to
         match.
 
     output

@@ -267,15 +267,15 @@ def _get_interp(spec, obj, at, ts):
 
 
 def extract(
-    obj: Union[dict, pd.DataFrame, None], 
-    spec: dict, 
+    obj: Union[dict, pd.DataFrame, None],
+    spec: dict,
     index: list = None,
 ) -> pd.DataFrame:
     """
     Data extracting function.
 
     Given a loaded ``datagram`` or a :class:`pd.DataFrame`, extraction ``spec``,
-    and an optional list of indices, this routine creates, extracts, or interpolates 
+    and an optional list of indices, this routine creates, extracts, or interpolates
     the specified columns into a single :class:`pd.DataFrame`.
 
     Parameters
@@ -285,7 +285,7 @@ def extract(
 
     spec
         The ``extract`` component of the job specification.
-    
+
     index
         Optional :class:`list` of timestamps to interpolate values onto.
 
