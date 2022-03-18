@@ -29,34 +29,49 @@ def run(path: str) -> tuple[dict, dict]:
     spec = parse(path)
 
     datagrams = {}
+    tables = {}
     l = spec.pop("load")
     for el in l:
-        datagrams[el["as"]] = load(el["path"], el["check"])
+        if el["type"] == "datagram":
+            datagrams[el["as"]] = load(el["path"], el["check"], el["type"])
+        else:
+            tables[el["as"]] = load(el["path"], el["check"], el["type"])
 
-    tables = {}
     e = spec.pop("extract")
     for el in e:
-        saveas = el.pop("as")
-        newdf = extract(datagrams[el.pop("from")], el)
-        if saveas in tables:
-            if tables[saveas].index.equals(newdf.index):
-                logging.debug(
-                    f"run: Concatenating columns into table '{saveas}', "
-                    f"both tables have the same index."
-                )
+        saveas = el.pop("into")
+        if "from" in el and el["from"] is not None:
+            objname = el.pop("from")
+            if objname in datagrams:
+                obj = datagrams[objname]
+            elif objname in tables:
+                obj = tables[objname]
             else:
-                logging.warning(
-                    f"run: Concatenating columns into table '{saveas}', "
-                    f"the new table has a different index!"
+                raise RuntimeError(
+                    f"Object name '{objname}' is neither a valid datagram nor table."
                 )
-            tables[saveas] = pd.concat([tables[saveas], newdf], axis=1)
+        else:
+            obj = None
+
+        if saveas not in tables:
+            index = None
+        else:
+            index = tables[saveas].index.tolist()
+
+        newdf = extract(obj, el, index)
+
+        if saveas in tables:
+            temp = pd.concat([tables[saveas], newdf], axis=1)
+            temp.attrs = tables[saveas].attrs
+            temp.attrs["units"].update(newdf.attrs["units"])
+            tables[saveas] = temp
         else:
             tables[saveas] = newdf
 
     t = spec.get("transform", [])
     for el in t:
         transform(tables[el["table"]], el["with"], el["using"])
-    
+
     s = spec.get("save", [])
     for el in s:
         save(tables[el["table"]], el["as"], el.get("type"), el.get("sigma", True))

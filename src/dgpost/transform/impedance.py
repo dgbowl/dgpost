@@ -348,7 +348,7 @@ def fit_circuit(
     # calculate the weight of each datapoint
     def weight(error, value):
         """calculates the absolute value squared and divides the error by it"""
-        square_value = value.real ** 2 + value.imag ** 2
+        square_value = value.real**2 + value.imag**2
         return np.true_divide(error, square_value)
 
     # calculate rmse

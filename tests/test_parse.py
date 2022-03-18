@@ -19,6 +19,7 @@ import dgpost.utils
                         "as": "sparse",
                         "path": r"C:\Users\krpe\postprocess\tests\common\sparse.dg.json",
                         "check": True,
+                        "type": "datagram",
                     }
                 ]
             },
@@ -27,8 +28,18 @@ import dgpost.utils
             "load_2.yaml",
             {
                 "load": [
-                    {"as": "sparse", "path": "sparse.dg.json", "check": True},
-                    {"as": "normalized", "path": "normalized.dg.json", "check": False},
+                    {
+                        "as": "sparse",
+                        "path": "sparse.dg.json",
+                        "check": True,
+                        "type": "datagram",
+                    },
+                    {
+                        "as": "normalized",
+                        "path": "normalized.dg.json",
+                        "check": False,
+                        "type": "datagram",
+                    },
                 ]
             },
         ),
@@ -40,6 +51,7 @@ import dgpost.utils
                         "as": "normalized",
                         "path": "/home/test/normalized.dg.json",
                         "check": True,
+                        "type": "datagram",
                     },
                 ]
             },
@@ -49,10 +61,10 @@ import dgpost.utils
             {
                 "extract": [
                     {
-                        "as": "table 1",
+                        "into": "table 1",
                         "from": "sparse",
                         "at": {"step": "a"},
-                        "direct": [
+                        "columns": [
                             {"key": "raw->T_f", "as": "rawT"},
                             {"key": "derived->T", "as": "derT"},
                         ],
@@ -65,7 +77,7 @@ import dgpost.utils
             {
                 "extract": [
                     {
-                        "as": "table 2",
+                        "into": "table 2",
                         "from": "norm",
                         "at": {"indices": [1, 2, 3]},
                         "constant": [{"value": "5.0", "as": "mass"}],
@@ -78,14 +90,13 @@ import dgpost.utils
             {
                 "extract": [
                     {
-                        "as": "table 2",
+                        "into": "table 2",
                         "from": "norm",
                         "at": {"steps": ["b1", "b2", "b3"]},
-                        "interpolated": [
+                        "columns": [
                             {
                                 "key": "derived->xin->*",
                                 "as": "xin",
-                                "keyat": {"step": "a"},
                             }
                         ],
                     },
@@ -109,7 +120,7 @@ import dgpost.utils
         ),
     ],
 )
-def test_parse(inpath, spec, datadir):
+def test_parse_yaml_to_dict(inpath, spec, datadir):
     os.chdir(datadir)
     ret = dgpost.utils.parse(inpath)
     assert ret == spec
