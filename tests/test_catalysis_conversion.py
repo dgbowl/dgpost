@@ -1,9 +1,6 @@
 import os
 import pytest
 import pandas as pd
-import uncertainties as uc
-import numpy as np
-from tests.utils import datadir
 
 from dgpost.transform import catalysis
 from dgpost.utils import transform

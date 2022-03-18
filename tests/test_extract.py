@@ -4,7 +4,6 @@ import json
 import os
 import pandas as pd
 
-from tests.utils import datadir
 import dgpost.utils
 
 
@@ -174,7 +173,7 @@ def test_extract_single(inpath, spec, outpath, datadir):
             ],
             "interpolated.starred.pkl",
         ),
-        (  # ts12 - constant with float, str(ufloat) values
+        (  # ts3 - constant with float, str(ufloat) values
             "normalized.dg.json",
             [
                 {

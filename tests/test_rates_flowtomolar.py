@@ -3,10 +3,8 @@ import pytest
 import pint
 import pandas as pd
 import uncertainties as uc
-from tests.utils import datadir
 
 from dgpost.transform import rates
-from dgpost.utils import transform
 
 Trefs = [293.15, pint.Quantity(20, "degC"), uc.ufloat(293.15, 0.0)]
 

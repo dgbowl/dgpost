@@ -1,281 +1,113 @@
-import functools
+"""
+Impedance-related transformations
+=================================
+
+This module contains functions relevant to Electrochemical Impedance Spectroscopy (EIS).
+
+The main functions in this module are two functions relevant for the fitting and 
+evaluation of equivalent circuits, :func:`fit_circuit` and :func:`calc_circuit`,
+respectively. The two functions expect frequency-resolved complex impedance data.
+
+For less rigorous analysis, the :func:`lowest_real_impedance` can be used, to
+find and/or interpolate the lowest real-valued point of the complex impedance.
+
+.. codeauthor:: Ueli Sauter
+.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
+
+"""
 import logging
-import warnings
-from typing import Callable, Union
-
+from typing import Union
 import numpy as np
-import pandas as pd
 import pint
-import uncertainties.unumpy as unp
-from scipy.optimize import least_squares, minimize
+import uncertainties as uc
 
-from .circuit_utils.circuit_parser import parse_circuit
-from .helpers import pQ
+from .circuit_utils.circuit_parser import parse_circuit, fit_routine
+from .helpers import separate_data, load_array_data
 
 logger = logging.getLogger(__name__)
 
 
-def load_data(*cols: str):
-    """
-    Decorator factory for data loading
-
-    Creates a decorator that will load the columns specified in ``cols``
-    and calls the wrapped function for each row entry.
-
-    Parameters
-    ----------
-    cols
-        list of strings with the col names used to call the function
-    """
-
-    def loading(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            # check if there is an output name in kwargs, if not take func name
-            if "output" not in kwargs:
-                kwargs["output"] = func.__name__
-
-            if len(args) == 0:
-                # if there are no argument, it means the function is not called with a dataframe
-                return func(**kwargs)
-            else:
-                # check if the first argument is a dataframe then break and there should only be one kwarg
-                # or check if all the arguments are np.ndarray
-                for arg in args:
-                    if isinstance(arg, pd.DataFrame):
-                        if len(args) != 1:
-                            raise ValueError(
-                                "Only the DataFrame should be given as argument"
-                            )
-                        df = arg
-                        break
-                    elif isinstance(arg, np.ndarray):
-                        continue
-                    else:
-                        raise ValueError(
-                            "The argument is neither a DataFrame or an ndarray"
-                        )
-                else:
-                    if len(cols) == len(args):
-                        return func(*args, **kwargs)
-                    else:
-                        raise ValueError("Not enough data rows given")
-
-                # check if the dataframe has a units attribute else create it
-                if "units" not in df.attrs:
-                    df.attrs["units"] = {}
-
-                # each kwarg to get a data colum specified in cols should be a string
-                # create a list for each data column that should get past to the function
-                raw_data = []
-                for col in cols:
-                    if isinstance(col, str):
-                        raw_data.append(pQ(df, kwargs.pop(col)))
-                    else:
-                        raise ValueError(f"Provided value for {col} is not a string")
-
-                # transpose the list and iterate over it
-                # so that we iterate over each time step
-                for index, row in enumerate(zip(*raw_data)):
-                    # create kwargs for each data col
-                    data = {col: r for col, r in zip(cols, row)}
-
-                    # call the function for each row in the data
-                    # the function should return two dicts, which contain the values
-                    # and units of the data with the same key
-                    vals, units = func(**data, **kwargs)
-                    for val_name in vals:
-                        # check if the column already exists in the dataframe, if not create empty column
-                        if val_name not in df:
-                            df[val_name] = ""
-                        # fill the column and units attribute with the given values
-                        df[val_name].iloc[index] = vals[val_name]
-                        df.attrs["units"][val_name] = units[val_name]
-
-        return wrapper
-
-    return loading
-
-
-def fit_routine(
-    opt_func: Callable[[list], float],
-    fit_guess: list[float],
-    bounds: list[tuple],
-    repeat: int = 1,
-):
-    """
-    Fitting routine which uses scipy least_squares and minimize.
-
-    Least_squares is a good fitting method but will get stuck in local minima.
-    For this reason, the Nelder-Mead-Simplex algorithm is used to get out of these local minima.
-    The fitting routine is inspired by Relaxis 3 fitting procedure.
-    More information about it can be found on page 188 of revision 1.25 of Relaxis User Manual.
-    https://www.rhd-instruments.de/download/manuals/relaxis_manual.pdf
-
-    Open issue is estimate the errors of the parameters. For further information look:
-    - https://github.com/andsor/notebooks/blob/master/src/nelder-mead.md
-    - https://math.stackexchange.com/questions/2447382/nelder-mead-function-fit-error-estimation-via-surface-fit
-    - https://stats.stackexchange.com/questions/424073/calculate-the-uncertainty-of-a-mle
-
-    Parameters
-    ----------
-    opt_func
-        function that gets minimized
-    fit_guess
-        initial guess for minimization
-    bounds
-        bounds of the fitting parameters
-    repeat
-        how many times the least squares and minimize step gets repeated
-
-    Returns
-    -------
-    opt_result: scipy.optimize.OptimizeResult
-        the result of the optimization from the last step of Nelder-Mead.
-    """
-    initial_value = np.array(fit_guess)
-
-    # least squares have different format for bounds
-    ls_bounds_lb = [bound[0] for bound in bounds]
-    ls_bounds_ub = [bound[1] for bound in bounds]
-    ls_bounds = (ls_bounds_lb, ls_bounds_ub)
-
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", message="overflow encountered in tanh")
-
-        logger.debug(f"Started fitting routine")
-        for i in range(repeat):
-            logger.debug(f"Fitting routine pass {i}")
-            opt_result = least_squares(
-                opt_func,
-                initial_value,
-                bounds=ls_bounds,
-                xtol=1e-13,
-                max_nfev=1000,
-                ftol=1e-9,
-            )
-            initial_value = opt_result.x
-            logger.debug(f"Finished least squares")
-            opt_result = minimize(
-                opt_func,
-                initial_value,
-                bounds=bounds,
-                tol=1e-13,
-                options={"maxiter": 1e4, "fatol": 1e-9},
-                method="Nelder-Mead",
-            )
-            initial_value = opt_result.x
-            logger.debug(f"Finished Nelder-Mead")
-    logger.debug(f"Finished fitting routine")
-    return opt_result
-
-
-def separate_data(
-    data: Union[np.ndarray, pint.Quantity], unit: str
-) -> tuple[np.ndarray, np.ndarray, str]:
-    """Separates the data into values, errors and unit
-
-    Parameters
-    ----------
-    data
-        List of data points which are either floats or ufloats
-
-    unit
-        converts the input quantity to this unit
-
-    Returns
-    -------
-    (values, errors, old_unit)
-        returns the values with the corresponding errors and the unit of the input array
-    """
-    old_unit = ""
-    if isinstance(data, pint.Quantity):
-        old_unit = data.u
-        data = data.to(unit)
-        data = data.m
-
-    data_values = unp.nominal_values(data)
-    data_errors = unp.std_devs(data)
-    return data_values, data_errors, old_unit
-
-
-@load_data("real", "imag", "freq")
+@load_array_data("real", "imag", "freq")
 def fit_circuit(
-    real: Union[np.ndarray, pint.Quantity],
-    imag: Union[np.ndarray, pint.Quantity],
-    freq: Union[np.ndarray, pint.Quantity],
+    real: pint.Quantity,
+    imag: pint.Quantity,
+    freq: pint.Quantity,
     circuit: str,
     initial_values: dict[str, float],
-    output: str,
+    output: str = "fit_circuit",
     fit_bounds: dict[str, tuple[float, float]] = None,
     fit_constants: list[str] = None,
     ignore_neg_res: bool = True,
     upper_freq: float = np.inf,
     lower_freq: float = 0,
     repeat: int = 1,
-) -> tuple[dict[str, float], dict[str, str]]:
+) -> dict[str, Union[int, str, pint.Quantity]]:
     """
-    Fitting function for equivalent circuits of electrochemical impedance spectroscopy (EIS) data.
+    Fits an equivalent circuit to the frequency-resolved EIS data.
 
-    For the fitting an equivalent circuit is needed, defined as a string. The circuit may be composed of multiple elements.
-    To combine elements in series a dash (-) is used. Elements in parallel are wrapped by p( , ).
-    An element is defined by an identifier (usually letters) followed by a digit.
-    Already implemented elements are located in :class:`circuit_components<circuit_utils.circuit_components>`:
+    For the fitting an equivalent circuit is needed, defined as a :class:`str`.
+    The circuit may be composed of multiple circuit elements. To combine elements
+    in a series a dash (``-``) is used. Elements in parallel are wrapped by
+    ``p( , )``. An element is defined by an identifier (usually letters) followed
+    by a digit. Already implemented elements are located in the
+    :mod:`.circuit_utils.circuit_components` module:
 
     +------------------------+--------+------------+---------------+--------------+
     | Name                   | Symbol | Parameters | Bounds        | Units        |
+    +========================+========+============+===============+==============+
+    | Resistor               | ``R``  | ``R``      | (1e-6, 1e6)   | Ω            |
     +------------------------+--------+------------+---------------+--------------+
-    | Resistor               | R      | R          | (1e-6, 1e6)   | Ohm          |
+    | Capacitance            | ``C``  | ``C``      | (1e-20, 1)    | F            |
     +------------------------+--------+------------+---------------+--------------+
-    | Capacitance            | C      | C          | (1e-20, 1)    | Farad        |
-    +------------------------+--------+------------+---------------+--------------+
-    | Constant Phase Element | CPE    | CPE_Q      | (1e-20, 1)    | Ohm^-1 s^a   |
+    | Constant Phase Element | ``CPE``| ``CPE_Q``  | (1e-20, 1)    | Ω⁻¹sᵃ        |
     |                        |        +------------+---------------+--------------+
-    |                        |        | CPE_a      | (0, 1)        |              |
+    |                        |        | ``CPE_a``  | (0, 1)        |              |
     +------------------------+--------+------------+---------------+--------------+
-    | Warburg element        | W      | W          | (0, 1e10)     | Ohm^-1 s^0.5 |
+    | Warburg element        | ``W``  | ``W``      | (0, 1e10)     | Ω⁻¹s¹ᐟ²      |
     +------------------------+--------+------------+---------------+--------------+
-    | Warburg short element  | Ws     | Ws_R       | (0, 1e10)     | Ohm          |
+    | Warburg short element  | ``Ws`` | ``Ws_R``   | (0, 1e10)     | Ω            |
     |                        |        +------------+---------------+--------------+
-    |                        |        | Ws_T       | (1e-10, 1e10) | s            |
+    |                        |        | ``Ws_T``   | (1e-10, 1e10) | s            |
     +------------------------+--------+------------+---------------+--------------+
-    | Warburg open element   | Wo     | Wo_R       | (0, 1e10)     | Ohm          |
+    | Warburg open element   | ``Wo`` | ``Wo_R``   | (0, 1e10)     | Ω            |
     |                        |        +------------+---------------+--------------+
-    |                        |        | Wo_T       | (1e-10, 1e10) | s            |
+    |                        |        | ``Wo_T``   | (1e-10, 1e10) | s            |
     +------------------------+--------+------------+---------------+--------------+
 
-    Additionally an initial guess for the fitting parameters is needed.
-    The initial guess is given as a dictionary where each key is the parameters name and
-    the corresponding value is the guessed value for the circuit.
+    Additionally an initial guess for the fitting parameters is needed. The initial
+    guess is given as a :class:`dict` where each key is the parameter name and the
+    corresponding value is the initial value for the circuit.
 
     The bounds of each parameter can be customized by the ``fit_bounds`` parameter.
-    This parameter is a dictionary, where each key is the parameter name and the value consists of a tuple for the lower and upper bound (lb, ub).
+    This parameter is a :class:`dict`, where each key is the parameter name and the
+    value consists of a :class:`tuple` for the lower and upper bound (lb, ub).
 
-    To hold a parameter constant, add the name of the parameter to a list and pass it as ``fit_constants``
+    To hold a parameter constant, add the name of the parameter to a :class:`list`
+    and pass it as ``fit_constants``
 
     Parameters
     ----------
     real
-        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the real part of the impedance data
-        The unit of the provided data should be or gets converted to 'Ω'
+        A :class:`pint.Quantity` object containing the real part of the impedance data,
+        :math:`\\text{Re}(Z)`. The unit of the provided gets converted to 'Ω'.
 
     imag
-        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the negative imaginary part of the impedance data
-        The unit of the provided data should be or gets converted to 'Ω'
+        A :class:`pint.Quantity` object containing the imaginary part of the impedance
+        data, :math:`-\\text{Im}(Z)`. The unit of the provided gets converted to 'Ω'.
 
     freq
-        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the frequency of the impedance data
-        The unit of the provided data should be or gets converted to 'Hz'
+        A :class:`pint.Quantity` object containing the frequency :math:`f` of the
+        impedance data. The unit of the provided data should gets converted to 'Hz'.
 
     circuit
-        Equivalent circuit for the fit
+        A :class:`str` description of the equivalent circuit.
 
     initial_values
-        dictionary with initial values
+        A :class:`dict` with the initial (guess) values.
         Structure: {"param name": value, ... }
 
     output
-        the name of the output
+        A :class:`str` prefix
 
     fit_bounds
         Custom bounds for a parameter if default bounds are not wanted
@@ -306,7 +138,7 @@ def fit_circuit(
          - parameters, contains all the values of the parameters accessible by their names
          - units, contains all the units of the parameters accessible by their names
     """
-    # separate the data into nominal values and uncertainties and normalize the units.
+    # normalise input units and get nominal values of the input data
     real_data = separate_data(real, "Ω")[0]
     imag_data = separate_data(imag, "Ω")[0]
     freq_data = separate_data(freq, "Hz")[0]
@@ -336,14 +168,13 @@ def fit_circuit(
     variable_bounds = []  # bounds of the parameters that are not fixed
 
     for p in param_info:
-        p_name = p["name"]
-        if p_name in initial_values:
-            if p_name not in fit_constants:
-                variable_bounds.append(fit_bounds.get(p_name, p["bounds"]))
-                variable_guess.append(initial_values.get(p_name))
-                variable_names.append(p_name)
+        if p["name"] in initial_values:
+            if p["name"] not in fit_constants:
+                variable_bounds.append(fit_bounds.get(p["name"], p["bounds"]))
+                variable_guess.append(initial_values.get(p["name"]))
+                variable_names.append(p["name"])
         else:
-            raise ValueError(f"No initial value given for {p_name}")
+            raise ValueError(f"No initial value given for {p['name']}")
 
     # calculate the weight of each datapoint
     def weight(error, value):
@@ -380,55 +211,55 @@ def fit_circuit(
     param_values.update(dict(zip(variable_names, opt_result.x)))
 
     # create output dictionaries
-    parameters = {f"{output}->circuit": circuit}
-    units = {f"{output}->circuit": ""}
+    retval = {f"{output}->circuit": circuit}
 
-    # iterate over param_info to make sure every parameter of the circuit gets added
-    # necessary since we need the unit of the parameter
+    # iterate over param_info, construct parameter name, and convert parameter
+    # values to pint.Quantities
     for p in param_info:
-        p_name = p["name"]
-        col_name = f"{output}->{p_name}"
-        parameters[col_name] = param_values[p_name]
-        units[col_name] = p["unit"]
+        col_name = f"{output}->{p['name']}"
+        retval[col_name] = pint.Quantity(param_values[p["name"]], p["unit"])
 
-    return parameters, units
+    return retval
 
 
-@load_data("freq")
+@load_array_data("freq")
 def calc_circuit(
+    freq: pint.Quantity,
     circuit: str,
     parameters: dict[str, float],
-    output: str,
-    freq: Union[np.ndarray, pint.Quantity],
+    output: str = "calc_circuit",
 ) -> tuple[dict[str, float], dict[str, str]]:
     """
-    Calculate and adds the impedance as columns to the given dataframe for the given parameters, frequency and circuit.
+    Calculates the complex impedance :math:`\\text{Re}(Z)` and :math:`-\\text{Im}(Z)`
+    of the prescribed equivalent circuit as a function of frequency :math:`f`.
 
     Parameters
     ----------
+    freq
+        A :class:`pint.Quantity` containing the frequencies :math:`f` at which the
+        equivalent circuit is to be evaluated. The provided data should be in "Hz".
+
     circuit
-        string describing the circuit. For more info see impedance.fit_circuit
+        A :class:`str` description of the equivalent circuit. For more details see
+        :func:`fit_circuit`.
 
     parameters
-        dictionary with initial values
+        A :class:`dict` containing the values defining the equivalent circuit.
         Structure: {"param name": value, ... }
 
     output
-        the name of the output
+        A :class:`str` prefix for the ``Re(Z)`` and ``-Im(Z)`` values calculated
+        in this function. Defaults to ``"calc_circuit"``.
 
-    freq
-        numpy.ndarray or pint.Quantity of a numpy.ndarray containing the frequency
-        The provided data should be in the unit of "Hz"
 
     Returns
     -------
-    (parameters, units)
-        A tuple containing two dicts.
-         - values, containing the two lists of the real and the negative imaginary part of the impedance ce
-         - units, contains the corresponding units of the impedance
+    retvals: dict[str, pint.Quantity]
+        A dictionary containing the :class:`pint.Quantity` arrays with the
+        output-prefixed :math:`\\text{Re}(Z)` and :math:`-\\text{Im}(Z)` as keys.
     """
     # separate the freq data into values, errors and normalize the unit
-    freq_data, freq_error, freq_unit = separate_data(freq, "Hz")
+    freq_data = separate_data(freq, "Hz")[0]
 
     # parse the circuit
     param_info, circ_calc = parse_circuit(circuit)
@@ -445,12 +276,78 @@ def calc_circuit(
     real_name = f"{output}->Re(Z)"
     imag_name = f"{output}->-Im(Z)"
 
-    values = {
-        real_name: impedance.real.tolist(),
-        imag_name: (-impedance.imag).tolist(),
+    retval = {
+        real_name: pint.Quantity(impedance.real, "Ω"),
+        imag_name: pint.Quantity(-impedance.imag, "Ω"),
     }
-    units = {
-        real_name: "Ω",
-        imag_name: "Ω",
-    }
-    return values, units
+
+    return retval
+
+
+@load_array_data("real", "imag")
+def lowest_real_impedance(
+    real: pint.Quantity,
+    imag: pint.Quantity,
+    output: str = "min Re(Z)",
+    threshold: float = 0.0,
+) -> dict[str, Union[int, str, pint.Quantity]]:
+    """
+    A function that finds and interpolates the lowest :math:`\\text{Re}(Z)` value
+    at which the complex impedance :math:`Z = \\text{Re}(Z) - j \\text{Im}(Z)` is a
+    real number (i.e. :math:`\\text{Im}(Z) \\approx 0`). If the impedance does not
+    cross the real-zero axis, the :math:`\\text{Re}(Z)` at which the
+    :math:`\\text{abs}(\\text{Im}(Z))` is the smallest is returned.
+
+    Parameters
+    ----------
+    real
+        A :class:`pint.Quantity` object containing the real part of the impedance data,
+        :math:`\\text{Re}(Z)`. The units of ``real`` and ``imag`` are assumed to match.
+
+    imag
+        A :class:`pint.Quantity` object containing the imaginary part of the impedance
+        data, :math:`-\\text{Im}(Z)`. The units of ``real`` and ``imag`` are assumed to
+        match.
+
+    output
+        A :class:`str` name for the output column, defaults to ``"min Re(Z)"``.
+
+    Returns
+    -------
+    retvals: dict[str, pint.Quantity]
+        A dictionary containing the :class:`pint.Quantity` values of the real impedances
+        with the output as keys.
+    """
+
+    s = np.argsort(real)
+    real = real[s]
+    imag = imag[s]
+    if imag[0] > 0:
+        izeros = np.flatnonzero(imag < threshold)
+    else:
+        izeros = np.flatnonzero(imag > threshold)
+    if izeros.size == 0:
+        logger.warning(
+            "No real impedance found. Returning real part of impedance "
+            "with the smallest complex component."
+        )
+        iz = abs(imag).argmin()
+        z, u = real[iz].m, real[iz].u
+    else:
+        iz = izeros[0]
+        if iz == real.size:
+            im = imag[iz - 1 :]
+            re = real[iz - 1 :]
+        else:
+            im = imag[iz - 1 : iz + 1]
+            re = real[iz - 1 : iz + 1]
+
+        imv, ime, imu = separate_data(im)
+        rev, ree, reu = separate_data(re)
+
+        zv = np.interp(0, imv, rev)
+        ze = np.interp(0, ime, ree)
+        z = uc.ufloat(zv, ze)
+        u = reu
+
+    return {output: pint.Quantity(z, u)}

@@ -1,0 +1,14 @@
+load:
+  - as: norm
+    path: normalized.dg.json
+  - as: sparse
+    path: sparse.dg.json
+extract:
+  - into: df
+    from: sparse
+    at:
+      steps: b1, b2, b3
+    columns:
+      - key: derived->xout->*
+        as: xout
+  

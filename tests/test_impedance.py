@@ -3,11 +3,10 @@ import os
 
 import numpy as np
 import pandas as pd
+from uncertainties import unumpy as unp
 import pytest
 from dgpost.transform import impedance
 from dgpost.utils import extract, transform
-
-from tests.utils import datadir
 
 
 @pytest.mark.parametrize(
@@ -229,7 +228,7 @@ def test_direct_fit_circuit(datadir):
         },
     }
 
-    parameters, units = impedance.fit_circuit(real, imag, freq, **fit_info)
+    retvals = impedance.fit_circuit(real, imag, freq, **fit_info)
 
     expected = {
         "circuit": "R0-p(R1,C1)-p(R2,C2)",
@@ -240,10 +239,9 @@ def test_direct_fit_circuit(datadir):
         "C2": 1e-6,
     }
 
-    for key in parameters:
-        ret = parameters.get(key)
+    for key, val in retvals.items():
         ref = expected.get(key.split(">")[-1])
-        assert ret == pytest.approx(ref)
+        assert val == ref or val.m == pytest.approx(ref)
 
 
 def test_calc_circuit(datadir):
@@ -271,6 +269,61 @@ def test_calc_circuit(datadir):
 
     cols = [col for col in df if col.startswith("test")]
     for col in cols:
-        name = col.split(">")[-1]
+        name = col.split("->")[-1]
         np.testing.assert_array_equal(df[col].iloc[0], ref[name].iloc[0])
         assert df.attrs["units"][col] == ref.attrs["units"][name]
+
+
+@pytest.mark.parametrize(
+    "filepath, inp_extr, inp_using, expected",
+    [
+        (
+            "peis.dg.json",
+            {
+                "at": {"index": 0},
+                "columns": [
+                    {"key": "raw->traces->PEIS->Re(Z)", "as": "Re(Z)"},
+                    {"key": "raw->traces->PEIS->-Im(Z)", "as": "-Im(Z)"},
+                ],
+            },
+            [{"real": "Re(Z)", "imag": "-Im(Z)"}],
+            [
+                14.800329,
+                11.044216,
+            ],
+        ),
+        (
+            "peis2.dg.json",
+            {
+                "at": {"index": 0},
+                "columns": [
+                    {"key": "raw->traces->PEIS->Re(Z)", "as": "real"},
+                    {"key": "raw->traces->PEIS->-Im(Z)", "as": "imag"},
+                ],
+            },
+            [{"real": "real", "imag": "imag"}],
+            [
+                8.513345,
+                11.355723,
+                9.173434,
+                10.407892,
+                12.295147,
+                8.395753,
+                8.789996,
+                9.496541,
+                10.546235,
+                12.573461,
+                8.438693,
+                8.911721,
+                9.65812,
+            ],
+        ),
+    ],
+)
+def test_lowest_real(filepath, inp_extr, inp_using, expected, datadir):
+    os.chdir(datadir)
+    with open(filepath, "r") as infile:
+        dg = json.load(infile)
+    df = extract(dg, inp_extr)
+    transform(df, "impedance.lowest_real_impedance", using=inp_using)
+    np.testing.assert_allclose(expected, unp.nominal_values(df["min Re(Z)"]))

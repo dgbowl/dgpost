@@ -7,4 +7,3 @@ dist/
 build/
 public/
 docs/source/dgpost.*
-tests/*.pkl
