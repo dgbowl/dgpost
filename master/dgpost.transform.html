@@ -226,9 +226,9 @@ using <code class="xref py py-func docutils literal notranslate"><span class="pr
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.helpers.columns_to_smiles">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">columns_to_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.columns_to_smiles" title="Permalink to this definition"></a></dt>
-<dd><p>Creates a dictionary with SMILES representation of all chemicals, in the dataframe
-matched by the prefix, storing the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">chemicals.ChemicalMetadata</span></code> as
-well as the full name of the column.</p>
+<dd><p>Creates a dictionary with SMILES representation of all chemicals present among the
+columns of the dataframe and matched by the prefix, storing the returned
+<code class="xref py py-class docutils literal notranslate"><span class="pre">chemicals.ChemicalMetadata</span></code> as well as the full name of the column.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -237,11 +237,11 @@ well as the full name of the column.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A new dictionary containing the SMILES of all prefixed chemicals as keys,
+<dd class="field-even"><p><strong>smiles</strong> – A new dictionary containing the SMILES of all prefixed chemicals as keys,
 and the metadata and column specification as values.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -249,8 +249,8 @@ and the metadata and column specification as values.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.helpers.default_element">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">default_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.default_element" title="Permalink to this definition"></a></dt>
-<dd><p>Given a formula <code class="docutils literal notranslate"><span class="pre">f</span></code>, return the default element for conversion. Priority is:
-<code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span> <span class="pre">&gt;</span> <span class="pre">&quot;O&quot;</span> <span class="pre">&gt;</span> <span class="pre">&quot;H&quot;</span> <span class="pre">&gt;</span> <span class="pre">...</span></code>.</p>
+<dd><p>Given a formula <code class="docutils literal notranslate"><span class="pre">f</span></code>, return the default element for calculating
+conversion. Priority is: <code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span> <span class="pre">&gt;</span> <span class="pre">&quot;O&quot;</span> <span class="pre">&gt;</span> <span class="pre">&quot;H&quot;</span> <span class="pre">&gt;</span> <span class="pre">...</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
@@ -265,6 +265,36 @@ and the metadata and column specification as values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.helpers.load_array_data">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">load_array_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.load_array_data" title="Permalink to this definition"></a></dt>
+<dd><p>Decorator factory for data loading. Intended to load arrays.a</p>
+<p>Creates a decorator that will load the columns specified in <code class="docutils literal notranslate"><span class="pre">cols</span></code>
+and calls the wrapped function for each row entry.</p>
+<p>The load_data decorator handles the following three cases:</p>
+<ul class="simple">
+<li><p>decorated function launched directly with kwargs only -&gt; the kwargs
+that correspond to the cols listed in the decorator are converted
+to pint.Quantity</p></li>
+<li><p>decorated function launched using a mixture of args and kwargs -&gt; the
+args are assigned into kwargs using cols and converted to pint.Quantity</p></li>
+<li><p>decorated function launched with pd.DataFrame and kwargs -&gt; the cols
+specify column names in the pd.DataFrame, which are pulled out and converted
+to pint.Quantity</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – list of strings with the col names used to call the function</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>loading</strong> – A wrapped version of the decorated function</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Callable</p>
 </dd>
 </dl>
 </dd></dl>
@@ -289,10 +319,10 @@ the returned <code class="xref py py-class docutils literal notranslate"><span c
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Unit-aware numpy-like object containing the data from <code class="docutils literal notranslate"><span class="pre">df[col]</span></code>.</p>
+<dd class="field-even"><p><strong>Quantity</strong> – Unit-aware <code class="xref py py-class docutils literal notranslate"><span class="pre">ping.Quantity</span></code> object containing the data from <code class="docutils literal notranslate"><span class="pre">df[col]</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></p>
+<dd class="field-odd"><p>pint.Quantity</p>
 </dd>
 </dl>
 </dd></dl>
@@ -319,48 +349,76 @@ as <code class="docutils literal notranslate"><span class="pre">df[tag]</span></
 </dl>
 </dd></dl>
 
-</section>
-<section id="module-dgpost.transform.impedance">
-<span id="dgpost-transform-impedance-module"></span><h2>dgpost.transform.impedance module<a class="headerlink" href="#module-dgpost.transform.impedance" title="Permalink to this headline"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="dgpost.transform.impedance.calc_circuit">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">calc_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.calc_circuit" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate and adds the impedance as columns to the given dataframe for the given parameters, frequency and circuit.</p>
+<dt class="sig sig-object py" id="dgpost.transform.helpers.separate_data">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">separate_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.separate_data" title="Permalink to this definition"></a></dt>
+<dd><p>Separates the data into values, errors and unit</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>circuit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – string describing the circuit. For more info see impedance.fit_circuit</p></li>
-<li><p><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – dictionary with initial values
-Structure: {“param name”: value, … }</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the name of the output</p></li>
-<li><p><strong>freq</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – numpy.ndarray or pint.Quantity of a numpy.ndarray containing the frequency
-The provided data should be in the unit of “Hz”</p></li>
+<li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the data points. Can be either
+<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">uc.ufloat</span></code>.</p></li>
+<li><p><strong>unit</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – When specified, converts the data to this unit.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>A tuple containing two dicts.</dt><dd><ul class="simple">
-<li><p>values, containing the two lists of the real and the negative imaginary part of the impedance ce</p></li>
-<li><p>units, contains the corresponding units of the impedance</p></li>
-</ul>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>Converted nominal values and errors, and the original unit of the data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(parameters, units)</p>
+<dd class="field-odd"><p>(values, errors, old_unit)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-dgpost.transform.impedance">
+<span id="dgpost-transform-impedance-module"></span><h2>dgpost.transform.impedance module<a class="headerlink" href="#module-dgpost.transform.impedance" title="Permalink to this headline"></a></h2>
+<section id="impedance-related-transformations">
+<h3>Impedance-related transformations<a class="headerlink" href="#impedance-related-transformations" title="Permalink to this headline"></a></h3>
+<p>This module contains functions relevant to Electrochemical Impedance Spectroscopy (EIS).</p>
+<p>The main functions in this module are two functions relevant for the fitting and
+evaluation of equivalent circuits, <a class="reference internal" href="#dgpost.transform.impedance.fit_circuit" title="dgpost.transform.impedance.fit_circuit"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_circuit()</span></code></a> and <a class="reference internal" href="#dgpost.transform.impedance.calc_circuit" title="dgpost.transform.impedance.calc_circuit"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_circuit()</span></code></a>,
+respectively. The two functions expect frequency-resolved complex impedance data.</p>
+<p>For less rigorous analysis, the <a class="reference internal" href="#dgpost.transform.impedance.lowest_real_impedance" title="dgpost.transform.impedance.lowest_real_impedance"><code class="xref py py-func docutils literal notranslate"><span class="pre">lowest_real_impedance()</span></code></a> can be used, to
+find and/or interpolate the lowest real-valued point of the complex impedance.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.impedance.calc_circuit">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">calc_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'calc_circuit'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.calc_circuit" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the complex impedance <span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span> and <span class="math notranslate nohighlight">\(-\text{Im}(Z)\)</span>
+of the prescribed equivalent circuit as a function of frequency <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freq</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> containing the frequencies <span class="math notranslate nohighlight">\(f\)</span> at which the
+equivalent circuit is to be evaluated. The provided data should be in “Hz”.</p></li>
+<li><p><strong>circuit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> description of the equivalent circuit. For more details see
+<a class="reference internal" href="#dgpost.transform.impedance.fit_circuit" title="dgpost.transform.impedance.fit_circuit"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_circuit()</span></code></a>.</p></li>
+<li><p><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the values defining the equivalent circuit.
+Structure: {“param name”: value, … }</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the <code class="docutils literal notranslate"><span class="pre">Re(Z)</span></code> and <code class="docutils literal notranslate"><span class="pre">-Im(Z)</span></code> values calculated
+in this function. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;calc_circuit&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>retvals</strong> – A dictionary containing the <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> arrays with the
+output-prefixed <span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span> and <span class="math notranslate nohighlight">\(-\text{Im}(Z)\)</span> as keys.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.impedance.fit_circuit">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">fit_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_constants</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_neg_res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.fit_circuit" title="Permalink to this definition"></a></dt>
-<dd><p>Fitting function for equivalent circuits of electrochemical impedance spectroscopy (EIS) data.</p>
-<p>For the fitting an equivalent circuit is needed, defined as a string. The circuit may be composed of multiple elements.
-To combine elements in series a dash (-) is used. Elements in parallel are wrapped by p( , ).
-An element is defined by an identifier (usually letters) followed by a digit.
-Already implemented elements are located in <code class="xref py py-class docutils literal notranslate"><span class="pre">circuit_components</span></code>:</p>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">fit_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fit_circuit'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_constants</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_neg_res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.fit_circuit" title="Permalink to this definition"></a></dt>
+<dd><p>Fits an equivalent circuit to the frequency-resolved EIS data.</p>
+<p>For the fitting an equivalent circuit is needed, defined as a <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>.
+The circuit may be composed of multiple circuit elements. To combine elements
+in a series a dash (<code class="docutils literal notranslate"><span class="pre">-</span></code>) is used. Elements in parallel are wrapped by
+<code class="docutils literal notranslate"><span class="pre">p(</span> <span class="pre">,</span> <span class="pre">)</span></code>. An element is defined by an identifier (usually letters) followed
+by a digit. Already implemented elements are located in the
+<a class="reference internal" href="dgpost.transform.circuit_utils.html#module-dgpost.transform.circuit_utils.circuit_components" title="dgpost.transform.circuit_utils.circuit_components"><code class="xref py py-mod docutils literal notranslate"><span class="pre">circuit_utils.circuit_components</span></code></a> module:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -369,82 +427,86 @@ Already implemented elements are located in <code class="xref py py-class docuti
 <col style="width: 21%" />
 <col style="width: 19%" />
 </colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Name</p></td>
-<td><p>Symbol</p></td>
-<td><p>Parameters</p></td>
-<td><p>Bounds</p></td>
-<td><p>Units</p></td>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Symbol</p></th>
+<th class="head"><p>Parameters</p></th>
+<th class="head"><p>Bounds</p></th>
+<th class="head"><p>Units</p></th>
 </tr>
+</thead>
+<tbody>
 <tr class="row-even"><td><p>Resistor</p></td>
-<td><p>R</p></td>
-<td><p>R</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">R</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">R</span></code></p></td>
 <td><p>(1e-6, 1e6)</p></td>
-<td><p>Ohm</p></td>
+<td><p>Ω</p></td>
 </tr>
 <tr class="row-odd"><td><p>Capacitance</p></td>
-<td><p>C</p></td>
-<td><p>C</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">C</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">C</span></code></p></td>
 <td><p>(1e-20, 1)</p></td>
-<td><p>Farad</p></td>
+<td><p>F</p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><p>Constant Phase Element</p></td>
-<td rowspan="2"><p>CPE</p></td>
-<td><p>CPE_Q</p></td>
+<td rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">CPE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CPE_Q</span></code></p></td>
 <td><p>(1e-20, 1)</p></td>
-<td><p>Ohm^-1 s^a</p></td>
+<td><p>Ω⁻¹sᵃ</p></td>
 </tr>
-<tr class="row-odd"><td><p>CPE_a</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CPE_a</span></code></p></td>
 <td><p>(0, 1)</p></td>
 <td></td>
 </tr>
 <tr class="row-even"><td><p>Warburg element</p></td>
-<td><p>W</p></td>
-<td><p>W</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">W</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">W</span></code></p></td>
 <td><p>(0, 1e10)</p></td>
-<td><p>Ohm^-1 s^0.5</p></td>
+<td><p>Ω⁻¹s¹ᐟ²</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><p>Warburg short element</p></td>
-<td rowspan="2"><p>Ws</p></td>
-<td><p>Ws_R</p></td>
+<td rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">Ws</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Ws_R</span></code></p></td>
 <td><p>(0, 1e10)</p></td>
-<td><p>Ohm</p></td>
+<td><p>Ω</p></td>
 </tr>
-<tr class="row-even"><td><p>Ws_T</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Ws_T</span></code></p></td>
 <td><p>(1e-10, 1e10)</p></td>
 <td><p>s</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><p>Warburg open element</p></td>
-<td rowspan="2"><p>Wo</p></td>
-<td><p>Wo_R</p></td>
+<td rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">Wo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wo_R</span></code></p></td>
 <td><p>(0, 1e10)</p></td>
-<td><p>Ohm</p></td>
+<td><p>Ω</p></td>
 </tr>
-<tr class="row-even"><td><p>Wo_T</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Wo_T</span></code></p></td>
 <td><p>(1e-10, 1e10)</p></td>
 <td><p>s</p></td>
 </tr>
 </tbody>
 </table>
-<p>Additionally an initial guess for the fitting parameters is needed.
-The initial guess is given as a dictionary where each key is the parameters name and
-the corresponding value is the guessed value for the circuit.</p>
+<p>Additionally an initial guess for the fitting parameters is needed. The initial
+guess is given as a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> where each key is the parameter name and the
+corresponding value is the initial value for the circuit.</p>
 <p>The bounds of each parameter can be customized by the <code class="docutils literal notranslate"><span class="pre">fit_bounds</span></code> parameter.
-This parameter is a dictionary, where each key is the parameter name and the value consists of a tuple for the lower and upper bound (lb, ub).</p>
-<p>To hold a parameter constant, add the name of the parameter to a list and pass it as <code class="docutils literal notranslate"><span class="pre">fit_constants</span></code></p>
+This parameter is a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, where each key is the parameter name and the
+value consists of a <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> for the lower and upper bound (lb, ub).</p>
+<p>To hold a parameter constant, add the name of the parameter to a <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>
+and pass it as <code class="docutils literal notranslate"><span class="pre">fit_constants</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>real</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – numpy.ndarray or pint.Quantity of a numpy.ndarray containing the real part of the impedance data
-The unit of the provided data should be or gets converted to ‘Ω’</p></li>
-<li><p><strong>imag</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – numpy.ndarray or pint.Quantity of a numpy.ndarray containing the negative imaginary part of the impedance data
-The unit of the provided data should be or gets converted to ‘Ω’</p></li>
-<li><p><strong>freq</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – numpy.ndarray or pint.Quantity of a numpy.ndarray containing the frequency of the impedance data
-The unit of the provided data should be or gets converted to ‘Hz’</p></li>
-<li><p><strong>circuit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Equivalent circuit for the fit</p></li>
-<li><p><strong>initial_values</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – dictionary with initial values
+<li><p><strong>real</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the impedance data,
+<span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span>. The unit of the provided gets converted to ‘Ω’.</p></li>
+<li><p><strong>imag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the impedance
+data, <span class="math notranslate nohighlight">\(-\text{Im}(Z)\)</span>. The unit of the provided gets converted to ‘Ω’.</p></li>
+<li><p><strong>freq</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the frequency <span class="math notranslate nohighlight">\(f\)</span> of the
+impedance data. The unit of the provided data should gets converted to ‘Hz’.</p></li>
+<li><p><strong>circuit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> description of the equivalent circuit.</p></li>
+<li><p><strong>initial_values</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with the initial (guess) values.
 Structure: {“param name”: value, … }</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the name of the output</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix</p></li>
 <li><p><strong>fit_bounds</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]]) – Custom bounds for a parameter if default bounds are not wanted
 Structure: {“param name”: (lower bound, upper bound), …}
 Default is ‘’None’’</p></li>
@@ -474,69 +536,35 @@ Default is ‘’None’’</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="dgpost.transform.impedance.fit_routine">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">fit_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_guess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.fit_routine" title="Permalink to this definition"></a></dt>
-<dd><p>Fitting routine which uses scipy least_squares and minimize.</p>
-<p>Least_squares is a good fitting method but will get stuck in local minima.
-For this reason, the Nelder-Mead-Simplex algorithm is used to get out of these local minima.
-The fitting routine is inspired by Relaxis 3 fitting procedure.
-More information about it can be found on page 188 of revision 1.25 of Relaxis User Manual.
-<a class="reference external" href="https://www.rhd-instruments.de/download/manuals/relaxis_manual.pdf">https://www.rhd-instruments.de/download/manuals/relaxis_manual.pdf</a></p>
-<p>Open issue is estimate the errors of the parameters. For further information look:
-- <a class="reference external" href="https://github.com/andsor/notebooks/blob/master/src/nelder-mead.md">https://github.com/andsor/notebooks/blob/master/src/nelder-mead.md</a>
-- <a class="reference external" href="https://math.stackexchange.com/questions/2447382/nelder-mead-function-fit-error-estimation-via-surface-fit">https://math.stackexchange.com/questions/2447382/nelder-mead-function-fit-error-estimation-via-surface-fit</a>
-- <a class="reference external" href="https://stats.stackexchange.com/questions/424073/calculate-the-uncertainty-of-a-mle">https://stats.stackexchange.com/questions/424073/calculate-the-uncertainty-of-a-mle</a></p>
+<dt class="sig sig-object py" id="dgpost.transform.impedance.lowest_real_impedance">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">lowest_real_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'min</span> <span class="pre">Re(Z)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.lowest_real_impedance" title="Permalink to this definition"></a></dt>
+<dd><p>A function that finds and interpolates the lowest <span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span> value
+at which the complex impedance <span class="math notranslate nohighlight">\(Z = \text{Re}(Z) - j \text{Im}(Z)\)</span> is a
+real number (i.e. <span class="math notranslate nohighlight">\(\text{Im}(Z) \approx 0\)</span>). If the impedance does not
+cross the real-zero axis, the <span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span> at which the
+<span class="math notranslate nohighlight">\(\text{abs}(\text{Im}(Z))\)</span> is the smallest is returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>opt_func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>[[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – function that gets minimized</p></li>
-<li><p><strong>fit_guess</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – initial guess for minimization</p></li>
-<li><p><strong>bounds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]) – bounds of the fitting parameters</p></li>
-<li><p><strong>repeat</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – how many times the least squares and minimize step gets repeated</p></li>
+<li><p><strong>real</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the impedance data,
+<span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span>. The units of <code class="docutils literal notranslate"><span class="pre">real</span></code> and <code class="docutils literal notranslate"><span class="pre">imag</span></code> are assumed to match.</p></li>
+<li><p><strong>imag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the impedance
+data, <span class="math notranslate nohighlight">\(-\text{Im}(Z)\)</span>. The units of <code class="docutils literal notranslate"><span class="pre">real</span></code> and <code class="docutils literal notranslate"><span class="pre">imag</span></code> are assumed to
+match.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> name for the output column, defaults to <code class="docutils literal notranslate"><span class="pre">&quot;min</span> <span class="pre">Re(Z)&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>opt_result</strong> – the result of the optimization from the last step of Nelder-Mead.</p>
+<dd class="field-even"><p><strong>retvals</strong> – A dictionary containing the <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> values of the real impedances
+with the output as keys.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>scipy.optimize.OptimizeResult</p>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="dgpost.transform.impedance.load_data">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.load_data" title="Permalink to this definition"></a></dt>
-<dd><p>Decorator factory for data loading</p>
-<p>Creates a decorator that will load the columns specified in <code class="docutils literal notranslate"><span class="pre">cols</span></code>
-and calls the wrapped function for each row entry.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – list of strings with the col names used to call the function</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="dgpost.transform.impedance.separate_data">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">separate_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.separate_data" title="Permalink to this definition"></a></dt>
-<dd><p>Separates the data into values, errors and unit</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – List of data points which are either floats or ufloats</p></li>
-<li><p><strong>unit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – converts the input quantity to this unit</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>returns the values with the corresponding errors and the unit of the input array</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(values, errors, old_unit)</p>
-</dd>
-</dl>
-</dd></dl>
-
+</section>
 </section>
 <section id="module-dgpost.transform.rates">
 <span id="dgpost-transform-rates-module"></span><h2>dgpost.transform.rates module<a class="headerlink" href="#module-dgpost.transform.rates" title="Permalink to this headline"></a></h2>

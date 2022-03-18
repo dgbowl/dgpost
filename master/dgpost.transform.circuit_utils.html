@@ -520,6 +520,37 @@ A parameter is a dictionary with 3 keys: ‘name’, ‘bounds’ and ‘unit’
 <section id="module-dgpost.transform.circuit_utils.circuit_parser">
 <span id="dgpost-transform-circuit-utils-circuit-parser-module"></span><h2>dgpost.transform.circuit_utils.circuit_parser module<a class="headerlink" href="#module-dgpost.transform.circuit_utils.circuit_parser" title="Permalink to this headline"></a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_parser.fit_routine">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_parser.</span></span><span class="sig-name descname"><span class="pre">fit_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_guess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_parser.fit_routine" title="Permalink to this definition"></a></dt>
+<dd><p>Fitting routine which uses scipy least_squares and minimize.</p>
+<p>Least_squares is a good fitting method but will get stuck in local minima.
+For this reason, the Nelder-Mead-Simplex algorithm is used to get out of these local minima.
+The fitting routine is inspired by Relaxis 3 fitting procedure.
+More information about it can be found on page 188 of revision 1.25 of Relaxis User Manual.
+<a class="reference external" href="https://www.rhd-instruments.de/download/manuals/relaxis_manual.pdf">https://www.rhd-instruments.de/download/manuals/relaxis_manual.pdf</a></p>
+<p>Open issue is estimate the errors of the parameters. For further information look:
+- <a class="reference external" href="https://github.com/andsor/notebooks/blob/master/src/nelder-mead.md">https://github.com/andsor/notebooks/blob/master/src/nelder-mead.md</a>
+- <a class="reference external" href="https://math.stackexchange.com/questions/2447382/nelder-mead-function-fit-error-estimation-via-surface-fit">https://math.stackexchange.com/questions/2447382/nelder-mead-function-fit-error-estimation-via-surface-fit</a>
+- <a class="reference external" href="https://stats.stackexchange.com/questions/424073/calculate-the-uncertainty-of-a-mle">https://stats.stackexchange.com/questions/424073/calculate-the-uncertainty-of-a-mle</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>opt_func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>[[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – function that gets minimized</p></li>
+<li><p><strong>fit_guess</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – initial guess for minimization</p></li>
+<li><p><strong>bounds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]) – bounds of the fitting parameters</p></li>
+<li><p><strong>repeat</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – how many times the least squares and minimize step gets repeated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>opt_result</strong> – the result of the optimization from the last step of Nelder-Mead.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>scipy.optimize.OptimizeResult</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_parser.parse_circuit">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_parser.</span></span><span class="sig-name descname"><span class="pre">parse_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circ</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_parser.parse_circuit" title="Permalink to this definition"></a></dt>
 <dd><p>Extended Backus–Naur form (EBNF) parser for a circuit string.</p>
