@@ -27,20 +27,20 @@ from .helpers import separate_data, load_array_data
 logger = logging.getLogger(__name__)
 
 
-@load_array_data("real", "imag", "freq")
+@load_array_data("real [Ω]", "imag [Ω]", "freq [Hz]")
 def fit_circuit(
     real: pint.Quantity,
     imag: pint.Quantity,
     freq: pint.Quantity,
     circuit: str,
     initial_values: dict[str, float],
-    output: str = "fit_circuit",
     fit_bounds: dict[str, tuple[float, float]] = None,
     fit_constants: list[str] = None,
     ignore_neg_res: bool = True,
     upper_freq: float = np.inf,
     lower_freq: float = 0,
     repeat: int = 1,
+    output: str = "fit_circuit",
 ) -> dict[str, Union[int, str, pint.Quantity]]:
     """
     Fits an equivalent circuit to the frequency-resolved EIS data.
@@ -222,7 +222,7 @@ def fit_circuit(
     return retval
 
 
-@load_array_data("freq")
+@load_array_data("freq [Hz]")
 def calc_circuit(
     freq: pint.Quantity,
     circuit: str,
@@ -284,12 +284,12 @@ def calc_circuit(
     return retval
 
 
-@load_array_data("real", "imag")
+@load_array_data("real [Ω]", "imag [Ω]")
 def lowest_real_impedance(
     real: pint.Quantity,
     imag: pint.Quantity,
-    output: str = "min Re(Z)",
     threshold: float = 0.0,
+    output: str = "min Re(Z)",
 ) -> dict[str, Union[int, str, pint.Quantity]]:
     """
     A function that finds and interpolates the lowest :math:`\\text{Re}(Z)` value

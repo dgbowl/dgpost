@@ -207,24 +207,44 @@ def load_array_data(*cols: str):
                     raise ValueError("Only the DataFrame should be given as argument")
 
                 df = args[0]
-                # check if the dataframe has a units attribute else create it
+                # Check if the dataframe has a units attribute. If not, the quantities
+                # in the dataframe are unitless and need to be converted.
                 if "units" not in df.attrs:
-                    df.attrs["units"] = {}
+                    uconv = True
+                else:
+                    uconv = False
 
                 # each kwarg to get a data column specified in cols should be a string
                 # create a list for each data column that should get past to the function
                 raw_data = []
+                # - Go through the cols array specified in the decorator.
+                # - Split each col into the name of the argument and its units.
+                # - Create the appropriate pint.Quantity object and place it in kwargs.
+                cnames = []
                 for col in cols:
                     if isinstance(col, str):
-                        raw_data.append(pQ(df, kwargs.pop(col)))
+                        parts = col.split(" ")
+                        cname = parts[0]
+                        cnames.append(cname)
+                        if len(parts) == 2:
+                            cunit = parts[1][1:-1]
+                        else:
+                            cunit = None
+                        cval = kwargs.pop(cname, None)
+                        if cval is None:
+                            continue
+                        elif uconv:
+                            raw_data.append(ureg.Quantity(df[cval].array, cunit))
+                        else:
+                            raw_data.append(pQ(df, cval))
                     else:
                         raise ValueError(f"Provided value for {col} is not a string")
-
+                
                 # transpose the list of pint.Quantity and iterate over it
                 # so that we iterate over each timestep
                 for index, row in enumerate(zip(*raw_data)):
                     # create kwargs for each data col
-                    data = {col: r for col, r in zip(cols, row)}
+                    data = {col: r for col, r in zip(cnames, row)}
 
                     # call the function for each row in the data
                     # the function should return a dict with keys that are
@@ -251,11 +271,21 @@ def load_array_data(*cols: str):
 
                 # Validate that all cols are pint.Quantity
                 for k in cols:
-                    v = kwargs[k]
+                    parts = k.split(" ")
+                    if len(parts) == 2:
+                        cn = parts[0]
+                        cu = parts[1][1:-1]
+                    else:
+                        cn = parts[0]
+                        cu = None
+                    v = kwargs.pop(k, kwargs.pop(cn, None))
                     if isinstance(v, pint.Quantity):
-                        continue
+                        kwargs[cn] = v
                     elif isinstance(v, np.ndarray):
-                        kwargs[k] = pint.Quantity(v)
+                        if cu is not None:
+                            kwargs[cn] = ureg.Quantity(v, cu)
+                        else:
+                            kwargs[cn] = v
                     else:
                         raise ValueError(
                             f"The provided argument '{k}' is neither a pint.Quantity "
@@ -379,7 +409,7 @@ def load_scalar_data(*cols: str):
                     else:
                         cn = parts[0]
                         cu = None
-                    v = kwargs.get(cn, None)
+                    v = kwargs.pop(k, kwargs.pop(cn, None))
                     if v is None:
                         continue
                     elif isinstance(v, pint.Quantity):
