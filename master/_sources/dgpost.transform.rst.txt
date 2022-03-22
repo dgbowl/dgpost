@@ -25,6 +25,14 @@ dgpost.transform.catalysis module
    :undoc-members:
    :show-inheritance:
 
+dgpost.transform.electrochemistry module
+----------------------------------------
+
+.. automodule:: dgpost.transform.electrochemistry
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 dgpost.transform.helpers module
 -------------------------------
 

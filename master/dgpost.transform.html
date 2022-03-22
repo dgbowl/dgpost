@@ -45,6 +45,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-dgpost.transform.catalysis">dgpost.transform.catalysis module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-dgpost.transform.electrochemistry">dgpost.transform.electrochemistry module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-dgpost.transform.helpers">dgpost.transform.helpers module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-dgpost.transform.impedance">dgpost.transform.impedance module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-dgpost.transform.rates">dgpost.transform.rates module</a></li>
@@ -220,6 +221,57 @@ using <code class="xref py py-func docutils literal notranslate"><span class="pr
 </dd></dl>
 
 </section>
+<section id="module-dgpost.transform.electrochemistry">
+<span id="dgpost-transform-electrochemistry-module"></span><h2>dgpost.transform.electrochemistry module<a class="headerlink" href="#module-dgpost.transform.electrochemistry" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.electrochemistry.nernst">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">nernst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ewe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ohm')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ampere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eref=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'volt')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=&lt;Quantity(298.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pH=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output='Eapp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.nernst" title="Permalink to this definition"></a></dt>
+<dd><p>Correct measured voltage to calculate the applied voltage, using corrections
+for Ohmic drop, reference potential vs RHE, and ionic concentration using
+the Nernst equation, either by providing <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(n\)</span>, or by
+providing the <span class="math notranslate nohighlight">\(pH\)</span>.</p>
+<p>This function corrects the measured voltage <span class="math notranslate nohighlight">\(E_\text{we}\)</span> to applied
+voltage <span class="math notranslate nohighlight">\(E\)</span> by implementing the following equation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}E &amp;= E_\text{we} + E_\text{ref} + RI + E_N \\
+E_N &amp;= - \frac{\overline{R} T}{nF} ln(Q) = \frac{\overline{R} T}{F} ln(10) \text{pH}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(E_\text{ref}\)</span> is the potential of the reference electrode vs RHE,
+<span class="math notranslate nohighlight">\(RI\)</span> is the product of cell resistance and applied current, <span class="math notranslate nohighlight">\(\overline{R}\)</span>
+is the molar gas constant, <span class="math notranslate nohighlight">\(T\)</span> is the temperature, <span class="math notranslate nohighlight">\(n\)</span> is the number
+of electrones transferred, <span class="math notranslate nohighlight">\(F\)</span> is the Faraday constant, <span class="math notranslate nohighlight">\(Q\)</span> is the
+reaction quotient, and <span class="math notranslate nohighlight">\(\text{pH}\)</span> is the pH of the electrolyte.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ewe</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The measured working potential with respect to the reference electrode.
+By default in V.</p></li>
+<li><p><strong>R</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The resistance of the cell. By default in Ω.</p></li>
+<li><p><strong>I</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The applied current. By default in A.</p></li>
+<li><p><strong>Eref</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The potential of the reference electrode with respect to RHE.
+By default in V.</p></li>
+<li><p><strong>T</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Temperature of the working electrode, used in the Nernst equation.
+By default 298.15 K.</p></li>
+<li><p><strong>n</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Number of electrons transferred in the process described by the Nernst
+equation. Must be specified along <code class="docutils literal notranslate"><span class="pre">Q</span></code>, cannot be specified with <code class="docutils literal notranslate"><span class="pre">pH</span></code>.</p></li>
+<li><p><strong>Q</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – The reaction quotient of the components of the process described by the
+Nernst equation. Must be specified along <code class="docutils literal notranslate"><span class="pre">n</span></code>, cannot be specified with
+<code class="docutils literal notranslate"><span class="pre">pH</span></code>.</p></li>
+<li><p><strong>pH</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – The pH of the solution. This assumes the modelled process is the reduction
+of <span class="math notranslate nohighlight">\(\text{H}^+ \rightarrow \text{H}\)</span>, i.e. <span class="math notranslate nohighlight">\(n = 1\)</span> and
+<span class="math notranslate nohighlight">\(\text{ln}(Q) = -\text{ln}(10)\text{pH}\)</span></p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the output variable. Defaults to <code class="docutils literal notranslate"><span class="pre">Eapp</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict(output, E)</strong> – Returns the calculated applied current in V.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-dgpost.transform.helpers">
 <span id="dgpost-transform-helpers-module"></span><h2>dgpost.transform.helpers module<a class="headerlink" href="#module-dgpost.transform.helpers" title="Permalink to this headline"></a></h2>
 <p>Module of helper functions for chemicals, elements, and unit handling.</p>
@@ -272,7 +324,7 @@ conversion. Priority is: <code class="docutils literal notranslate"><span class=
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.helpers.load_array_data">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">load_array_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.load_array_data" title="Permalink to this definition"></a></dt>
-<dd><p>Decorator factory for data loading. Intended to load arrays.a</p>
+<dd><p>Decorator factory for data loading. Intended to load arrays.</p>
 <p>Creates a decorator that will load the columns specified in <code class="docutils literal notranslate"><span class="pre">cols</span></code>
 and calls the wrapped function for each row entry.</p>
 <p>The load_data decorator handles the following three cases:</p>
@@ -292,6 +344,60 @@ to pint.Quantity</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>loading</strong> – A wrapped version of the decorated function</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.helpers.load_scalar_data">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">load_scalar_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.load_scalar_data" title="Permalink to this definition"></a></dt>
+<dd><p>Decorator factory for data loading. Intended to load scalars.</p>
+<p>Creates a decorator that will load the columns specified in <code class="docutils literal notranslate"><span class="pre">cols</span></code>
+and calls the wrapped function for all rows at once. The function has to
+return a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">pint.Quantity]</span></code>, handling an optional parameter
+<code class="docutils literal notranslate"><span class="pre">&quot;output&quot;</span></code> which prefixes (or assigns) the output data in the returned
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> appropriately.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">load_scalar_data</span></code> decorator handles the following cases:</p>
+<ul>
+<li><p>decorated function launched directly with <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> or with a mixture of
+<code class="docutils literal notranslate"><span class="pre">args</span></code> and <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">args</span></code> are assigned into <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> using their position in the
+<code class="docutils literal notranslate"><span class="pre">args</span></code> and <code class="docutils literal notranslate"><span class="pre">cols</span></code> array listed in the decorator</p></li>
+<li><p>all elements in <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> that match the values in the <code class="docutils literal notranslate"><span class="pre">cols</span></code> listed
+in the decorator are converted to <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects, unless
+they are one already.</p></li>
+<li><p>the units for the <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects are determined from the
+suffix of the <code class="docutils literal notranslate"><span class="pre">col</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>decorated function launched with a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> as <code class="docutils literal notranslate"><span class="pre">args</span></code> and other
+<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the data for <code class="docutils literal notranslate"><span class="pre">cols</span></code> is sourced from the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>, using the
+<code class="docutils literal notranslate"><span class="pre">kwargs</span></code> to look for appropriate column names in the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></li>
+<li><p>data from unit-aware <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> objects is loaded using the
+<a class="reference internal" href="#dgpost.transform.helpers.pQ" title="dgpost.transform.helpers.pQ"><code class="xref py py-func docutils literal notranslate"><span class="pre">pQ()</span></code></a> accessor accordingly</p></li>
+<li><p>data from unit-naive <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> objects are coerced into
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects using the units as specified in the <code class="docutils literal notranslate"><span class="pre">cols</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">list[str]</span></code> containing the column names used to call the function.
+The elements in the list have to match the <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> of the function. They
+can also be annotated by the required units, if applicable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>loading</strong> – A wrapped version of the decorated function.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Callable</p>
