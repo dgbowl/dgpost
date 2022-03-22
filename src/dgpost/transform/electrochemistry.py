@@ -3,9 +3,8 @@ from yadg.dgutils import ureg
 import numpy as np
 from .helpers import load_scalar_data
 
-@load_scalar_data(
-    "Ewe [V]", "R [Ω]", "I [A]", "Eref [V]", "T [K]", "n", "Q", "pH"
-)
+
+@load_scalar_data("Ewe [V]", "R [Ω]", "I [A]", "Eref [V]", "T [K]", "n", "Q", "pH")
 def nernst(
     Ewe: pint.Quantity,
     R: pint.Quantity = ureg.Quantity(0.0, "Ω"),
@@ -36,7 +35,7 @@ def nernst(
     is the molar gas constant, :math:`T` is the temperature, :math:`n` is the number
     of electrones transferred, :math:`F` is the Faraday constant, :math:`Q` is the 
     reaction quotient, and :math:`\\text{pH}` is the pH of the electrolyte.
-
+    
     Parameters
     ----------
     Ewe
@@ -68,7 +67,7 @@ def nernst(
 
     pH
         The pH of the solution. This assumes the modelled process is the reduction
-        of :math:`\\text{H}^+ \rightarrow \\text{H}``, i.e. :math:`n = 1` and
+        of :math:`\\text{H}^+ \\rightarrow \\text{H}``, i.e. :math:`n = 1` and
         :math:`\\text{ln}(Q) = -\\text{ln}(10)\\text{pH}`
 
     output
@@ -76,7 +75,7 @@ def nernst(
     
     Returns
     -------
-    {output: E}: dict[str, pint.Quantity]
+    dict(output, E) : dict[str, pint.Quantity]
         Returns the calculated applied current in V.
 
     """
@@ -87,12 +86,12 @@ def nernst(
         if isinstance(R, float):
             R = ureg.Quantity(R, "ohm")
 
-        E += R*I
+        E += R * I
     if (pH is not None) or (n is not None and Q is not None):
         EN = ureg("molar_gas_constant") * T / ureg("faraday_constant")
         if pH is not None:
             EN = pH * EN * np.log(10)
         else:
-            EN = - (EN / n) * np.log(Q)
+            EN = -(EN / n) * np.log(Q)
         E += EN
     return {output: E}

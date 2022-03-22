@@ -11,14 +11,14 @@ import dgpost.utils
         {  # ts0 - load with check = True
             "path": "sparse.dg.json",
             "check": True,
-        }, 
+        },
         {  # ts1 - load with check = False
             "path": "normalized.dg.json",
             "check": False,
         },
         {  # ts2 - load without check
             "path": "sparse.dg.json",
-        },  
+        },
     ],
 )
 def test_load(input, datadir):

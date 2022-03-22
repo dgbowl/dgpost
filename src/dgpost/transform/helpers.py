@@ -281,22 +281,24 @@ def load_scalar_data(*cols: str):
     The ``load_scalar_data`` decorator handles the following cases:
 
     - decorated function launched directly with ``kwargs`` or with a mixture of
-      ``args`` and ``kwargs``: 
+      ``args`` and ``kwargs``:
+
         - the ``args`` are assigned into ``kwargs`` using their position in the
           ``args`` and ``cols`` array listed in the decorator
-        - all elements in ``kwargs`` that match the values in the ``cols`` listed 
+        - all elements in ``kwargs`` that match the values in the ``cols`` listed
           in the decorator are converted to :class:`pint.Quantity` objects, unless
-          they are one already. 
+          they are one already.
         - the units for the :class:`pint.Quantity` objects are determined from the
           suffix of the ``col``
 
     - decorated function launched with a :class:`pd.DataFrame` as ``args`` and other
       ``kwargs``:
+
         - the data for ``cols`` is sourced from the :class:`pd.DataFrame`, using the
           ``kwargs`` to look for appropriate column names in the :class:`pd.DataFrame`
-        - data from unit-aware :class:`pd.DataFrame` objects is loaded using the 
+        - data from unit-aware :class:`pd.DataFrame` objects is loaded using the
           :func:`pQ` accessor accordingly
-        - data from unit-naive :class:`pd.DataFrame` objects are coerced into 
+        - data from unit-naive :class:`pd.DataFrame` objects are coerced into
           :class:`pint.Quantity` objects using the units as specified in the ``cols``
 
 
@@ -329,7 +331,7 @@ def load_scalar_data(*cols: str):
                     uconv = True
                 else:
                     uconv = False
-                # - Go through the cols array specified in the decorator. 
+                # - Go through the cols array specified in the decorator.
                 # - Split each col into the name of the argument and its units.
                 # - Create the appropriate pint.Quantity object and place it in kwargs.
                 for col in cols:
@@ -349,7 +351,7 @@ def load_scalar_data(*cols: str):
                             kwargs[cname] = pQ(df, cval)
                     else:
                         raise ValueError(f"Provided value for {col} is not a string")
-                # Run the function. The returned object should be a 
+                # Run the function. The returned object should be a
                 # dict[str, Union[pint.Quantity, int, float, str]].
                 # Load the results back into the dataframe.
                 retvals = func(**kwargs)
