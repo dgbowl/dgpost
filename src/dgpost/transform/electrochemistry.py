@@ -1,10 +1,19 @@
 import pint
 from yadg.dgutils import ureg
 import numpy as np
-from .helpers import load_scalar_data
+from .helpers import load_data
 
 
-@load_scalar_data("Ewe [V]", "R [Ω]", "I [A]", "Eref [V]", "T [K]", "n", "Q", "pH")
+@load_data(
+    ("Ewe", "V"),
+    ("R", "Ω"),
+    ("I", "A"),
+    ("Eref", "V"),
+    ("T", "K"),
+    ("n", None),
+    ("Q", None),
+    ("pH", None),
+)
 def nernst(
     Ewe: pint.Quantity,
     R: pint.Quantity = ureg.Quantity(0.0, "Ω"),

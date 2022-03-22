@@ -22,12 +22,16 @@ import pint
 import uncertainties as uc
 
 from .circuit_utils.circuit_parser import parse_circuit, fit_routine
-from .helpers import separate_data, load_array_data
+from .helpers import separate_data, load_data
 
 logger = logging.getLogger(__name__)
 
 
-@load_array_data("real [Ω]", "imag [Ω]", "freq [Hz]")
+@load_data(
+    ("real", "Ω", list),
+    ("imag", "Ω", list),
+    ("freq", "Hz", list),
+)
 def fit_circuit(
     real: pint.Quantity,
     imag: pint.Quantity,
@@ -222,7 +226,9 @@ def fit_circuit(
     return retval
 
 
-@load_array_data("freq [Hz]")
+@load_data(
+    ("freq", "Hz", list),
+)
 def calc_circuit(
     freq: pint.Quantity,
     circuit: str,
@@ -284,7 +290,10 @@ def calc_circuit(
     return retval
 
 
-@load_array_data("real [Ω]", "imag [Ω]")
+@load_data(
+    ("real", "Ω", list),
+    ("imag", "Ω", list),
+)
 def lowest_real_impedance(
     real: pint.Quantity,
     imag: pint.Quantity,
