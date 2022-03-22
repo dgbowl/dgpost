@@ -83,11 +83,8 @@ def test_nernst_direct(inputs, output):
 def test_nernst_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
-    print(df.head())
     for args in spec:
         electrochemistry.nernst(df, **args)
-    print(df.head())
-    df.to_pickle(f"C:\\Users\\krpe\\dgpost\\{outfile}")
     ref = pd.read_pickle(outfile)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
     if "units" in ref.attrs:
