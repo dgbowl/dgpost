@@ -37,9 +37,9 @@ from chemicals.identifiers import search_chemical
     ("xout", None, dict),
 )
 def conversion(
+    feedstock: str,
     xin: dict[str, pint.Quantity],
     xout: dict[str, pint.Quantity],
-    feedstock: str,
     element: str = None,
     product: bool = True,
     standard: str = "N2",
@@ -167,7 +167,6 @@ def selectivity(
 
     f = search_chemical(feedstock)
     fsm = f.smiles
-    fd = smiles[fsm]
     assert fsm in smiles, f"selectivity: Feedstock '{feedstock}' not present."
 
     if element is None:
@@ -195,13 +194,17 @@ def selectivity(
     return ret
 
 
+@load_data(
+    ("xin", None, dict),
+    ("xout", None, dict),
+)
 def catalytic_yield(
-    df: pd.DataFrame,
     feedstock: str,
-    xin: str = "xin",
-    xout: str = "xout",
+    xin: dict[str, pint.Quantity],
+    xout:  dict[str, pint.Quantity],
     element: str = None,
     standard: str = "N2",
+    output: str = None,
 ) -> None:
     """
     Calculates the catalytic yield, defined as the product of conversion and
@@ -211,9 +214,6 @@ def catalytic_yield(
 
     Parameters
     ----------
-    df
-        A pandas dataframe.
-
     feedstock
         Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
         ``xout``.
@@ -229,29 +229,35 @@ def catalytic_yield(
         using :func:`dgpost.transform.chemhelpers.default_element`.
 
     standard
-        Internal standard for normalizing flows. By default set to ``"N2"``.
+        Internal standard for normalizing the compositions. By default set to "N2".
 
+    output
+        A :class:`str` prefix for the output variables.
+
+    Returns
+    -------
+    ret
+        A :class:`dict` containing the calculated yields using ``output`` as 
+        the prefix for each key.
+    
     """
     f = search_chemical(feedstock)
     if element is None:
         element = default_element(f.formula)
 
-    conversion(df, feedstock, xin, xout, element, True, standard)
-    selectivity(df, feedstock, xin, xout, element)
+    ret_Xp = conversion(feedstock=feedstock, xin=xin, xout=xout, element=element, product=True, standard=standard)
+    ret_Sp = selectivity(feedstock=feedstock, xin=xin, xout=xout, element=element)
 
-    Xp = pQ(df, f"Xp_{element}->{feedstock}")
-    smiles = columns_to_smiles(df, f"Sp_{element}")
-
-    for k, v in smiles.items():
-        Sp = pQ(df, v[f"Sp_{element}"])
-        Yp = Sp * Xp
-        name = v[f"Sp_{element}"].split("->")[1]
-        tag = f"Yp_{element}->{name}"
-        assert Yp.u == ureg.Unit(""), (
-            f"yield: Error in units: " f"'{tag}' should be dimensionless."
-        )
-        save(df, tag, Yp)
-    return None
+    Xp = ret_Xp[f"Xp_{element}->{feedstock}"]
+    
+    ret = {}
+    for k, v in ret_Sp.items():
+        Yp = v * Xp
+        pretag = f"Yp_{element}" if output is None else output 
+        name = k.split("->")[1]
+        tag = f"{pretag}->{name}"
+        ret[tag] = Yp
+    return ret
 
 
 def atom_balance(
