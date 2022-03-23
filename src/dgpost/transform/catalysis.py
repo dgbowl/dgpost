@@ -18,122 +18,127 @@ and ``xout`` is performed using these SMILES.
 
 """
 import pandas as pd
+import pint
 from typing import Union
 from distutils.util import strtobool
 
 from yadg.dgutils import ureg
-from dgpost.transform.helpers import (
+from .helpers import (
     columns_to_smiles,
     default_element,
     element_from_formula,
+    load_data,
 )
-from dgpost.transform.helpers import pQ, save
 from chemicals.identifiers import search_chemical
 
 
+@load_data(
+    ("xin", None, dict),
+    ("xout", None, dict),
+)
 def conversion(
-    df: pd.DataFrame,
+    xin: dict[str, pint.Quantity],
+    xout: dict[str, pint.Quantity],
     feedstock: str,
-    xin: str = "xin",
-    xout: str = "xout",
     element: str = None,
-    product: Union[bool, str] = True,
+    product: bool = True,
     standard: str = "N2",
-) -> None:
+    output: str = None,
+) -> dict[str, pint.Quantity]:
     """
     Calculates the conversion of ``feedstock``, a species present in ``xin``. By
     default, a product-based carbon conversion (using data from ``xout``) is computed.
 
     Parameters
     ----------
-    df
-        A pandas dataframe.
-
     feedstock
-        Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
+        Name of the feedstock. Parsed into SMILES and matched against ``xin`` and 
         ``xout``.
 
     xin
-        Prefix of the columns determining the inlet composition.
+        A dictionary containing the composition of the inlet mixture with the names 
+        of the chemicals as :class:`str` keys.
 
     xout
-        Prefix of the columns determining the outlet composition.
-
+        A dictionary containing the composition of the outlet mixture with the names 
+        of the chemicals as :class:`str` keys.
+    
     element
         Name of the element for determining conversion. If not specified, set to the
-        highest-priority element in ``feedstock``: "C" > "O" > "H" > ...
+        highest-priority (C > H > O) element in ``feedstock``.
 
     product
         Product-based conversion toggle. Default is ``True``.
 
     standard
-        Internal standard for normalizing flows. By default set to "N2".
+        Internal standard for normalizing the compositions. By default set to "N2".
+    
+    output
+        A :class:`str` name of the output variable.
+
+    Returns
+    -------
+    ret
+        A :class:`dict` containing the calculated conversion with ``output`` as its key.
 
     """
-    # coerce types
-    if isinstance(product, str):
-        product = bool(strtobool(product))
-
-    smiles = columns_to_smiles(df, [xin, xout])
-
+    
+    smiles = columns_to_smiles(xin = xin, xout = xout)
+    
     f = search_chemical(feedstock)
     fsm = f.smiles
     fd = smiles[fsm]
     assert fsm in smiles, f"conversion: Feedstock '{feedstock}' not present."
-    assert xin in smiles[fsm], f"conversion: Feedstock '{feedstock}' not in inlet."
+    assert "xin" in smiles[fsm], f"conversion: Feedstock '{feedstock}' not in inlet."
 
     if element is None:
         element = default_element(f.formula)
 
     # expansion factor
     sd = smiles[search_chemical(standard).smiles]
-    exp = pQ(df, sd[xin]) / pQ(df, sd[xout])
+    exp = xin[sd["xin"]] / xout[sd["xout"]]
 
     # reactant-based conversion
     if not product:
-        dfsm = pQ(df, fd[xin]) - pQ(df, fd[xout]) * exp
-        Xr = dfsm / pQ(df, fd[xin])
-        tag = f"Xr->{feedstock}"
-        assert Xr.u == ureg.Unit(""), (
-            f"conversion: Error in units: " f"'{tag}' should be dimensionless."
-        )
-        save(df, tag, Xr)
+        dfsm = xin[fd["xin"]] - xout[fd["xout"]]  * exp
+        Xr = dfsm / xin[fd["xin"]]
+        tag = f"{'Xr' if output is None else output}->{feedstock}"
+        ret = {tag: Xr}
 
     # product-based conversion
     else:
         formula = f.formula
-        f_out = pQ(df, fd[xout]) * element_from_formula(formula, element)
+        f_out = xout[fd["xout"]] * element_from_formula(formula, element)
         nat_out = f_out * 0.0
-        for k, v in smiles.items():
-            if xout in v:
+        for v in smiles.values():
+            if "xout" in v:
                 formula = v["chem"].formula
-                dnat = pQ(df, v[xout]) * element_from_formula(formula, element)
+                dnat = xout[v["xout"]] * element_from_formula(formula, element)
                 nat_out += dnat
         Xp = (nat_out - f_out) / nat_out
-        tag = f"Xp_{element}->{feedstock}"
-        assert Xp.u == ureg.Unit(""), (
-            f"conversion: Error in units: " f"'{tag}' should be dimensionless."
-        )
-        save(df, tag, Xp)
-    return None
+        prefix = f"Xp_{element}" if output is None else output
+        tag = f"{prefix}->{feedstock}"
+        ret = {tag: Xp}
+    return ret
 
 
+@load_data(
+    ("xin", None, dict),
+    ("xout", None, dict),
+)
 def selectivity(
-    df: pd.DataFrame,
     feedstock: str,
-    xin: str = "xin",
-    xout: str = "xout",
+    xin: dict[str, pint.Quantity],
+    xout: dict[str, pint.Quantity],
     element: str = None,
-) -> None:
+    output: str = None,
+) -> dict[str, pint.Quantity]:
     """
     Calculates product-based elemental selectivities, excluding the feedstock. The sum
     of selectivities is normalised to unity.
 
     Parameters
     ----------
-    df
-        A pandas dataframe.
-
     feedstock
         Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
         ``xout``.
@@ -148,8 +153,17 @@ def selectivity(
         The element for determining conversion. If not specified, set from ``feedstock``
         using :func:`dgpost.transform.chemhelpers.default_element`.
 
+    output
+        A :class:`str` prefix for the output variables.
+
+    Returns
+    -------
+    ret
+        A :class:`dict` containing the calculated selectivities using ``output`` as 
+        the prefix for each key.
+
     """
-    smiles = columns_to_smiles(df, [xin, xout])
+    smiles = columns_to_smiles(xin = xin, xout = xout)
 
     f = search_chemical(feedstock)
     fsm = f.smiles
@@ -161,27 +175,24 @@ def selectivity(
 
     nat_out = None
     for k, v in smiles.items():
-        if k != fsm and xout in v:
+        if k != fsm and "xout" in v:
             formula = v["chem"].formula
-            dnat = pQ(df, v[xout]) * element_from_formula(formula, element)
+            dnat = xout[v["xout"]] * element_from_formula(formula, element)
             if nat_out is None:
                 nat_out = dnat
             else:
                 nat_out += dnat
-
+    ret = {}
     for k, v in smiles.items():
-        if k != fsm and xout in v:
+        if k != fsm and "xout" in v:
             formula = v["chem"].formula
             els = element_from_formula(formula, element)
             if els > 0:
-                Sp = pQ(df, v[xout]) * els / nat_out
-                name = v[xout].split(xout)[1]
-                tag = f"Sp_{element}{name}"
-                assert Sp.u == ureg.Unit(""), (
-                    f"selectivity: Error in units: " f"'{tag}' should be dimensionless."
-                )
-                save(df, tag, Sp)
-    return None
+                Sp = xout[v["xout"]] * els / nat_out
+                pretag = f"Sp_{element}" if output is None else output
+                tag = f"{pretag}->{v['xout']}"
+                ret[tag] = Sp
+    return ret
 
 
 def catalytic_yield(

@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import uncertainties.unumpy as unp
 
+
 def datagram_from_input(input, parser, datadir):
     schema = {
         "metadata": {

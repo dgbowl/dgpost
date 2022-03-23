@@ -7,6 +7,7 @@ import pandas as pd
 
 from .utils import compare_dfs
 
+
 @pytest.mark.parametrize(
     "inputs, output",
     [

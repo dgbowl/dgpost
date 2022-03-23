@@ -68,4 +68,3 @@ def test_rates_flowtomolar(infile, spec, outfile, datadir):
         rates.flow_to_molar(df, **args)
     ref = pd.read_pickle(outfile)
     compare_dfs(ref, df)
-    

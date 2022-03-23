@@ -23,7 +23,7 @@ def flow_to_molar(
     Tref: pint.Quantity = ureg.Quantity(273.15, "K"),
     pref: pint.Quantity = ureg.Quantity(1, "atm"),
     output = "rate"
-) -> None:
+) -> dict[str, pint.Quantity]:
     """
     Calculates a molar rate of species from specified flow and composition. The
     units of the rate have to be either dimensionless (for unit-naive dataframes) or

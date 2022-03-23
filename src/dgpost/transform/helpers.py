@@ -10,7 +10,7 @@ import numpy as np
 from uncertainties import unumpy as unp
 
 from collections import defaultdict
-from typing import Union
+from typing import Any
 from chemicals.identifiers import search_chemical
 from yadg.dgutils import ureg
 
@@ -46,16 +46,16 @@ def default_element(f: str) -> str:
             return s
 
 
-def columns_to_smiles(df: pd.DataFrame, prefix: Union[list[str], str]) -> dict:
+def columns_to_smiles(**kwargs: dict[str, Any]) -> dict:
     """
-    Creates a dictionary with SMILES representation of all chemicals present among the
-    columns of the dataframe and matched by the prefix, storing the returned
-    :class:`chemicals.ChemicalMetadata` as well as the full name of the column.
+    Creates a dictionary with SMILES representation of all chemicals present among 
+    the keys in the args, storing the returned :class:`chemicals.ChemicalMetadata` 
+    as well as the full name within args.
 
     Parameters
     ----------
-    df
-        Source dataframe.
+    args
+        List of dictionaries containing
 
     prefix
         Prefix of chemical species, with species names separated by  ``->``.
@@ -67,13 +67,10 @@ def columns_to_smiles(df: pd.DataFrame, prefix: Union[list[str], str]) -> dict:
         and the metadata and column specification as values.
     """
     smiles = defaultdict(dict)
-    if isinstance(prefix, str):
-        prefix = [prefix]
-    for col in df.columns:
-        for p in prefix:
-            if col.startswith(p):
-                chem = search_chemical(col.split("->")[1])
-                smiles[chem.smiles].update({"chem": chem, p: col})
+    for k, v in kwargs.items():
+        for kk in v.keys():
+            chem = search_chemical(kk.split("->")[-1])
+            smiles[chem.smiles].update({"chem": chem, k: kk})
     return smiles
 
 
@@ -279,7 +276,8 @@ def load_data(*cols: tuple[str, str, type]):
                             if isinstance(qty, pint.Quantity):
                                 qty.ito_reduced_units()
                                 df[name].iloc[i] = qty.m
-                                df.attrs["units"][name] = f"{qty.u:~P}"
+                                if not uconv and not qty.unitless:
+                                    df.attrs["units"][name] = f"{qty.u:~P}"
                             else:
                                 df[name].iloc[i] = qty
                 else:
@@ -288,7 +286,7 @@ def load_data(*cols: tuple[str, str, type]):
                         if isinstance(qty, pint.Quantity):
                             qty.ito_reduced_units()
                             df[name] = qty.m
-                            if not uconv:
+                            if not uconv and not qty.unitless:
                                 df.attrs["units"][name] = f"{qty.u:~P}"
                         else:
                             df[name] = qty
