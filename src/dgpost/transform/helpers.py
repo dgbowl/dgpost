@@ -48,8 +48,8 @@ def default_element(f: str) -> str:
 
 def columns_to_smiles(**kwargs: dict[str, Any]) -> dict:
     """
-    Creates a dictionary with SMILES representation of all chemicals present among 
-    the keys in the args, storing the returned :class:`chemicals.ChemicalMetadata` 
+    Creates a dictionary with SMILES representation of all chemicals present among
+    the keys in the args, storing the returned :class:`chemicals.ChemicalMetadata`
     as well as the full name within args.
 
     Parameters
@@ -215,9 +215,9 @@ def load_data(*cols: tuple[str, str, type]):
         def wrapper(*args, **kwargs):
             # pad the cols definition to always contain "cname, cunit, ctype"
             fcols = [(list(col) + 3 * [None])[:3] for col in cols]
-            
+
             # Function is called with a pd.DataFrame.
-            # The only allowed positional argument is the pd.Dataframe, 
+            # The only allowed positional argument is the pd.Dataframe,
             # other parameters should be in kwargs:
             if len(args) > 0 and isinstance(args[0], pd.DataFrame):
                 if len(args) > 1:
@@ -234,7 +234,7 @@ def load_data(*cols: tuple[str, str, type]):
                 data_kwargs = {}
                 for cname, cunit, ctype in fcols:
                     cval = kwargs.pop(cname, None)
-                    if cval is None: 
+                    if cval is None:
                         # cval is optional -> we want to let func use its default
                         continue
                     elif not isinstance(cval, str):

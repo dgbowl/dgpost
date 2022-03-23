@@ -92,7 +92,7 @@ def test_selectivity_with_transform(inpath, spec, outpath, datadir):
         ),
     ],
 )
-def test_against_excel(inpath, spec, outkeys, datadir):
+def test_selectivity_against_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
     transform(df, "catalysis.selectivity", using=spec)

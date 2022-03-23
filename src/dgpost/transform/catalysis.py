@@ -52,17 +52,17 @@ def conversion(
     Parameters
     ----------
     feedstock
-        Name of the feedstock. Parsed into SMILES and matched against ``xin`` and 
+        Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
         ``xout``.
 
     xin
-        A dictionary containing the composition of the inlet mixture with the names 
+        A dictionary containing the composition of the inlet mixture with the names
         of the chemicals as :class:`str` keys.
 
     xout
-        A dictionary containing the composition of the outlet mixture with the names 
+        A dictionary containing the composition of the outlet mixture with the names
         of the chemicals as :class:`str` keys.
-    
+
     element
         Name of the element for determining conversion. If not specified, set to the
         highest-priority (C > H > O) element in ``feedstock``.
@@ -72,7 +72,7 @@ def conversion(
 
     standard
         Internal standard for normalizing the compositions. By default set to "N2".
-    
+
     output
         A :class:`str` name of the output variable.
 
@@ -82,9 +82,9 @@ def conversion(
         A :class:`dict` containing the calculated conversion with ``output`` as its key.
 
     """
-    
-    smiles = columns_to_smiles(xin = xin, xout = xout)
-    
+
+    smiles = columns_to_smiles(xin=xin, xout=xout)
+
     f = search_chemical(feedstock)
     fsm = f.smiles
     fd = smiles[fsm]
@@ -100,7 +100,7 @@ def conversion(
 
     # reactant-based conversion
     if not product:
-        dfsm = xin[fd["xin"]] - xout[fd["xout"]]  * exp
+        dfsm = xin[fd["xin"]] - xout[fd["xout"]] * exp
         Xr = dfsm / xin[fd["xin"]]
         tag = f"{'Xr' if output is None else output}->{feedstock}"
         ret = {tag: Xr}
@@ -159,11 +159,11 @@ def selectivity(
     Returns
     -------
     ret
-        A :class:`dict` containing the calculated selectivities using ``output`` as 
+        A :class:`dict` containing the calculated selectivities using ``output`` as
         the prefix for each key.
 
     """
-    smiles = columns_to_smiles(xin = xin, xout = xout)
+    smiles = columns_to_smiles(xin=xin, xout=xout)
 
     f = search_chemical(feedstock)
     fsm = f.smiles
@@ -201,7 +201,7 @@ def selectivity(
 def catalytic_yield(
     feedstock: str,
     xin: dict[str, pint.Quantity],
-    xout:  dict[str, pint.Quantity],
+    xout: dict[str, pint.Quantity],
     element: str = None,
     standard: str = "N2",
     output: str = None,
@@ -237,37 +237,45 @@ def catalytic_yield(
     Returns
     -------
     ret
-        A :class:`dict` containing the calculated yields using ``output`` as 
+        A :class:`dict` containing the calculated yields using ``output`` as
         the prefix for each key.
-    
+
     """
     f = search_chemical(feedstock)
     if element is None:
         element = default_element(f.formula)
 
-    ret_Xp = conversion(feedstock=feedstock, xin=xin, xout=xout, element=element, product=True, standard=standard)
+    ret_Xp = conversion(
+        feedstock=feedstock,
+        xin=xin,
+        xout=xout,
+        element=element,
+        product=True,
+        standard=standard,
+    )
     ret_Sp = selectivity(feedstock=feedstock, xin=xin, xout=xout, element=element)
 
     Xp = ret_Xp[f"Xp_{element}->{feedstock}"]
-    
+
     ret = {}
     for k, v in ret_Sp.items():
         Yp = v * Xp
-        pretag = f"Yp_{element}" if output is None else output 
+        pretag = f"Yp_{element}" if output is None else output
         name = k.split("->")[1]
         tag = f"{pretag}->{name}"
         ret[tag] = Yp
     return ret
 
 
+@load_data(("xin", None, dict), ("xout", None, dict), ("fin", None), ("fout", None))
 def atom_balance(
-    df: pd.DataFrame,
-    xin: str = "xin",
-    xout: str = "xout",
+    xin: dict[str, pint.Quantity],
+    xout: dict[str, pint.Quantity],
+    fin: pint.Quantity = None,
+    fout: pint.Quantity = None,
     element: str = "C",
     standard: str = "N2",
-    fin: str = None,
-    fout: str = None,
+    output: str = None,
 ) -> None:
     """
     Calculates atom balance. The total number of atoms of the specified element is
@@ -276,14 +284,17 @@ def atom_balance(
 
     Parameters
     ----------
-    df
-        A pandas dataframe.
-
     xin
         Prefix of the columns determining the inlet composition.
 
     xout
         Prefix of the columns determining the outlet composition.
+
+    fin
+        Inlet flow. If not supplied, assumed to be equal to outlet flow.
+
+    fout
+        Outlet flow. If not supplied, assumed to be equal to inlet flow.
 
     element
         The element for determining conversion. If not specified, set to ``"C"``.
@@ -292,41 +303,41 @@ def atom_balance(
         Internal standard for normalizing flows. By default set to ``"N2"``.
         Overriden when ``fin`` and ``fout`` are set.
 
-    fin
-        Inlet flow. If not supplied, assumed to be equal to outlet flow.
+    output
+        A :class:`str` prefix for the output variables.
 
-    fout
-        Outlet flow. If not supplied, assumed to be equal to inlet flow.
+    Returns
+    -------
+    ret
+        A :class:`dict` containing the calculated atomic balance using ``output`` as
+        the key.
+
 
     """
-    smiles = columns_to_smiles(df, [xin, xout])
+    smiles = columns_to_smiles(xin=xin, xout=xout)
 
-    assert (
-        standard is not None or fin is not None and fout is not None
+    assert standard is not None or (
+        fin is not None and fout is not None
     ), f"atom_balance: Neither 'standard' nor 'fin' and 'fout' are defined. "
 
     if fin is None or fout is None:
         sd = smiles[search_chemical(standard).smiles]
-        exp = pQ(df, sd[xin]) / pQ(df, sd[xout])
+        exp = xin[sd["xin"]] / xout[sd["xout"]]
     else:
-        exp = pQ(df, fin) / pQ(df, fout)
+        exp = fin / fout
 
     nat_in = None
     nat_out = None
     for k, v in smiles.items():
         formula = v["chem"].formula
-        if xin in v:
-            din = pQ(df, v[xin]) * element_from_formula(formula, element)
+        if "xin" in v:
+            din = xin[v["xin"]] * element_from_formula(formula, element)
             nat_in = din if nat_in is None else nat_in + din
-        if xout in v:
-            dout = exp * pQ(df, v[xout]) * element_from_formula(formula, element)
+        if "xout" in v:
+            dout = exp * xout[v["xout"]] * element_from_formula(formula, element)
             nat_out = dout if nat_out is None else nat_out + dout
     dnat = nat_in - nat_out
     atbal = 1 - dnat / nat_in
-    tag = f"atbal_{element}"
-    assert atbal.u == ureg.Unit(""), (
-        f"atom_balance: Error in units: " f"'{tag}' should be dimensionless."
-    )
-    save(df, tag, atbal)
+    tag = f"atbal_{element}" if output is None else output
 
-    return None
+    return {tag: atbal}

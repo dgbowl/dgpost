@@ -69,7 +69,7 @@ def test_yield_with_transform(inpath, spec, outpath, datadir):
         ),
     ],
 )
-def test_against_excel(inpath, spec, outkeys, datadir):
+def test_yield_against_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
     transform(df, "catalysis.catalytic_yield", using=spec)

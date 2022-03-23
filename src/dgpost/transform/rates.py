@@ -9,12 +9,13 @@ from typing import Union
 from dgpost.transform.helpers import pQ, save, load_data
 from yadg.dgutils import ureg
 
+
 @load_data(
     ("flow", "m³/s"),
     ("c", "mol/m³", dict),
     ("x", None, dict),
     ("Tref", "K"),
-    ("pref", "Pa")
+    ("pref", "Pa"),
 )
 def flow_to_molar(
     flow: pint.Quantity,
@@ -22,7 +23,7 @@ def flow_to_molar(
     x: dict[str, pint.Quantity] = None,
     Tref: pint.Quantity = ureg.Quantity(273.15, "K"),
     pref: pint.Quantity = ureg.Quantity(1, "atm"),
-    output = "rate"
+    output="rate",
 ) -> dict[str, pint.Quantity]:
     """
     Calculates a molar rate of species from specified flow and composition. The
