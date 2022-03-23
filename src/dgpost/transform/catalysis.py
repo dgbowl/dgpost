@@ -17,10 +17,8 @@ and ``xout`` is performed using these SMILES.
     in this module.
 
 """
-import pandas as pd
+
 import pint
-from typing import Union
-from distutils.util import strtobool
 
 from yadg.dgutils import ureg
 from .helpers import (

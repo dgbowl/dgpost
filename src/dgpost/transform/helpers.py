@@ -105,36 +105,6 @@ def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
     return ureg.Quantity(vals, unit)
 
 
-def save(df: pd.DataFrame, tag: str, col: pint.Quantity) -> None:
-    """
-    Unit aware dataframe storing function.
-
-    Given a dataframe in ``df``, and the new column header in ``tag`` and the data
-    in ``col``, this function stores the data portion of ``col`` in the dataframe
-    as ``df[tag]``, and annotates the dataframe with the units.
-
-    If the units of ``col`` are dimensionless, the unit is not stored.
-
-    Parameters
-    ----------
-    df
-        Pandas dataframe, optionally annotated with units.
-
-    tag
-        Name of the new column.
-
-    col
-        Data of the new column.
-
-    """
-    col.ito_base_units()
-    df[tag] = col.m
-    if not col.dimensionless:
-        if "units" not in df.attrs:
-            df.attrs["units"] = {}
-        df.attrs["units"][tag] = f"{col.u:~P}"
-
-
 def separate_data(
     data: pint.Quantity, unit: str = None
 ) -> tuple[np.ndarray, np.ndarray, str]:
