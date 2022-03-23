@@ -92,9 +92,6 @@ def nernst(
     if Eref is not None:
         E += Eref
     if R is not None and I is not None:
-        if isinstance(R, float):
-            R = ureg.Quantity(R, "ohm")
-
         E += R * I
     if (pH is not None) or (n is not None and Q is not None):
         EN = ureg("molar_gas_constant") * T / ureg("faraday_constant")

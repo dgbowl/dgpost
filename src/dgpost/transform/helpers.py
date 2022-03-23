@@ -216,12 +216,16 @@ def load_data(*cols: tuple[str, str, type]):
     def loading(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            # pad the cols definition to always contain "cname, cunit, ctype"
             fcols = [(list(col) + 3 * [None])[:3] for col in cols]
-            # Function is called with a dataframe as the only positional argument and
-            # all other parameters in kwargs:
+            
+            # Function is called with a pd.DataFrame.
+            # The only allowed positional argument is the pd.Dataframe, 
+            # other parameters should be in kwargs:
             if len(args) > 0 and isinstance(args[0], pd.DataFrame):
                 if len(args) > 1:
                     raise ValueError("Only the DataFrame should be given as argument")
+
                 df = args[0]
                 # Check if the dataframe has a units attribute. If not, the quantities
                 # in the dataframe are unitless and need to be converted.
@@ -230,26 +234,32 @@ def load_data(*cols: tuple[str, str, type]):
                 else:
                     uconv = False
 
-                # - Go through the cols array specified in the decorator.
-                # - Split each col into the name of the argument and its units.
-                # - Create the appropriate pint.Quantity object and place it in kwargs.
-
                 data_kwargs = {}
                 for cname, cunit, ctype in fcols:
                     cval = kwargs.pop(cname, None)
-                    if cval is None:
+                    if cval is None: 
+                        # cval is optional -> we want to let func use its default
                         continue
+                    elif not isinstance(cval, str):
+                        # cval is not a string -> convert to pint.Quantity
+                        if isinstance(cval, pint.Quantity):
+                            data_kwargs[cname] = cval
+                        else:
+                            data_kwargs[cname] = ureg.Quantity(cval, cunit)
                     elif ctype is not dict:
+                        # cval is a string, and the row values (ctype) are list or scalar
                         if uconv:
                             data_kwargs[cname] = ureg.Quantity(df[cval].array, cunit)
                         else:
                             data_kwargs[cname] = pQ(df, cval)
                     else:
+                        # cval is a string, but the row walues (ctype) are dict
+                        # so we need to match all columns in pd.DataFrame
                         temp = {}
-                        for c in df.columns():
+                        for c in df.columns:
                             if not c.startswith(cval):
                                 continue
-                            onlyc = c.replace(cval, "")
+                            onlyc = c.split("->")[-1]
                             if uconv:
                                 temp[onlyc] = ureg.Quantity(df[c].array, cunit)
                             else:
@@ -267,6 +277,7 @@ def load_data(*cols: tuple[str, str, type]):
                             if name not in df.columns:
                                 df[name] = ""
                             if isinstance(qty, pint.Quantity):
+                                qty.ito_reduced_units()
                                 df[name].iloc[i] = qty.m
                                 df.attrs["units"][name] = f"{qty.u:~P}"
                             else:
@@ -275,9 +286,10 @@ def load_data(*cols: tuple[str, str, type]):
                     retvals = func(**data_kwargs, **kwargs)
                     for name, qty in retvals.items():
                         if isinstance(qty, pint.Quantity):
+                            qty.ito_reduced_units()
                             df[name] = qty.m
                             if not uconv:
-                                df.attrs["units"] = f"{qty.u:~P}"
+                                df.attrs["units"][name] = f"{qty.u:~P}"
                         else:
                             df[name] = qty
             # Direct call with user-supplied data.

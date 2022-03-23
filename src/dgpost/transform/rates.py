@@ -6,17 +6,23 @@ import pandas as pd
 import pint
 from typing import Union
 
-from dgpost.transform.helpers import pQ, save
+from dgpost.transform.helpers import pQ, save, load_data
 from yadg.dgutils import ureg
 
-
+@load_data(
+    ("flow", "m³/s"),
+    ("c", "mol/m³", dict),
+    ("x", None, dict),
+    ("Tref", "K"),
+    ("pref", "Pa")
+)
 def flow_to_molar(
-    df: pd.DataFrame,
-    flow: str,
-    comp: str,
-    rate: str,
-    Tref: Union[str, float] = None,
-    pref: Union[str, float] = None,
+    flow: pint.Quantity,
+    c: dict[str, pint.Quantity] = None,
+    x: dict[str, pint.Quantity] = None,
+    Tref: pint.Quantity = ureg.Quantity(273.15, "K"),
+    pref: pint.Quantity = ureg.Quantity(1, "atm"),
+    output = "rate"
 ) -> None:
     """
     Calculates a molar rate of species from specified flow and composition. The
@@ -77,52 +83,17 @@ def flow_to_molar(
         to 1 atm.
 
     """
-    # coerce types
-    if isinstance(Tref, str):
-        if Tref not in df.columns:
-            Tref = float(Tref)
-    if isinstance(pref, str):
-        if pref not in df.columns:
-            pref = float(Tref)
+    if x is not None and c is not None:
+        raise RuntimeError("Cannot supply both concentration 'c' and mole fraction 'x'")
+    elif c is not None:
+        ret = {}
+        for k, v in c.items():
+            r = flow * v
+            ret[f"{output}->{k}"] = r.to_base_units()
+    elif x is not None:
+        ret = {}
+        for k, v in x.items():
+            r = flow * (pref / (ureg("molar_gas_constant") * Tref.to("K"))) * v
+            ret[f"{output}->{k}"] = r.to_base_units()
 
-    flow = pQ(df, flow)
-
-    for col in df.columns:
-        if col.startswith(comp):
-            name = col.split("->")[1]
-            x = pQ(df, col)
-
-            # dimensionless flow:
-            if flow.dimensionless:
-                assert x.dimensionless, (
-                    f"flow_to_rate: Provided 'flow' is dimensionless, "
-                    f"but provided 'comp' element '{col}' is not: {x.u}."
-                )
-                r = flow * x
-            # volumetric flow:
-            elif flow.check("[volume]/[time]"):
-                if x.check("[substance]/[volume]"):
-                    r = flow * x
-                elif x.dimensionless:
-                    print(Tref, type(Tref))
-                    if isinstance(Tref, str):
-                        RTref = pQ(df, Tref).to("K") * ureg.Quantity(1, "R")
-                    elif isinstance(Tref, pint.Quantity):
-                        Tref = ureg.Quantity(Tref.m, Tref.u).to("K")
-                        RTref = Tref * ureg.Quantity(1, "R")
-                    elif Tref is not None:
-                        RTref = ureg.Quantity(Tref, "kelvin") * ureg.Quantity(1, "R")
-                    else:
-                        RTref = ureg.Quantity(0, "degC").to("K") * ureg.Quantity(1, "R")
-
-                    if isinstance(pref, str):
-                        pref = pQ(df, pref)
-                    elif pref is not None:
-                        pref = ureg.Quantity(pref, "pascal")
-                    else:
-                        pref = ureg.Quantity(1, "atm")
-
-                    r = flow * (pref / (RTref)) * x
-
-            tag = f"{rate}->{name}"
-            save(df, tag, r)
+    return ret
