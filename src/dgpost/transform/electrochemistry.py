@@ -1,10 +1,19 @@
 import pint
 from yadg.dgutils import ureg
 import numpy as np
-from .helpers import load_scalar_data
+from .helpers import load_data
 
 
-@load_scalar_data("Ewe [V]", "R [Ω]", "I [A]", "Eref [V]", "T [K]", "n", "Q", "pH")
+@load_data(
+    ("Ewe", "V"),
+    ("R", "Ω"),
+    ("I", "A"),
+    ("Eref", "V"),
+    ("T", "K"),
+    ("n", None),
+    ("Q", None),
+    ("pH", None),
+)
 def nernst(
     Ewe: pint.Quantity,
     R: pint.Quantity = ureg.Quantity(0.0, "Ω"),
@@ -83,9 +92,6 @@ def nernst(
     if Eref is not None:
         E += Eref
     if R is not None and I is not None:
-        if isinstance(R, float):
-            R = ureg.Quantity(R, "ohm")
-
         E += R * I
     if (pH is not None) or (n is not None and Q is not None):
         EN = ureg("molar_gas_constant") * T / ureg("faraday_constant")

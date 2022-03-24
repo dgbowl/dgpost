@@ -1,10 +1,11 @@
+import os
 import pytest
 from dgpost.transform import electrochemistry
-from dgpost.utils import transform
 from yadg.dgutils import ureg
 import numpy as np
-import os
 import pandas as pd
+
+from .utils import compare_dfs
 
 
 @pytest.mark.parametrize(
@@ -86,6 +87,4 @@ def test_nernst_df(infile, spec, outfile, datadir):
     for args in spec:
         electrochemistry.nernst(df, **args)
     ref = pd.read_pickle(outfile)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
-    if "units" in ref.attrs:
-        assert df.attrs == ref.attrs
+    compare_dfs(ref, df)

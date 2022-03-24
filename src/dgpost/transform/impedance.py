@@ -1,8 +1,5 @@
 """
-Impedance-related transformations
-=================================
-
-This module contains functions relevant to Electrochemical Impedance Spectroscopy (EIS).
+Module of functions relevant to Electrochemical Impedance Spectroscopy (EIS).
 
 The main functions in this module are two functions relevant for the fitting and 
 evaluation of equivalent circuits, :func:`fit_circuit` and :func:`calc_circuit`,
@@ -11,9 +8,16 @@ respectively. The two functions expect frequency-resolved complex impedance data
 For less rigorous analysis, the :func:`lowest_real_impedance` can be used, to
 find and/or interpolate the lowest real-valued point of the complex impedance.
 
-.. codeauthor:: Ueli Sauter
-.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
+.. note::
+    The functions in this module expect the whole EIS trace as input - the 
+    :math:`\\text{Re}(Z)`, :math:`-\\text{Im}(Z)` and :math:`f` are expected to
+    be :class:`pint.Quantity` containing an :class:`np.ndarray` (or similar 
+    :class:`list`-like object), which is then processed to a (set of) scalar 
+    values. This means that for processing time resolved data, the functions
+    in this module have to be called on each timestep individually.
 
+.. codeauthor:: Ueli Sauter 
+.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
 """
 import logging
 from typing import Union
@@ -22,25 +26,29 @@ import pint
 import uncertainties as uc
 
 from .circuit_utils.circuit_parser import parse_circuit, fit_routine
-from .helpers import separate_data, load_array_data
+from .helpers import separate_data, load_data
 
 logger = logging.getLogger(__name__)
 
 
-@load_array_data("real", "imag", "freq")
+@load_data(
+    ("real", "Ω", list),
+    ("imag", "Ω", list),
+    ("freq", "Hz", list),
+)
 def fit_circuit(
     real: pint.Quantity,
     imag: pint.Quantity,
     freq: pint.Quantity,
     circuit: str,
     initial_values: dict[str, float],
-    output: str = "fit_circuit",
     fit_bounds: dict[str, tuple[float, float]] = None,
     fit_constants: list[str] = None,
     ignore_neg_res: bool = True,
     upper_freq: float = np.inf,
     lower_freq: float = 0,
     repeat: int = 1,
+    output: str = "fit_circuit",
 ) -> dict[str, Union[int, str, pint.Quantity]]:
     """
     Fits an equivalent circuit to the frequency-resolved EIS data.
@@ -222,7 +230,9 @@ def fit_circuit(
     return retval
 
 
-@load_array_data("freq")
+@load_data(
+    ("freq", "Hz", list),
+)
 def calc_circuit(
     freq: pint.Quantity,
     circuit: str,
@@ -284,12 +294,15 @@ def calc_circuit(
     return retval
 
 
-@load_array_data("real", "imag")
+@load_data(
+    ("real", "Ω", list),
+    ("imag", "Ω", list),
+)
 def lowest_real_impedance(
     real: pint.Quantity,
     imag: pint.Quantity,
-    output: str = "min Re(Z)",
     threshold: float = 0.0,
+    output: str = "min Re(Z)",
 ) -> dict[str, Union[int, str, pint.Quantity]]:
     """
     A function that finds and interpolates the lowest :math:`\\text{Re}(Z)` value

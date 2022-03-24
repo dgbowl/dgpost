@@ -2,6 +2,9 @@ import pytest
 import os
 import json
 import yadg.core
+import pandas as pd
+import numpy as np
+import uncertainties.unumpy as unp
 
 
 def datagram_from_input(input, parser, datadir):
@@ -64,3 +67,13 @@ def compare_result_dicts(result, reference, atol=1e-6):
     assert result["n"] == pytest.approx(reference["n"], abs=atol)
     assert result["s"] == pytest.approx(reference["s"], abs=atol)
     assert result["u"] == reference["u"]
+
+
+def compare_dfs(ref, df):
+    pd.testing.assert_index_equal(ref.columns, df.columns, check_order=False)
+    for col in ref.columns:
+        if np.testing.assert_array_equal(ref[col].array, df[col].array):
+            continue
+        for func in {unp.nominal_values, unp.std_devs}:
+            np.testing.assert_allclose(func(ref[col]), func(df[col]))
+    assert ref.attrs == df.attrs

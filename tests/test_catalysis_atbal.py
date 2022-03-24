@@ -4,6 +4,7 @@ import pandas as pd
 
 from dgpost.transform import catalysis
 from dgpost.utils import transform
+from .utils import compare_dfs
 
 
 @pytest.mark.parametrize(
@@ -12,14 +13,14 @@ from dgpost.utils import transform
         (  # ts0 - dataframe with floats
             "xinxout.float.df.pkl",
             [
-                {"element": "C"},
-                {"element": "O"},
+                {"element": "C", "xin": "xin", "xout": "xout"},
+                {"element": "O", "xin": "xin", "xout": "xout"},
             ],
             "atbal.float.pkl",
         ),
         (  # ts1 - dataframe with ufloats
             "xinxout.ufloat.df.pkl",
-            [{}],
+            [{"xin": "xin", "xout": "xout"}],
             "atbal.ufloat.pkl",
         ),
         (  # ts2 - dataframe with units and floats
@@ -40,13 +41,13 @@ from dgpost.utils import transform
         ),
     ],
 )
-def test_cat_atbal_floats(inpath, spec, outpath, datadir):
+def test_atbal_against_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
         catalysis.atom_balance(df, **args)
     ref = pd.read_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
+    compare_dfs(ref, df)
 
 
 @pytest.mark.parametrize(
@@ -61,12 +62,12 @@ def test_cat_atbal_floats(inpath, spec, outpath, datadir):
         ),
     ],
 )
-def test_with_transform(inpath, spec, outpath, datadir):
+def test_atbal_with_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     transform(df, "catalysis.atom_balance", using=spec)
     ref = pd.read_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
+    compare_dfs(ref, df)
 
 
 @pytest.mark.parametrize(
@@ -75,14 +76,14 @@ def test_with_transform(inpath, spec, outpath, datadir):
         (  # ts0 - dataframe with ufloats
             "catalysis.xlsx",
             [
-                {"element": "C"},
-                {"element": "O"},
+                {"element": "C", "xin": "xin", "xout": "xout"},
+                {"element": "O", "xin": "xin", "xout": "xout"},
             ],
             ["atbal_C", "atbal_O"],
         ),
     ],
 )
-def test_against_excel(inpath, spec, outkeys, datadir):
+def test_atbal_against_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
     transform(df, "catalysis.atom_balance", using=spec)

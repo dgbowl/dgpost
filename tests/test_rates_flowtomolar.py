@@ -1,67 +1,70 @@
 import os
 import pytest
-import pint
 import pandas as pd
+import numpy as np
 import uncertainties as uc
+import uncertainties.unumpy as unp
 
+from yadg.dgutils import ureg
 from dgpost.transform import rates
 
-Trefs = [293.15, pint.Quantity(20, "degC"), uc.ufloat(293.15, 0.0)]
+from .utils import compare_dfs
+
+Trefs = [293.15, ureg.Quantity(20, "degC"), uc.ufloat(293.15, 0.0)]
 
 
 @pytest.mark.parametrize(
-    "inpath, spec, outpath",
+    "infile, spec, outfile",
     [
         (  # ts0 - unit-naive dataframe with floats
             "flowcx.float.df.pkl",
             [
-                {"flow": "flowin", "comp": "cin", "rate": "ndotin"},
-                {"flow": "flowout", "comp": "xout", "rate": "ndotout"},
+                {"flow": "flowin", "c": "cin", "output": "ndotin"},
+                {"flow": "flowout", "c": "xout", "output": "ndotout"},
             ],
             "ndot.float.pkl",
         ),
         (  # ts1 - unit-naive dataframe with ufloats
             "flowcx.ufloat.df.pkl",
             [
-                {"flow": "flowin", "comp": "cin", "rate": "ndotin"},
-                {"flow": "flowout", "comp": "xout", "rate": "ndotout"},
+                {"flow": "flowin", "c": "cin", "output": "ndotin"},
+                {"flow": "flowout", "c": "xout", "output": "ndotout"},
             ],
             "ndot.ufloat.pkl",
         ),
         (  # ts2 - dataframe with units and floats
             "flowcx.units.float.df.pkl",
             [
-                {"flow": "flowin", "comp": "cin", "rate": "ndotin"},
-                {"flow": "flowout", "comp": "xout", "rate": "ndotout"},
+                {"flow": "flowin", "c": "cin", "output": "ndotin"},
+                {"flow": "flowout", "x": "xout", "output": "ndotout"},
             ],
             "ndot.units.float.pkl",
         ),
         (  # ts3 - dataframe with units and floats
             "flowcx.units.ufloat.df.pkl",
             [
-                {"flow": "flowin", "comp": "cin", "rate": "ndotin"},
-                {"flow": "flowout", "comp": "xout", "rate": "ndotout"},
+                {"flow": "flowin", "c": "cin", "output": "ndotin"},
+                {"flow": "flowout", "x": "xout", "output": "ndotout"},
             ],
             "ndot.units.ufloat.pkl",
         ),
         (  # ts4 - custom Tref
             "flowcx.units.ufloat.df.pkl",
             [
-                {"flow": "flowin", "comp": "xout", "rate": "a"},
-                {"flow": "flowin", "comp": "xout", "rate": "b", "Tref": Trefs[0]},
-                {"flow": "flowin", "comp": "xout", "rate": "c", "Tref": Trefs[1]},
-                {"flow": "flowin", "comp": "xout", "rate": "d", "Tref": Trefs[2]},
-                {"flow": "flowin", "comp": "xout", "rate": "e", "Tref": "Tref"},
+                {"flow": "flowin", "x": "xout", "output": "a"},
+                {"flow": "flowin", "x": "xout", "output": "b", "Tref": Trefs[0]},
+                {"flow": "flowin", "x": "xout", "output": "c", "Tref": Trefs[1]},
+                {"flow": "flowin", "x": "xout", "output": "d", "Tref": Trefs[2]},
+                {"flow": "flowin", "x": "xout", "output": "e", "Tref": "Tref"},
             ],
             "Tref.units.ufloat.pkl",
         ),
     ],
 )
-def test_cat_yield_floats(inpath, spec, outpath, datadir):
+def test_rates_flowtomolar(infile, spec, outfile, datadir):
     os.chdir(datadir)
-    df = pd.read_pickle(inpath)
+    df = pd.read_pickle(infile)
     for args in spec:
         rates.flow_to_molar(df, **args)
-    ref = pd.read_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
-    assert ref.attrs == df.attrs
+    ref = pd.read_pickle(outfile)
+    compare_dfs(ref, df)

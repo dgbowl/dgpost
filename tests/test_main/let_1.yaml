@@ -21,7 +21,13 @@ transform:
     with: catalysis.conversion
     using:
       - feedstock: propane
+        xin: xin
+        xout: xout
       - feedstock: propane
         product: False
+        xin: xin
+        xout: xout
       - feedstock: O2
         element: O
+        xin: xin
+        xout: xout

@@ -4,6 +4,7 @@ import pandas as pd
 
 from dgpost.transform import catalysis
 from dgpost.utils import transform
+from .utils import compare_dfs
 
 
 @pytest.mark.parametrize(
@@ -12,18 +13,50 @@ from dgpost.utils import transform
         (  # ts0 - dataframe with floats
             "xinxout.float.df.pkl",
             [
-                {"feedstock": "propane", "product": False},
-                {"feedstock": "C3H8", "product": True, "element": "C"},
-                {"feedstock": "O2", "product": False},
+                {
+                    "feedstock": "propane",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": False,
+                },
+                {
+                    "feedstock": "C3H8",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": True,
+                    "element": "C",
+                },
+                {
+                    "feedstock": "O2",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": False,
+                },
             ],
             "XpXr.float.pkl",
         ),
         (  # ts1 - dataframe with ufloats
             "xinxout.ufloat.df.pkl",
             [
-                {"feedstock": "propane", "product": False},
-                {"feedstock": "C3H8", "product": True, "element": "C"},
-                {"feedstock": "O2", "product": False},
+                {
+                    "feedstock": "propane",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": False,
+                },
+                {
+                    "feedstock": "C3H8",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": True,
+                    "element": "C",
+                },
+                {
+                    "feedstock": "O2",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": False,
+                },
             ],
             "XpXr.ufloat.pkl",
         ),
@@ -45,14 +78,13 @@ from dgpost.utils import transform
         ),
     ],
 )
-def test_against_df(inpath, spec, outpath, datadir):
+def test_conversion_against_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
         catalysis.conversion(df, **args)
     ref = pd.read_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
-    assert ref.attrs == df.attrs
+    compare_dfs(ref, df)
 
 
 @pytest.mark.parametrize(
@@ -61,21 +93,36 @@ def test_against_df(inpath, spec, outpath, datadir):
         (  # ts0 - dataframe with ufloats
             "xinxout.ufloat.df.pkl",
             [
-                {"feedstock": "propane", "product": False},
-                {"feedstock": "C3H8", "product": True, "element": "C"},
-                {"feedstock": "O2", "product": False},
+                {
+                    "feedstock": "propane",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": False,
+                },
+                {
+                    "feedstock": "C3H8",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": True,
+                    "element": "C",
+                },
+                {
+                    "feedstock": "O2",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": False,
+                },
             ],
             "XpXr.ufloat.pkl",
         ),
     ],
 )
-def test_with_transform(inpath, spec, outpath, datadir):
+def test_conversion_with_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     transform(df, "catalysis.conversion", using=spec)
     ref = pd.read_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
-    assert ref.attrs == df.attrs
+    compare_dfs(ref, df)
 
 
 @pytest.mark.parametrize(
@@ -84,16 +131,36 @@ def test_with_transform(inpath, spec, outpath, datadir):
         (  # ts0 - dataframe with ufloats
             "catalysis.xlsx",
             [
-                {"feedstock": "propane", "product": True, "element": "C"},
-                {"feedstock": "oxygen"},
-                {"feedstock": "C3H8", "product": False},
-                {"feedstock": "O2", "product": False},
+                {
+                    "feedstock": "propane",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": True,
+                    "element": "C",
+                },
+                {
+                    "feedstock": "oxygen",
+                    "xin": "xin",
+                    "xout": "xout",
+                },
+                {
+                    "feedstock": "C3H8",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": False,
+                },
+                {
+                    "feedstock": "O2",
+                    "xin": "xin",
+                    "xout": "xout",
+                    "product": False,
+                },
             ],
             ["Xr->C3H8", "Xr->O2", "Xp_C->propane", "Xp_O->oxygen"],
         ),
     ],
 )
-def test_against_excel(inpath, spec, outkeys, datadir):
+def test_conversion_against_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
     transform(df, "catalysis.conversion", using=spec)

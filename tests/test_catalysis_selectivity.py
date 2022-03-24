@@ -4,6 +4,7 @@ import pandas as pd
 
 from dgpost.transform import catalysis
 from dgpost.utils import transform
+from .utils import compare_dfs
 
 
 @pytest.mark.parametrize(
@@ -12,24 +13,24 @@ from dgpost.utils import transform
         (  # ts0 - dataframe with floats
             "xinxout.float.df.pkl",
             [
-                {"feedstock": "C3H8", "element": "C"},
-                {"feedstock": "O2", "element": "O"},
+                {"feedstock": "C3H8", "element": "C", "xin": "xin", "xout": "xout"},
+                {"feedstock": "O2", "element": "O", "xin": "xin", "xout": "xout"},
             ],
             "Sp.float.pkl",
         ),
         (  # ts1 - dataframe with ufloats
             "xinxout.ufloat.df.pkl",
             [
-                {"feedstock": "propane", "element": "C"},
-                {"feedstock": "O2", "element": "O"},
+                {"feedstock": "propane", "element": "C", "xin": "xin", "xout": "xout"},
+                {"feedstock": "O2", "element": "O", "xin": "xin", "xout": "xout"},
             ],
             "Sp.ufloat.pkl",
         ),
         (  # ts2 - dataframe with floats, elements implicit
             "xinxout.float.df.pkl",
             [
-                {"feedstock": "C3H8"},
-                {"feedstock": "O2"},
+                {"feedstock": "C3H8", "xin": "xin", "xout": "xout"},
+                {"feedstock": "O2", "xin": "xin", "xout": "xout"},
             ],
             "Sp.float.pkl",
         ),
@@ -51,14 +52,13 @@ from dgpost.utils import transform
         ),
     ],
 )
-def test_against_df(inpath, spec, outpath, datadir):
+def test_selectivity_against_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
         catalysis.selectivity(df, **args)
     ref = pd.read_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
-    assert ref.attrs == df.attrs
+    compare_dfs(ref, df)
 
 
 @pytest.mark.parametrize(
@@ -67,20 +67,19 @@ def test_against_df(inpath, spec, outpath, datadir):
         (  # ts0 - dataframe with ufloats
             "xinxout.ufloat.df.pkl",
             [
-                {"feedstock": "propane", "element": "C"},
-                {"feedstock": "O2", "element": "O"},
+                {"feedstock": "propane", "element": "C", "xin": "xin", "xout": "xout"},
+                {"feedstock": "O2", "element": "O", "xin": "xin", "xout": "xout"},
             ],
             "Sp.ufloat.pkl",
         )
     ],
 )
-def test_with_transform(inpath, spec, outpath, datadir):
+def test_selectivity_with_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     transform(df, "catalysis.selectivity", using=spec)
     ref = pd.read_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
-    assert ref.attrs == df.attrs
+    compare_dfs(ref, df)
 
 
 @pytest.mark.parametrize(
@@ -88,14 +87,12 @@ def test_with_transform(inpath, spec, outpath, datadir):
     [
         (  # ts0 - dataframe with ufloats
             "catalysis.xlsx",
-            [
-                {"feedstock": "propane", "element": "C"},
-            ],
+            [{"feedstock": "propane", "element": "C", "xin": "xin", "xout": "xout"}],
             ["Sp_C->CO2", "Sp_C->CO", "Sp_C->C3H6"],
         ),
     ],
 )
-def test_against_excel(inpath, spec, outkeys, datadir):
+def test_selectivity_against_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
     transform(df, "catalysis.selectivity", using=spec)

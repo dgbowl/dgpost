@@ -10,14 +10,16 @@ import numpy as np
 from uncertainties import unumpy as unp
 
 from collections import defaultdict
-from typing import Union
+from typing import Any
 from chemicals.identifiers import search_chemical
 from yadg.dgutils import ureg
 
 
 def element_from_formula(f: str, el: str) -> int:
     """
-    Given a formula ``f``, return the number of atoms of element ``el`` in that formula.
+    Given a chemical formula ``f``, returns the number of atoms of element ``el`` 
+    in that formula.
+
     """
     split = re.split("(?=[A-Z]|(?<!\\d)\\d)", f)
     if el not in split:
@@ -35,7 +37,7 @@ def element_from_formula(f: str, el: str) -> int:
 def default_element(f: str) -> str:
     """
     Given a formula ``f``, return the default element for calculating
-    conversion. Priority is: ``"C" > "O" > "H" > ...``.
+    conversion. The priority list is ``["C", "O", "H"]``.
     """
     split = re.split("(?=[A-Z]|(?<!\\d)\\d)", f)
     for el in ["C", "O", "H"]:
@@ -46,34 +48,31 @@ def default_element(f: str) -> str:
             return s
 
 
-def columns_to_smiles(df: pd.DataFrame, prefix: Union[list[str], str]) -> dict:
+def columns_to_smiles(**kwargs: dict[str, dict[str, Any]]) -> dict:
     """
-    Creates a dictionary with SMILES representation of all chemicals present among the
-    columns of the dataframe and matched by the prefix, storing the returned
-    :class:`chemicals.ChemicalMetadata` as well as the full name of the column.
+    Creates a dictionary with a SMILES representation of all chemicals present among
+    the keys in the kwargs, storing the returned :class:`chemicals.ChemicalMetadata`
+    as well as the full name within args.
 
     Parameters
     ----------
-    df
-        Source dataframe.
-
-    prefix
-        Prefix of chemical species, with species names separated by  ``->``.
+    kwargs
+        A :class:`dict` containing :class:`dict[str, Any]` values. The :class:`str`
+        keys of the inner :class:`dicts` are parsed to SMILES.
 
     Returns
     -------
     smiles: dict
-        A new dictionary containing the SMILES of all prefixed chemicals as keys,
-        and the metadata and column specification as values.
+        A new :class:`dict[str, dict]` containing the SMILES of all prefixed chemicals
+        as :class:`str` keys, and the metadata and column specification as the 
+        :class:`dict` values.
+
     """
     smiles = defaultdict(dict)
-    if isinstance(prefix, str):
-        prefix = [prefix]
-    for col in df.columns:
-        for p in prefix:
-            if col.startswith(p):
-                chem = search_chemical(col.split("->")[1])
-                smiles[chem.smiles].update({"chem": chem, p: col})
+    for k, v in kwargs.items():
+        for kk in v.keys():
+            chem = search_chemical(kk.split("->")[-1])
+            smiles[chem.smiles].update({"chem": chem, k: kk})
     return smiles
 
 
@@ -92,10 +91,10 @@ def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
     Parameters
     ----------
     df
-        Pandas dataframe, optionally annotated with units.
+        A :class:`pd.DataFrame`, optionally annotated with units in ``df.attrs``.
 
     col
-        Column from the dataframe.
+        The :class:`str` name of the column to be loaded from the ``df``.
 
     Returns
     -------
@@ -108,41 +107,11 @@ def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
     return ureg.Quantity(vals, unit)
 
 
-def save(df: pd.DataFrame, tag: str, col: pint.Quantity) -> None:
-    """
-    Unit aware dataframe storing function.
-
-    Given a dataframe in ``df``, and the new column header in ``tag`` and the data
-    in ``col``, this function stores the data portion of ``col`` in the dataframe
-    as ``df[tag]``, and annotates the dataframe with the units.
-
-    If the units of ``col`` are dimensionless, the unit is not stored.
-
-    Parameters
-    ----------
-    df
-        Pandas dataframe, optionally annotated with units.
-
-    tag
-        Name of the new column.
-
-    col
-        Data of the new column.
-
-    """
-    col.ito_base_units()
-    df[tag] = col.m
-    if not col.dimensionless:
-        if "units" not in df.attrs:
-            df.attrs["units"] = {}
-        df.attrs["units"][tag] = f"{col.u:~P}"
-
-
 def separate_data(
     data: pint.Quantity, unit: str = None
 ) -> tuple[np.ndarray, np.ndarray, str]:
     """
-    Separates the data into values, errors and unit
+    Separates the data into values, errors and units
 
     Parameters
     ----------
@@ -165,165 +134,76 @@ def separate_data(
     return unp.nominal_values(data), unp.std_devs(data), old_unit
 
 
-def load_array_data(*cols: str):
+def load_data(*cols: tuple[str, str, type]):
     """
-    Decorator factory for data loading. Intended to load arrays.
+    Decorator factory for data loading.
 
     Creates a decorator that will load the columns specified in ``cols``
-    and calls the wrapped function for each row entry.
+    and calls the wrapped function ``func`` as appropriate. The ``func`` has to
+    accept :class:`pint.Quantity` objects, return a :class:`dict[str, pint.Quantity]`, 
+    and handle an optional parameter ``"output"`` which prefixes (or assigns) the 
+    output data in the returned :class:`dict` appropriately.
 
-    The load_data decorator handles the following three cases:
+    The argument of the decorator is a :class:`list[tuple]`, with each element being
+    a are :class:`tuple[str, str, type]`. The first field in this :class:`tuple` is
+    the :class:`str` name of the argument of the decorated ``func``, the second 
+    :class:`str` field denotes the default units for that argument (or ``None`` for
+    a unitless quantity), and the :class:`type` field allows the use of the decorator
+    with functions that expect :class:`list` of points in the argument (such as 
+    trace-processing functions) or :class:`dict` of :class:`pint.Quantity` objects 
+    (such as functions operating on chemical compositions).
 
-    - decorated function launched directly with kwargs only -> the kwargs
-      that correspond to the cols listed in the decorator are converted
-      to pint.Quantity
+    The decorator handles the following cases:
 
-    - decorated function launched using a mixture of args and kwargs -> the
-      args are assigned into kwargs using cols and converted to pint.Quantity
-
-    - decorated function launched with pd.DataFrame and kwargs -> the cols
-      specify column names in the pd.DataFrame, which are pulled out and converted
-      to pint.Quantity
-
-    Parameters
-    ----------
-    cols
-        list of strings with the col names used to call the function
-
-    Returns
-    -------
-    loading: Callable
-        A wrapped version of the decorated function
-
-    """
-
-    def loading(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            # Function is called with a dataframe as the only positional argument and
-            # all other parameters in kwargs:
-            if len(args) > 0 and isinstance(args[0], pd.DataFrame):
-                if len(args) > 1:
-                    raise ValueError("Only the DataFrame should be given as argument")
-
-                df = args[0]
-                # check if the dataframe has a units attribute else create it
-                if "units" not in df.attrs:
-                    df.attrs["units"] = {}
-
-                # each kwarg to get a data column specified in cols should be a string
-                # create a list for each data column that should get past to the function
-                raw_data = []
-                for col in cols:
-                    if isinstance(col, str):
-                        raw_data.append(pQ(df, kwargs.pop(col)))
-                    else:
-                        raise ValueError(f"Provided value for {col} is not a string")
-
-                # transpose the list of pint.Quantity and iterate over it
-                # so that we iterate over each timestep
-                for index, row in enumerate(zip(*raw_data)):
-                    # create kwargs for each data col
-                    data = {col: r for col, r in zip(cols, row)}
-
-                    # call the function for each row in the data
-                    # the function should return a dict with keys that are
-                    # the names of the target columns and values that are
-                    # Union[pint.Quantity, int, str]
-                    retvals = func(**data, **kwargs)
-                    for name, qty in retvals.items():
-                        # check if the column already exists in the dataframe,
-                        # if not create empty column
-                        if name not in df.columns:
-                            df[name] = ""
-                        # fill the column and units attribute with the given values
-                        if isinstance(qty, pint.Quantity):
-                            df[name].iloc[index] = qty.m
-                            df.attrs["units"][name] = f"{qty.u:~P}"
-                        else:
-                            df[name].iloc[index] = qty
-
-            else:
-                # Merge args into kwargs using cols
-                if len(cols) == len(args):
-                    for col, arg in zip(cols, args):
-                        kwargs[col] = arg
-
-                # Validate that all cols are pint.Quantity
-                for k in cols:
-                    v = kwargs[k]
-                    if isinstance(v, pint.Quantity):
-                        continue
-                    elif isinstance(v, np.ndarray):
-                        kwargs[k] = pint.Quantity(v)
-                    else:
-                        raise ValueError(
-                            f"The provided argument '{k}' is neither a pint.Quantity "
-                            f"nor an np.ndarray: '{type(v)}'."
-                        )
-                return func(**kwargs)
-
-        return wrapper
-
-    return loading
-
-
-def load_scalar_data(*cols: str):
-    """
-    Decorator factory for data loading. Intended to load scalars.
-
-    Creates a decorator that will load the columns specified in ``cols``
-    and calls the wrapped function for all rows at once. The function has to
-    return a :class:`dict[str, pint.Quantity]`, handling an optional parameter
-    ``"output"`` which prefixes (or assigns) the output data in the returned
-    :class:`dict` appropriately.
-
-    The ``load_scalar_data`` decorator handles the following cases:
-
-    - decorated function launched directly with ``kwargs`` or with a mixture of
-      ``args`` and ``kwargs``:
+    - the decorated ``func`` is launched directly, either with ``kwargs`` or with a
+      mixture of ``args`` and ``kwargs``:
 
         - the ``args`` are assigned into ``kwargs`` using their position in the
-          ``args`` and ``cols`` array listed in the decorator
-        - all elements in ``kwargs`` that match the values in the ``cols`` listed
-          in the decorator are converted to :class:`pint.Quantity` objects, unless
-          they are one already.
-        - the units for the :class:`pint.Quantity` objects are determined from the
-          suffix of the ``col``
+          ``args`` and ``cols`` array as provided to the decorator
+        - all elements in ``kwargs`` that match the argument names in the ``cols``
+          :class:`list` provided to the decorator are converted to 
+          :class:`pint.Quantity` objects, assigning the default units using the
+          data from the ``cols`` :class:`list`, unless they are a 
+          :class:`pint.Quantity` already.
+        
+    - decorated ``func`` is launched with a :class:`pd.DataFrame` as the ``args`` 
+      and other parameters in ``kwargs``:
 
-    - decorated function launched with a :class:`pd.DataFrame` as ``args`` and other
-      ``kwargs``:
-
-        - the data for ``cols`` is sourced from the :class:`pd.DataFrame`, using the
-          ``kwargs`` to look for appropriate column names in the :class:`pd.DataFrame`
+        - the data for the arguments listed in ``cols`` is sourced from the columns
+          of the :class:`pd.DataFrame`, using the provided :class:`str` arguments to 
+          find the appropriate columns
         - data from unit-aware :class:`pd.DataFrame` objects is loaded using the
           :func:`pQ` accessor accordingly
         - data from unit-naive :class:`pd.DataFrame` objects are coerced into
-          :class:`pint.Quantity` objects using the units as specified in the ``cols``
-
+          :class:`pint.Quantity` objects using the default units as specified in the
+          ``cols`` :class:`list`
 
     Parameters
     ----------
     cols
-        A :class:`list[str]` containing the column names used to call the function.
-        The elements in the list have to match the ``kwargs`` of the function. They
-        can also be annotated by the required units, if applicable.
+        A :class:`list[tuple[str, str, type]]` containing the column names used to 
+        call the ``func``.
 
     Returns
     -------
     loading: Callable
-        A wrapped version of the decorated function.
+        A wrapped version of the decorated ``func``.
 
     """
 
     def loading(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            # Function is called with a dataframe as the only positional argument and
-            # all other parameters in kwargs:
+            # pad the cols definition to always contain "cname, cunit, ctype"
+            fcols = [(list(col) + 3 * [None])[:3] for col in cols]
+
+            # Function is called with a pd.DataFrame.
+            # The only allowed positional argument is the pd.Dataframe,
+            # other parameters should be in kwargs:
             if len(args) > 0 and isinstance(args[0], pd.DataFrame):
                 if len(args) > 1:
                     raise ValueError("Only the DataFrame should be given as argument")
+
                 df = args[0]
                 # Check if the dataframe has a units attribute. If not, the quantities
                 # in the dataframe are unitless and need to be converted.
@@ -331,76 +211,103 @@ def load_scalar_data(*cols: str):
                     uconv = True
                 else:
                     uconv = False
-                # - Go through the cols array specified in the decorator.
-                # - Split each col into the name of the argument and its units.
-                # - Create the appropriate pint.Quantity object and place it in kwargs.
-                for col in cols:
-                    if isinstance(col, str):
-                        parts = col.split(" ")
-                        cname = parts[0]
-                        if len(parts) == 2:
-                            cunit = parts[1][1:-1]
+
+                data_kwargs = {}
+                for cname, cunit, ctype in fcols:
+                    cval = kwargs.pop(cname, None)
+                    if cval is None:
+                        # cval is optional -> we want to let func use its default
+                        continue
+                    elif not isinstance(cval, str):
+                        # cval is not a string -> convert to pint.Quantity
+                        if isinstance(cval, pint.Quantity):
+                            data_kwargs[cname] = cval
                         else:
-                            cunit = None
-                        cval = kwargs.pop(cname, None)
-                        if cval is None:
-                            continue
-                        elif uconv:
-                            kwargs[cname] = ureg.Quantity(df[cval].array, cunit)
+                            data_kwargs[cname] = ureg.Quantity(cval, cunit)
+                    elif ctype is not dict:
+                        # cval is a string, and the row values (ctype) are list or scalar
+                        if uconv:
+                            data_kwargs[cname] = ureg.Quantity(df[cval].array, cunit)
                         else:
-                            kwargs[cname] = pQ(df, cval)
+                            data_kwargs[cname] = pQ(df, cval)
                     else:
-                        raise ValueError(f"Provided value for {col} is not a string")
-                # Run the function. The returned object should be a
-                # dict[str, Union[pint.Quantity, int, float, str]].
-                # Load the results back into the dataframe.
-                retvals = func(**kwargs)
-                for name, qty in retvals.items():
-                    if isinstance(qty, pint.Quantity):
-                        df[name] = qty.m
-                        if not uconv:
-                            df.attrs["units"] = f"{qty.u:~P}"
-                    else:
-                        df[name] = qty
+                        # cval is a string, but the row walues (ctype) are dict
+                        # so we need to match all columns in pd.DataFrame
+                        temp = {}
+                        for c in df.columns:
+                            if not c.startswith(cval):
+                                continue
+                            onlyc = c.split("->")[-1]
+                            if uconv:
+                                temp[onlyc] = ureg.Quantity(df[c].array, cunit)
+                            else:
+                                temp[onlyc] = pQ(df, c)
+                        data_kwargs[cname] = temp
+
+                # if a "list" is specified as type, we need to transpose the input:
+                if list in {col[2] for col in fcols}:
+                    row_k = data_kwargs.keys()
+                    row_v = data_kwargs.values()
+                    for i, r in enumerate(zip(*row_v)):
+                        row_data = {k: v for k, v in zip(row_k, r)}
+                        retvals = func(**row_data, **kwargs)
+                        for name, qty in retvals.items():
+                            if name not in df.columns:
+                                df[name] = ""
+                            if isinstance(qty, pint.Quantity):
+                                qty.ito_reduced_units()
+                                df[name].iloc[i] = qty.m
+                                if not uconv and not qty.unitless:
+                                    df.attrs["units"][name] = f"{qty.u:~P}"
+                            else:
+                                df[name].iloc[i] = qty
+                else:
+                    retvals = func(**data_kwargs, **kwargs)
+                    for name, qty in retvals.items():
+                        if isinstance(qty, pint.Quantity):
+                            qty.ito_reduced_units()
+                            df[name] = qty.m
+                            if not uconv and not qty.unitless:
+                                df.attrs["units"][name] = f"{qty.u:~P}"
+                        else:
+                            df[name] = qty
             # Direct call with user-supplied data.
             else:
                 # Merge any args into kwargs using cols. Only works when
                 # an arg is provided for each col.
-                if len(cols) == len(args):
-                    for col, arg in zip(cols, args):
-                        kwargs[col] = arg
+                if len(fcols) == len(args):
+                    cnames = [c[0] for c in fcols]
+                    for cname, arg in zip(cnames, args):
+                        kwargs[cname] = arg
                 # Go through cols again and convert the input data
                 # into pint.Quantity, using the unit specification if necessary
-                for k in cols:
-                    parts = k.split(" ")
-                    if len(parts) == 2:
-                        cn = parts[0]
-                        cu = parts[1][1:-1]
-                    else:
-                        cn = parts[0]
-                        cu = None
-                    v = kwargs.get(cn, None)
+                for cname, cunit, ctype in fcols:
+                    v = kwargs.pop(cname, None)
                     if v is None:
                         continue
                     elif isinstance(v, pint.Quantity):
-                        kwargs[cn] = v
-                    elif isinstance(v, np.ndarray):
-                        if cu is not None:
-                            kwargs[cn] = ureg.Quantity(v, cu)
+                        kwargs[cname] = v
+                    elif isinstance(v, (np.ndarray, float, int)):
+                        if cunit is not None:
+                            kwargs[cname] = ureg.Quantity(v, cunit)
                         else:
-                            kwargs[cn] = v
-                    elif isinstance(v, (float, int)):
-                        if cu is not None:
-                            kwargs[cn] = ureg.Quantity(v, cu)
-                        else:
-                            kwargs[cn] = v
+                            kwargs[cname] = v
+                    elif isinstance(v, dict):
+                        temp = {}
+                        for kk, vv in v.items():
+                            if isinstance(vv, pint.Quantity):
+                                temp[kk] = vv
+                            elif isinstance(v, (np.ndarray, float, int)):
+                                if cunit is not None:
+                                    temp[kk] = ureg.Quantity(vv, cunit)
+                                else:
+                                    temp[kk] = vv
+                        kwargs[cname] = temp
                     else:
                         raise ValueError(
-                            f"The provided argument '{k}' is neither a pint.Quantity "
+                            f"The provided argument '{cname}' is neither a pint.Quantity "
                             f"nor an np.ndarray: '{type(v)}'."
                         )
                 return func(**kwargs)
-
         return wrapper
-
     return loading
