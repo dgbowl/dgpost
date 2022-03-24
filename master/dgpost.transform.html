@@ -106,49 +106,52 @@
 <section id="module-dgpost.transform.catalysis">
 <span id="dgpost-transform-catalysis-module"></span><h2>dgpost.transform.catalysis module<a class="headerlink" href="#module-dgpost.transform.catalysis" title="Permalink to this headline"></a></h2>
 <p>Module of transformations relevant to catalysis applications.</p>
-<p>For all user-facing function in this module, the data is extracted from the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> supplied as <code class="docutils literal notranslate"><span class="pre">df</span></code>. The inlet and outlet compositions are
-specified using <code class="docutils literal notranslate"><span class="pre">xin</span></code> and <code class="docutils literal notranslate"><span class="pre">xout</span></code>, and they are taken to be all columns in <code class="docutils literal notranslate"><span class="pre">df</span></code>
-matching the format <code class="docutils literal notranslate"><span class="pre">{xin|xout}-&gt;*</span></code>. The <code class="docutils literal notranslate"><span class="pre">*</span></code> denotes species names, which are
-parsed to SMILES. Matching of <code class="docutils literal notranslate"><span class="pre">feestock</span></code>, <code class="docutils literal notranslate"><span class="pre">standard</span></code>, and components of <code class="docutils literal notranslate"><span class="pre">xin</span></code>
-and <code class="docutils literal notranslate"><span class="pre">xout</span></code> is performed using these SMILES.</p>
+<p>For the functions in this module, the inlet and outlet compositions are specified using
+the <code class="docutils literal notranslate"><span class="pre">xin</span></code> and <code class="docutils literal notranslate"><span class="pre">xout</span></code> arguments, the keys of which are the species names in the
+inlet / outlet compositions, respectively. These keys are parsed to SMILES, and the
+cross-matching of <code class="docutils literal notranslate"><span class="pre">feestock</span></code>, <code class="docutils literal notranslate"><span class="pre">standard</span></code>, and components of <code class="docutils literal notranslate"><span class="pre">xin</span></code> and <code class="docutils literal notranslate"><span class="pre">xout</span></code>
+is performed using these SMILES.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This module assumes that the provided inlet (<code class="docutils literal notranslate"><span class="pre">xin</span></code>) and outlet (<code class="docutils literal notranslate"><span class="pre">xout</span></code>)
 compositions contains all species, and that the atomic balance of the inlet and
 outlet is near unity. If multiple inlet/outlet streams are present in the
-experiment, they need to be appropriately combined into a single <code class="docutils literal notranslate"><span class="pre">xin</span></code>/<code class="docutils literal notranslate"><span class="pre">xout</span></code>
-using functions in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform.mixture</span></code> before using the functions
+experiment, they need to be appropriately combined into a single namespace, e.g.
+using functions in the <a class="reference internal" href="#module-dgpost.transform.rates" title="dgpost.transform.rates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform.rates</span></code></a> before using the functions
 in this module.</p>
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.catalysis.atom_balance">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">atom_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xout'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.atom_balance" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">atom_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.atom_balance" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates atom balance. The total number of atoms of the specified element is
 compared between between the inlet and outlet, normalized by an internal standard,
 or optionally weighed by the supplied flows.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – A pandas dataframe.</p></li>
-<li><p><strong>xin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns determining the inlet composition.</p></li>
-<li><p><strong>xout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns determining the outlet composition.</p></li>
+<li><p><strong>xin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – Prefix of the columns determining the inlet composition.</p></li>
+<li><p><strong>xout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – Prefix of the columns determining the outlet composition.</p></li>
+<li><p><strong>fin</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – Inlet flow. If not supplied, assumed to be equal to outlet flow.</p></li>
+<li><p><strong>fout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – Outlet flow. If not supplied, assumed to be equal to inlet flow.</p></li>
 <li><p><strong>element</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The element for determining conversion. If not specified, set to <code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code>.</p></li>
 <li><p><strong>standard</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Internal standard for normalizing flows. By default set to <code class="docutils literal notranslate"><span class="pre">&quot;N2&quot;</span></code>.
 Overriden when <code class="docutils literal notranslate"><span class="pre">fin</span></code> and <code class="docutils literal notranslate"><span class="pre">fout</span></code> are set.</p></li>
-<li><p><strong>fin</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Inlet flow. If not supplied, assumed to be equal to outlet flow.</p></li>
-<li><p><strong>fout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Outlet flow. If not supplied, assumed to be equal to inlet flow.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output variables.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calculated atomic balance using <code class="docutils literal notranslate"><span class="pre">output</span></code> as
+the key.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ret</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.catalysis.catalytic_yield">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">catalytic_yield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedstock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xout'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N2'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.catalytic_yield" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">catalytic_yield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedstock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.catalytic_yield" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the catalytic yield, defined as the product of conversion and
 selectivity. Uses product-based conversion of feedstock for consistency with
 selectivity. The sum of all yields is equal to the conversion. Implicitly runs
@@ -156,66 +159,79 @@ selectivity. The sum of all yields is equal to the conversion. Implicitly runs
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – A pandas dataframe.</p></li>
 <li><p><strong>feedstock</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the feedstock. Parsed into SMILES and matched against <code class="docutils literal notranslate"><span class="pre">xin</span></code> and
 <code class="docutils literal notranslate"><span class="pre">xout</span></code>.</p></li>
-<li><p><strong>xin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns determining the inlet composition.</p></li>
-<li><p><strong>xout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns determining the outlet composition.</p></li>
+<li><p><strong>xin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – Prefix of the columns determining the inlet composition.</p></li>
+<li><p><strong>xout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – Prefix of the columns determining the outlet composition.</p></li>
 <li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – The element for determining conversion. If not specified, set from <code class="docutils literal notranslate"><span class="pre">feedstock</span></code>
 using <code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.transform.chemhelpers.default_element()</span></code>.</p></li>
-<li><p><strong>standard</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Internal standard for normalizing flows. By default set to <code class="docutils literal notranslate"><span class="pre">&quot;N2&quot;</span></code>.</p></li>
+<li><p><strong>standard</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Internal standard for normalizing the compositions. By default set to “N2”.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output variables.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calculated yields using <code class="docutils literal notranslate"><span class="pre">output</span></code> as
+the prefix for each key.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ret</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.catalysis.conversion">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">conversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedstock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xout'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N2'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.conversion" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">conversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedstock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.conversion" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the conversion of <code class="docutils literal notranslate"><span class="pre">feedstock</span></code>, a species present in <code class="docutils literal notranslate"><span class="pre">xin</span></code>. By
 default, a product-based carbon conversion (using data from <code class="docutils literal notranslate"><span class="pre">xout</span></code>) is computed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – A pandas dataframe.</p></li>
 <li><p><strong>feedstock</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the feedstock. Parsed into SMILES and matched against <code class="docutils literal notranslate"><span class="pre">xin</span></code> and
 <code class="docutils literal notranslate"><span class="pre">xout</span></code>.</p></li>
-<li><p><strong>xin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns determining the inlet composition.</p></li>
-<li><p><strong>xout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns determining the outlet composition.</p></li>
+<li><p><strong>xin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A dictionary containing the composition of the inlet mixture with the names
+of the chemicals as <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> keys.</p></li>
+<li><p><strong>xout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A dictionary containing the composition of the outlet mixture with the names
+of the chemicals as <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> keys.</p></li>
 <li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Name of the element for determining conversion. If not specified, set to the
-highest-priority element in <code class="docutils literal notranslate"><span class="pre">feedstock</span></code>: “C” &gt; “O” &gt; “H” &gt; …</p></li>
-<li><p><strong>product</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Product-based conversion toggle. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>standard</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Internal standard for normalizing flows. By default set to “N2”.</p></li>
+highest-priority (C &gt; H &gt; O) element in <code class="docutils literal notranslate"><span class="pre">feedstock</span></code>.</p></li>
+<li><p><strong>product</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Product-based conversion toggle. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>standard</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Internal standard for normalizing the compositions. By default set to “N2”.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> name of the output variable.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calculated conversion with <code class="docutils literal notranslate"><span class="pre">output</span></code> as its key.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ret</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.catalysis.selectivity">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">selectivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedstock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xout'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.selectivity" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">selectivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedstock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.selectivity" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates product-based elemental selectivities, excluding the feedstock. The sum
 of selectivities is normalised to unity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – A pandas dataframe.</p></li>
 <li><p><strong>feedstock</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the feedstock. Parsed into SMILES and matched against <code class="docutils literal notranslate"><span class="pre">xin</span></code> and
 <code class="docutils literal notranslate"><span class="pre">xout</span></code>.</p></li>
-<li><p><strong>xin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns determining the inlet composition.</p></li>
-<li><p><strong>xout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns determining the outlet composition.</p></li>
+<li><p><strong>xin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – Prefix of the columns determining the inlet composition.</p></li>
+<li><p><strong>xout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – Prefix of the columns determining the outlet composition.</p></li>
 <li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – The element for determining conversion. If not specified, set from <code class="docutils literal notranslate"><span class="pre">feedstock</span></code>
 using <code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.transform.chemhelpers.default_element()</span></code>.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output variables.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calculated selectivities using <code class="docutils literal notranslate"><span class="pre">output</span></code> as
+the prefix for each key.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ret</p>
 </dd>
 </dl>
 </dd></dl>
@@ -277,20 +293,19 @@ of <span class="math notranslate nohighlight">\(\text{H}^+ \rightarrow \text{H}\
 <p>Module of helper functions for chemicals, elements, and unit handling.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.helpers.columns_to_smiles">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">columns_to_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.columns_to_smiles" title="Permalink to this definition"></a></dt>
-<dd><p>Creates a dictionary with SMILES representation of all chemicals present among the
-columns of the dataframe and matched by the prefix, storing the returned
-<code class="xref py py-class docutils literal notranslate"><span class="pre">chemicals.ChemicalMetadata</span></code> as well as the full name of the column.</p>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">columns_to_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.columns_to_smiles" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dictionary with a SMILES representation of all chemicals present among
+the keys in the kwargs, storing the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">chemicals.ChemicalMetadata</span></code>
+as well as the full name within args.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – Source dataframe.</p></li>
-<li><p><strong>prefix</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Prefix of chemical species, with species names separated by  <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">Any]</span></code> values. The <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
+keys of the inner <code class="xref py py-class docutils literal notranslate"><span class="pre">dicts</span></code> are parsed to SMILES.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>smiles</strong> – A new dictionary containing the SMILES of all prefixed chemicals as keys,
-and the metadata and column specification as values.</p>
+<dd class="field-even"><p><strong>smiles</strong> – A new <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">dict]</span></code> containing the SMILES of all prefixed chemicals
+as <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> keys, and the metadata and column specification as the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> values.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>dict</p>
@@ -302,7 +317,7 @@ and the metadata and column specification as values.</p>
 <dt class="sig sig-object py" id="dgpost.transform.helpers.default_element">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">default_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.default_element" title="Permalink to this definition"></a></dt>
 <dd><p>Given a formula <code class="docutils literal notranslate"><span class="pre">f</span></code>, return the default element for calculating
-conversion. Priority is: <code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span> <span class="pre">&gt;</span> <span class="pre">&quot;O&quot;</span> <span class="pre">&gt;</span> <span class="pre">&quot;H&quot;</span> <span class="pre">&gt;</span> <span class="pre">...</span></code>.</p>
+conversion. The priority list is <code class="docutils literal notranslate"><span class="pre">[&quot;C&quot;,</span> <span class="pre">&quot;O&quot;,</span> <span class="pre">&quot;H&quot;]</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
@@ -313,7 +328,8 @@ conversion. Priority is: <code class="docutils literal notranslate"><span class=
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.helpers.element_from_formula">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">element_from_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">el</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.element_from_formula" title="Permalink to this definition"></a></dt>
-<dd><p>Given a formula <code class="docutils literal notranslate"><span class="pre">f</span></code>, return the number of atoms of element <code class="docutils literal notranslate"><span class="pre">el</span></code> in that formula.</p>
+<dd><p>Given a chemical formula <code class="docutils literal notranslate"><span class="pre">f</span></code>, returns the number of atoms of element <code class="docutils literal notranslate"><span class="pre">el</span></code>
+in that formula.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
@@ -322,82 +338,61 @@ conversion. Priority is: <code class="docutils literal notranslate"><span class=
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="dgpost.transform.helpers.load_array_data">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">load_array_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.load_array_data" title="Permalink to this definition"></a></dt>
-<dd><p>Decorator factory for data loading. Intended to load arrays.</p>
+<dt class="sig sig-object py" id="dgpost.transform.helpers.load_data">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.load_data" title="Permalink to this definition"></a></dt>
+<dd><p>Decorator factory for data loading.</p>
 <p>Creates a decorator that will load the columns specified in <code class="docutils literal notranslate"><span class="pre">cols</span></code>
-and calls the wrapped function for each row entry.</p>
-<p>The load_data decorator handles the following three cases:</p>
-<ul class="simple">
-<li><p>decorated function launched directly with kwargs only -&gt; the kwargs
-that correspond to the cols listed in the decorator are converted
-to pint.Quantity</p></li>
-<li><p>decorated function launched using a mixture of args and kwargs -&gt; the
-args are assigned into kwargs using cols and converted to pint.Quantity</p></li>
-<li><p>decorated function launched with pd.DataFrame and kwargs -&gt; the cols
-specify column names in the pd.DataFrame, which are pulled out and converted
-to pint.Quantity</p></li>
-</ul>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – list of strings with the col names used to call the function</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>loading</strong> – A wrapped version of the decorated function</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Callable</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="dgpost.transform.helpers.load_scalar_data">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">load_scalar_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.load_scalar_data" title="Permalink to this definition"></a></dt>
-<dd><p>Decorator factory for data loading. Intended to load scalars.</p>
-<p>Creates a decorator that will load the columns specified in <code class="docutils literal notranslate"><span class="pre">cols</span></code>
-and calls the wrapped function for all rows at once. The function has to
-return a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">pint.Quantity]</span></code>, handling an optional parameter
-<code class="docutils literal notranslate"><span class="pre">&quot;output&quot;</span></code> which prefixes (or assigns) the output data in the returned
-<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> appropriately.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">load_scalar_data</span></code> decorator handles the following cases:</p>
+and calls the wrapped function <code class="docutils literal notranslate"><span class="pre">func</span></code> as appropriate. The <code class="docutils literal notranslate"><span class="pre">func</span></code> has to
+accept <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects, return a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">pint.Quantity]</span></code>,
+and handle an optional parameter <code class="docutils literal notranslate"><span class="pre">&quot;output&quot;</span></code> which prefixes (or assigns) the
+output data in the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> appropriately.</p>
+<p>The argument of the decorator is a <code class="xref py py-class docutils literal notranslate"><span class="pre">list[tuple]</span></code>, with each element being
+a are <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple[str,</span> <span class="pre">str,</span> <span class="pre">type]</span></code>. The first field in this <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> is
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> name of the argument of the decorated <code class="docutils literal notranslate"><span class="pre">func</span></code>, the second
+<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> field denotes the default units for that argument (or <code class="docutils literal notranslate"><span class="pre">None</span></code> for
+a unitless quantity), and the <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code> field allows the use of the decorator
+with functions that expect <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of points in the argument (such as
+trace-processing functions) or <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects
+(such as functions operating on chemical compositions).</p>
+<p>The decorator handles the following cases:</p>
 <ul>
-<li><p>decorated function launched directly with <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> or with a mixture of
-<code class="docutils literal notranslate"><span class="pre">args</span></code> and <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>:</p>
+<li><p>the decorated <code class="docutils literal notranslate"><span class="pre">func</span></code> is launched directly, either with <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> or with a
+mixture of <code class="docutils literal notranslate"><span class="pre">args</span></code> and <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>the <code class="docutils literal notranslate"><span class="pre">args</span></code> are assigned into <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> using their position in the
-<code class="docutils literal notranslate"><span class="pre">args</span></code> and <code class="docutils literal notranslate"><span class="pre">cols</span></code> array listed in the decorator</p></li>
-<li><p>all elements in <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> that match the values in the <code class="docutils literal notranslate"><span class="pre">cols</span></code> listed
-in the decorator are converted to <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects, unless
-they are one already.</p></li>
-<li><p>the units for the <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects are determined from the
-suffix of the <code class="docutils literal notranslate"><span class="pre">col</span></code></p></li>
+<code class="docutils literal notranslate"><span class="pre">args</span></code> and <code class="docutils literal notranslate"><span class="pre">cols</span></code> array as provided to the decorator</p></li>
+<li><p>all elements in <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> that match the argument names in the <code class="docutils literal notranslate"><span class="pre">cols</span></code>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> provided to the decorator are converted to
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects, assigning the default units using the
+data from the <code class="docutils literal notranslate"><span class="pre">cols</span></code> <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, unless they are a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> already.</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p>decorated function launched with a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> as <code class="docutils literal notranslate"><span class="pre">args</span></code> and other
-<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>:</p>
+<li><p>decorated <code class="docutils literal notranslate"><span class="pre">func</span></code> is launched with a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> as the <code class="docutils literal notranslate"><span class="pre">args</span></code>
+and other parameters in <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>the data for <code class="docutils literal notranslate"><span class="pre">cols</span></code> is sourced from the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>, using the
-<code class="docutils literal notranslate"><span class="pre">kwargs</span></code> to look for appropriate column names in the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></li>
+<li><p>the data for the arguments listed in <code class="docutils literal notranslate"><span class="pre">cols</span></code> is sourced from the columns
+of the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>, using the provided <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> arguments to
+find the appropriate columns</p></li>
 <li><p>data from unit-aware <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> objects is loaded using the
 <a class="reference internal" href="#dgpost.transform.helpers.pQ" title="dgpost.transform.helpers.pQ"><code class="xref py py-func docutils literal notranslate"><span class="pre">pQ()</span></code></a> accessor accordingly</p></li>
 <li><p>data from unit-naive <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> objects are coerced into
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects using the units as specified in the <code class="docutils literal notranslate"><span class="pre">cols</span></code></p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects using the default units as specified in the
+<code class="docutils literal notranslate"><span class="pre">cols</span></code> <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p></li>
 </ul>
 </div></blockquote>
 </li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">list[str]</span></code> containing the column names used to call the function.
-The elements in the list have to match the <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> of the function. They
-can also be annotated by the required units, if applicable.</p>
+<dd class="field-odd"><p><strong>cols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">list[tuple[str,</span> <span class="pre">str,</span> <span class="pre">type]]</span></code> containing the column names used to
+call the <code class="docutils literal notranslate"><span class="pre">func</span></code>.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>loading</strong> – A wrapped version of the decorated function.</p>
+<dd class="field-even"><p><strong>loading</strong> – A wrapped version of the decorated <code class="docutils literal notranslate"><span class="pre">func</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Callable</p>
@@ -420,8 +415,8 @@ the returned <code class="xref py py-class docutils literal notranslate"><span c
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – Pandas dataframe, optionally annotated with units.</p></li>
-<li><p><strong>col</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Column from the dataframe.</p></li>
+<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>, optionally annotated with units in <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code>.</p></li>
+<li><p><strong>col</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> name of the column to be loaded from the <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -434,31 +429,9 @@ the returned <code class="xref py py-class docutils literal notranslate"><span c
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="dgpost.transform.helpers.save">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.save" title="Permalink to this definition"></a></dt>
-<dd><p>Unit aware dataframe storing function.</p>
-<p>Given a dataframe in <code class="docutils literal notranslate"><span class="pre">df</span></code>, and the new column header in <code class="docutils literal notranslate"><span class="pre">tag</span></code> and the data
-in <code class="docutils literal notranslate"><span class="pre">col</span></code>, this function stores the data portion of <code class="docutils literal notranslate"><span class="pre">col</span></code> in the dataframe
-as <code class="docutils literal notranslate"><span class="pre">df[tag]</span></code>, and annotates the dataframe with the units.</p>
-<p>If the units of <code class="docutils literal notranslate"><span class="pre">col</span></code> are dimensionless, the unit is not stored.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – Pandas dataframe, optionally annotated with units.</p></li>
-<li><p><strong>tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the new column.</p></li>
-<li><p><strong>col</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Data of the new column.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.helpers.separate_data">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">separate_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.separate_data" title="Permalink to this definition"></a></dt>
-<dd><p>Separates the data into values, errors and unit</p>
+<dd><p>Separates the data into values, errors and units</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -479,14 +452,21 @@ as <code class="docutils literal notranslate"><span class="pre">df[tag]</span></
 </section>
 <section id="module-dgpost.transform.impedance">
 <span id="dgpost-transform-impedance-module"></span><h2>dgpost.transform.impedance module<a class="headerlink" href="#module-dgpost.transform.impedance" title="Permalink to this headline"></a></h2>
-<section id="impedance-related-transformations">
-<h3>Impedance-related transformations<a class="headerlink" href="#impedance-related-transformations" title="Permalink to this headline"></a></h3>
-<p>This module contains functions relevant to Electrochemical Impedance Spectroscopy (EIS).</p>
+<p>Module of functions relevant to Electrochemical Impedance Spectroscopy (EIS).</p>
 <p>The main functions in this module are two functions relevant for the fitting and
 evaluation of equivalent circuits, <a class="reference internal" href="#dgpost.transform.impedance.fit_circuit" title="dgpost.transform.impedance.fit_circuit"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_circuit()</span></code></a> and <a class="reference internal" href="#dgpost.transform.impedance.calc_circuit" title="dgpost.transform.impedance.calc_circuit"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_circuit()</span></code></a>,
 respectively. The two functions expect frequency-resolved complex impedance data.</p>
 <p>For less rigorous analysis, the <a class="reference internal" href="#dgpost.transform.impedance.lowest_real_impedance" title="dgpost.transform.impedance.lowest_real_impedance"><code class="xref py py-func docutils literal notranslate"><span class="pre">lowest_real_impedance()</span></code></a> can be used, to
 find and/or interpolate the lowest real-valued point of the complex impedance.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The functions in this module expect the whole EIS trace as input - the
+<span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span>, <span class="math notranslate nohighlight">\(-\text{Im}(Z)\)</span> and <span class="math notranslate nohighlight">\(f\)</span> are expected to
+be <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> containing an <code class="xref py py-class docutils literal notranslate"><span class="pre">np.ndarray</span></code> (or similar
+<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>-like object), which is then processed to a (set of) scalar
+values. This means that for processing time resolved data, the functions
+in this module have to be called on each timestep individually.</p>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.impedance.calc_circuit">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">calc_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'calc_circuit'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.calc_circuit" title="Permalink to this definition"></a></dt>
@@ -517,7 +497,7 @@ output-prefixed <span class="math notranslate nohighlight">\(\text{Re}(Z)\)</spa
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.impedance.fit_circuit">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">fit_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fit_circuit'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_constants</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_neg_res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.fit_circuit" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">fit_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_constants</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_neg_res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fit_circuit'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.fit_circuit" title="Permalink to this definition"></a></dt>
 <dd><p>Fits an equivalent circuit to the frequency-resolved EIS data.</p>
 <p>For the fitting an equivalent circuit is needed, defined as a <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>.
 The circuit may be composed of multiple circuit elements. To combine elements
@@ -643,7 +623,7 @@ Default is ‘’None’’</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.impedance.lowest_real_impedance">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">lowest_real_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'min</span> <span class="pre">Re(Z)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.lowest_real_impedance" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">lowest_real_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'min</span> <span class="pre">Re(Z)'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.lowest_real_impedance" title="Permalink to this definition"></a></dt>
 <dd><p>A function that finds and interpolates the lowest <span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span> value
 at which the complex impedance <span class="math notranslate nohighlight">\(Z = \text{Re}(Z) - j \text{Im}(Z)\)</span> is a
 real number (i.e. <span class="math notranslate nohighlight">\(\text{Im}(Z) \approx 0\)</span>). If the impedance does not
@@ -671,13 +651,12 @@ with the output as keys.</p>
 </dd></dl>
 
 </section>
-</section>
 <section id="module-dgpost.transform.rates">
 <span id="dgpost-transform-rates-module"></span><h2>dgpost.transform.rates module<a class="headerlink" href="#module-dgpost.transform.rates" title="Permalink to this headline"></a></h2>
-<p>Module of transformations for chemical species rates.</p>
+<p>Module of transformations for determining rates of chemical species.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.rates.flow_to_molar">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">flow_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.rates.flow_to_molar" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">flow_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tref=&lt;Quantity(273.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pref=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'standard_atmosphere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output='rate'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.rates.flow_to_molar" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates a molar rate of species from specified flow and composition. The
 units of the rate have to be either dimensionless (for unit-naive dataframes) or
 in dimensions of [substance]/[time].</p>
@@ -709,20 +688,20 @@ specifying the state at which the flow <span class="math notranslate nohighlight
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – A pandas dataframe.</p></li>
-<li><p><strong>flow</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Column containing the total flow.</p></li>
-<li><p><strong>comp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns determining the flow composition.</p></li>
-<li><p><strong>rate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns where the calculated rate will be stored.</p></li>
-<li><p><strong>Tref</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – Reference temperature of the flow measurement, used when <code class="docutils literal notranslate"><span class="pre">comp</span></code> is a mol
+<li><p><strong>df</strong> – A pandas dataframe.</p></li>
+<li><p><strong>flow</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Column containing the total flow.</p></li>
+<li><p><strong>comp</strong> – Prefix of the columns determining the flow composition.</p></li>
+<li><p><strong>rate</strong> – Prefix of the columns where the calculated rate will be stored.</p></li>
+<li><p><strong>Tref</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Reference temperature of the flow measurement, used when <code class="docutils literal notranslate"><span class="pre">comp</span></code> is a mol
 fraction. Can be a column name or a numerical value in Kelvin; by default
 set to 0°C.</p></li>
-<li><p><strong>pref</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – Reference pressure of the flow measurement, used when <code class="docutils literal notranslate"><span class="pre">comp</span></code> is a mol
+<li><p><strong>pref</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Reference pressure of the flow measurement, used when <code class="docutils literal notranslate"><span class="pre">comp</span></code> is a mol
 fraction. Can be a column name or a numerical value in Pa; by default set
 to 1 atm.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</p>
 </dd>
 </dl>
 </dd></dl>
