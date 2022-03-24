@@ -1,3 +1,8 @@
+"""
+Module of transformations relevant to electrochemistry applications.
+
+.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
+"""
 import pint
 from yadg.dgutils import ureg
 import numpy as np
@@ -101,3 +106,12 @@ def nernst(
             EN = -(EN / n) * np.log(Q)
         E += EN
     return {output: E}
+
+
+def fe(
+    rate: dict[str, pint.Quantity],
+    I: pint.Quantity,
+    charges: dict = None,
+    output: str = None,
+) -> dict[str, pint.Quantity]:
+    return None

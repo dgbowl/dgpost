@@ -1,16 +1,20 @@
 """
 Module of helper functions for chemicals, elements, and unit handling.
 
+.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
+.. codeauthor:: Ueli Sauter
 """
-import re
+
 import pint
 import functools
 import pandas as pd
 import numpy as np
 from uncertainties import unumpy as unp
+from rdkit import Chem
 
 from collections import defaultdict
 from typing import Any
+from chemicals.elements import periodic_table, simple_formula_parser
 from chemicals.identifiers import search_chemical
 from yadg.dgutils import ureg
 
@@ -21,17 +25,11 @@ def element_from_formula(f: str, el: str) -> int:
     in that formula.
 
     """
-    split = re.split("(?=[A-Z]|(?<!\\d)\\d)", f)
-    if el not in split:
+    elements = simple_formula_parser(f)
+    if el not in elements:
         return 0
     else:
-        i = split.index(el)
-        if i == len(split) - 1:
-            return 1
-        elif split[i + 1].isnumeric():
-            return int(split[i + 1])
-        else:
-            return 1
+        return elements[el]
 
 
 def default_element(f: str) -> str:
@@ -39,14 +37,13 @@ def default_element(f: str) -> str:
     Given a formula ``f``, return the default element for calculating
     conversion. The priority list is ``["C", "O", "H"]``.
     """
-    split = re.split("(?=[A-Z]|(?<!\\d)\\d)", f)
+    elements = simple_formula_parser(f)
     for el in ["C", "O", "H"]:
-        if el in split:
+        if el in elements:
             return el
-    for s in split:
-        if s.isalpha():
-            return s
-
+    else:
+        return elements.keys()[0]    
+    
 
 def columns_to_smiles(**kwargs: dict[str, dict[str, Any]]) -> dict:
     """
@@ -71,9 +68,32 @@ def columns_to_smiles(**kwargs: dict[str, dict[str, Any]]) -> dict:
     smiles = defaultdict(dict)
     for k, v in kwargs.items():
         for kk in v.keys():
-            chem = search_chemical(kk.split("->")[-1])
+            query = kk.split("->")[-1]
+            if query == "CO":
+                query = "carbon monoxide"
+            chem = search_chemical(query)
             smiles[chem.smiles].update({"chem": chem, k: kk})
     return smiles
+
+
+def electrons_from_smiles(
+    smiles: str, 
+    charges: dict = {"C": 4, "H": 1, "O": -2, "N": 0, "He": 0, "Ar": 0}
+) -> float:
+    mol = Chem.AddHs(Chem.MolFromSmiles(smiles))
+    n = 0
+    for atom in mol.GetAtoms():
+        ela = periodic_table[atom.GetAtomicNum()].elneg
+        for bond in atom.GetBonds():
+            btom = bond.GetOtherAtom(atom)
+            elb = periodic_table[btom.GetAtomicNum()].elneg
+            bmul = bond.GetBondTypeAsDouble()
+            if ela > elb:
+                n -= bmul
+            elif ela < elb:
+                n += bmul
+        n += charges[atom.GetSymbol()]
+    return float(n)
 
 
 def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
