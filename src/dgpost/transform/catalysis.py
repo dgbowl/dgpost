@@ -1,26 +1,26 @@
 """
 Module of transformations relevant to catalysis applications.
 
-For all user-facing function in this module, the data is extracted from the 
-:class:`pd.DataFrame` supplied as ``df``. The inlet and outlet compositions are
-specified using ``xin`` and ``xout``, and they are taken to be all columns in ``df`` 
-matching the format ``{xin|xout}->*``. The ``*`` denotes species names, which are 
-parsed to SMILES. Matching of ``feestock``, ``standard``, and components of ``xin``
-and ``xout`` is performed using these SMILES.
+For the functions in this module, the inlet and outlet compositions are specified using
+the ``xin`` and ``xout`` arguments, the keys of which are the species names in the 
+inlet / outlet compositions, respectively. These keys are parsed to SMILES, and the
+cross-matching of ``feestock``, ``standard``, and components of ``xin`` and ``xout``
+is performed using these SMILES.
 
 .. note::
     This module assumes that the provided inlet (``xin``) and outlet (``xout``) 
     compositions contains all species, and that the atomic balance of the inlet and 
     outlet is near unity. If multiple inlet/outlet streams are present in the 
-    experiment, they need to be appropriately combined into a single ``xin``/``xout`` 
-    using functions in the :mod:`dgpost.transform.mixture` before using the functions 
+    experiment, they need to be appropriately combined into a single namespace, e.g.
+    using functions in the :mod:`dgpost.transform.rates` before using the functions 
     in this module.
 
+.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
 """
 
 import pint
 
-from yadg.dgutils import ureg
+
 from .helpers import (
     columns_to_smiles,
     default_element,

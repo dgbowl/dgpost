@@ -1,6 +1,7 @@
 """
-Module of transformations for chemical species rates.
+Module of transformations for determining rates of chemical species.
 
+.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
 """
 import pint
 

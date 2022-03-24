@@ -1,8 +1,5 @@
 """
-Impedance-related transformations
-=================================
-
-This module contains functions relevant to Electrochemical Impedance Spectroscopy (EIS).
+Module of functions relevant to Electrochemical Impedance Spectroscopy (EIS).
 
 The main functions in this module are two functions relevant for the fitting and 
 evaluation of equivalent circuits, :func:`fit_circuit` and :func:`calc_circuit`,
@@ -11,9 +8,16 @@ respectively. The two functions expect frequency-resolved complex impedance data
 For less rigorous analysis, the :func:`lowest_real_impedance` can be used, to
 find and/or interpolate the lowest real-valued point of the complex impedance.
 
-.. codeauthor:: Ueli Sauter
-.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
+.. note::
+    The functions in this module expect the whole EIS trace as input - the 
+    :math:`\\text{Re}(Z)`, :math:`-\\text{Im}(Z)` and :math:`f` are expected to
+    be :class:`pint.Quantity` containing an :class:`np.ndarray` (or similar 
+    :class:`list`-like object), which is then processed to a (set of) scalar 
+    values. This means that for processing time resolved data, the functions
+    in this module have to be called on each timestep individually.
 
+.. codeauthor:: Ueli Sauter 
+.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
 """
 import logging
 from typing import Union
