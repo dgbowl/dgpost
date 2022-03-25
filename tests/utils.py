@@ -72,7 +72,7 @@ def compare_result_dicts(result, reference, atol=1e-6):
 def compare_dfs(ref, df):
     pd.testing.assert_index_equal(ref.columns, df.columns, check_order=False)
     for col in ref.columns:
-        if np.testing.assert_array_equal(ref[col].array, df[col].array):
+        if np.array_equal(ref[col].array, df[col].array):
             continue
         for func in {unp.nominal_values, unp.std_devs}:
             np.testing.assert_allclose(func(ref[col]), func(df[col]))

@@ -22,12 +22,12 @@ import pint
 
 
 from .helpers import (
+    name_to_chem,
     columns_to_smiles,
     default_element,
     element_from_formula,
     load_data,
 )
-from chemicals.identifiers import search_chemical
 
 
 @load_data(
@@ -82,18 +82,18 @@ def conversion(
     """
 
     smiles = columns_to_smiles(xin=xin, xout=xout)
-
-    f = search_chemical(feedstock)
-    fsm = f.smiles
-    fd = smiles[fsm]
-    assert fsm in smiles, f"conversion: Feedstock '{feedstock}' not present."
-    assert "xin" in smiles[fsm], f"conversion: Feedstock '{feedstock}' not in inlet."
+    fchem = name_to_chem(feedstock)
+    fsmi = fchem.smiles
+    fform = fchem.formula
+    fd = smiles[fsmi]
+    assert fsmi in smiles, f"conversion: Feedstock '{feedstock}' not present."
+    assert "xin" in smiles[fsmi], f"conversion: Feedstock '{feedstock}' not in inlet."
 
     if element is None:
-        element = default_element(f.formula)
+        element = default_element(fform)
 
     # expansion factor
-    sd = smiles[search_chemical(standard).smiles]
+    sd = smiles[name_to_chem(standard).smiles]
     exp = xin[sd["xin"]] / xout[sd["xout"]]
 
     # reactant-based conversion
@@ -105,8 +105,7 @@ def conversion(
 
     # product-based conversion
     else:
-        formula = f.formula
-        f_out = xout[fd["xout"]] * element_from_formula(formula, element)
+        f_out = xout[fd["xout"]] * element_from_formula(fform, element)
         nat_out = f_out * 0.0
         for v in smiles.values():
             if "xout" in v:
@@ -162,17 +161,17 @@ def selectivity(
 
     """
     smiles = columns_to_smiles(xin=xin, xout=xout)
-
-    f = search_chemical(feedstock)
-    fsm = f.smiles
-    assert fsm in smiles, f"selectivity: Feedstock '{feedstock}' not present."
+    fchem = name_to_chem(feedstock)
+    fsmi = fchem.smiles
+    fform = fchem.formula
+    assert fsmi in smiles, f"selectivity: Feedstock '{feedstock}' not present."
 
     if element is None:
-        element = default_element(f.formula)
+        element = default_element(fform)
 
     nat_out = None
     for k, v in smiles.items():
-        if k != fsm and "xout" in v:
+        if k != fsmi and "xout" in v:
             formula = v["chem"].formula
             dnat = xout[v["xout"]] * element_from_formula(formula, element)
             if nat_out is None:
@@ -181,7 +180,7 @@ def selectivity(
                 nat_out += dnat
     ret = {}
     for k, v in smiles.items():
-        if k != fsm and "xout" in v:
+        if k != fsmi and "xout" in v:
             formula = v["chem"].formula
             els = element_from_formula(formula, element)
             if els > 0:
@@ -239,9 +238,9 @@ def catalytic_yield(
         the prefix for each key.
 
     """
-    f = search_chemical(feedstock)
+    fchem = name_to_chem(feedstock)
     if element is None:
-        element = default_element(f.formula)
+        element = default_element(fchem.formula)
 
     ret_Xp = conversion(
         feedstock=feedstock,
@@ -265,7 +264,12 @@ def catalytic_yield(
     return ret
 
 
-@load_data(("xin", None, dict), ("xout", None, dict), ("fin", None), ("fout", None))
+@load_data(
+    ("xin", None, dict),
+    ("xout", None, dict),
+    ("fin", None),
+    ("fout", None),
+)
 def atom_balance(
     xin: dict[str, pint.Quantity],
     xout: dict[str, pint.Quantity],
@@ -319,7 +323,7 @@ def atom_balance(
     ), f"atom_balance: Neither 'standard' nor 'fin' and 'fout' are defined. "
 
     if fin is None or fout is None:
-        sd = smiles[search_chemical(standard).smiles]
+        sd = smiles[name_to_chem(standard).smiles]
         exp = xin[sd["xin"]] / xout[sd["xout"]]
     else:
         exp = fin / fout

@@ -1,7 +1,12 @@
+"""
+Module of transformations relevant to electrochemistry applications.
+
+.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
+"""
 import pint
 from yadg.dgutils import ureg
 import numpy as np
-from .helpers import load_data
+from .helpers import columns_to_smiles, load_data, name_to_chem, electrons_from_smiles
 
 
 @load_data(
@@ -101,3 +106,66 @@ def nernst(
             EN = -(EN / n) * np.log(Q)
         E += EN
     return {output: E}
+
+
+@load_data(
+    ("rate", "mol/s", dict),
+    ("I", "A"),
+)
+def fe(
+    rate: dict[str, pint.Quantity],
+    I: pint.Quantity,
+    charges: dict[str, int],
+    output: str = None,
+) -> dict[str, pint.Quantity]:
+    """
+    Calculate the Faradaic efficiency :math:`\\eta_F` from a set of molar rates
+    :math:`\\dot{n}`` corresponding to a single mixture, and the applied current
+    :math:`I` required to produce that mixture from a source mixture. A set of
+    formal atomic charges corresponding to those in the species comprising the
+    source mixture has to be supplied.
+
+    This function implements the following equation to calculate :math:`\\eta_F`:
+
+    .. math::
+
+        \\eta_F(x) = \\frac{n_\\text{el}(x)\\dot{n}(x)}{I}
+
+    where :math:`x` is a species in the mixture, :math:`n_\\text{el}(x)` is the number
+    of electrons required to produce :math:`x` from the ions specified in the source
+    mixture, and :math:`\\dot{n}(x)` is the molar rate (production or flow) of species
+    :math:`x`.
+
+    Parameters
+    ----------
+    rate
+        A :class:`dict` of molar flow or production rates of species in a mixture.
+        By default in mol/l.
+
+    I
+        The applied current. By default in A.
+
+    charges
+        A :class:`dict` of formal atomic/ionic charges of atoms in the source
+        mixture.
+
+    output
+        Name of the prefix for the species in the output variable. Defaults to ``fe``.
+
+    Returns
+    -------
+    dict(output, E) : dict[str, pint.Quantity]
+        Returns the calculated Faradaic efficiencies.
+
+    """
+    etot = abs(I) / (ureg("elementary_charge") * ureg("avogadro_constant"))
+    pretag = "fe" if output is None else output
+    ret = {}
+    for k, v in rate.items():
+        kchem = name_to_chem(k)
+        n = electrons_from_smiles(kchem.smiles, ions=charges)
+        ek = v * n
+        fek = ek / etot
+        tag = f"{pretag}->{k}"
+        ret[tag] = fek.to_base_units()
+    return ret

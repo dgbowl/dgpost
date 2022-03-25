@@ -1,37 +1,35 @@
 """
 Module of helper functions for chemicals, elements, and unit handling.
 
+.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
+.. codeauthor:: Ueli Sauter
 """
-import re
+
 import pint
 import functools
 import pandas as pd
 import numpy as np
 from uncertainties import unumpy as unp
+from rdkit import Chem
 
 from collections import defaultdict
 from typing import Any
+from chemicals.elements import periodic_table, simple_formula_parser
 from chemicals.identifiers import search_chemical
 from yadg.dgutils import ureg
 
 
 def element_from_formula(f: str, el: str) -> int:
     """
-    Given a chemical formula ``f``, returns the number of atoms of element ``el`` 
+    Given a chemical formula ``f``, returns the number of atoms of element ``el``
     in that formula.
 
     """
-    split = re.split("(?=[A-Z]|(?<!\\d)\\d)", f)
-    if el not in split:
+    elements = simple_formula_parser(f)
+    if el not in elements:
         return 0
     else:
-        i = split.index(el)
-        if i == len(split) - 1:
-            return 1
-        elif split[i + 1].isnumeric():
-            return int(split[i + 1])
-        else:
-            return 1
+        return elements[el]
 
 
 def default_element(f: str) -> str:
@@ -39,13 +37,21 @@ def default_element(f: str) -> str:
     Given a formula ``f``, return the default element for calculating
     conversion. The priority list is ``["C", "O", "H"]``.
     """
-    split = re.split("(?=[A-Z]|(?<!\\d)\\d)", f)
+    elements = simple_formula_parser(f)
     for el in ["C", "O", "H"]:
-        if el in split:
+        if el in elements:
             return el
-    for s in split:
-        if s.isalpha():
-            return s
+    else:
+        return elements.keys()[0]
+
+
+def name_to_chem(name: str) -> str:
+    exceptions = {"CO": "carbon monoxide"}
+    if name in exceptions.keys():
+        query = exceptions[name]
+    else:
+        query = name
+    return search_chemical(query)
 
 
 def columns_to_smiles(**kwargs: dict[str, dict[str, Any]]) -> dict:
@@ -64,16 +70,39 @@ def columns_to_smiles(**kwargs: dict[str, dict[str, Any]]) -> dict:
     -------
     smiles: dict
         A new :class:`dict[str, dict]` containing the SMILES of all prefixed chemicals
-        as :class:`str` keys, and the metadata and column specification as the 
+        as :class:`str` keys, and the metadata and column specification as the
         :class:`dict` values.
 
     """
-    smiles = defaultdict(dict)
+    ret = defaultdict(dict)
     for k, v in kwargs.items():
         for kk in v.keys():
-            chem = search_chemical(kk.split("->")[-1])
-            smiles[chem.smiles].update({"chem": chem, k: kk})
-    return smiles
+            name = kk.split("->")[-1]
+            chem = name_to_chem(name)
+            ret[chem.smiles].update({"chem": chem, k: kk})
+    return ret
+
+
+def electrons_from_smiles(
+    smiles: str,
+    ions: dict = None,
+) -> float:
+    charges = defaultdict(lambda: 0)
+    charges.update(ions)
+    mol = Chem.AddHs(Chem.MolFromSmiles(smiles))
+    n = 0
+    for atom in mol.GetAtoms():
+        ela = periodic_table[atom.GetAtomicNum()].elneg
+        for bond in atom.GetBonds():
+            btom = bond.GetOtherAtom(atom)
+            elb = periodic_table[btom.GetAtomicNum()].elneg
+            bmul = bond.GetBondTypeAsDouble()
+            if ela > elb:
+                n -= bmul
+            elif ela < elb:
+                n += bmul
+        n += charges[atom.GetSymbol()]
+    return float(n)
 
 
 def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
@@ -140,17 +169,17 @@ def load_data(*cols: tuple[str, str, type]):
 
     Creates a decorator that will load the columns specified in ``cols``
     and calls the wrapped function ``func`` as appropriate. The ``func`` has to
-    accept :class:`pint.Quantity` objects, return a :class:`dict[str, pint.Quantity]`, 
-    and handle an optional parameter ``"output"`` which prefixes (or assigns) the 
+    accept :class:`pint.Quantity` objects, return a :class:`dict[str, pint.Quantity]`,
+    and handle an optional parameter ``"output"`` which prefixes (or assigns) the
     output data in the returned :class:`dict` appropriately.
 
     The argument of the decorator is a :class:`list[tuple]`, with each element being
     a are :class:`tuple[str, str, type]`. The first field in this :class:`tuple` is
-    the :class:`str` name of the argument of the decorated ``func``, the second 
+    the :class:`str` name of the argument of the decorated ``func``, the second
     :class:`str` field denotes the default units for that argument (or ``None`` for
     a unitless quantity), and the :class:`type` field allows the use of the decorator
-    with functions that expect :class:`list` of points in the argument (such as 
-    trace-processing functions) or :class:`dict` of :class:`pint.Quantity` objects 
+    with functions that expect :class:`list` of points in the argument (such as
+    trace-processing functions) or :class:`dict` of :class:`pint.Quantity` objects
     (such as functions operating on chemical compositions).
 
     The decorator handles the following cases:
@@ -161,16 +190,16 @@ def load_data(*cols: tuple[str, str, type]):
         - the ``args`` are assigned into ``kwargs`` using their position in the
           ``args`` and ``cols`` array as provided to the decorator
         - all elements in ``kwargs`` that match the argument names in the ``cols``
-          :class:`list` provided to the decorator are converted to 
+          :class:`list` provided to the decorator are converted to
           :class:`pint.Quantity` objects, assigning the default units using the
-          data from the ``cols`` :class:`list`, unless they are a 
+          data from the ``cols`` :class:`list`, unless they are a
           :class:`pint.Quantity` already.
-        
-    - decorated ``func`` is launched with a :class:`pd.DataFrame` as the ``args`` 
+
+    - decorated ``func`` is launched with a :class:`pd.DataFrame` as the ``args``
       and other parameters in ``kwargs``:
 
         - the data for the arguments listed in ``cols`` is sourced from the columns
-          of the :class:`pd.DataFrame`, using the provided :class:`str` arguments to 
+          of the :class:`pd.DataFrame`, using the provided :class:`str` arguments to
           find the appropriate columns
         - data from unit-aware :class:`pd.DataFrame` objects is loaded using the
           :func:`pQ` accessor accordingly
@@ -181,7 +210,7 @@ def load_data(*cols: tuple[str, str, type]):
     Parameters
     ----------
     cols
-        A :class:`list[tuple[str, str, type]]` containing the column names used to 
+        A :class:`list[tuple[str, str, type]]` containing the column names used to
         call the ``func``.
 
     Returns
@@ -297,7 +326,7 @@ def load_data(*cols: tuple[str, str, type]):
                         for kk, vv in v.items():
                             if isinstance(vv, pint.Quantity):
                                 temp[kk] = vv
-                            elif isinstance(v, (np.ndarray, float, int)):
+                            elif isinstance(vv, (np.ndarray, float, int)):
                                 if cunit is not None:
                                     temp[kk] = ureg.Quantity(vv, cunit)
                                 else:
@@ -309,5 +338,7 @@ def load_data(*cols: tuple[str, str, type]):
                             f"nor an np.ndarray: '{type(v)}'."
                         )
                 return func(**kwargs)
+
         return wrapper
+
     return loading

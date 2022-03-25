@@ -1,5 +1,4 @@
 import setuptools
-import os
 
 with open("VERSION", "r") as infile:
     version = infile.read().strip()
@@ -37,6 +36,7 @@ setuptools.setup(
         "pint",
         "strictyaml",
         "chemicals",
+        "rdkit-pypi",
         "yadg>=4.0.0",
     ],
     extras_require={
