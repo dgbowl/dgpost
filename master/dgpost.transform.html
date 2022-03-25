@@ -239,6 +239,42 @@ the prefix for each key.</p>
 </section>
 <section id="module-dgpost.transform.electrochemistry">
 <span id="dgpost-transform-electrochemistry-module"></span><h2>dgpost.transform.electrochemistry module<a class="headerlink" href="#module-dgpost.transform.electrochemistry" title="Permalink to this headline"></a></h2>
+<p>Module of transformations relevant to electrochemistry applications.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.electrochemistry.fe">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">fe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.fe" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the Faradaic efficiency <span class="math notranslate nohighlight">\(\eta_F\)</span> from a set of molar rates
+<span class="math notranslate nohighlight">\(\dot{n}\)</span> corresponding to a single mixture, and the applied current
+<span class="math notranslate nohighlight">\(I\)</span> required to produce that mixture from a source mixture. A set of
+formal atomic charges corresponding to those in the species comprising the
+source mixture has to be supplied.</p>
+<p>This function implements the following equation to calculate <span class="math notranslate nohighlight">\(\eta_F\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\eta_F(x) = \frac{n_\text{el}(x)\dot{n}(x)}{I}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x\)</span> is a species in the mixture, <span class="math notranslate nohighlight">\(n_\text{el}(x)\)</span> is the number
+of electrons required to produce <span class="math notranslate nohighlight">\(x\)</span> from the ions specified in the source
+mixture, and <span class="math notranslate nohighlight">\(\dot{n}(x)\)</span> is the molar rate (production or flow) of species
+<span class="math notranslate nohighlight">\(x\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of molar flow or production rates of species in a mixture.
+By default in mol/l.</p></li>
+<li><p><strong>I</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The applied current. By default in A.</p></li>
+<li><p><strong>charges</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of formal atomic/ionic charges of atoms in the source
+mixture.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Name of the prefix for the species in the output variable. Defaults to <code class="docutils literal notranslate"><span class="pre">fe</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict(output, E)</strong> – Returns the calculated Faradaic efficiencies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.electrochemistry.nernst">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">nernst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ewe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ohm')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ampere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eref=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'volt')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=&lt;Quantity(298.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pH=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output='Eapp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.nernst" title="Permalink to this definition"></a></dt>
@@ -326,6 +362,16 @@ conversion. The priority list is <code class="docutils literal notranslate"><spa
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.helpers.electrons_from_smiles">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">electrons_from_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.electrons_from_smiles" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.helpers.element_from_formula">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">element_from_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">el</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.element_from_formula" title="Permalink to this definition"></a></dt>
 <dd><p>Given a chemical formula <code class="docutils literal notranslate"><span class="pre">f</span></code>, returns the number of atoms of element <code class="docutils literal notranslate"><span class="pre">el</span></code>
@@ -396,6 +442,16 @@ call the <code class="docutils literal notranslate"><span class="pre">func</span
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.helpers.name_to_chem">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">name_to_chem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.name_to_chem" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
 </dd></dl>
