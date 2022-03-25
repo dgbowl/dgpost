@@ -84,7 +84,8 @@ def columns_to_smiles(**kwargs: dict[str, dict[str, Any]]) -> dict:
 
 
 def electrons_from_smiles(
-    smiles: str, ions: dict = None,
+    smiles: str,
+    ions: dict = None,
 ) -> float:
     charges = defaultdict(lambda: 0)
     charges.update(ions)

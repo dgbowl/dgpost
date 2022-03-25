@@ -70,9 +70,9 @@ def test_fe_direct(inputs, output):
                     "pref": ureg.Quantity(1, "atm"),
                 },
                 {
-                    "I": "I", 
-                    "rate": "nout", 
-                    "charges": {"C": 4, "H": 1, "O": -2}
+                    "I": "I",
+                    "rate": "nout",
+                    "charges": {"C": 4, "H": 1, "O": -2},
                 },
             ],
             "ref.electrochemistry_fe.ts0.pkl",
