@@ -129,7 +129,7 @@ def fe(
 
     .. math::
 
-        \\eta_F(x) &= \\frac{n_\\text{el}(x)\\dot{n}(x)}{I}
+        \\eta_F(x) = \\frac{n_\\text{el}(x)\\dot{n}(x)}{I}
 
     where :math:`x` is a species in the mixture, :math:`n_\\text{el}(x)` is the number
     of electrons required to produce :math:`x` from the ions specified in the source
