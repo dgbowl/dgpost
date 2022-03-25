@@ -80,8 +80,7 @@ are interpolated onto the index of the existing :class:`pd.DataFrame`.
 import numpy as np
 import pandas as pd
 import uncertainties as uc
-from uncertainties import unumpy as unp
-from uncertainties.core import str_to_number_with_uncert as tuple_fromstr
+import uncertainties.unumpy as unp
 from typing import Union
 
 
