@@ -6,7 +6,7 @@ Module of transformations relevant to electrochemistry applications.
 import pint
 from yadg.dgutils import ureg
 import numpy as np
-from .helpers import load_data
+from .helpers import columns_to_smiles, load_data, name_to_chem, electrons_from_smiles
 
 
 @load_data(
@@ -108,10 +108,24 @@ def nernst(
     return {output: E}
 
 
+@load_data(
+    ("rate", "mol/s", dict),
+    ("I", "A"),
+)
 def fe(
     rate: dict[str, pint.Quantity],
     I: pint.Quantity,
     charges: dict = None,
     output: str = None,
 ) -> dict[str, pint.Quantity]:
-    return None
+    etot = abs(I) / (ureg("elementary_charge") * ureg("avogadro_constant"))
+    pretag = "fe" if output is None else output
+    ret = {}
+    for k, v in rate.items():
+        kchem = name_to_chem(k)
+        n = electrons_from_smiles(kchem.smiles, ions=charges)
+        ek = v * n
+        fek = ek / etot
+        tag = f"{pretag}->{k}"
+        ret[tag] = fek.to_base_units()
+    return ret

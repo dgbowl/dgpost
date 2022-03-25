@@ -172,7 +172,7 @@ def _get_constant(spec, ts):
     colunits = []
     for el in spec:
         colnames.append(el["as"])
-        colunits.append(el.get("units", ""))
+        colunits.append(el.get("units", None))
         if isinstance(el["value"], str):
             val = uc.ufloat_fromstr(el["value"])
         elif isinstance(el["value"], (int, float)):
@@ -204,7 +204,7 @@ def _get_direct_df(spec, df):
             if k in df.attrs["units"]:
                 colunits.append(df.attrs["units"][k])
             else:
-                colunits.append("")
+                colunits.append(None)
     return colnames, colvals, colunits
 
 
@@ -237,7 +237,7 @@ def _get_direct_dg(spec, datagram, at):
                 else:
                     assert i["u"] == units
             colvals.append(uvals)
-            colunits.append("" if units in [None, "-"] else units)
+            colunits.append(None if units in [None, "-", " "] else units)
     return colnames, colvals, colunits
 
 
@@ -320,5 +320,6 @@ def extract(
     df.attrs["units"] = {}
     for name, vals, unit in zip(cns, cvs, cus):
         df[name] = vals
-        df.attrs["units"][name] = unit
+        if unit is not None:
+            df.attrs["units"][name] = unit
     return df
