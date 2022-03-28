@@ -159,6 +159,103 @@ test_style_1 = {
             # "sharex": True,
             "save": {"fname": "test.complex.png"},
         },
+        {
+            "ax_args": [
+                {
+                    "lines": [
+                        {
+                            "y": "sin1",
+                            "color": "r",
+                            "label": "indices",
+                            "kind": "line",
+                        },
+                        {
+                            "y": "sin2",
+                            "x": "ind",
+                            "color": "b",
+                            "label": "x_values",
+                            "kind": "line",
+                        },
+                    ],
+                    "rows": (0, 1),
+                    "cols": (0, 2),
+                    "xlim": (0, 15),
+                    "ylabel": "ylabel line",
+                    "xlabel": "xlabel line",
+                    "methods": {
+                        "tick_params": {
+                            "top": True,
+                            "right": True,
+                            "labelbottom": False,
+                            "labeltop": True,
+                        },
+                        "xaxis.set_label_position": {
+                            "position": 'top',},
+                    },
+                },
+                {
+                    "lines": [
+                        {
+                            "y": "sin1",
+                            "color": "r",
+                            "label": "indices",
+                            "kind": "scatter",
+                        },
+                        {
+                            "y": "sin2",
+                            "x": "ind",
+                            "color": "b",
+                            "label": "x_values",
+                            "kind": "scatter",
+                        },
+                    ],
+                    "rows": (1, 2),
+                    "cols": (0, 1),
+                    "xlim": (0, 15),
+                    "xlabel": "xlabel 1 ",
+                    "ylabel": "ylabel scatter",
+                    "methods": {
+                        "tick_params": {
+                            "top": True,
+                            "right": True,
+                        },
+                    },
+                },
+                {
+                    "lines": [
+                        {
+                            "y": "sin1",
+                            "color": "r",
+                            "label": "indices",
+                            "kind": "scatter",
+                        },
+                        {
+                            "y": "sin2",
+                            "x": "ind",
+                            "color": "b",
+                            "label": "x_values",
+                            "kind": "scatter",
+                        },
+                    ],
+                    "rows": (1, 2),
+                    "cols": (1, 2),
+                    "xlim": (0, 15),
+                    "xlabel": "xlabel 2",
+                    "methods": {
+                        "tick_params": {
+                            "top": True,
+                            "right": True,
+                            "labelright": True,
+                            "labelleft": False,
+                        },
+                    },
+                },
+            ],
+            "nrows": 2,
+            "ncols": 2,
+            # "sharex": True,
+            "save": {"fname": "test.split.png"},
+        },
     ],
 )
 def test_plot(input, datadir):

@@ -14,7 +14,11 @@ def apply_plot_style(style: dict):
 def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
     series = ax_args.pop("lines", [])
     for method, arguments in ax_args.pop("methods", {}).items():
-        getattr(ax, method)(**arguments)
+        attr = ax
+        for met in method.split("."):
+            attr = getattr(attr, met)
+        print(arguments)
+        attr(**arguments)
     ax.set(**ax_args)
     for element in series:
         y = element.pop("y")
