@@ -4,9 +4,7 @@ import dgpost.utils
 import numpy as np
 import pandas as pd
 import pytest
-
 from PIL import Image, ImageChops
-from tests.utils import datadir
 
 
 def are_images_equal(path_one, path_two):
@@ -115,12 +113,15 @@ test_style_1 = {
                             "kind": "line",
                         },
                     ],
+                    "rows": (0, 1),
+                    "cols": (0, 1),
                     "xlim": (0, 15),
                     "ylabel": "ylabel line",
                     "methods": {
                         "tick_params": {
                             "top": True,
                             "right": True,
+                            "labelbottom": False,
                         },
                     },
                 },
@@ -140,6 +141,8 @@ test_style_1 = {
                             "kind": "scatter",
                         },
                     ],
+                    "rows": (1, 2),
+                    "cols": (0, 1),
                     "xlim": (0, 15),
                     "xlabel": "xlabel",
                     "ylabel": "ylabel scatter",
@@ -153,7 +156,7 @@ test_style_1 = {
                 },
             ],
             "nrows": 2,
-            "sharex": True,
+            # "sharex": True,
             "save": {"fname": "test.complex.png"},
         },
     ],
