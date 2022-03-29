@@ -16,9 +16,10 @@ setuptools.setup(
     description="datagram postprocessing tools",
     long_description=readme,
     long_description_content_type="text/markdown",
-    url="https://empa.gitlab.ch/krpe/postprocess",
+    url="https://github.com/dgbowl/dgpost",
     project_urls={
-        "Bug Tracker": "https://empa.gitlab.ch/krpe/postprocess/issues",
+        "Bug Tracker": "https://github.com/dgbowl/dgpost/issues",
+        "Documentation": "https://dgbowl.github.io/dgpost/"
     },
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -33,11 +34,11 @@ setuptools.setup(
         "uncertainties",
         "pandas",
         "openpyxl",
-        "pint",
+        "pint>=0.18",
         "strictyaml",
-        "chemicals",
-        "rdkit-pypi",
-        "yadg>=4.0.0",
+        "chemicals>=1.0.0",
+        "rdkit-pypi>=2021",
+        "yadg>=4.1.0rc1",
     ],
     extras_require={
         "testing": [

@@ -38,7 +38,7 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-# templates_path = ['_templates']
+templates_path = ['_templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -56,8 +56,8 @@ html_theme_options = {
     "body_max_width": "none",
     "sticky_navigation": True,
 }
-#html_logo = "./images/yadg.svg"
-#html_favicon = "./images/yadg_ico.png"
+html_logo = "./images/dgpost_logo.png"
+html_favicon = "./images/dgpost_ico.png"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -69,3 +69,9 @@ html_theme_options = {
 
 autosummary_generate = True
 autodoc_default_flags = ["members", "undoc-members", "show-inheritance"]
+
+html_context = {
+    'versions': [
+        "master",
+    ]
+}

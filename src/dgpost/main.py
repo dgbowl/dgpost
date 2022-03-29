@@ -4,7 +4,6 @@ Main module - execution functions for dgpost.
 """
 import argparse
 import logging
-import os
 from importlib import metadata
 import pandas as pd
 
