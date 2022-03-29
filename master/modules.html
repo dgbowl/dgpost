@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dgpost: Datagram postprocessing tools &mdash; dgpost  documentation</title>
+  <title>dgpost autodocs &mdash; dgpost  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/dgpost_ico.png"/>
@@ -19,7 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="dgpost installation" href="installation.html" /> 
+    <link rel="next" title="dgpost package" href="dgpost.html" />
+    <link rel="prev" title="dgpost version history" href="version.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -27,7 +28,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> dgpost
+            <a href="index.html" class="icon icon-home"> dgpost
             <img src="_static/dgpost_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
@@ -46,8 +47,11 @@
 <li class="toctree-l1"><a class="reference internal" href="version.html"><strong>dgpost</strong> version history</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost components</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html"><strong>dgpost</strong> autodocs</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>dgpost</strong> autodocs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.html">dgpost package</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -56,17 +60,17 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">dgpost</a>
+          <a href="index.html">dgpost</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li><strong>dgpost</strong>: Datagram postprocessing tools</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><strong>dgpost</strong> autodocs</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -74,21 +78,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="dgpost-datagram-postprocessing-tools">
-<h1><strong>dgpost</strong>: Datagram postprocessing tools<a class="headerlink" href="#dgpost-datagram-postprocessing-tools" title="Permalink to this headline"></a></h1>
-<p>A set of datagram postprocessing tools, functions, visualisations and export
-scripts.</p>
-<p>dgpost is a Python library aimed at reproducible postprocessing of time-resolved
-data. It provides functions to load data from <cite>datagrams</cite> and <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code>,
-automatic datapoint interpolation using unix timestamps, a library of transformation
-functions which contains implementations of common calculations in chemistry, catalysis,
-electrochemistry, etc., and functions to save and plot the calculated data.</p>
-<p>In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
-<a class="reference external" href="https://pint.readthedocs.io/en/stable/">pint</a> and
-<a class="reference external" href="https://pythonhosted.org/uncertainties/">uncertainties</a> packages.</p>
+  <section id="dgpost-autodocs">
+<h1><strong>dgpost</strong> autodocs<a class="headerlink" href="#dgpost-autodocs" title="Permalink to this headline"></a></h1>
 <div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html">dgpost package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.html">dgpost.transform package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.html#module-dgpost.transform.catalysis">dgpost.transform.catalysis module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.html#module-dgpost.transform.electrochemistry">dgpost.transform.electrochemistry module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.html#module-dgpost.transform.helpers">dgpost.transform.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.html#module-dgpost.transform.impedance">dgpost.transform.impedance module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.html#module-dgpost.transform.rates">dgpost.transform.rates module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.html">dgpost.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.extract">dgpost.utils.extract module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.load">dgpost.utils.load module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.parse">dgpost.utils.parse module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.save">dgpost.utils.save module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.schema">dgpost.utils.schema module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.transform">dgpost.utils.transform module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.html#module-dgpost.main">dgpost.main module</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 
@@ -96,7 +118,8 @@ electrochemistry, etc., and functions to save and plot the calculated data.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="installation.html" class="btn btn-neutral float-right" title="dgpost installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="version.html" class="btn btn-neutral float-left" title="dgpost version history" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.html" class="btn btn-neutral float-right" title="dgpost package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
