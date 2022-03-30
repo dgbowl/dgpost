@@ -51,8 +51,8 @@ transform = sy.Map(
     }
 )
 
-lines = sy.MapCombined(
-    {"y": sy.Str(), sy.Optional("x"): sy.Str()},
+series = sy.MapCombined(
+    {"y": sy.Str(), sy.Optional("x"): sy.Str(), sy.Optional("kind"): sy.Str()},
     sy.Str(),
     sy.Any(),
 )
@@ -65,7 +65,7 @@ plot_legend = sy.MapCombined(
 
 axes = sy.MapCombined(
     {
-        "lines": sy.Seq(lines),
+        "series": sy.Seq(series),
         "legend": plot_legend,
         sy.Optional("methods"): sy.MapPattern(sy.Str(), sy.Any())
     },

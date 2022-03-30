@@ -72,7 +72,7 @@ test_style_1 = {
         {
             "ax_args": [
                 {
-                    "lines": [
+                    "series": [
                         {
                             "y": "sin1",
                             "color": "r",
@@ -98,7 +98,7 @@ test_style_1 = {
         {
             "ax_args": [
                 {
-                    "lines": [
+                    "series": [
                         {
                             "y": "sin1",
                             "color": "r",
@@ -126,7 +126,7 @@ test_style_1 = {
                     },
                 },
                 {
-                    "lines": [
+                    "series": [
                         {
                             "y": "sin1",
                             "color": "r",
@@ -162,7 +162,7 @@ test_style_1 = {
         {
             "ax_args": [
                 {
-                    "lines": [
+                    "series": [
                         {
                             "y": "sin1",
                             "color": "r",
@@ -194,7 +194,7 @@ test_style_1 = {
                     },
                 },
                 {
-                    "lines": [
+                    "series": [
                         {
                             "y": "sin1",
                             "color": "r",
@@ -222,7 +222,7 @@ test_style_1 = {
                     },
                 },
                 {
-                    "lines": [
+                    "series": [
                         {
                             "y": "sin1",
                             "color": "r",

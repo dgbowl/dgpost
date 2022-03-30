@@ -1,3 +1,30 @@
+"""
+``plot``: Plots columns of a DataFrame.
+
+The function :func:`dgpost.utils.plot.plot` processes the below specification
+in order to generate a plot:
+
+.. code-block:: yaml
+
+    plot:
+      - table:      !!str       # internal DataFrame name
+        style:      !!dict      # optional dictionary to adjust style of plot, see :class:`matplotlib.rcParams`
+        fig_args:   !!dict      # optional kwargs for the generated :class:`matplotlib.figure.Figure`
+        save:                   # optional to save the generated plot, `fname` required and any additional kwargs gets passed to :func:`matplotlib.figure.Figure.savefig`
+          fname:    !!str       # path, where the file is saved
+        ax_args:                # sequence of arguments for the different axes
+          series:               # sequence of different plot commands
+            y:      !!str       # column label for y data
+            x:      !!str       # optional column label for x data, or else index is used
+            kind:   !!str       # optional kind of plot to produce, default `scatter'
+                                # additional kwargs gets passed to plotting method
+          legend:   !!dict      # TODO
+          methods:  !!dict      # optional kwargs where the key is an attribute of an :class:`matplotlib.axes.Axes`
+                                # and the value is a dict containing kwargs to be called on the selected attribute
+                                # also possible to call method on subobject of the `axes` i.e. `axes.xaxis.set_label_text`
+
+.. codeauthor:: Ueli Sauter
+"""
 import matplotlib
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -5,6 +32,17 @@ from matplotlib.gridspec import GridSpec
 
 
 def apply_plot_style(style: dict):
+    """
+    Updates the plot style with the given dictionary.
+    For available kwargs see :class:`matplotlib.rcParams`.
+    If style is None, applies/resets to the default matplotlib style.
+
+    Parameters
+    ----------
+    style
+        A dictionary object containing valid key/value pairs.
+
+    """
     if style is not None:
         matplotlib.rcParams.update(style)
     else:
@@ -12,12 +50,25 @@ def apply_plot_style(style: dict):
 
 
 def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
-    series = ax_args.pop("lines", [])
+    """
+    Processes ax_args and plots the data
+
+    Parameters
+    ----------
+    ax
+        axes to be plotted to
+    table
+        dataframe containing the data
+    ax_args
+        arguments for the axes
+
+    """
+    series = ax_args.pop("series", [])
     for method, arguments in ax_args.pop("methods", {}).items():
         attr = ax
+        # allows for method calls on attributes
         for met in method.split("."):
             attr = getattr(attr, met)
-        print(arguments)
         attr(**arguments)
     ax.set(**ax_args)
     for element in series:
