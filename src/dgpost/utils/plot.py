@@ -10,9 +10,13 @@ in order to generate a plot:
       - table:      !!str       # internal DataFrame name
         style:      !!dict      # optional dictionary to adjust style of plot, see :class:`matplotlib.rcParams`
         fig_args:   !!dict      # optional kwargs for the generated :class:`matplotlib.figure.Figure`
+        nrows:      !!int       # optional int defining the number of rows of the grid for :class:`matplotlib.gridspec.GridSpec`
+        ncols:      !!int       # optional int defining the number of columns of the grid for :class:`matplotlib.gridspec.GridSpec`
         save:                   # optional to save the generated plot, `fname` required and any additional kwargs gets passed to :func:`matplotlib.figure.Figure.savefig`
           fname:    !!str       # path, where the file is saved
         ax_args:                # sequence of arguments for the different axes
+          cols:     !!tuple     # optional tuple (int, int) given the lower and upper bounds in the grid columns
+          rows:     !!tuple     # optional tuple (int, int) given the lower and upper bounds in the grid rows
           series:               # sequence of different plot commands
             y:      !!str       # column label for y data
             x:      !!str       # optional column label for x data, or else index is used

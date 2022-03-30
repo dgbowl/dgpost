@@ -156,7 +156,6 @@ test_style_1 = {
                 },
             ],
             "nrows": 2,
-            # "sharex": True,
             "save": {"fname": "test.complex.png"},
         },
         {
