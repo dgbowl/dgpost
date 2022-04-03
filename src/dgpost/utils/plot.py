@@ -31,6 +31,7 @@ in order to generate a plot:
 """
 import matplotlib
 import pandas as pd
+import uncertainties.unumpy as unp
 from matplotlib import pyplot as plt
 from matplotlib.gridspec import GridSpec
 
@@ -68,6 +69,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
 
     """
     series = ax_args.pop("series", [])
+
     for method, arguments in ax_args.pop("methods", {}).items():
         attr = ax
         # allows for method calls on attributes
@@ -75,18 +77,35 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
             attr = getattr(attr, met)
         attr(**arguments)
     ax.set(**ax_args)
+
     for element in series:
+        # datas processing
+        # should I use here separate_data and pQ from dgpost.transform.helpers?
+        # but with that I will lose the access to the index for x_data
         y = element.pop("y")
         y_data = table[y]
+        y_values = unp.nominal_values(y_data.array)
+        y_err = unp.std_devs(y_data.array)
+        y_unit = table.attrs.get("units", {}).get(y, "")
 
-        x_data = table.get(x) if (x := element.pop("x", None)) else y_data.index
+        if x := element.pop("x", None):
+            x_data = table[x]
+            x_values = unp.nominal_values(x_data)
+            x_err = unp.std_devs(x_data)
+            x_unit = table.attrs.get("units", {}).get(x, "")
+        else:
+            x_values = y_data.index
+            x_err = None
+            x_unit = None
 
         kind = element.pop("kind", "scatter")
 
         if kind == "line":
-            ax.plot(x_data, y_data, **element)
+            ax.plot(x_values, y_values, **element)
         elif kind == "scatter":
-            ax.scatter(x_data, y_data, **element)
+            ax.scatter(x_values, y_values, **element)
+        elif kind == "errorbar":
+            ax.errorbar(x_values, y_values, xerr=x_err, yerr=y_err, **element)
         else:
             raise ValueError(f"This kind of plot is not supported: '{kind}'")
     return

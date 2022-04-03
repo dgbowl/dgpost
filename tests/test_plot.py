@@ -3,6 +3,7 @@ import os
 import dgpost.utils
 import numpy as np
 import pandas as pd
+import uncertainties.unumpy as unp
 import pytest
 from PIL import Image, ImageChops
 
@@ -67,14 +68,15 @@ test_style_1 = {
 
 x_val = np.linspace(0, 6, 20)
 y_val = np.sin(x_val)
-test_data_1 = pd.DataFrame({"ind": x_val, "sin1": y_val, "sin2": -y_val})
+test_float_data = pd.DataFrame({"ind": x_val, "sin1": y_val, "sin2": -y_val})
+test_ufloat_data = pd.DataFrame({"ind": unp.uarray(x_val, 0.1), "sin1": unp.uarray(y_val, 0.1), "sin2": unp.uarray(-y_val, 0.1)})
 
 
 @pytest.mark.parametrize(
     "input",
     [
         {
-            "table": test_data_1,
+            "table": test_float_data,
             "ax_args": [
                 {
                     "series": [
@@ -101,7 +103,7 @@ test_data_1 = pd.DataFrame({"ind": x_val, "sin1": y_val, "sin2": -y_val})
             "save": {"as": "test.trigo.png", "tight_layout": {}},
         },
         {
-            "table": test_data_1,
+            "table": test_float_data,
             "ax_args": [
                 {
                     "series": [
@@ -165,7 +167,7 @@ test_data_1 = pd.DataFrame({"ind": x_val, "sin1": y_val, "sin2": -y_val})
             "save": {"as": "test.complex.png", "tight_layout": {}},
         },
         {
-            "table": test_data_1,
+            "table": test_float_data,
             "ax_args": [
                 {
                     "series": [
@@ -263,6 +265,35 @@ test_data_1 = pd.DataFrame({"ind": x_val, "sin1": y_val, "sin2": -y_val})
             "nrows": 3,
             "ncols": 2,
             "save": {"as": "test.split.png", "tight_layout": {}},
+        },
+        {
+            "table": test_ufloat_data,
+            "ax_args": [
+                {
+                    "series": [
+                        {
+                            "y": "sin1",
+                            "color": "r",
+                            "label": "indices",
+                            "kind": "errorbar",
+                            "ls": "None",
+                        },
+                        {
+                            "y": "sin2",
+                            "x": "ind",
+                            "color": "b",
+                            "label": "x_values",
+                            "kind": "errorbar",
+                            "ls": "None",
+                        },
+                    ],
+                    "xlim": (0, 15),
+                    "xlabel": "xlabel",
+                    "ylabel": "ylabel",
+                },
+            ],
+            "style": test_style_1,
+            "save": {"as": "test.errorbar.png", "tight_layout": {}},
         },
     ],
 )
