@@ -1,11 +1,12 @@
 import os
 
-import dgpost.utils
 import numpy as np
 import pandas as pd
-import uncertainties.unumpy as unp
 import pytest
+import uncertainties.unumpy as unp
 from PIL import Image, ImageChops
+
+import dgpost.utils
 
 
 def are_images_equal(path_one, path_two):
@@ -69,7 +70,9 @@ test_style_1 = {
 x_val = np.linspace(0, 6, 20)
 y_val = np.sin(x_val)
 test_float_data = pd.DataFrame({"ind": x_val, "sin1": y_val, "sin2": -y_val})
-test_ufloat_data = pd.DataFrame({"ind": unp.uarray(x_val, 0.1), "sin1": unp.uarray(y_val, 0.1), "sin2": unp.uarray(-y_val, 0.1)})
+test_ufloat_data = pd.DataFrame(
+    {"ind": unp.uarray(x_val, 0.1), "sin1": unp.uarray(y_val, 0.1), "sin2": unp.uarray(-y_val, 0.1)}
+)
 
 
 @pytest.mark.parametrize(
@@ -301,5 +304,88 @@ def test_plot(input, datadir):
     os.chdir(datadir)
     img_name = input["save"]["as"]
 
+    dgpost.utils.plot(**input)
+    are_images_equal(img_name, f"ref.{img_name}")
+
+
+# "test.df.pkl",
+# "ndot.units.ufloat.df.pkl",
+# "xinxout.ufloat.df.pkl",
+@pytest.mark.parametrize(
+    "data_file, input",
+    [
+        (
+                "flowcx.units.ufloat.df.pkl",
+                {
+                    "ax_args": [
+                        {
+                            "series": [
+                                {
+                                    "y": "cin->*",
+                                    "colors": ["b", "r", "g"],
+                                    "kind": "scatter",
+                                },
+                            ],
+                            "methods": {
+                                "tick_params": {
+                                    "labelbottom": False
+                                },
+                            },
+                            "rows": (0, 1),
+                            "ylabel": "$C_{in}$",
+                            "legend": True,
+                        },
+                        {
+                            "series": [
+                                {
+                                    "y": "xout->*",
+                                    "colors": ["b", "r", "g", "y", "brown"],
+                                    "kind": "scatter",
+                                },
+                            ],
+                            "methods": {
+                                "tick_params": {
+                                    "labelbottom": False
+                                },
+                            },
+                            "rows": (1, 2),
+                            "ylabel": "$X_{out}$",
+                            "legend": True,
+                        },
+                        {
+                            "series": [
+                                {
+                                    "y": "flowin",
+                                    "color": "blue",
+                                    "kind": "line",
+                                },
+                                {
+                                    "y": "flowout",
+                                    "color": "red",
+                                    "kind": "line",
+                                },
+                            ],
+                            "rows": (2, 3),
+                            "xlabel": "index",
+                            "ylabel": "$flow$",
+                            "legend": True,
+                        },
+                    ],
+                    "nrows": 3,
+                    "style": test_style_1,
+                    "fig_args":
+                        {
+                            "figsize": (12, 12),
+                        },
+                    "save": {"as": "test.flowcx.png", "tight_layout": {}},
+                },
+        ),
+    ]
+)
+def test_df(data_file, input, datadir):
+    os.chdir(datadir)
+    img_name = input["save"]["as"]
+    df = dgpost.utils.load(data_file, type="")
+    input["table"] = df
     dgpost.utils.plot(**input)
     are_images_equal(img_name, f"ref.{img_name}")

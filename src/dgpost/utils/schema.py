@@ -66,7 +66,8 @@ plot_legend = sy.MapCombined(
 axes = sy.MapCombined(
     {
         "series": sy.Seq(series),
-        "legend": plot_legend,
+        # "legend": plot_legend,
+        sy.Optional("legend", default=False): sy.Bool(),
         sy.Optional("methods"): sy.MapPattern(sy.Str(), sy.Any()),
     },
     sy.Str(),

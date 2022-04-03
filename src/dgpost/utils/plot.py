@@ -25,7 +25,7 @@ in order to generate a plot:
         ncols:      !!int       # optional int defining the number of columns of the grid for :class:`matplotlib.gridspec.GridSpec`
         save:                   # optional to save the generated plot, `fname` required and any additional kwargs gets passed to :func:`matplotlib.figure.Figure.savefig`
           as:       !!str       # path, where the file is saved
-          tight_layout: !!dict  # optional dictionary for figure.tight_figure
+          tight_layout: !!dict  # optional dictionary for figure.tight_layout
 
 .. codeauthor:: Ueli Sauter
 """
@@ -68,7 +68,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
         arguments for the axes
 
     """
-    series = ax_args.pop("series", [])
+    series: list[dict] = ax_args.pop("series", [])
 
     for method, arguments in ax_args.pop("methods", {}).items():
         attr = ax
@@ -83,6 +83,27 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
         # should I use here separate_data and pQ from dgpost.transform.helpers?
         # but with that I will lose the access to the index for x_data
         y = element.pop("y")
+        # check if multiple columns should be plotted
+        if y.endswith("*"):
+            elem_step = 0  # iterator step to keep track which property should be selected if list is given
+            for col in table.columns:
+                # check for appropriate columns names
+                if y[:-1] in col:
+                    elem = element.copy()  # copy specs -> maybe rename element to specs?
+                    for el, val in element.items():
+                        # check if any of the specs in elements ends with s and is a list
+                        if el.endswith("s") and isinstance(val, list):
+                            # select the property that corresponds to iterator step
+                            elem.pop(el)
+                            elem[el[:-1]] = val[elem_step % len(val)]
+                    elem["y"] = col  # set the y data name
+                    # append the new spec to the series and increase step by one
+                    series.append(elem)
+                    elem_step += 1
+            # don't plot anything for this element
+            # TODO: update doc with this new feature
+            continue
+
         y_data = table[y]
         y_values = unp.nominal_values(y_data.array)
         y_err = unp.std_devs(y_data.array)
@@ -99,6 +120,9 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
             x_unit = None
 
         kind = element.pop("kind", "scatter")
+
+        if "label" not in element:
+            element["label"] = y + (f"[{y_unit}]" if y_unit else "")
 
         if kind == "line":
             ax.plot(x_values, y_values, **element)
@@ -138,7 +162,10 @@ def plot(
                 slice(*specs.pop("cols", (0, ncols))),
             ]
         )
+        legend = specs.pop("legend", False)
         plt_axes(ax, table, specs)
+        if legend:
+            ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))  # placeholder
 
     if not save:
         return
