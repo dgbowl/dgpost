@@ -33,8 +33,8 @@ def are_images_equal(path_one, path_two):
 
 
 test_style_1 = {
-    "font.family": "sans-serif",
-    "font.sans-serif": ["Arial"],
+    # "font.family": "sans-serif",
+    # "font.sans-serif": ["Arial"],
     "font.size": 22,
     "axes.linewidth": 1.1,
     "axes.labelpad": 4.0,
@@ -65,11 +65,16 @@ test_style_1 = {
     "lines.markeredgewidth": 0.8,
 }
 
+x_val = np.linspace(0, 6, 20)
+y_val = np.sin(x_val)
+test_data_1 = pd.DataFrame({"ind": x_val, "sin1": y_val, "sin2": -y_val})
+
 
 @pytest.mark.parametrize(
     "input",
     [
         {
+            "table": test_data_1,
             "ax_args": [
                 {
                     "series": [
@@ -93,9 +98,10 @@ test_style_1 = {
                 },
             ],
             "style": test_style_1,
-            "save": {"fname": "test.trigo.png"},
+            "save": {"as": "test.trigo.png", "tight_layout": {}},
         },
         {
+            "table": test_data_1,
             "ax_args": [
                 {
                     "series": [
@@ -156,9 +162,10 @@ test_style_1 = {
                 },
             ],
             "nrows": 2,
-            "save": {"fname": "test.complex.png"},
+            "save": {"as": "test.complex.png", "tight_layout": {}},
         },
         {
+            "table": test_data_1,
             "ax_args": [
                 {
                     "series": [
@@ -176,7 +183,7 @@ test_style_1 = {
                             "kind": "line",
                         },
                     ],
-                    "rows": (0, 1),
+                    "rows": (0, 2),
                     "cols": (0, 2),
                     "xlim": (0, 15),
                     "ylabel": "ylabel line",
@@ -188,8 +195,7 @@ test_style_1 = {
                             "labelbottom": False,
                             "labeltop": True,
                         },
-                        "xaxis.set_label_position": {
-                            "position": 'top',},
+                        "xaxis.set_label_position": {"position": "top"},
                     },
                 },
                 {
@@ -208,11 +214,11 @@ test_style_1 = {
                             "kind": "scatter",
                         },
                     ],
-                    "rows": (1, 2),
+                    "rows": (2, 3),
                     "cols": (0, 1),
                     "xlim": (0, 15),
                     "xlabel": "xlabel 1 ",
-                    "ylabel": "ylabel scatter",
+                    "ylabel": "ylabel scatter left",
                     "methods": {
                         "tick_params": {
                             "top": True,
@@ -236,10 +242,11 @@ test_style_1 = {
                             "kind": "scatter",
                         },
                     ],
-                    "rows": (1, 2),
+                    "rows": (2, 3),
                     "cols": (1, 2),
                     "xlim": (0, 15),
                     "xlabel": "xlabel 2",
+                    "ylabel": "ylabel scatter left",
                     "methods": {
                         "tick_params": {
                             "top": True,
@@ -247,21 +254,21 @@ test_style_1 = {
                             "labelright": True,
                             "labelleft": False,
                         },
+                        "yaxis.set_label_position": {
+                            "position": "right",
+                        },
                     },
                 },
             ],
-            "nrows": 2,
+            "nrows": 3,
             "ncols": 2,
-            # "sharex": True,
-            "save": {"fname": "test.split.png"},
+            "save": {"as": "test.split.png", "tight_layout": {}},
         },
     ],
 )
 def test_plot(input, datadir):
     os.chdir(datadir)
-    x_val = np.linspace(0, 6, 20)
-    y_val = np.sin(x_val)
-    input["table"] = pd.DataFrame({"ind": x_val, "sin1": y_val, "sin2": -y_val})
+    img_name = input["save"]["as"]
+
     dgpost.utils.plot(**input)
-    img_name = input["save"]["fname"]
     are_images_equal(img_name, f"ref.{img_name}")

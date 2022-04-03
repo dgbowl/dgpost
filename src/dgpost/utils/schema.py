@@ -67,16 +67,14 @@ axes = sy.MapCombined(
     {
         "series": sy.Seq(series),
         "legend": plot_legend,
-        sy.Optional("methods"): sy.MapPattern(sy.Str(), sy.Any())
+        sy.Optional("methods"): sy.MapPattern(sy.Str(), sy.Any()),
     },
     sy.Str(),
     sy.Any(),
 )
 
 plot_save = sy.MapCombined(
-    {
-        "fname": sy.Str,
-    },
+    {"as": sy.Str, sy.Optional("tight_layout"): sy.MapPattern(sy.Str(), sy.Any())},
     sy.Str(),
     sy.Any(),
 )

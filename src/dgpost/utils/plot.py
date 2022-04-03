@@ -10,10 +10,6 @@ in order to generate a plot:
       - table:      !!str       # internal DataFrame name
         style:      !!dict      # optional dictionary to adjust style of plot, see :class:`matplotlib.rcParams`
         fig_args:   !!dict      # optional kwargs for the generated :class:`matplotlib.figure.Figure`
-        nrows:      !!int       # optional int defining the number of rows of the grid for :class:`matplotlib.gridspec.GridSpec`
-        ncols:      !!int       # optional int defining the number of columns of the grid for :class:`matplotlib.gridspec.GridSpec`
-        save:                   # optional to save the generated plot, `fname` required and any additional kwargs gets passed to :func:`matplotlib.figure.Figure.savefig`
-          fname:    !!str       # path, where the file is saved
         ax_args:                # sequence of arguments for the different axes
           cols:     !!tuple     # optional tuple (int, int) given the lower and upper bounds in the grid columns
           rows:     !!tuple     # optional tuple (int, int) given the lower and upper bounds in the grid rows
@@ -22,10 +18,14 @@ in order to generate a plot:
             x:      !!str       # optional column label for x data, or else index is used
             kind:   !!str       # optional kind of plot to produce, default `scatter'
                                 # additional kwargs gets passed to plotting method
-          legend:   !!dict      # TODO
           methods:  !!dict      # optional kwargs where the key is an attribute of an :class:`matplotlib.axes.Axes`
                                 # and the value is a dict containing kwargs to be called on the selected attribute
                                 # also possible to call method on subobject of the `axes` i.e. `axes.xaxis.set_label_text`
+        nrows:      !!int       # optional int defining the number of rows of the grid for :class:`matplotlib.gridspec.GridSpec`
+        ncols:      !!int       # optional int defining the number of columns of the grid for :class:`matplotlib.gridspec.GridSpec`
+        save:                   # optional to save the generated plot, `fname` required and any additional kwargs gets passed to :func:`matplotlib.figure.Figure.savefig`
+          as:       !!str       # path, where the file is saved
+          tight_layout: !!dict  # optional dictionary for figure.tight_figure
 
 .. codeauthor:: Ueli Sauter
 """
@@ -114,13 +114,18 @@ def plot(
 
     for specs in ax_args:
         ax = fig.add_subplot(
-            gs[slice(*specs.pop("rows", (0, nrows))), slice(*specs.pop("cols", (0, ncols)))]
+            gs[
+                slice(*specs.pop("rows", (0, nrows))),
+                slice(*specs.pop("cols", (0, ncols))),
+            ]
         )
         plt_axes(ax, table, specs)
 
     if not save:
         return
 
-    fig.savefig(**save)
+    if save.get("tight_layout") is not None:
+        fig.tight_layout(**save.pop("tight_layout"))
+    fig.savefig(fname=save.pop("as"), **save)
     fig.show()
     return
