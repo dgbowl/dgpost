@@ -100,12 +100,12 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
             if i_pars["from_zero"]:
                 x = "time"
                 x_values = x_values - x_values[0]
-                if "to_units" == "s" or max(x_values) < 120:
+                if i_pars["to_units"] == "s" or max(x_values) < 120:
                     x_unit = "s"
-                elif "to_units" == "min" or max(x_values) < 7200:
+                elif i_pars["to_units"] == "min" or max(x_values) < 7200:
                     x_unit = "min"
                     x_values = x_values / 60.0
-                elif "to_units" == "h" or max(x_values) >= 7200:
+                elif i_pars["to_units"] == "h" or max(x_values) >= 7200:
                     x_unit = "h"
                     x_values = x_values / 3600.0
 
