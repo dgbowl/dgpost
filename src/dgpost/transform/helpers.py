@@ -41,8 +41,7 @@ def default_element(f: str) -> str:
     for el in ["C", "O", "H"]:
         if el in elements:
             return el
-    else:
-        return elements.keys()[0]
+    return elements.keys()[0]
 
 
 def name_to_chem(name: str) -> str:

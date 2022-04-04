@@ -35,10 +35,10 @@ in order to generate a plot:
 .. codeauthor:: Ueli Sauter
 """
 import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 import pandas as pd
 import uncertainties.unumpy as unp
-from matplotlib import pyplot as plt
-from matplotlib import gridspec
 
 
 def apply_plot_style(style: dict):
