@@ -7,25 +7,27 @@ in order to generate a plot:
 .. code-block:: yaml
 
     plot:
-      - table:      !!str       # internal DataFrame name
-        style:      !!dict      # optional dictionary to adjust style of plot, see :class:`matplotlib.rcParams`
-        fig_args:   !!dict      # optional kwargs for the generated :class:`matplotlib.figure.Figure`
+      - table:          !!str   # internal DataFrame name
+        style:          !!dict  # optional style dictionary for matplotlib.rcParams
+        nrows:          !!int   # optional number of rows of matplotlib.gridspec.GridSpec
+        ncols:          !!int   # optional number of columns of matplotlib.gridspec.GridSpec
+        fig_args:       !!dict  # optional kwargs for the generated matplotlib.figure.Figure
         ax_args:                # sequence of arguments for the different axes
-          cols:     !!tuple     # optional tuple (int, int) given the lower and upper bounds in the grid columns
-          rows:     !!tuple     # optional tuple (int, int) given the lower and upper bounds in the grid rows
-          series:               # sequence of different plot commands
-            y:      !!str       # column label for y data
-            x:      !!str       # optional column label for x data, or else index is used
-            kind:   !!str       # optional kind of plot to produce, default `scatter'
-                                # additional kwargs gets passed to plotting method
-          methods:  !!dict      # optional kwargs where the key is an attribute of an :class:`matplotlib.axes.Axes`
-                                # and the value is a dict containing kwargs to be called on the selected attribute
-                                # also possible to call method on subobject of the `axes` i.e. `axes.xaxis.set_label_text`
-        nrows:      !!int       # optional int defining the number of rows of the grid for :class:`matplotlib.gridspec.GridSpec`
-        ncols:      !!int       # optional int defining the number of columns of the grid for :class:`matplotlib.gridspec.GridSpec`
-        save:                   # optional to save the generated plot, `fname` required and any additional kwargs gets passed to :func:`matplotlib.figure.Figure.savefig`
-          as:       !!str       # path, where the file is saved
+          - cols:       !!tuple # optional (int, int) specifying grid columns for axes
+            rows:       !!tuple # optional (int, int) specifying grid rows for axes
+            series:             # sequence of different plot commands
+              - y:      !!str   # column label for y data
+                x:      !!str   # optional column label for x data, or else index is used
+                kind:   !!str   # optional kind of plot to produce, default is scatter
+                kwargs: !!dict  # optional kwargs which are passed to the plotting method
+            methods:    !!dict  # optional kwargs with methods of matplotlib.axes.Axes
+                                # and the value is a dict containing kwargs to be called 
+                                # on the selected attribute. Also possible to call 
+                                # method on subobject of the axes i.e. axes.xaxis.set_label_text
+        save:                   
+          as:           !!str   # file name where the plot is saved
           tight_layout: !!dict  # optional dictionary for figure.tight_layout
+
 
 .. codeauthor:: Ueli Sauter
 """
@@ -33,7 +35,7 @@ import matplotlib
 import pandas as pd
 import uncertainties.unumpy as unp
 from matplotlib import pyplot as plt
-from matplotlib.gridspec import GridSpec
+from matplotlib import gridspec
 
 
 def apply_plot_style(style: dict):
@@ -76,63 +78,59 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
         for met in method.split("."):
             attr = getattr(attr, met)
         attr(**arguments)
-    ax.set(**ax_args)
 
-    for element in series:
-        # datas processing
-        # should I use here separate_data and pQ from dgpost.transform.helpers?
-        # but with that I will lose the access to the index for x_data
-        y = element.pop("y")
-        # check if multiple columns should be plotted
-        if y.endswith("*"):
-            elem_step = 0  # iterator step to keep track which property should be selected if list is given
-            for col in table.columns:
-                # check for appropriate columns names
-                if y[:-1] in col:
-                    elem = element.copy()  # copy specs -> maybe rename element to specs?
-                    for el, val in element.items():
-                        # check if any of the specs in elements ends with s and is a list
-                        if el.endswith("s") and isinstance(val, list):
-                            # select the property that corresponds to iterator step
-                            elem.pop(el)
-                            elem[el[:-1]] = val[elem_step % len(val)]
-                    elem["y"] = col  # set the y data name
-                    # append the new spec to the series and increase step by one
-                    series.append(elem)
-                    elem_step += 1
-            # don't plot anything for this element
-            # TODO: update doc with this new feature
-            continue
-
-        y_data = table[y]
-        y_values = unp.nominal_values(y_data.array)
-        y_err = unp.std_devs(y_data.array)
-        y_unit = table.attrs.get("units", {}).get(y, "")
-
-        if x := element.pop("x", None):
+    for spec in series:
+        kind = spec.pop("kind", "scatter")
+        
+        # data processing
+        if (x := spec.pop("x", None)) is not None:
             x_data = table[x]
             x_values = unp.nominal_values(x_data)
             x_err = unp.std_devs(x_data)
-            x_unit = table.attrs.get("units", {}).get(x, "")
+            x_unit = table.attrs.get("units", {}).get(x, None)
         else:
-            x_values = y_data.index
+            x_values = table.index
             x_err = None
             x_unit = None
+        x_label = f"{x} [{x_unit}]" if x_unit is not None else x
 
-        kind = element.pop("kind", "scatter")
-
-        if "label" not in element:
-            element["label"] = y + (f"[{y_unit}]" if y_unit else "")
-
-        if kind == "line":
-            ax.plot(x_values, y_values, **element)
-        elif kind == "scatter":
-            ax.scatter(x_values, y_values, **element)
-        elif kind == "errorbar":
-            ax.errorbar(x_values, y_values, xerr=x_err, yerr=y_err, **element)
+        ys: list[dict] = []
+        y = spec.pop("y")
+        # check if multiple columns should be plotted
+        if y.endswith("->*"):
+            for col in sorted(table.columns):
+                if y[:-1] in col:
+                    ys.append(
+                        {"k": col, "p": y.replace("->*", ""), "s": col.split("->")[-1]}
+                    )
         else:
-            raise ValueError(f"This kind of plot is not supported: '{kind}'")
-    return
+            ys.append({"k": y, "p": y, "s": y})
+
+        for yi, yk in enumerate(ys):
+            y_data = table[yk["k"]]
+            y_values = unp.nominal_values(y_data.array)
+            y_err = unp.std_devs(y_data.array)
+            y_unit = table.attrs.get("units", {}).get(yk["k"], None)
+
+            y_label = f"{yk['p']} [{y_unit}]" if y_unit is not None else yk["p"]
+            kwargs = spec.copy()
+            if "label" not in kwargs:
+                kwargs["label"] = yk["s"]
+            for k in list(kwargs):
+                if k.endswith("s") and isinstance(kwargs[k], list):
+                    klist = kwargs.pop(k)
+                    kwargs[k[:-1]] = klist[yi % len(klist)]
+            if kind == "line":
+                ax.plot(x_values, y_values, **kwargs)
+            elif kind == "scatter":
+                ax.scatter(x_values, y_values, **kwargs)
+            elif kind == "errorbar":
+                ax.errorbar(x_values, y_values, xerr=x_err, yerr=y_err, **kwargs)
+            else:
+                raise ValueError(f"This kind of plot is not supported: '{kind}'")
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
+    ax.set(**ax_args)
 
 
 def plot(
@@ -148,7 +146,7 @@ def plot(
     grid_args["nrows"] = nrows = grid_args.get("nrows", 1)
     grid_args["ncols"] = ncols = grid_args.get("ncols", 1)
 
-    gs = GridSpec(**grid_args)
+    gs = gridspec.GridSpec(**grid_args)
 
     if fig_args is None:
         fig_args = {}
@@ -165,13 +163,12 @@ def plot(
         legend = specs.pop("legend", False)
         plt_axes(ax, table, specs)
         if legend:
-            ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))  # placeholder
-
+            ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
     if not save:
+        fig.show()
         return
-
+    
     if save.get("tight_layout") is not None:
         fig.tight_layout(**save.pop("tight_layout"))
     fig.savefig(fname=save.pop("as"), **save)
-    fig.show()
-    return
+    

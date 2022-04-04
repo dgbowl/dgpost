@@ -71,14 +71,18 @@ x_val = np.linspace(0, 6, 20)
 y_val = np.sin(x_val)
 test_float_data = pd.DataFrame({"ind": x_val, "sin1": y_val, "sin2": -y_val})
 test_ufloat_data = pd.DataFrame(
-    {"ind": unp.uarray(x_val, 0.1), "sin1": unp.uarray(y_val, 0.1), "sin2": unp.uarray(-y_val, 0.1)}
+    {
+        "ind": unp.uarray(x_val, 0.1),
+        "sin1": unp.uarray(y_val, 0.1),
+        "sin2": unp.uarray(-y_val, 0.1),
+    }
 )
 
 
 @pytest.mark.parametrize(
     "input",
     [
-        {
+        {  # ts0 - one image, lines, explicit labels, explicit colours, xlim
             "table": test_float_data,
             "ax_args": [
                 {
@@ -105,7 +109,7 @@ test_ufloat_data = pd.DataFrame(
             "style": test_style_1,
             "save": {"as": "test.trigo.png", "tight_layout": {}},
         },
-        {
+        {  # ts1 - two images, lines & points, tickparams, xlabel: None
             "table": test_float_data,
             "ax_args": [
                 {
@@ -128,6 +132,7 @@ test_ufloat_data = pd.DataFrame(
                     "cols": (0, 1),
                     "xlim": (0, 15),
                     "ylabel": "ylabel line",
+                    "xlabel": None,
                     "methods": {
                         "tick_params": {
                             "top": True,
@@ -169,7 +174,7 @@ test_ufloat_data = pd.DataFrame(
             "nrows": 2,
             "save": {"as": "test.complex.png", "tight_layout": {}},
         },
-        {
+        {  # ts2 - three images, various sizes, label positions
             "table": test_float_data,
             "ax_args": [
                 {
@@ -269,7 +274,7 @@ test_ufloat_data = pd.DataFrame(
             "ncols": 2,
             "save": {"as": "test.split.png", "tight_layout": {}},
         },
-        {
+        {  # ts3 - one image, errorbar, ls: "None"
             "table": test_ufloat_data,
             "ax_args": [
                 {
@@ -300,92 +305,140 @@ test_ufloat_data = pd.DataFrame(
         },
     ],
 )
-def test_plot(input, datadir):
+def test_plot_direct(input, datadir):
     os.chdir(datadir)
     img_name = input["save"]["as"]
-
     dgpost.utils.plot(**input)
     are_images_equal(img_name, f"ref.{img_name}")
 
 
-# "test.df.pkl",
-# "ndot.units.ufloat.df.pkl",
-# "xinxout.ufloat.df.pkl",
 @pytest.mark.parametrize(
     "data_file, input",
     [
-        (
-                "flowcx.units.ufloat.df.pkl",
-                {
-                    "ax_args": [
-                        {
-                            "series": [
-                                {
-                                    "y": "cin->*",
-                                    "colors": ["b", "r", "g"],
-                                    "kind": "scatter",
-                                },
-                            ],
-                            "methods": {
-                                "tick_params": {
-                                    "labelbottom": False
-                                },
+        (  # ts0 - 3 images, composite data, legend, explicit latex labels
+            "flowcx.units.ufloat.df.pkl",
+            {
+                "ax_args": [
+                    {
+                        "series": [
+                            {
+                                "y": "cin->*",
+                                "colors": ["b", "r", "g"],
+                                "kind": "scatter",
                             },
-                            "rows": (0, 1),
-                            "ylabel": "$C_{in}$",
-                            "legend": True,
+                        ],
+                        "methods": {
+                            "tick_params": {"labelbottom": False},
                         },
-                        {
-                            "series": [
-                                {
-                                    "y": "xout->*",
-                                    "colors": ["b", "r", "g", "y", "brown"],
-                                    "kind": "scatter",
-                                },
-                            ],
-                            "methods": {
-                                "tick_params": {
-                                    "labelbottom": False
-                                },
+                        "rows": (0, 1),
+                        "ylabel": "$C_{in}$",
+                        "legend": True,
+                    },
+                    {
+                        "series": [
+                            {
+                                "y": "xout->*",
+                                "colors": ["b", "r", "g", "y", "brown"],
+                                "kind": "scatter",
                             },
-                            "rows": (1, 2),
-                            "ylabel": "$X_{out}$",
-                            "legend": True,
+                        ],
+                        "methods": {
+                            "tick_params": {"labelbottom": False},
                         },
-                        {
-                            "series": [
-                                {
-                                    "y": "flowin",
-                                    "color": "blue",
-                                    "kind": "line",
-                                },
-                                {
-                                    "y": "flowout",
-                                    "color": "red",
-                                    "kind": "line",
-                                },
-                            ],
-                            "rows": (2, 3),
-                            "xlabel": "index",
-                            "ylabel": "$flow$",
-                            "legend": True,
-                        },
-                    ],
-                    "nrows": 3,
-                    "style": test_style_1,
-                    "fig_args":
-                        {
-                            "figsize": (12, 12),
-                        },
-                    "save": {"as": "test.flowcx.png", "tight_layout": {}},
+                        "rows": (1, 2),
+                        "ylabel": "$X_{out}$",
+                        "legend": True,
+                    },
+                    {
+                        "series": [
+                            {
+                                "y": "flowin",
+                                "color": "blue",
+                                "kind": "line",
+                            },
+                            {
+                                "y": "flowout",
+                                "color": "red",
+                                "kind": "line",
+                            },
+                        ],
+                        "rows": (2, 3),
+                        "xlabel": "index",
+                        "ylabel": "$flow$",
+                        "legend": True,
+                    },
+                ],
+                "nrows": 3,
+                "style": test_style_1,
+                "fig_args": {
+                    "figsize": (12, 12),
                 },
+                "save": {"as": "test.flowcx.withlabel.png", "tight_layout": {}},
+            },
         ),
-    ]
+        (  # ts1 - 3 images, composite data, legend, implicit label & units
+            "flowcx.units.ufloat.df.pkl",
+            {
+                "ax_args": [
+                    {
+                        "series": [
+                            {
+                                "y": "cin->*",
+                                "colors": ["b", "r", "g"],
+                                "kind": "scatter",
+                            },
+                        ],
+                        "methods": {
+                            "tick_params": {"labelbottom": False},
+                        },
+                        "rows": (0, 1),
+                        "legend": True,
+                    },
+                    {
+                        "series": [
+                            {
+                                "y": "xout->*",
+                                "colors": ["b", "r", "g", "y", "brown"],
+                                "kind": "scatter",
+                            },
+                        ],
+                        "methods": {
+                            "tick_params": {"labelbottom": False},
+                        },
+                        "rows": (1, 2),
+                        "legend": True,
+                    },
+                    {
+                        "series": [
+                            {
+                                "y": "flowin",
+                                "color": "blue",
+                                "kind": "line",
+                            },
+                            {
+                                "y": "flowout",
+                                "color": "red",
+                                "kind": "line",
+                            },
+                        ],
+                        "rows": (2, 3),
+                        "legend": True,
+                    },
+                ],
+                "nrows": 3,
+                "style": test_style_1,
+                "fig_args": {
+                    "figsize": (12, 12),
+                },
+                "save": {"as": "test.flowcx.nolabel.png", "tight_layout": {}},
+            },
+        ),
+    ],
 )
-def test_df(data_file, input, datadir):
+def test_plot_from_df(data_file, input, datadir):
     os.chdir(datadir)
     img_name = input["save"]["as"]
-    df = dgpost.utils.load(data_file, type="")
+    df = dgpost.utils.load(data_file, type="table")
     input["table"] = df
     dgpost.utils.plot(**input)
     are_images_equal(img_name, f"ref.{img_name}")

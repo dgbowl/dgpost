@@ -1,4 +1,4 @@
-from distutils import dir_util
+from setuptools import distutils
 import os
 import pytest
 
@@ -14,9 +14,9 @@ def datadir(tmpdir, request):
     filename = request.module.__file__
     test_dir, _ = os.path.splitext(filename)
     if os.path.isdir(test_dir):
-        dir_util.copy_tree(test_dir, str(tmpdir))
+        distutils.dir_util.copy_tree(test_dir, str(tmpdir))
     base_dir, _ = os.path.split(test_dir)
     common_dir = os.path.join(base_dir, "common")
     if os.path.isdir(common_dir):
-        dir_util.copy_tree(common_dir, str(tmpdir))
+        distutils.dir_util.copy_tree(common_dir, str(tmpdir))
     return tmpdir

@@ -26,16 +26,16 @@ import dgpost
             "df",
             "let_1.pkl",
         ),
-        (
+        (  # ts3 - load & extract, multiple transforms
             "let_2.yaml",
             "df",
             "let_2.pkl",
-        ),  # ts3 - load & extract, multiple transforms
-        (
+        ), 
+        (  # ts4 - load & double extract, same index
             "lee_1.yaml",
             "df",
             "lee_1.pkl",
-        ),  # ts4 - load & double extract, same index
+        ),  
         (  # ts5 - load, extract, save in 4 formats
             "les_1.yaml",
             "table 1",
@@ -56,13 +56,20 @@ import dgpost
             "df",
             "lee_2.pkl",
         ),
+        (  # ts9 - load, extract and interpolate via temp
+            "letp_1.yaml",
+            "df",
+            "let_2.pkl",
+        ),
     ],
 )
 def test_run(inpath, tname, outpath, datadir):
     os.chdir(datadir)
     dg, tab = dgpost.run(inpath)
     df = tab[tname]
+    print(df.columns)
     ref = pd.read_pickle(outpath)
+    print(ref.columns)
     for col in df.columns:
         assert np.allclose(unp.nominal_values(ref[col]), unp.nominal_values(df[col]))
         assert np.allclose(unp.std_devs(ref[col]), unp.std_devs(df[col]))

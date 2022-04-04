@@ -39,11 +39,12 @@ setuptools.setup(
         "chemicals>=1.0.0",
         "rdkit-pypi>=2021",
         "yadg>=4.1.0rc1",
-        "matplotlib",
+        "matplotlib>=3.5.0",
     ],
     extras_require={
         "testing": [
-            "pytest"
+            "pytest",
+            "Pillow"
         ],
         "docs": [
             "sphinx",

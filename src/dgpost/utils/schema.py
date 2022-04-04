@@ -66,6 +66,8 @@ plot_legend = sy.MapCombined(
 axes = sy.MapCombined(
     {
         "series": sy.Seq(series),
+        sy.Optional("rows"): sy.Seq(sy.Int()),
+        sy.Optional("cols"): sy.Seq(sy.Int()),
         # "legend": plot_legend,
         sy.Optional("legend", default=False): sy.Bool(),
         sy.Optional("methods"): sy.MapPattern(sy.Str(), sy.Any()),
@@ -75,7 +77,7 @@ axes = sy.MapCombined(
 )
 
 plot_save = sy.MapCombined(
-    {"as": sy.Str, sy.Optional("tight_layout"): sy.MapPattern(sy.Str(), sy.Any())},
+    {"as": sy.Str(), sy.Optional("tight_layout"): sy.MapPattern(sy.Str(), sy.Any())},
     sy.Str(),
     sy.Any(),
 )
@@ -83,6 +85,8 @@ plot_save = sy.MapCombined(
 plot = sy.MapCombined(
     {
         "table": sy.Str(),
+        sy.Optional("nrows"): sy.Int(),
+        sy.Optional("ncols"): sy.Int(),
         "ax_args": sy.Seq(axes),
         sy.Optional("style"): sy.MapPattern(sy.Str(), sy.Any()),
         sy.Optional("fig_args"): sy.MapPattern(sy.Str(), sy.Any()),

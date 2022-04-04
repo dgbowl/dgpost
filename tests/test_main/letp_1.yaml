@@ -1,0 +1,48 @@
+load:
+  - as: dg
+    path: normalized.dg.json
+extract:
+  - into: df
+    from: dg
+    at:
+      steps: b1, b2, b3
+    columns:
+      - key: derived->xout->*
+        as: xout
+  - into: df
+    from: dg
+    at:
+      step: a
+    columns:
+      - key: derived->xin->*
+        as: xin
+transform:
+  - table: df
+    with: catalysis.selectivity
+    using:
+      - feedstock: propane
+        xin: xin
+        xout: xout
+  - table: df
+    with: catalysis.atom_balance
+    using:
+      - xin: xin
+        xout: xout
+plot:
+  - table: df
+    nrows: 2
+    ncols: 1
+    ax_args:
+      - rows: 
+          - 0
+          - 1
+        series:
+          - y: Sp_C->*
+      - rows: 
+          - 1 
+          - 2
+        series:
+          - y: xout->*
+            kind: line
+    save:
+      as: "C:\\Users\\krpe\\dgpost\\out.png"
