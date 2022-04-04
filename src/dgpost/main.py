@@ -36,7 +36,7 @@ def run(path: str) -> tuple[dict, dict]:
         else:
             tables[el["as"]] = load(el["path"], el["check"], el["type"])
 
-    e = spec.pop("extract")
+    e = spec.get("extract", [])
     for el in e:
         saveas = el.pop("into")
         if "from" in el and el["from"] is not None:

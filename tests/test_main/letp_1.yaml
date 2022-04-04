@@ -38,11 +38,13 @@ plot:
           - 1
         series:
           - y: Sp_C->*
+        legend: True
       - rows: 
           - 1 
           - 2
         series:
           - y: xout->*
             kind: line
+        legend: True
     save:
-      as: "C:\\Users\\krpe\\dgpost\\out.png"
+      as: "test.png"

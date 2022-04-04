@@ -52,7 +52,17 @@ transform = sy.Map(
 )
 
 series = sy.MapCombined(
-    {"y": sy.Str(), sy.Optional("x"): sy.Str(), sy.Optional("kind"): sy.Str()},
+    {
+        "y": sy.Str(),
+        sy.Optional("x"): sy.Str(),
+        sy.Optional("kind", default="scatter"): sy.Str(),
+        sy.Optional("index", default={"from_zero": True}): sy.Map(
+            {
+                sy.Optional("from_zero", default=True): sy.Bool(),
+                sy.Optional("to_units"): sy.Str(),
+            }
+        ),
+    },
     sy.Str(),
     sy.Any(),
 )
@@ -68,7 +78,6 @@ axes = sy.MapCombined(
         "series": sy.Seq(series),
         sy.Optional("rows"): sy.Seq(sy.Int()),
         sy.Optional("cols"): sy.Seq(sy.Int()),
-        # "legend": plot_legend,
         sy.Optional("legend", default=False): sy.Bool(),
         sy.Optional("methods"): sy.MapPattern(sy.Str(), sy.Any()),
     },
@@ -82,18 +91,16 @@ plot_save = sy.MapCombined(
     sy.Any(),
 )
 
-plot = sy.MapCombined(
+plot = sy.Map(
     {
         "table": sy.Str(),
+        "ax_args": sy.Seq(axes),
+        sy.Optional("fig_args"): sy.MapPattern(sy.Str(), sy.Any()),
+        sy.Optional("style"): sy.MapPattern(sy.Str(), sy.Any()),
         sy.Optional("nrows"): sy.Int(),
         sy.Optional("ncols"): sy.Int(),
-        "ax_args": sy.Seq(axes),
-        sy.Optional("style"): sy.MapPattern(sy.Str(), sy.Any()),
-        sy.Optional("fig_args"): sy.MapPattern(sy.Str(), sy.Any()),
         sy.Optional("save"): plot_save,
-    },
-    sy.Str(),
-    sy.Any(),
+    }
 )
 
 schema = sy.Map(

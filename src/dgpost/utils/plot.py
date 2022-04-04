@@ -7,26 +7,29 @@ in order to generate a plot:
 .. code-block:: yaml
 
     plot:
-      - table:          !!str   # internal DataFrame name
-        style:          !!dict  # optional style dictionary for matplotlib.rcParams
-        nrows:          !!int   # optional number of rows of matplotlib.gridspec.GridSpec
-        ncols:          !!int   # optional number of columns of matplotlib.gridspec.GridSpec
-        fig_args:       !!dict  # optional kwargs for the generated matplotlib.figure.Figure
-        ax_args:                # sequence of arguments for the different axes
-          - cols:       !!tuple # optional (int, int) specifying grid columns for axes
-            rows:       !!tuple # optional (int, int) specifying grid rows for axes
-            series:             # sequence of different plot commands
-              - y:      !!str   # column label for y data
-                x:      !!str   # optional column label for x data, or else index is used
-                kind:   !!str   # optional kind of plot to produce, default is scatter
-                kwargs: !!dict  # optional kwargs which are passed to the plotting method
-            methods:    !!dict  # optional kwargs with methods of matplotlib.axes.Axes
-                                # and the value is a dict containing kwargs to be called 
-                                # on the selected attribute. Also possible to call 
-                                # method on subobject of the axes i.e. axes.xaxis.set_label_text
+      - table:               !!str   # internal DataFrame name
+        style:               !!dict  # optional style dictionary for matplotlib.rcParams
+        nrows:               !!int   # optional number of rows of matplotlib.gridspec.GridSpec
+        ncols:               !!int   # optional number of columns of matplotlib.gridspec.GridSpec
+        fig_args:            !!dict  # optional kwargs for the generated matplotlib.figure.Figure
+        ax_args:                     # sequence of arguments for the different axes
+          - cols:            !!tuple # optional (int, int) specifying grid columns for axes
+            rows:            !!tuple # optional (int, int) specifying grid rows for axes
+            series:                  # sequence of different plot commands
+              - y:           !!str   # column label for y data
+                x:           !!str   # optional column label for x data, or else index is used
+                index:
+                  from_zero: !!bool  # align values of index to zero
+                  to_units:  !!str   # convert values of index to units of time
+                kind:        !!str   # optional kind of plot to produce, default is scatter
+                kwargs:      !!dict  # optional kwargs which are passed to the plotting method
+            methods:         !!dict  # optional kwargs with methods of matplotlib.axes.Axes
+                                     # and the value is a dict containing kwargs to be called 
+                                     # on the selected attribute. Also possible to call 
+                                     # method on subobject of the axes i.e. axes.xaxis.set_label_text
         save:                   
-          as:           !!str   # file name where the plot is saved
-          tight_layout: !!dict  # optional dictionary for figure.tight_layout
+          as:                !!str   # file name where the plot is saved
+          tight_layout:      !!dict  # optional dictionary for figure.tight_layout
 
 
 .. codeauthor:: Ueli Sauter
@@ -81,7 +84,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
 
     for spec in series:
         kind = spec.pop("kind", "scatter")
-        
+
         # data processing
         if (x := spec.pop("x", None)) is not None:
             x_data = table[x]
@@ -89,9 +92,23 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
             x_err = unp.std_devs(x_data)
             x_unit = table.attrs.get("units", {}).get(x, None)
         else:
-            x_values = table.index
+            i_pars = {"from_zero": None, "to_units": None}
+            i_pars.update(spec.pop("index", {}))
             x_err = None
             x_unit = None
+            x_values = table.index
+            if i_pars["from_zero"]:
+                x = "time"
+                x_values = x_values - x_values[0]
+                if "to_units" == "s" or max(x_values) < 120:
+                    x_unit = "s"
+                elif "to_units" == "min" or max(x_values) < 7200:
+                    x_unit = "min"
+                    x_values = x_values / 60.0
+                elif "to_units" == "h" or max(x_values) >= 7200:
+                    x_unit = "h"
+                    x_values = x_values / 3600.0
+
         x_label = f"{x} [{x_unit}]" if x_unit is not None else x
 
         ys: list[dict] = []
@@ -128,7 +145,8 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
                 ax.errorbar(x_values, y_values, xerr=x_err, yerr=y_err, **kwargs)
             else:
                 raise ValueError(f"This kind of plot is not supported: '{kind}'")
-        ax.set_xlabel(x_label)
+        if x_unit is not None:
+            ax.set_xlabel(x_label)
         ax.set_ylabel(y_label)
     ax.set(**ax_args)
 
@@ -167,8 +185,9 @@ def plot(
     if not save:
         fig.show()
         return
-    
+
     if save.get("tight_layout") is not None:
         fig.tight_layout(**save.pop("tight_layout"))
+    else:
+        fig.tight_layout()
     fig.savefig(fname=save.pop("as"), **save)
-    

@@ -4,8 +4,9 @@ import pandas as pd
 import numpy as np
 from uncertainties import unumpy as unp
 import uncertainties as uc
-
 import dgpost
+
+from .utils import compare_dfs, compare_images
 
 
 @pytest.mark.parametrize(
@@ -30,12 +31,12 @@ import dgpost
             "let_2.yaml",
             "df",
             "let_2.pkl",
-        ), 
+        ),
         (  # ts4 - load & double extract, same index
             "lee_1.yaml",
             "df",
             "lee_1.pkl",
-        ),  
+        ),
         (  # ts5 - load, extract, save in 4 formats
             "les_1.yaml",
             "table 1",
@@ -55,11 +56,6 @@ import dgpost
             "lee_2b.yaml",
             "df",
             "lee_2.pkl",
-        ),
-        (  # ts9 - load, extract and interpolate via temp
-            "letp_1.yaml",
-            "df",
-            "let_2.pkl",
         ),
     ],
 )
@@ -117,3 +113,30 @@ def test_save(inpath, outpaths, datadir):
     dgpost.run(inpath)
     for of in outpaths:
         assert os.path.exists(of) and os.path.isfile(of)
+
+
+@pytest.mark.parametrize(
+    "inpath, tname, outpath, outfig",
+    [
+        (  # ts0 - two figures, *-select, with legend
+            "letp_1.yaml",
+            "df",
+            "letp_1.pkl",
+            "letp_1.png",
+        ),
+        (  # ts0 - plot 1
+            "lp_1.yaml",
+            "df",
+            "ref.electrochemistry_fe.ts0.pkl",
+            "lp_1.png",
+        ),
+    ],
+)
+def test_run_with_plot(inpath, tname, outpath, outfig, datadir):
+    os.chdir(datadir)
+    print(datadir)
+    dg, tab = dgpost.run(inpath)
+    df = tab[tname]
+    ref = pd.read_pickle(outpath)
+    compare_dfs(df, ref)
+    compare_images("test.png", outfig)
