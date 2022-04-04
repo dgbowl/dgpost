@@ -33,6 +33,14 @@ dgpost.utils.parse module
    :undoc-members:
    :show-inheritance:
 
+dgpost.utils.plot module
+------------------------
+
+.. automodule:: dgpost.utils.plot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 dgpost.utils.save module
 ------------------------
 

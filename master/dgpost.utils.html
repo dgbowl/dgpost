@@ -265,6 +265,71 @@ the resulting specification dictionary.</p>
 </dd></dl>
 
 </section>
+<section id="module-dgpost.utils.plot">
+<span id="dgpost-utils-plot-module"></span><h2>dgpost.utils.plot module<a class="headerlink" href="#module-dgpost.utils.plot" title="Permalink to this headline"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">plot</span></code>: Plots columns of a DataFrame.</p>
+<p>The function <a class="reference internal" href="#dgpost.utils.plot.plot" title="dgpost.utils.plot.plot"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.utils.plot.plot()</span></code></a> processes the below specification
+in order to generate a plot:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">plot</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table</span><span class="p">:</span><span class="w">               </span><span class="kt">!!str</span><span class="w">   </span><span class="c1"># internal DataFrame name</span><span class="w"></span>
+<span class="w">    </span><span class="nt">style</span><span class="p">:</span><span class="w">               </span><span class="kt">!!dict</span><span class="w">  </span><span class="c1"># optional style dictionary for matplotlib.rcParams</span><span class="w"></span>
+<span class="w">    </span><span class="nt">nrows</span><span class="p">:</span><span class="w">               </span><span class="kt">!!int</span><span class="w">   </span><span class="c1"># optional number of rows of matplotlib.gridspec.GridSpec</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ncols</span><span class="p">:</span><span class="w">               </span><span class="kt">!!int</span><span class="w">   </span><span class="c1"># optional number of columns of matplotlib.gridspec.GridSpec</span><span class="w"></span>
+<span class="w">    </span><span class="nt">fig_args</span><span class="p">:</span><span class="w">            </span><span class="kt">!!dict</span><span class="w">  </span><span class="c1"># optional kwargs for the generated matplotlib.figure.Figure</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ax_args</span><span class="p">:</span><span class="w">                     </span><span class="c1"># sequence of arguments for the different axes</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cols</span><span class="p">:</span><span class="w">            </span><span class="kt">!!tuple</span><span class="w"> </span><span class="c1"># optional (int, int) specifying grid columns for axes</span><span class="w"></span>
+<span class="w">        </span><span class="nt">rows</span><span class="p">:</span><span class="w">            </span><span class="kt">!!tuple</span><span class="w"> </span><span class="c1"># optional (int, int) specifying grid rows for axes</span><span class="w"></span>
+<span class="w">        </span><span class="nt">series</span><span class="p">:</span><span class="w">                  </span><span class="c1"># sequence of different plot commands</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">y</span><span class="p">:</span><span class="w">           </span><span class="kt">!!str</span><span class="w">   </span><span class="c1"># column label for y data</span><span class="w"></span>
+<span class="w">            </span><span class="nt">x</span><span class="p">:</span><span class="w">           </span><span class="kt">!!str</span><span class="w">   </span><span class="c1"># optional column label for x data, or else index is used</span><span class="w"></span>
+<span class="w">            </span><span class="nt">index</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">from_zero</span><span class="p">:</span><span class="w"> </span><span class="kt">!!bool</span><span class="w">  </span><span class="c1"># align values of index to zero</span><span class="w"></span>
+<span class="w">              </span><span class="nt">to_units</span><span class="p">:</span><span class="w">  </span><span class="kt">!!str</span><span class="w">   </span><span class="c1"># convert values of index to units of time</span><span class="w"></span>
+<span class="w">            </span><span class="nt">kind</span><span class="p">:</span><span class="w">        </span><span class="kt">!!str</span><span class="w">   </span><span class="c1"># optional kind of plot to produce, default is scatter</span><span class="w"></span>
+<span class="w">            </span><span class="nt">kwargs</span><span class="p">:</span><span class="w">      </span><span class="kt">!!dict</span><span class="w">  </span><span class="c1"># optional kwargs which are passed to the plotting method</span><span class="w"></span>
+<span class="w">        </span><span class="nt">methods</span><span class="p">:</span><span class="w">         </span><span class="kt">!!dict</span><span class="w">  </span><span class="c1"># optional kwargs with methods of matplotlib.axes.Axes</span><span class="w"></span>
+<span class="w">                                 </span><span class="c1"># and the value is a dict containing kwargs to be called</span><span class="w"></span>
+<span class="w">                                 </span><span class="c1"># on the selected attribute. Also possible to call</span><span class="w"></span>
+<span class="w">                                 </span><span class="c1"># method on subobject of the axes i.e. axes.xaxis.set_label_text</span><span class="w"></span>
+<span class="w">    </span><span class="nt">save</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">as</span><span class="p">:</span><span class="w">                </span><span class="kt">!!str</span><span class="w">   </span><span class="c1"># file name where the plot is saved</span><span class="w"></span>
+<span class="w">      </span><span class="nt">tight_layout</span><span class="p">:</span><span class="w">      </span><span class="kt">!!dict</span><span class="w">  </span><span class="c1"># optional dictionary for figure.tight_layout</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.utils.plot.apply_plot_style">
+<span class="sig-prename descclassname"><span class="pre">dgpost.utils.plot.</span></span><span class="sig-name descname"><span class="pre">apply_plot_style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.plot.apply_plot_style" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the plot style with the given dictionary.
+For available kwargs see <code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.rcParams</span></code>.
+If style is None, applies/resets to the default matplotlib style.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>style</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – A dictionary object containing valid key/value pairs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.utils.plot.plot">
+<span class="sig-prename descclassname"><span class="pre">dgpost.utils.plot.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">grid_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.plot.plot" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.utils.plot.plt_axes">
+<span class="sig-prename descclassname"><span class="pre">dgpost.utils.plot.</span></span><span class="sig-name descname"><span class="pre">plt_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.plot.plt_axes" title="Permalink to this definition"></a></dt>
+<dd><p>Processes ax_args and plots the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code>) – axes to be plotted to</p></li>
+<li><p><strong>table</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – dataframe containing the data</p></li>
+<li><p><strong>ax_args</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – arguments for the axes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-dgpost.utils.save">
 <span id="dgpost-utils-save-module"></span><h2>dgpost.utils.save module<a class="headerlink" href="#module-dgpost.utils.save" title="Permalink to this headline"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">save</span></code>: Save DataFrame as file.</p>
