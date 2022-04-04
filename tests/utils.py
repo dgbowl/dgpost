@@ -5,6 +5,7 @@ import yadg.core
 import pandas as pd
 import numpy as np
 import uncertainties.unumpy as unp
+from PIL import Image, ImageChops
 
 
 def datagram_from_input(input, parser, datadir):
@@ -77,3 +78,28 @@ def compare_dfs(ref, df):
         for func in {unp.nominal_values, unp.std_devs}:
             np.testing.assert_allclose(func(ref[col]), func(df[col]))
     assert ref.attrs == df.attrs
+
+
+def compare_images(path_one, path_two):
+    """
+    Compares two images with pillow
+    see: https://stackoverflow.com/questions/35176639/compare-images-python-pil
+    """
+    img1 = Image.open(path_one)
+    img2 = Image.open(path_two)
+
+    equal_size = img1.height == img2.height and img1.width == img2.width
+    assert equal_size
+
+    if img1.mode == img2.mode == "RGBA":
+        img1_alphas = [pixel[3] for pixel in img1.getdata()]
+        img2_alphas = [pixel[3] for pixel in img2.getdata()]
+        equal_alphas = img1_alphas == img2_alphas
+    else:
+        equal_alphas = True
+    assert equal_alphas
+    difference = ImageChops.difference(img1.convert("RGB"), img2.convert("RGB"))
+    # difference.show()
+    equal_content = not difference.getbbox()
+
+    assert equal_content

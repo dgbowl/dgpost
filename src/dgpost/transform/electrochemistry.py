@@ -6,7 +6,7 @@ Module of transformations relevant to electrochemistry applications.
 import pint
 from yadg.dgutils import ureg
 import numpy as np
-from .helpers import columns_to_smiles, load_data, name_to_chem, electrons_from_smiles
+from .helpers import load_data, name_to_chem, electrons_from_smiles
 
 
 @load_data(

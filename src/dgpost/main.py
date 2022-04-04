@@ -7,7 +7,7 @@ import logging
 from importlib import metadata
 import pandas as pd
 
-from dgpost.utils import parse, load, extract, transform, save
+from dgpost.utils import parse, load, extract, transform, save, plot
 
 
 def run(path: str) -> tuple[dict, dict]:
@@ -36,7 +36,7 @@ def run(path: str) -> tuple[dict, dict]:
         else:
             tables[el["as"]] = load(el["path"], el["check"], el["type"])
 
-    e = spec.pop("extract")
+    e = spec.get("extract", [])
     for el in e:
         saveas = el.pop("into")
         if "from" in el and el["from"] is not None:
@@ -70,6 +70,11 @@ def run(path: str) -> tuple[dict, dict]:
     t = spec.get("transform", [])
     for el in t:
         transform(tables[el["table"]], el["with"], el["using"])
+
+    p = spec.get("plot", [])
+    for el in p:
+        table = tables[el.pop("table")]
+        plot(table, **el)
 
     s = spec.get("save", [])
     for el in s:
