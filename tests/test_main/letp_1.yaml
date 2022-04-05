@@ -1,3 +1,4 @@
+version: v1.0
 load:
   - as: dg
     path: normalized.dg.json
@@ -5,7 +6,7 @@ extract:
   - into: df
     from: dg
     at:
-      steps: b1, b2, b3
+      steps: ["b1", "b2", "b3"]
     columns:
       - key: derived->xout->*
         as: xout
@@ -33,15 +34,11 @@ plot:
     nrows: 2
     ncols: 1
     ax_args:
-      - rows: 
-          - 0
-          - 1
+      - rows: [0, 1]
         series:
           - y: Sp_C->*
         legend: True
-      - rows: 
-          - 1 
-          - 2
+      - rows: [1, 2]
         series:
           - y: xout->*
             kind: line

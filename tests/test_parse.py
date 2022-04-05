@@ -18,7 +18,7 @@ import dgpost.utils
                         "check": True,
                         "type": "datagram",
                     }
-                ]
+                ],
             },
         ),
         (  # ts1 - load, multiple items, explicit check
@@ -38,7 +38,7 @@ import dgpost.utils
                         "check": False,
                         "type": "datagram",
                     },
-                ]
+                ],
             },
         ),
         (  # ts2 - load, single item, unix path, different order
@@ -52,7 +52,7 @@ import dgpost.utils
                         "check": True,
                         "type": "datagram",
                     },
-                ]
+                ],
             },
         ),
         (  # ts3 - extract, 2 direct elements
@@ -69,7 +69,7 @@ import dgpost.utils
                             {"key": "derived->T", "as": "derT"},
                         ],
                     },
-                ]
+                ],
             },
         ),
         (  # ts4 - extract, 1 constant element, value as str
@@ -83,7 +83,7 @@ import dgpost.utils
                         "at": {"indices": [1, 2, 3]},
                         "constants": [{"value": 5.0, "as": "mass"}],
                     },
-                ]
+                ],
             },
         ),
         (  # ts5 - extract, 1 interpolated element
@@ -102,7 +102,7 @@ import dgpost.utils
                             }
                         ],
                     },
-                ]
+                ],
             },
         ),
         (  # ts6 - transform, multiple using, False as string
@@ -118,7 +118,7 @@ import dgpost.utils
                             {"feedstock": "C3H8", "element": "C"},
                         ],
                     },
-                ]
+                ],
             },
         ),
     ],

@@ -4,9 +4,7 @@
 import os
 import yaml
 import json
-from dgbowl_schemas.dgpost_recipe import recipe_parser 
-
-    
+from dgbowl_schemas.dgpost_recipe import recipe_parser
 
 
 def parse(fn: str) -> dict:
@@ -26,6 +24,5 @@ def parse(fn: str) -> dict:
             indict = yaml.safe_load(infile)
         elif fn.endswith("json"):
             indict = json.load(infile)
-    ret = recipe_parser(indict)    
+    ret = recipe_parser(indict)
     return ret
-

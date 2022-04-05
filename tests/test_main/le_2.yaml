@@ -1,3 +1,4 @@
+version: v1.0
 load:
   - as: sparse
     path: sparse.dg.json
@@ -16,7 +17,7 @@ extract:
   - into: table 2
     from: norm
     at:
-      steps: b1, b2, b3
+      steps: ["b1", "b2", "b3"]
   - into: table 2
     from: norm
     at:
