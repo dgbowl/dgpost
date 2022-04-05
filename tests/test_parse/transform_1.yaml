@@ -1,3 +1,4 @@
+version: v1.0
 transform:
   - table: t1
     with: catalysis.conversion

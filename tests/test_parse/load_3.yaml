@@ -1,3 +1,4 @@
+version: v1.0
 load:
   - path: /home/test/normalized.dg.json
     as: normalized

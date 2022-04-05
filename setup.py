@@ -39,6 +39,7 @@ setuptools.setup(
         "chemicals>=1.0.0",
         "rdkit-pypi>=2021",
         "yadg>=4.1.0rc1",
+        "dgbowl-schemas>=102",
         "matplotlib>=3.5.0",
     ],
     extras_require={

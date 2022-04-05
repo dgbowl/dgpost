@@ -1,3 +1,4 @@
+version: v1.0
 extract:
   - into: table 1
     from: sparse

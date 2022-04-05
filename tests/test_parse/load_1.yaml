@@ -1,3 +1,4 @@
+version: v1.0
 load:
   - as: sparse
     path: C:\Users\krpe\postprocess\tests\common\sparse.dg.json
