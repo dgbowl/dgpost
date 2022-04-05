@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import uncertainties.unumpy as unp
 from PIL import Image, ImageChops
+from typing import Sequence
 
 
 def datagram_from_input(input, parser, datadir):
@@ -73,10 +74,11 @@ def compare_result_dicts(result, reference, atol=1e-6):
 def compare_dfs(ref, df):
     pd.testing.assert_index_equal(ref.columns, df.columns, check_order=False)
     for col in ref.columns:
-        if np.array_equal(ref[col].array, df[col].array):
-            continue
-        for func in {unp.nominal_values, unp.std_devs}:
-            np.testing.assert_allclose(func(ref[col]), func(df[col]))
+        r = ref[col].array
+        t = df[col].array
+        for ri, ti in zip(r, t):
+            for func in {unp.nominal_values, unp.std_devs}:
+                np.testing.assert_allclose(func(ri), func(ti))
     assert ref.attrs == df.attrs
 
 

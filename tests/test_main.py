@@ -134,7 +134,6 @@ def test_save(inpath, outpaths, datadir):
 )
 def test_run_with_plot(inpath, tname, outpath, outfig, datadir):
     os.chdir(datadir)
-    print(datadir)
     dg, tab = dgpost.run(inpath)
     df = tab[tname]
     ref = pd.read_pickle(outpath)

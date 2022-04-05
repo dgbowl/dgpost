@@ -165,7 +165,7 @@ def _get_ts(obj: Union[dict, pd.DataFrame], at: Union[dict, None]) -> np.ndarray
 
 
 def _get_constant(spec, ts):
-    nts = ts.size
+    nts = len(ts)
     colvals = []
     colnames = []
     colunits = []
@@ -308,8 +308,8 @@ def extract(
     else:
         raise RuntimeError("Cannot deduce timestamps.")
 
-    if "constant" in spec.keys():
-        cns, cvs, cus = _get_constant(spec.pop("constant"), ts)
+    if "constants" in spec.keys():
+        cns, cvs, cus = _get_constant(spec.pop("constants"), ts)
     elif interpolate and "columns" in spec:
         cns, cvs, cus = _get_interp(spec.pop("columns"), obj, spec.pop("at", None), ts)
     elif "columns" in spec:

@@ -1,0 +1,34 @@
+version: v1.0
+load:
+  - as: df
+    path: data.pkl
+    type: table
+transform:
+  - table: df
+    with: rates.flow_to_molar
+    using:
+      - flow: fout
+        x: xout
+        Tref: Tref
+        output: nout
+  - table: df
+    with: electrochemistry.nernst
+    using:
+      - Ewe: Ewe
+        Eref: Eref
+        R: R
+        I: I
+        pH: pH
+        T: T
+  - table: df
+    with: electrochemistry.fe
+    using:
+      - rate: nout
+        I: I
+        charges:
+          C: 4
+          H: 1
+          O: -2
+save:
+  - table: df
+    as: transform.pkl

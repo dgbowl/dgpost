@@ -1,0 +1,27 @@
+version: v1.0
+load:
+  - as: dg
+    path: 2022_02_22.dg.json
+    type: datagram
+    check: False
+extract:
+  - into: peis
+    from: dg
+    at:
+      step: "PEIS"
+    columns:
+      - key: raw->traces->PEIS->freq
+        as: freq
+      - key: raw->traces->PEIS->Re(Z)
+        as: real
+      - key: raw->traces->PEIS->-Im(Z)
+        as: imag
+transform:
+  - table: peis
+    with: impedance.lowest_real_impedance
+    using:
+      - real: real
+        imag: imag
+save:
+  - table: peis
+    as: peis.pkl
