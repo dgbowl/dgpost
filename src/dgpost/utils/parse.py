@@ -1,11 +1,9 @@
 """
 `parse`: YAML processing schema and loader/parser function.
 """
-#import strictyaml as sy
 import os
 import yaml
 import json
-#from .schema import schema
 from dgbowl_schemas.dgpost_recipe import recipe_parser 
 
     

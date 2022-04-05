@@ -35,7 +35,6 @@ setuptools.setup(
         "pandas",
         "openpyxl",
         "pint>=0.18",
-        "strictyaml",
         "chemicals>=1.0.0",
         "rdkit-pypi>=2021",
         "yadg>=4.1.0rc1",
