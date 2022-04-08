@@ -79,7 +79,7 @@ def compare_dfs(ref, df):
         for ri, ti in zip(r, t):
             for func in {unp.nominal_values, unp.std_devs}:
                 np.testing.assert_allclose(func(ri), func(ti))
-    
+
     if "units" in ref.attrs or "units" in df.attrs:
         assert ref.attrs.get("units") == df.attrs.get("units")
     if "meta" in ref.attrs or "meta" in df.attrs:

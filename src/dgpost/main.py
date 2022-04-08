@@ -10,6 +10,7 @@ import copy
 
 from dgpost.utils import parse, load, extract, transform, save, plot
 
+
 def run(path: str) -> tuple[dict, dict]:
     """
     Main API execution function.
@@ -29,8 +30,8 @@ def run(path: str) -> tuple[dict, dict]:
 
     meta = {
         "provenance": f"dgpost-{metadata.version('dgpost')}",
-        "recipe": copy.deepcopy(spec)
-    } 
+        "recipe": copy.deepcopy(spec),
+    }
 
     datagrams = {}
     tables = {}

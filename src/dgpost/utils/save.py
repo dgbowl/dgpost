@@ -31,11 +31,11 @@ logger = logging.getLogger(__name__)
 
 
 def save(
-    table: pd.DataFrame, 
-    path: str, 
-    type: str = None, 
+    table: pd.DataFrame,
+    path: str,
+    type: str = None,
     sigma: bool = True,
-    meta: dict = None
+    meta: dict = None,
 ) -> None:
     """"""
     if os.path.isdir(os.path.dirname(path)):

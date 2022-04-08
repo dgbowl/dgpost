@@ -10,8 +10,8 @@ from .utils import compare_dfs, compare_images
     "inpath, reflist",
     [
         (  # ts0 - load 1 dg, extract 2 keys directly
-            "ts0", 
-            ["peis.pkl", "data.pkl", "transform.pkl", "plot.png"],  
+            "ts0",
+            ["peis.pkl", "data.pkl", "transform.pkl", "plot.png"],
         ),
     ],
 )
@@ -28,4 +28,3 @@ def test_realworld(inpath, reflist, datadir):
             compare_dfs(ref, df)
         elif reffn.endswith("png"):
             compare_images(f"ref.{reffn}", reffn)
-

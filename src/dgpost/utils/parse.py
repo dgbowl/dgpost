@@ -17,7 +17,7 @@ def parse(fn: str) -> dict[str, Any]:
     """
     Input file parsing function.
 
-    Supports loading ``yaml`` and ``json`` files using the `recipe`-parsing 
+    Supports loading ``yaml`` and ``json`` files using the `recipe`-parsing
     function and schema provided in the :mod:`dgbowl_schemas.dgpost_recipe`
     module.
 
@@ -25,7 +25,7 @@ def parse(fn: str) -> dict[str, Any]:
     ----------
     fn
         Path to the filename to be parsed
-    
+
     Returns
     -------
     ret: dict[str, Any]
