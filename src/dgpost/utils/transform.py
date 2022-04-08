@@ -1,7 +1,9 @@
 """
 ``transform``: Reproducible transformations made simple.
 --------------------------------------------------------
-
+.. codeauthor:: 
+    Peter Kraus
+    
 The function :func:`dgpost.utils.transform.transform` processes the below specification
 in order to do data transformation on an extracted (or supplied) :class:`pd.DataFrame`.
 
@@ -15,8 +17,6 @@ in order to do data transformation on an extracted (or supplied) :class:`pd.Data
     values will be coerced to appropriate types using the transform function
     decorator: :func:`dgpost.transform.helpers.load_data`.
 
-.. codeauthor:: 
-    Peter Kraus
 """
 import pandas as pd
 import importlib

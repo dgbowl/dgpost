@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v2
         with:
           python-version: '3.9'
@@ -21,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v2
         with:
           python-version: '3.9'
@@ -28,7 +32,9 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-master
-      - run: pip install --pre --find-links=. dgpost[testing]
+      #- run: pip install --pre --find-links=. dgpost[testing]
+      #  shell: bash
+      - run: pip install -e .[testing]
         shell: bash
       - uses: ./.github/workflows/test-job
   pages:
@@ -36,6 +42,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v2
         with:
           python-version: '3.9'
@@ -43,7 +51,9 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-master
-      - run: pip install --pre --find-links=. dgpost[docs]
+      #- run: pip install --pre --find-links=. dgpost[docs]
+      #  shell: bash
+      - run: pip install -e .[docs]
         shell: bash
       - uses: ./.github/workflows/docs-job
       - uses: actions/upload-artifact@v2

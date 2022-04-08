@@ -1,6 +1,9 @@
 """
 ``save``: Save a table into a file.
 -----------------------------------
+.. codeauthor:: 
+    Ueli Sauter, 
+    Peter Kraus
 
 The function :func:`dgpost.utils.save.save` processes the below specification
 in order to save the given DataFrame:
@@ -8,9 +11,6 @@ in order to save the given DataFrame:
 .. _dgpost.recipe save:
 .. autopydantic_model:: dgbowl_schemas.dgpost_recipe.save.Save
 
-.. codeauthor:: 
-    Ueli Sauter,
-    Peter Kraus
 """
 import json
 import logging

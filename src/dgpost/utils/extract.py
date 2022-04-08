@@ -1,6 +1,8 @@
 """
 ``extract``: Data extraction and interpolation routine.
 -------------------------------------------------------
+.. codeauthor::
+    Peter Kraus
 
 The function :func:`dgpost.utils.extract.extract` processes the below specification
 in order to extract the required data from the supplied datagram.
@@ -60,10 +62,7 @@ in the first section are entered directly, after renaming the column names.
 The data pulled out of the datagram in the second step using the prescription in ``at``
 are interpolated onto the index of the existing :class:`pd.DataFrame`.
 
-.. codeauthor::
-    Peter Kraus
 """
-
 import numpy as np
 import pandas as pd
 import uncertainties as uc

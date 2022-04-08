@@ -9,6 +9,9 @@ automatic datapoint interpolation using unix timestamps, a library of transforma
 functions which contains implementations of common calculations in chemistry, catalysis,
 electrochemistry, etc., and functions to save and plot the calculated data.
 
+dgpost relies on the `recipe` schema, defined in the :mod:`dgbowl_schemas.dgpost_recipe`
+module of that package. 
+
 In addition to the above, dgpost is fully unit- and uncertainty-aware, using the 
 `pint <https://pint.readthedocs.io/en/stable/>`_ and 
 `uncertainties <https://pythonhosted.org/uncertainties/>`_ packages.
