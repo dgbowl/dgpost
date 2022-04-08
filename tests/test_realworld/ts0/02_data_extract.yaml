@@ -1,0 +1,54 @@
+version: v1.0
+load:
+  - as: dg
+    path: 2022_02_22.dg.json
+    type: datagram
+    check: False
+  - as: peis
+    path: peis.pkl
+    type: table
+extract:
+  - into: df
+    from: dg
+    at:
+      step: "GC"
+    columns:
+      - key: raw->concentration->*
+        as: xout
+  - into: df
+    from: dg
+    at:
+      step: "CP"
+    columns:
+      - key: raw->I
+        as: I
+      - key: raw-><Ewe>
+        as: Ewe
+  - into: df
+    from: dg
+    at:
+      step: "outlet"
+    columns:
+      - key: raw->DryCal
+        as: fout
+  - into: df
+    from: peis
+    columns:
+      - key: min Re(Z)
+        as: R
+  - into: df
+    constants:
+      - value: 8.5
+        as: pH
+      - value: 0
+        units: degC
+        as: Tref
+      - value: 20
+        units: degC
+        as: T
+      - value: 0.197
+        units: V
+        as: Eref
+save:
+  - table: df
+    as: data.pkl

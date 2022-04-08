@@ -1,8 +1,9 @@
+version: v1.0
 extract:
   - into: table 2
     from: norm
     at:
-      indices: 1, 2, 3
-    constant:
+      indices: [1, 2, 3]
+    constants:
       - value: 5.0
         as: mass

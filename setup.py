@@ -1,7 +1,8 @@
 import setuptools
+import versioneer
 
-with open("VERSION", "r") as infile:
-    version = infile.read().strip()
+version = versioneer.get_version()
+cmdclass = versioneer.get_cmdclass()
 
 with open("README.md", "r", encoding="utf-8") as infile:
     readme = infile.read()
@@ -11,6 +12,7 @@ packagedir = "src"
 setuptools.setup(
     name="dgpost",
     version=version,
+    cmdclass=cmdclass,
     author="Peter Kraus",
     author_email="peter@tondon.de",
     description="datagram postprocessing tools",
@@ -35,10 +37,10 @@ setuptools.setup(
         "pandas",
         "openpyxl",
         "pint>=0.18",
-        "strictyaml",
         "chemicals>=1.0.0",
         "rdkit-pypi>=2021",
         "yadg>=4.1.0rc1",
+        "dgbowl-schemas>=102",
         "matplotlib>=3.5.0",
     ],
     extras_require={
@@ -49,7 +51,8 @@ setuptools.setup(
         "docs": [
             "sphinx",
             "sphinx-rtd-theme",
-            "sphinx-autodoc-typehints"
+            "sphinx-autodoc-typehints",
+            "autodoc-pydantic"
         ]
     },
     entry_points={"console_scripts": ["dgpost=dgpost:run_with_arguments"]},

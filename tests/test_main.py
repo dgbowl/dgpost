@@ -63,13 +63,8 @@ def test_run(inpath, tname, outpath, datadir):
     os.chdir(datadir)
     dg, tab = dgpost.run(inpath)
     df = tab[tname]
-    print(df.columns)
     ref = pd.read_pickle(outpath)
-    print(ref.columns)
-    for col in df.columns:
-        assert np.allclose(unp.nominal_values(ref[col]), unp.nominal_values(df[col]))
-        assert np.allclose(unp.std_devs(ref[col]), unp.std_devs(df[col]))
-    assert ref.attrs == df.attrs
+    compare_dfs(ref, df)
 
 
 @pytest.mark.parametrize(
@@ -134,7 +129,6 @@ def test_save(inpath, outpaths, datadir):
 )
 def test_run_with_plot(inpath, tname, outpath, outfig, datadir):
     os.chdir(datadir)
-    print(datadir)
     dg, tab = dgpost.run(inpath)
     df = tab[tname]
     ref = pd.read_pickle(outpath)

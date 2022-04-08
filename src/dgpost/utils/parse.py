@@ -1,43 +1,45 @@
 """
-`parse`: YAML processing schema and loader/parser function.
+``parse``: YAML and JSON input handler
+--------------------------------------
+
+.. codeauthor:: 
+    Peter Kraus
+    
 """
-import strictyaml as sy
 import os
-from .schema import schema
+import yaml
+import json
+from typing import Any
+from dgbowl_schemas.dgpost_recipe import recipe_parser
 
 
-def parse_yaml(fn: str) -> dict:
+def parse(fn: str) -> dict[str, Any]:
     """
-    Loads the yaml file in ``fn``, parses it according to the schema, and returns
-    the resulting specification dictionary.
+    Input file parsing function.
+
+    Supports loading ``yaml`` and ``json`` files using the `recipe`-parsing
+    function and schema provided in the :mod:`dgbowl_schemas.dgpost_recipe`
+    module.
 
     Parameters
     ----------
     fn
-        Path to the yaml file to load.
+        Path to the filename to be parsed
 
     Returns
     -------
-    dict
-        The parsed job specification as a dictionary.
-
-    """
-    with open(fn, "r") as infile:
-        yaml = infile.read()
-
-    return sy.load(yaml, schema).data
-
-
-def parse(fn: str) -> dict:
-    """
-    Input file parsing function.
-
-    Currently, only yaml files are supported, hence this function is a wrapper around
-    :func:`parse_yaml`.
+    ret: dict[str, Any]
+        A dictionary representing the recipe.
 
     """
     assert os.path.exists(fn) and os.path.isfile(fn), (
-        f"parse: provided file namen '{fn}' does not exist " f"or is not a valid file"
+        f"provided file name '{fn}' does not exist " f"or is not a valid file"
     )
 
-    return parse_yaml(fn)
+    with open(fn, "r") as infile:
+        if fn.endswith("yml") or fn.endswith("yaml"):
+            indict = yaml.safe_load(infile)
+        elif fn.endswith("json"):
+            indict = json.load(infile)
+    ret = recipe_parser(indict)
+    return ret

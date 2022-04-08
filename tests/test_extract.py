@@ -97,7 +97,7 @@ def test_valid_datagram(datadir):
             "normalized.dg.json",
             {
                 "at": {"indices": [1, 2, 3]},
-                "constant": [
+                "constants": [
                     {"as": "mass", "value": 6.35, "units": "kg"},
                     {"as": "element", "value": 12},
                     {"as": "volume", "value": "5.546(0)", "units": "l"},
@@ -178,7 +178,7 @@ def test_extract_single(inpath, spec, outpath, datadir):
             [
                 {
                     "at": {"timestamps": [1575360000.0 + i * 200.0 for i in range(10)]},
-                    "constant": [{"as": "volume", "value": "5.546(0)", "units": "l"}],
+                    "constants": [{"as": "volume", "value": "5.546(0)", "units": "l"}],
                 },
                 {
                     "at": {"step": "a"},

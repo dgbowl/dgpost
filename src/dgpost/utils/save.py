@@ -1,18 +1,23 @@
 """
-``save``: Save DataFrame as file.
+``save``: Save a table into a file.
+-----------------------------------
+.. codeauthor:: 
+    Ueli Sauter, 
+    Peter Kraus
 
 The function :func:`dgpost.utils.save.save` processes the below specification
 in order to save the given DataFrame:
 
-.. code-block:: yaml
+.. _dgpost.recipe save:
+.. autopydantic_model:: dgbowl_schemas.dgpost_recipe.save.Save
 
-  save:
-  - table: !!str      # table name from extract
-    as:    !!str      # path of the new file
-    type:  !!str      # optional file type - pkl, xlsx, csv, with the default
-    being a pandas pickle.
+.. note::
 
-.. code-author: Ulrich Sauter <ulrich.sauter@empa.ch>
+    Metadata, including the `recipe` used to create the saved file, as well as 
+    provenance information about the version of dgpost used to process the 
+    `recipe` are saved into the ``df.attrs["meta"]`` entry and therefore only
+    available in ``pkl`` or ``json`` exports.
+
 """
 import json
 import logging
@@ -25,10 +30,14 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def save(table: pd.DataFrame, path: str, type: str = None, sigma: bool = True) -> None:
-    """
-    DataFrame saving function
-    """
+def save(
+    table: pd.DataFrame,
+    path: str,
+    type: str = None,
+    sigma: bool = True,
+    meta: dict = None,
+) -> None:
+    """"""
     if os.path.isdir(os.path.dirname(path)):
         logger.warning(f"save: Provided 'path' '{path}' does not exist.")
 
@@ -47,9 +56,11 @@ def save(table: pd.DataFrame, path: str, type: str = None, sigma: bool = True) -
     # pkl and json store the whole dataframe
 
     if type == "pkl":
+        table.attrs["meta"] = meta
         table.to_pickle(path)
         return None
     elif type == "json":
+        table.attrs["meta"] = meta
         json_file = {
             "table": table.to_dict(),
             "attrs": table.attrs,

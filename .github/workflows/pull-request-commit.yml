@@ -12,6 +12,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.pyver }}
@@ -30,6 +32,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.pyver }}
@@ -37,7 +41,9 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-${{ matrix.os }}-${{ matrix.pyver }}
-      - run: pip install --pre --find-links=. dgpost[testing]
+      #- run: pip install --pre --find-links=. dgpost[testing]
+      #  shell: bash
+      - run: pip install -e .[testing]
         shell: bash
       - uses: ./.github/workflows/test-job
   pages:
@@ -49,6 +55,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.pyver }}
@@ -56,7 +64,9 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-${{ matrix.os }}-${{ matrix.pyver }}
-      - run: pip install --pre --find-links=. dgpost[docs]
+      #- run: pip install --pre --find-links=. dgpost[docs]
+      #  shell: bash
+      - run: pip install -e .[docs]
         shell: bash
       - uses: ./.github/workflows/docs-job
       - uses: actions/upload-artifact@v2

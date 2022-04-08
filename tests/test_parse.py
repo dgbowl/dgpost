@@ -10,6 +10,7 @@ import dgpost.utils
         (  # ts0 - load, single item, windows path, default check == True
             "load_1.yaml",
             {
+                "version": "v1.0",
                 "load": [
                     {
                         "as": "sparse",
@@ -17,12 +18,13 @@ import dgpost.utils
                         "check": True,
                         "type": "datagram",
                     }
-                ]
+                ],
             },
         ),
         (  # ts1 - load, multiple items, explicit check
             "load_2.yaml",
             {
+                "version": "v1.0",
                 "load": [
                     {
                         "as": "sparse",
@@ -36,12 +38,13 @@ import dgpost.utils
                         "check": False,
                         "type": "datagram",
                     },
-                ]
+                ],
             },
         ),
         (  # ts2 - load, single item, unix path, different order
             "load_3.yaml",
             {
+                "version": "v1.0",
                 "load": [
                     {
                         "as": "normalized",
@@ -49,41 +52,44 @@ import dgpost.utils
                         "check": True,
                         "type": "datagram",
                     },
-                ]
+                ],
             },
         ),
         (  # ts3 - extract, 2 direct elements
             "extract_1.yaml",
             {
+                "version": "v1.0",
                 "extract": [
                     {
                         "into": "table 1",
                         "from": "sparse",
-                        "at": {"step": "a"},
+                        "at": {"steps": ["a"]},
                         "columns": [
                             {"key": "raw->T_f", "as": "rawT"},
                             {"key": "derived->T", "as": "derT"},
                         ],
                     },
-                ]
+                ],
             },
         ),
         (  # ts4 - extract, 1 constant element, value as str
             "extract_2.yaml",
             {
+                "version": "v1.0",
                 "extract": [
                     {
                         "into": "table 2",
                         "from": "norm",
                         "at": {"indices": [1, 2, 3]},
-                        "constant": [{"value": "5.0", "as": "mass"}],
+                        "constants": [{"value": 5.0, "as": "mass"}],
                     },
-                ]
+                ],
             },
         ),
         (  # ts5 - extract, 1 interpolated element
             "extract_3.yaml",
             {
+                "version": "v1.0",
                 "extract": [
                     {
                         "into": "table 2",
@@ -96,22 +102,23 @@ import dgpost.utils
                             }
                         ],
                     },
-                ]
+                ],
             },
         ),
         (  # ts6 - transform, multiple using, False as string
             "transform_1.yaml",
             {
+                "version": "v1.0",
                 "transform": [
                     {
                         "table": "t1",
                         "with": "catalysis.conversion",
                         "using": [
-                            {"feedstock": "propane", "product": "False"},
+                            {"feedstock": "propane", "product": False},
                             {"feedstock": "C3H8", "element": "C"},
                         ],
                     },
-                ]
+                ],
             },
         ),
     ],

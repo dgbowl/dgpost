@@ -1,3 +1,4 @@
+version: v1.0
 load:
   - as: dg
     path: normalized.dg.json
@@ -5,7 +6,7 @@ extract:
   - into: df
     from: dg
     at:
-      steps: b1, b2, b3
+      steps: ["b1", "b2", "b3"]
     columns:
       - key: derived->xout->*
         as: xout

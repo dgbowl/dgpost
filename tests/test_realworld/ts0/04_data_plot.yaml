@@ -1,0 +1,83 @@
+version: v1.0
+load:
+  - as: df
+    path: transform.pkl
+    type: table
+plot:
+  - table: df
+    style:
+      font.family: sans-serif
+      font.size: 12
+      legend.fontsize: 10
+      axes.linewidth: 1.1
+      axes.labelpad: 4.0
+      axes.xmargin: 0.1
+      axes.ymargin: 0.1
+      figure.subplot.hspace: 0
+      figure.subplot.left: 0.11
+      figure.subplot.right: 0.946
+      figure.subplot.bottom: 0.156
+      figure.subplot.top: 0.965
+      xtick.major.size: 4.0
+      xtick.minor.size: 2.5
+      xtick.major.width: 1.1
+      xtick.minor.width: 1.1
+      xtick.major.pad: 5
+      xtick.minor.visible: True
+      xtick.direction: "in"
+      xtick.top: True
+      ytick.major.size: 4.0
+      ytick.minor.size: 2.5
+      ytick.major.width: 1.1
+      ytick.minor.width: 1.1
+      ytick.major.pad: 5
+      ytick.minor.visible: True
+      ytick.direction: "in"
+      ytick.right: True
+      lines.markersize: 5
+      lines.markeredgewidth: 0.8
+    nrows: 4
+    ncols: 1
+    fig_args:
+      figsize: [6, 6]
+    ax_args:
+      - rows: [0, 1]
+        series:
+          - y: Eapp
+            kind: errorbar
+            ls: "-"
+            marker: "."
+        ylabel: "$E_{app}$ [V]"
+        xlim: [0, 60]
+        ylim: [-4, -3]
+        methods:
+          tick_params:
+            labeltop: True
+            labelbottom: False
+        xlabel: ""
+      - rows: [1, 3]
+        series:
+          - y: fe->H2
+          - y: fe->C2H4
+          - y: fe->CO
+          - y: fe->CH4
+        ylabel: $\eta_F$
+        legend: True
+        xlim: [0, 60]
+        ylim: [0, 0.5]
+        xtitle: null
+        methods:
+          tick_params:
+            labeltop: False
+            labelbottom: False
+        xlabel: ""
+      - rows: [3, 4]
+        series:
+          - y: fout
+            color: k
+            kind: line
+            marker: "|"
+        xlim: [0, 60]
+        ylim: [20, 25]
+    save:
+      as: "plot.png"

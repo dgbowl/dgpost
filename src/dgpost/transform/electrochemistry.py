@@ -99,7 +99,7 @@ def nernst(
     if R is not None and I is not None:
         E += R * I
     if (pH is not None) or (n is not None and Q is not None):
-        EN = ureg("molar_gas_constant") * T / ureg("faraday_constant")
+        EN = ureg("molar_gas_constant") * T.to("K") / ureg("faraday_constant")
         if pH is not None:
             EN = pH * EN * np.log(10)
         else:

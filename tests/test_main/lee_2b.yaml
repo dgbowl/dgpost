@@ -1,3 +1,4 @@
+version: v1.0
 load:
   - as: norm
     path: normalized.dg.json
@@ -16,7 +17,7 @@ extract:
   - into: temp
     from: sparse
     at:
-      steps: b1, b2, b3
+      indices: [1, 2, 3]
     columns:
       - key: derived->xout->*
         as: xout

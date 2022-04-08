@@ -19,4 +19,5 @@ def datadir(tmpdir, request):
     common_dir = os.path.join(base_dir, "common")
     if os.path.isdir(common_dir):
         distutils.dir_util.copy_tree(common_dir, str(tmpdir))
+    print(f"{tmpdir=}")
     return tmpdir
