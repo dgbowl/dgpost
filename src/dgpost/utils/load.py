@@ -1,7 +1,10 @@
 """
 ``load``: Datagram and table loading routine
 --------------------------------------------
-
+.. codeauthor:: 
+    Ueli Sauter, 
+    Peter Kraus
+    
 The function :func:`dgpost.utils.load.load` processes the below specification
 in order to load the datagram json file:
 
@@ -13,9 +16,6 @@ in order to load the datagram json file:
     The key ``as`` is not processed by :func:`load`, it should be used by its caller 
     to store the returned `datagram` or :class:`pd.DataFrame` into the correct variable.
 
-.. codeauthor:: 
-    Ueli Sauter, 
-    Peter Kraus
 """
 import os
 import json

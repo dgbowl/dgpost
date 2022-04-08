@@ -6,9 +6,9 @@ import argparse
 import logging
 from importlib import metadata
 import pandas as pd
+import copy
 
 from dgpost.utils import parse, load, extract, transform, save, plot
-
 
 def run(path: str) -> tuple[dict, dict]:
     """
@@ -26,6 +26,11 @@ def run(path: str) -> tuple[dict, dict]:
 
     """
     spec = parse(path)
+
+    meta = {
+        "provenance": f"dgpost-{metadata.version('dgpost')}",
+        "recipe": copy.deepcopy(spec)
+    } 
 
     datagrams = {}
     tables = {}
@@ -78,7 +83,7 @@ def run(path: str) -> tuple[dict, dict]:
 
     s = spec.get("save", [])
     for el in s:
-        save(tables[el["table"]], el["as"], el.get("type"), el.get("sigma", True))
+        save(tables[el["table"]], el["as"], el.get("type"), el.get("sigma", True), meta)
     return datagrams, tables
 
 
