@@ -37,9 +37,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-${{ matrix.os }}-${{ matrix.pyver }}
-      - run: mv *.whl dgpost-artifact.whl
-        shell: bash
-      - run: pip install dgpost-artifact.whl[testing]
+      - run: pip install --pre --find-links=. dgpost[testing]
         shell: bash
       - uses: ./.github/workflows/test-job
   pages:
