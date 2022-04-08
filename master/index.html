@@ -7,6 +7,7 @@
   <title>dgpost: Datagram postprocessing tools &mdash; dgpost  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/autodoc_pydantic.css" type="text/css" />
     <link rel="shortcut icon" href="_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -76,13 +77,14 @@
              
   <section id="dgpost-datagram-postprocessing-tools">
 <h1><strong>dgpost</strong>: Datagram postprocessing tools<a class="headerlink" href="#dgpost-datagram-postprocessing-tools" title="Permalink to this headline"></a></h1>
-<p>A set of datagram postprocessing tools, functions, visualisations and export
-scripts.</p>
+<p>A set of datagram postprocessing tools, functions, visualisations and export scripts.</p>
 <p>dgpost is a Python library aimed at reproducible postprocessing of time-resolved
 data. It provides functions to load data from <cite>datagrams</cite> and <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code>,
 automatic datapoint interpolation using unix timestamps, a library of transformation
 functions which contains implementations of common calculations in chemistry, catalysis,
 electrochemistry, etc., and functions to save and plot the calculated data.</p>
+<p>dgpost relies on the <cite>recipe</cite> schema, defined in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">dgbowl_schemas.dgpost_recipe</span></code>
+module of that package.</p>
 <p>In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
 <a class="reference external" href="https://pint.readthedocs.io/en/stable/">pint</a> and
 <a class="reference external" href="https://pythonhosted.org/uncertainties/">uncertainties</a> packages.</p>
@@ -102,7 +104,7 @@ electrochemistry, etc., and functions to save and plot the calculated data.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Peter Kraus.</p>
+    <p>&#169; Copyright 2021-2022, dgbowl contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

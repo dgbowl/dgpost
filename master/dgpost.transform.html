@@ -7,6 +7,7 @@
   <title>dgpost.transform package &mdash; dgpost  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/autodoc_pydantic.css" type="text/css" />
     <link rel="shortcut icon" href="_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -125,6 +126,7 @@ experiment, they need to be appropriately combined into a single namespace, e.g.
 using functions in the <a class="reference internal" href="#module-dgpost.transform.rates" title="dgpost.transform.rates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform.rates</span></code></a> before using the functions
 in this module.</p>
 </div>
+<p><em>Code author: Peter Kraus &lt;<a class="reference external" href="mailto:peter&#46;kraus&#37;&#52;&#48;empa&#46;ch">peter<span>&#46;</span>kraus<span>&#64;</span>empa<span>&#46;</span>ch</a>&gt;</em></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.catalysis.atom_balance">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">atom_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.atom_balance" title="Permalink to this definition"></a></dt>
@@ -245,6 +247,7 @@ the prefix for each key.</p>
 <section id="module-dgpost.transform.electrochemistry">
 <span id="dgpost-transform-electrochemistry-module"></span><h2>dgpost.transform.electrochemistry module<a class="headerlink" href="#module-dgpost.transform.electrochemistry" title="Permalink to this headline"></a></h2>
 <p>Module of transformations relevant to electrochemistry applications.</p>
+<p><em>Code author: Peter Kraus &lt;<a class="reference external" href="mailto:peter&#46;kraus&#37;&#52;&#48;empa&#46;ch">peter<span>&#46;</span>kraus<span>&#64;</span>empa<span>&#46;</span>ch</a>&gt;</em></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.electrochemistry.fe">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">fe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.fe" title="Permalink to this definition"></a></dt>
@@ -332,6 +335,8 @@ of <span class="math notranslate nohighlight">\(\text{H}^+ \rightarrow \text{H}\
 <section id="module-dgpost.transform.helpers">
 <span id="dgpost-transform-helpers-module"></span><h2>dgpost.transform.helpers module<a class="headerlink" href="#module-dgpost.transform.helpers" title="Permalink to this headline"></a></h2>
 <p>Module of helper functions for chemicals, elements, and unit handling.</p>
+<p><em>Code author: Peter Kraus &lt;<a class="reference external" href="mailto:peter&#46;kraus&#37;&#52;&#48;empa&#46;ch">peter<span>&#46;</span>kraus<span>&#64;</span>empa<span>&#46;</span>ch</a>&gt;</em></p>
+<p><em>Code author: Ueli Sauter</em></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.helpers.columns_to_smiles">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.helpers.</span></span><span class="sig-name descname"><span class="pre">columns_to_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.helpers.columns_to_smiles" title="Permalink to this definition"></a></dt>
@@ -528,6 +533,8 @@ be <code class="xref py py-class docutils literal notranslate"><span class="pre"
 values. This means that for processing time resolved data, the functions
 in this module have to be called on each timestep individually.</p>
 </div>
+<p><em>Code author: Ueli Sauter</em></p>
+<p><em>Code author: Peter Kraus &lt;<a class="reference external" href="mailto:peter&#46;kraus&#37;&#52;&#48;empa&#46;ch">peter<span>&#46;</span>kraus<span>&#64;</span>empa<span>&#46;</span>ch</a>&gt;</em></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.impedance.calc_circuit">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.impedance.</span></span><span class="sig-name descname"><span class="pre">calc_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'calc_circuit'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.impedance.calc_circuit" title="Permalink to this definition"></a></dt>
@@ -715,6 +722,7 @@ with the output as keys.</p>
 <section id="module-dgpost.transform.rates">
 <span id="dgpost-transform-rates-module"></span><h2>dgpost.transform.rates module<a class="headerlink" href="#module-dgpost.transform.rates" title="Permalink to this headline"></a></h2>
 <p>Module of transformations for determining rates of chemical species.</p>
+<p><em>Code author: Peter Kraus &lt;<a class="reference external" href="mailto:peter&#46;kraus&#37;&#52;&#48;empa&#46;ch">peter<span>&#46;</span>kraus<span>&#64;</span>empa<span>&#46;</span>ch</a>&gt;</em></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.rates.flow_to_molar">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">flow_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tref=&lt;Quantity(273.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pref=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'standard_atmosphere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output='rate'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.rates.flow_to_molar" title="Permalink to this definition"></a></dt>
@@ -781,7 +789,7 @@ to 1 atm.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Peter Kraus.</p>
+    <p>&#169; Copyright 2021-2022, dgbowl contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

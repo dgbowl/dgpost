@@ -7,6 +7,7 @@
   <title>dgpost usage &mdash; dgpost  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/autodoc_pydantic.css" type="text/css" />
     <link rel="shortcut icon" href="_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -93,11 +94,14 @@
 <cite>recipe</cite>, written in <code class="docutils literal notranslate"><span class="pre">yaml</span></code>, which includes a prescription of the steps to be
 performed by dgpost. Currently supported steps are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">load</span></code>: load a <cite>datagram</cite> or a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">extract</span></code>: extract and interpolate data from the loaded files into a table</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">transform</span></code>: use a function from the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> library to process
-the data in the table, creating new columns</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">save</span></code>: export the created table for further use</p></li>
+<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.load</span></code></a>: load a <cite>datagram</cite> or a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></li>
+<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.extract" title="dgpost.utils.extract"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.extract</span></code></a>: extract and interpolate data from the loaded files
+into a table</p></li>
+<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.transform" title="dgpost.utils.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.transform</span></code></a>: use a function from the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a>
+library to process the data in the table, creating new columns</p></li>
+<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.plot" title="dgpost.utils.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.plot</span></code></a>: plot parts of the table using our custom wrapper
+around <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
+<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.save</span></code></a>: export the created table for further use</p></li>
 </ul>
 <p>Each of the above keywords can be only specified once in the <cite>recipe</cite>, however more
 than one command can be specified for each of the keywords (i.e. it’s possible to
@@ -132,7 +136,7 @@ of dgpost can be used from within e.g. Jupyter notebooks in this way.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Peter Kraus.</p>
+    <p>&#169; Copyright 2021-2022, dgbowl contributors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
