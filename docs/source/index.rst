@@ -1,8 +1,7 @@
 **dgpost**: Datagram postprocessing tools
 =========================================
 
-A set of datagram postprocessing tools, functions, visualisations and export
-scripts.
+A set of datagram postprocessing tools, functions, visualisations and export scripts.
 
 dgpost is a Python library aimed at reproducible postprocessing of time-resolved 
 data. It provides functions to load data from `datagrams` and :class:`pd.DataFrames`,

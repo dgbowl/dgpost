@@ -1,18 +1,34 @@
 """
-`parse`: YAML processing schema and loader/parser function.
+``parse``: YAML and JSON input handler
+--------------------------------------
+
+.. codeauthor:: 
+    Peter Kraus
 """
 import os
 import yaml
 import json
+from typing import Any
 from dgbowl_schemas.dgpost_recipe import recipe_parser
 
 
-def parse(fn: str) -> dict:
+def parse(fn: str) -> dict[str, Any]:
     """
     Input file parsing function.
 
-    Currently, only yaml files are supported, hence this function is a wrapper around
-    :func:`parse_yaml`.
+    Supports loading ``yaml`` and ``json`` files using the `recipe`-parsing 
+    function and schema provided in the :mod:`dgbowl_schemas.dgpost_recipe`
+    module.
+
+    Parameters
+    ----------
+    fn
+        Path to the filename to be parsed
+    
+    Returns
+    -------
+    ret: dict[str, Any]
+        A dictionary representing the recipe.
 
     """
     assert os.path.exists(fn) and os.path.isfile(fn), (

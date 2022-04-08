@@ -13,11 +13,14 @@ This is the main user-focused way of using dgpost. The user should craft a
 `recipe`, written in ``yaml``, which includes a prescription of the steps to be
 performed by dgpost. Currently supported steps are:
 
-- ``load``: load a `datagram` or a :class:`pd.DataFrame`
-- ``extract``: extract and interpolate data from the loaded files into a table
-- ``transform``: use a function from the :mod:`dgpost.transform` library to process 
-  the data in the table, creating new columns
-- ``save``: export the created table for further use
+- :mod:`dgpost.utils.load`: load a `datagram` or a :class:`pd.DataFrame`
+- :mod:`dgpost.utils.extract`: extract and interpolate data from the loaded files 
+  into a table
+- :mod:`dgpost.utils.transform`: use a function from the :mod:`dgpost.transform` 
+  library to process the data in the table, creating new columns
+- :mod:`dgpost.utils.plot`: plot parts of the table using our custom wrapper 
+  around :mod:`matplotlib`
+- :mod:`dgpost.utils.save`: export the created table for further use
 
 Each of the above keywords can be only specified once in the `recipe`, however more
 than one command can be specified for each of the keywords (i.e. it's possible to 

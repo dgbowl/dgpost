@@ -1,26 +1,12 @@
 """
 ``extract``: Data extraction and interpolation routine.
+-------------------------------------------------------
 
 The function :func:`dgpost.utils.extract.extract` processes the below specification
 in order to extract the required data from the supplied datagram.
 
-.. code-block:: yaml
-
-  extract:
-    - from:      !!str          # datagram or pd.DataFrame name from "load.as"
-      into:        !!str        # name of the target pd.DataFrame
-      at:                       # specifies timestamps to form index of the DataFrame
-        step:       !!str
-        index:      !!int
-        steps:      [!!str, ...]
-        indices:    [!!int, ...]
-        timestamps: [!!float, ...]
-      constant:                 # add a constant 'value' at 'at', save as 'as'
-        - value: !!str
-          as:    !!str
-      columns:                  # extract 'key' from 'at', save as 'as'
-        - key:   !!str
-          as:    !!str
+.. _dgpost.recipe extract:
+.. autopydantic_model:: dgbowl_schemas.dgpost_recipe.extract.Extract
 
 .. note::
     The keys ``from`` and ``into`` are not processed by :func:`extract`, they should 
@@ -74,7 +60,8 @@ in the first section are entered directly, after renaming the column names.
 The data pulled out of the datagram in the second step using the prescription in ``at``
 are interpolated onto the index of the existing :class:`pd.DataFrame`.
 
-.. code-author: Peter Kraus <peter.kraus@empa.ch>
+.. codeauthor::
+    Peter Kraus
 """
 
 import numpy as np
@@ -270,30 +257,7 @@ def extract(
     spec: dict,
     index: list = None,
 ) -> pd.DataFrame:
-    """
-    Data extracting function.
-
-    Given a loaded ``datagram`` or a :class:`pd.DataFrame`, extraction ``spec``,
-    and an optional list of indices, this routine creates, extracts, or interpolates
-    the specified columns into a single :class:`pd.DataFrame`.
-
-    Parameters
-    ----------
-    object
-        Either a datagram in :class:`dict` format or a table as :class:`pd.Dataframe`.
-
-    spec
-        The ``extract`` component of the job specification.
-
-    index
-        Optional :class:`list` of timestamps to interpolate values onto.
-
-    Returns
-    -------
-    pd.DataFrame
-        The requested tabulated data.
-
-    """
+    """"""
     cns = cvs = cus = []
     at = spec.get("at", None)
     if at is not None and "timestamps" in at:

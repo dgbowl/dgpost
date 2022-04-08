@@ -1,38 +1,16 @@
 """
-``plot``: Plots columns of a DataFrame.
+``plot``: Reproducible plots from a table.
+------------------------------------------
 
 The function :func:`dgpost.utils.plot.plot` processes the below specification
 in order to generate a plot:
 
-.. code-block:: yaml
+.. _dgpost.recipe plot:
+.. autopydantic_model:: dgbowl_schemas.dgpost_recipe.plot.Plot
 
-    plot:
-      - table:               !!str   # internal DataFrame name
-        style:               !!dict  # optional style dictionary for matplotlib.rcParams
-        nrows:               !!int   # optional number of rows of matplotlib.gridspec.GridSpec
-        ncols:               !!int   # optional number of columns of matplotlib.gridspec.GridSpec
-        fig_args:            !!dict  # optional kwargs for the generated matplotlib.figure.Figure
-        ax_args:                     # sequence of arguments for the different axes
-          - cols:            !!tuple # optional (int, int) specifying grid columns for axes
-            rows:            !!tuple # optional (int, int) specifying grid rows for axes
-            series:                  # sequence of different plot commands
-              - y:           !!str   # column label for y data
-                x:           !!str   # optional column label for x data, or else index is used
-                index:
-                  from_zero: !!bool  # align values of index to zero
-                  to_units:  !!str   # convert values of index to units of time
-                kind:        !!str   # optional kind of plot to produce, default is scatter
-                kwargs:      !!dict  # optional kwargs which are passed to the plotting method
-            methods:         !!dict  # optional kwargs with methods of matplotlib.axes.Axes
-                                     # and the value is a dict containing kwargs to be called 
-                                     # on the selected attribute. Also possible to call 
-                                     # method on subobject of the axes i.e. axes.xaxis.set_label_text
-        save:                   
-          as:                !!str   # file name where the plot is saved
-          tight_layout:      !!dict  # optional dictionary for figure.tight_layout
-
-
-.. codeauthor:: Ueli Sauter
+.. codeauthor:: 
+    Ueli Sauter, 
+    Peter Kraus
 """
 import matplotlib
 import matplotlib.pyplot as plt
@@ -41,7 +19,7 @@ import pandas as pd
 import uncertainties.unumpy as unp
 
 
-def apply_plot_style(style: dict):
+def apply_plot_style(style: dict) -> None:
     """
     Updates the plot style with the given dictionary.
     For available kwargs see :class:`matplotlib.rcParams`.
@@ -59,14 +37,14 @@ def apply_plot_style(style: dict):
         matplotlib.rcdefaults()
 
 
-def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict):
+def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> None:
     """
     Processes ax_args and plots the data
 
     Parameters
     ----------
     ax
-        axes to be plotted to
+        axes object to be plotted to
     table
         dataframe containing the data
     ax_args
@@ -159,6 +137,7 @@ def plot(
     fig_args: dict = None,
     **grid_args,
 ):
+    """"""
     apply_plot_style(style)
 
     grid_args["nrows"] = nrows = grid_args.get("nrows", 1)

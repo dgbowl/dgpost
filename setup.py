@@ -49,7 +49,8 @@ setuptools.setup(
         "docs": [
             "sphinx",
             "sphinx-rtd-theme",
-            "sphinx-autodoc-typehints"
+            "sphinx-autodoc-typehints",
+            "autodoc_pydantic"
         ]
     },
     entry_points={"console_scripts": ["dgpost=dgpost:run_with_arguments"]},

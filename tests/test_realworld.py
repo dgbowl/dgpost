@@ -1,9 +1,6 @@
 import pytest
 import os
 import pandas as pd
-import numpy as np
-from uncertainties import unumpy as unp
-import uncertainties as uc
 import dgpost
 
 from .utils import compare_dfs, compare_images

@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath(os.path.join("..", "..", "src")))
 # -- Project information -----------------------------------------------------
 
 project = "dgpost"
-copyright = "2021, Peter Kraus"
+copyright = "2021-2022, dgbowl contributors"
 author = "Peter Kraus"
 
 
@@ -35,6 +35,7 @@ extensions = [
     # "sphinx.ext.autosummary",
     "sphinx_autodoc_typehints",
     "sphinx_rtd_theme",
+    "sphinxcontrib.autodoc_pydantic"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -66,9 +67,11 @@ html_favicon = "./images/dgpost_ico.png"
 
 
 # -- Extension configuration -------------------------------------------------
-
+show_authors = True
 autosummary_generate = True
 autodoc_default_flags = ["members", "undoc-members", "show-inheritance"]
+autodoc_pydantic_model_show_field_summary = False
+autodoc_pydantic_model_member_order = "bysource"
 
 html_context = {
     'versions': [
