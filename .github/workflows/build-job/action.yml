@@ -3,6 +3,8 @@ description: "Build the package."
 runs:
   using: "composite"
   steps:
+    - name: Fetch all history for all tags and branches
+      run: git fetch --prune --unshallow
     - run: pip install wheel
       shell: bash
     - run: python setup.py bdist_wheel
