@@ -5,5 +5,5 @@ runs:
   steps:
     - run: dgpost --version
       shell: bash
-    - run: pytest
+    - run: pytest -vv
       shell: bash
