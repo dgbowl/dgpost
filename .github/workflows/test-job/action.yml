@@ -3,5 +3,7 @@ description: "Test the package with pytest."
 runs:
   using: "composite"
   steps:
+    - run: dgpost --version
+      shell: bash
     - run: pytest
       shell: bash
