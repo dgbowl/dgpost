@@ -41,10 +41,10 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-${{ matrix.os }}-${{ matrix.pyver }}
-      #- run: pip install --pre --find-links=. dgpost[testing]
-      #  shell: bash
-      - run: pip install -e .[testing]
+      - run: pip install --pre --find-links=. dgpost[testing]
         shell: bash
+      #- run: pip install -e .[testing]
+      #  shell: bash
       - uses: ./.github/workflows/test-job
   pages:
     needs: [build]
@@ -64,10 +64,10 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-${{ matrix.os }}-${{ matrix.pyver }}
-      #- run: pip install --pre --find-links=. dgpost[docs]
-      #  shell: bash
-      - run: pip install -e .[docs]
+      - run: pip install --pre --find-links=. dgpost[docs]
         shell: bash
+      #- run: pip install -e .[docs]
+      #  shell: bash
       - uses: ./.github/workflows/docs-job
       - uses: actions/upload-artifact@v2
         with: 
