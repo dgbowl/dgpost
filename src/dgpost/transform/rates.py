@@ -1,7 +1,14 @@
 """
-Module of transformations for determining rates of chemical species.
+``rates``: determining molar rates of chemical species
+------------------------------------------------------
+.. codeauthor:: 
+    Peter Kraus
 
-.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
+This module contains functions to convert mixture compositions (concentration,
+mol fraction) into rates (dimension of ``[quantity]/[time]``). Such functions
+are useful for converting gas-phase flows into instantaneous molar flow rates, 
+or determining formation rates from the concentration profile of a batch mixture.
+
 """
 import pint
 
@@ -63,27 +70,27 @@ def flow_to_molar(
 
     Parameters
     ----------
-    df
-        A pandas dataframe.
-
     flow
-        Column containing the total flow.
+        The total flow of the mixture.
 
-    comp
-        Prefix of the columns determining the flow composition.
-
-    rate
-        Prefix of the columns where the calculated rate will be stored.
+    c
+        A dictionary containing the composition of the mixture as concentration.
+        Cannot be supplied at the same time as ``x``.
+    
+    x
+        A dictionary containing the composition of the mixture as mole fraction.
+        Assuming ideal gas-phase flow. Cannot be supplied at the same time as ``c``.
 
     Tref
-        Reference temperature of the flow measurement, used when ``comp`` is a mol
-        fraction. Can be a column name or a numerical value in Kelvin; by default
-        set to 0°C.
+        Reference temperature of the flow measurement, used when composition is 
+        specified using a mol fraction. By default set to 273.15 K.
 
     pref
-        Reference pressure of the flow measurement, used when ``comp`` is a mol
-        fraction. Can be a column name or a numerical value in Pa; by default set
-        to 1 atm.
+        Reference pressure of the flow measurement, used when composition is 
+        specified using a mol fraction. By default set to 1 atm.
+    
+    output
+        Prefix of the keys of the returned rate dictionary.
 
     """
     if x is not None and c is not None:
