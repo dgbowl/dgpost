@@ -13,10 +13,7 @@ from .utils import compare_dfs
     "spec, ref",
     [
         (  # ts0 - default units, prepend zero
-            {
-                "time": [1, 2, 4, 5, 7, 8],
-                "Q": [100, 90, 70, 60, 40, 30]
-            },
+            {"time": [1, 2, 4, 5, 7, 8], "Q": [100, 90, 70, 60, 40, 30]},
             {
                 "<I>": ureg.Quantity([0, -10, -10, -10, -10, -10], "A"),
             },
@@ -32,7 +29,6 @@ from .utils import compare_dfs
                 "I": ureg.Quantity([10, 10, 10, 10, 10, 10], "mA"),
             },
         ),
-        
     ],
 )
 def test_electrochemistry_current_direct(spec, ref):

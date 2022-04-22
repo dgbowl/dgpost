@@ -195,7 +195,7 @@ def charge(
     .. math::
 
         Q_n = \\int_{t_0}^{t_n} I(t) dt = \\sum_0^n I_n (t_n - t_{n-1})
-    
+
     where :math:`I_n` is the instantaneous current and :math:`t_n` is the time at the
     :math:`n`-th datapoint.
 
@@ -208,8 +208,8 @@ def charge(
         Values of the instantaneous current.
 
     t0
-        An optional timestamp representing the time at which charge was zero. If not 
-        supplied, the first value in the ``time`` array will be used, with the charge 
+        An optional timestamp representing the time at which charge was zero. If not
+        supplied, the first value in the ``time`` array will be used, with the charge
         at that timestamp set to zero.
 
     output
@@ -229,14 +229,13 @@ def charge(
         dt = np.diff(np.insert(time, 0, t0))
     else:
         dt = np.insert(np.diff(time), 0, ureg.Quantity(0, "s"))
-    
+
     dQ = I * dt
 
     Q = np.cumsum(dQ).to_base_units()
 
     ret = {output: Q}
     return ret
-
 
 
 @load_data(
@@ -256,7 +255,7 @@ def average_current(
     .. math::
 
         <I> = \\frac{dQ}{dt} = \frac{Q_n - Q_{n-1}}{t_n - t_{n-1}}
-    
+
     where :math:`Q_n` is the charge and :math:`t_n` is the time at the :math:`n`-th
     datapoint.
 
@@ -269,8 +268,8 @@ def average_current(
         Values of the instantaneous current.
 
     t0
-        An optional timestamp representing the time at which charge was zero. If not 
-        supplied, the first value in the ``time`` array will be used, with the charge 
+        An optional timestamp representing the time at which charge was zero. If not
+        supplied, the first value in the ``time`` array will be used, with the charge
         at that timestamp set to zero.
 
     output
@@ -292,11 +291,11 @@ def average_current(
     else:
         dt = np.diff(time)
         dQ = np.diff(Q)
-    
-    I = dQ/dt
+
+    I = dQ / dt
 
     if len(I) != nts:
         I = np.insert(I, 0, ureg.Quantity(0, "A"))
-    
+
     ret = {output: I}
     return ret

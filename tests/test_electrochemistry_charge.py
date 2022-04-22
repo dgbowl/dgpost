@@ -25,13 +25,12 @@ from .utils import compare_dfs
         (  # ts1 - variable I, custom units
             {
                 "time": ureg.Quantity([0.1, 0.2, 0.4, 0.5, 0.7, 0.8], "h"),
-                "I": ureg.Quantity([100, 99, 99, 100, 100, 98], "mA")
+                "I": ureg.Quantity([100, 99, 99, 100, 100, 98], "mA"),
             },
             {
                 "Q": ureg.Quantity([0.0, 9.9, 29.7, 39.7, 59.7, 69.5], "mAh"),
             },
         ),
-        
     ],
 )
 def test_electrochemistry_charge_direct(spec, ref):
