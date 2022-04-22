@@ -14,41 +14,39 @@ from .utils import compare_dfs
 @pytest.mark.parametrize(
     "spec, ref",
     [
-        ( #ts0 - explicit t0, default units (s, mol/m3, m3)
+        (  # ts0 - explicit t0, default units (s, mol/m3, m3)
             {
-                "time": [1, 3, 4], 
-                "c": {
-                    "A": [10, 20, 25], 
-                    "B": [5, 15, 16]
-                },
+                "time": [1, 3, 4],
+                "c": {"A": [10, 20, 25], "B": [5, 15, 16]},
                 "V": 1,
                 "t0": 0,
             },
             {
                 "rate->A": ureg.Quantity([10.0, 5.0, 5.0], "mol/s"),
                 "rate->B": ureg.Quantity([5.0, 5.0, 1.0], "mol/s"),
-            }
+            },
         ),
-        ( #ts1 - explicit units
+        (  # ts1 - explicit units
             {
-                "time": ureg.Quantity([0, 1, 3, 4], "min"), 
+                "time": ureg.Quantity([0, 1, 3, 4], "min"),
                 "c": {
-                    "A": ureg.Quantity([0, 10, 20, 25], "mol/l"), 
+                    "A": ureg.Quantity([0, 10, 20, 25], "mol/l"),
                     "B": ureg.Quantity([0, 5, 15, 16], "mol/l"),
                 },
                 "V": ureg.Quantity(1, "l"),
             },
             {
-                "rate->A": ureg.Quantity([0.0, 10.0/60, 5.0/60, 5.0/60], "mol/s"),
-                "rate->B": ureg.Quantity([0.0, 5.0/60, 5.0/60, 1.0/60], "mol/s"),
-            }
+                "rate->A": ureg.Quantity([0.0, 10.0 / 60, 5.0 / 60, 5.0 / 60], "mol/s"),
+                "rate->B": ureg.Quantity([0.0, 5.0 / 60, 5.0 / 60, 1.0 / 60], "mol/s"),
+            },
         ),
-    ]
+    ],
 )
 def test_rates_batchtomolar_direct(spec, ref):
     ret = rates.batch_to_molar(**spec)
     for k, v in ref.items():
         np.testing.assert_allclose(v, ret[k])
+
 
 @pytest.mark.parametrize(
     "infile, spec, outfile",
@@ -81,9 +79,7 @@ def test_rates_batchtomolar_direct(spec, ref):
             ],
             "ref.batchtomolar.units.df.pkl",
         ),
-        
-        
-    ]
+    ],
 )
 def test_rates_batchtomolar_df(infile, spec, outfile, datadir):
     os.chdir(datadir)

@@ -116,17 +116,17 @@ def batch_to_molar(
 ) -> dict[str, pint.Quantity]:
     """
     Calculates a molar rate of species from specified volume and composition at
-    the specified timesteps. The units of the rate have to be either dimensionless 
+    the specified timesteps. The units of the rate have to be either dimensionless
     (for unit-naive dataframes) or in dimensions of [substance]/[time].
 
-    First, the :math:`\\delta t` and :math:`\\delta c(x)` at each timestep :math:`n` is 
+    First, the :math:`\\delta t` and :math:`\\delta c(x)` at each timestep :math:`n` is
     calculated:
 
     .. math::
 
         \\delta t_n = t_n - t_{n-1}
         \\delta c(x)_n = c(x)_n - c(x)_{n-1}
-    
+
     Then, the formation rate is calculated using the volume:
 
     .. math:
