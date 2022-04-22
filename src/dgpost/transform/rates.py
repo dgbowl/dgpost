@@ -32,7 +32,7 @@ def flow_to_molar(
     x: dict[str, pint.Quantity] = None,
     Tref: pint.Quantity = ureg.Quantity(273.15, "K"),
     pref: pint.Quantity = ureg.Quantity(1, "atm"),
-    output="rate",
+    output: str ="rate",
 ) -> dict[str, pint.Quantity]:
     """
     Calculates a molar rate of species from specified flow and composition. The
@@ -119,7 +119,7 @@ def batch_to_molar(
     c: dict[str, pint.Quantity],
     V: pint.Quantity,
     t0: pint.Quantity = None,
-    output="rate",
+    output: str ="rate",
 ) -> dict[str, pint.Quantity]:
     """
     Calculates a molar rate of species from specified volume and composition at
@@ -151,6 +151,11 @@ def batch_to_molar(
 
     V
         Volume of the batch at the timestamps.
+    
+    t0
+        An optional timestamp representing the initial time where all concentrations
+        are zero. If not supplied, the calculation will use the first datapoint as 
+        reference with its rates set to zero.
 
     output
         Prefix of the columns where the calculated rate will be stored.
