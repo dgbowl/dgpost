@@ -1,11 +1,19 @@
 """
-Module of transformations relevant to electrochemistry applications.
+``electrochemistry``: calculations relevant in electrochemistry
+---------------------------------------------------------------
+.. codeauthor:: 
+    Peter Kraus
 
-.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
+Module of transformations relevant to electrochemistry applications. Includes
+applied voltage correction via the Nernst equation, Faradaic efficiency calculation,
+as well as the calculation of total charge from current and timestamps, and the 
+average current from the total charge and timestamps.
+
 """
 import pint
 from yadg.dgutils import ureg
 import numpy as np
+import pandas as pd
 from .helpers import load_data, name_to_chem, electrons_from_smiles
 
 
@@ -168,4 +176,126 @@ def fe(
         fek = ek / etot
         tag = f"{pretag}->{k}"
         ret[tag] = fek.to_base_units()
+    return ret
+
+
+@load_data(
+    ("time", "s", pd.Index),
+    ("I", "A"),
+)
+def charge(
+    time: pint.Quantity,
+    I: pint.Quantity,
+    t0: pint.Quantity = None,
+    output: str = "Q",
+) -> dict[str, pint.Quantity]:
+    """
+    Calculate the total charge :math:`Q` as a time-integral of the electric current:
+
+    .. math::
+
+        Q_n = \\int_{t_0}^{t_n} I(t) dt = \\sum_0^n I_n (t_n - t_{n-1})
+
+    where :math:`I_n` is the instantaneous current and :math:`t_n` is the time at the
+    :math:`n`-th datapoint.
+
+    Parameters
+    ----------
+    time
+        An array of timestamps at which the instantaneous current was measured.
+
+    I
+        Values of the instantaneous current.
+
+    t0
+        An optional timestamp representing the time at which charge was zero. If not
+        supplied, the first value in the ``time`` array will be used, with the charge
+        at that timestamp set to zero.
+
+    output
+        Prefix of the columns where the calculated rate will be stored.
+
+
+    Returns
+    -------
+    dict(output, Q) : dict[str, pint.Quantity]
+        Returns the integrated electrical charge.
+
+    """
+    nts = len(time)
+    if nts == 1 and t0 is not None:
+        raise RuntimeError("A single timestep was provided without specifying 't0'.")
+    elif t0 is not None:
+        dt = np.diff(np.insert(time, 0, t0))
+    else:
+        dt = np.insert(np.diff(time), 0, ureg.Quantity(0, "s"))
+
+    dQ = I * dt
+
+    Q = np.cumsum(dQ).to_base_units()
+
+    ret = {output: Q}
+    return ret
+
+
+@load_data(
+    ("time", "s", pd.Index),
+    ("Q", "C"),
+)
+def average_current(
+    time: pint.Quantity,
+    Q: pint.Quantity,
+    t0: pint.Quantity = None,
+    output: str = "<I>",
+) -> dict[str, pint.Quantity]:
+    """
+    Calculate the average current :math:`<I>` from a set of timestamped values of
+    electical charge,
+
+    .. math::
+
+        <I> = \\frac{dQ}{dt} = \\frac{Q_n - Q_{n-1}}{t_n - t_{n-1}}
+
+    where :math:`Q_n` is the charge and :math:`t_n` is the time at the :math:`n`-th
+    datapoint.
+
+    Parameters
+    ----------
+    time
+        An array of timestamps at which the instantaneous current was measured.
+
+    I
+        Values of the instantaneous current.
+
+    t0
+        An optional timestamp representing the time at which charge was zero. If not
+        supplied, the first value in the ``time`` array will be used, with the charge
+        at that timestamp set to zero.
+
+    output
+        Prefix of the columns where the calculated rate will be stored.
+
+
+    Returns
+    -------
+    dict(output, I) : dict[str, pint.Quantity]
+        Returns the average electrical current.
+
+    """
+    nts = len(time)
+    if nts == 1 and t0 is not None:
+        raise RuntimeError("A single timestep was provided without specifying 't0'.")
+    elif t0 is not None:
+        dt = np.diff(np.insert(time, 0, t0))
+        dQ = np.diff(np.insert(Q, 0, ureg.Quantity(0, "C")))
+    else:
+        dt = np.diff(time)
+        dQ = np.diff(Q)
+
+    I = dQ / dt
+
+    if len(I) != nts:
+        I = np.insert(I, 0, ureg.Quantity(0, "A"))
+
+    ret = {output: I}
     return ret

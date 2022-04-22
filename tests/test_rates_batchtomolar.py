@@ -45,7 +45,7 @@ from .utils import compare_dfs
 def test_rates_batchtomolar_direct(spec, ref):
     ret = rates.batch_to_molar(**spec)
     for k, v in ref.items():
-        np.testing.assert_allclose(v, ret[k])
+        assert np.allclose(v, ret[k])
 
 
 @pytest.mark.parametrize(
