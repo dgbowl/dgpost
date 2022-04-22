@@ -246,8 +246,70 @@ the prefix for each key.</p>
 </section>
 <section id="module-dgpost.transform.electrochemistry">
 <span id="dgpost-transform-electrochemistry-module"></span><h2>dgpost.transform.electrochemistry module<a class="headerlink" href="#module-dgpost.transform.electrochemistry" title="Permalink to this headline"></a></h2>
-<p>Module of transformations relevant to electrochemistry applications.</p>
-<p><em>Code author: Peter Kraus &lt;<a class="reference external" href="mailto:peter&#46;kraus&#37;&#52;&#48;empa&#46;ch">peter<span>&#46;</span>kraus<span>&#64;</span>empa<span>&#46;</span>ch</a>&gt;</em></p>
+<section id="electrochemistry-calculations-relevant-in-electrochemistry">
+<h3><code class="docutils literal notranslate"><span class="pre">electrochemistry</span></code>: calculations relevant in electrochemistry<a class="headerlink" href="#electrochemistry-calculations-relevant-in-electrochemistry" title="Permalink to this headline"></a></h3>
+<p><em>Code author: Peter Kraus</em></p>
+<p>Module of transformations relevant to electrochemistry applications. Includes
+applied voltage correction via the Nernst equation, Faradaic efficiency calculation,
+as well as the calculation of total charge from current and timestamps, and the
+average current from the total charge and timestamps.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.electrochemistry.average_current">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">average_current</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;I&gt;'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.average_current" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the average current <span class="math notranslate nohighlight">\(&lt;I&gt;\)</span> from a set of timestamped values of
+electical charge,</p>
+<div class="math notranslate nohighlight">
+\[&lt;I&gt; = \frac{dQ}{dt} = \frac{Q_n - Q_{n-1}}{t_n - t_{n-1}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(Q_n\)</span> is the charge and <span class="math notranslate nohighlight">\(t_n\)</span> is the time at the <span class="math notranslate nohighlight">\(n\)</span>-th
+datapoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the instantaneous current was measured.</p></li>
+<li><p><strong>I</strong> – Values of the instantaneous current.</p></li>
+<li><p><strong>t0</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – An optional timestamp representing the time at which charge was zero. If not
+supplied, the first value in the <code class="docutils literal notranslate"><span class="pre">time</span></code> array will be used, with the charge
+at that timestamp set to zero.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns where the calculated rate will be stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict(output, I)</strong> – Returns the average electrical current.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.electrochemistry.charge">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">charge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Q'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.charge" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the total charge <span class="math notranslate nohighlight">\(Q\)</span> as a time-integral of the electric current:</p>
+<div class="math notranslate nohighlight">
+\[Q_n = \int_{t_0}^{t_n} I(t) dt = \sum_0^n I_n (t_n - t_{n-1})\]</div>
+<p>where <span class="math notranslate nohighlight">\(I_n\)</span> is the instantaneous current and <span class="math notranslate nohighlight">\(t_n\)</span> is the time at the
+<span class="math notranslate nohighlight">\(n\)</span>-th datapoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the instantaneous current was measured.</p></li>
+<li><p><strong>I</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Values of the instantaneous current.</p></li>
+<li><p><strong>t0</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – An optional timestamp representing the time at which charge was zero. If not
+supplied, the first value in the <code class="docutils literal notranslate"><span class="pre">time</span></code> array will be used, with the charge
+at that timestamp set to zero.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns where the calculated rate will be stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict(output, Q)</strong> – Returns the integrated electrical charge.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.electrochemistry.fe">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">fe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.fe" title="Permalink to this definition"></a></dt>
@@ -331,6 +393,7 @@ of <span class="math notranslate nohighlight">\(\text{H}^+ \rightarrow \text{H}\
 </dl>
 </dd></dl>
 
+</section>
 </section>
 <section id="module-dgpost.transform.helpers">
 <span id="dgpost-transform-helpers-module"></span><h2>dgpost.transform.helpers module<a class="headerlink" href="#module-dgpost.transform.helpers" title="Permalink to this headline"></a></h2>
@@ -749,7 +812,10 @@ calculated:</p>
 <li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the concentrations and volumes are measured.</p></li>
 <li><p><strong>c</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A dictionary containing concentrations of species at the specified timestamps.</p></li>
 <li><p><strong>V</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Volume of the batch at the timestamps.</p></li>
-<li><p><strong>output</strong> – Prefix of the columns where the calculated rate will be stored.</p></li>
+<li><p><strong>t0</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – An optional timestamp representing the initial time where all concentrations
+are zero. If not supplied, the calculation will use the first datapoint as
+reference with its rates set to zero.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns where the calculated rate will be stored.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -801,7 +867,7 @@ Assuming ideal gas-phase flow. Cannot be supplied at the same time as <code clas
 specified using a mol fraction. By default set to 273.15 K.</p></li>
 <li><p><strong>pref</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Reference pressure of the flow measurement, used when composition is
 specified using a mol fraction. By default set to 1 atm.</p></li>
-<li><p><strong>output</strong> – Prefix of the keys of the returned rate dictionary.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the keys of the returned rate dictionary.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
