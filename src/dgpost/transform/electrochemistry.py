@@ -254,7 +254,7 @@ def average_current(
 
     .. math::
 
-        <I> = \\frac{dQ}{dt} = \frac{Q_n - Q_{n-1}}{t_n - t_{n-1}}
+        <I> = \\frac{dQ}{dt} = \\frac{Q_n - Q_{n-1}}{t_n - t_{n-1}}
 
     where :math:`Q_n` is the charge and :math:`t_n` is the time at the :math:`n`-th
     datapoint.
