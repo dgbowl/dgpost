@@ -200,6 +200,9 @@ def load_data(*cols: tuple[str, str, type]):
         - the data for the arguments listed in ``cols`` is sourced from the columns
           of the :class:`pd.DataFrame`, using the provided :class:`str` arguments to
           find the appropriate columns
+        - if :class:`pd.Index` is provided as the data type, and no column name is
+          provided by the user, the index of the :class:`pd.DataFrame` is passed
+          into the called function
         - data from unit-aware :class:`pd.DataFrame` objects is loaded using the
           :func:`pQ` accessor accordingly
         - data from unit-naive :class:`pd.DataFrame` objects are coerced into
@@ -243,7 +246,11 @@ def load_data(*cols: tuple[str, str, type]):
                 data_kwargs = {}
                 for cname, cunit, ctype in fcols:
                     cval = kwargs.pop(cname, None)
-                    if cval is None:
+                    if ctype is pd.Index and cval is None:
+                        # if ctype is pd.Index, it can still be overriden by cval
+                        # otherwise send the df.index wrapped in cunit
+                        data_kwargs[cname] = ureg.Quantity(df.index, cunit)
+                    elif cval is None:
                         # cval is optional -> we want to let func use its default
                         continue
                     elif not isinstance(cval, str):
@@ -315,7 +322,7 @@ def load_data(*cols: tuple[str, str, type]):
                         continue
                     elif isinstance(v, pint.Quantity):
                         kwargs[cname] = v
-                    elif isinstance(v, (np.ndarray, float, int)):
+                    elif isinstance(v, (np.ndarray, float, int, list)):
                         if cunit is not None:
                             kwargs[cname] = ureg.Quantity(v, cunit)
                         else:
@@ -325,7 +332,7 @@ def load_data(*cols: tuple[str, str, type]):
                         for kk, vv in v.items():
                             if isinstance(vv, pint.Quantity):
                                 temp[kk] = vv
-                            elif isinstance(vv, (np.ndarray, float, int)):
+                            elif isinstance(vv, (np.ndarray, float, int, list)):
                                 if cunit is not None:
                                     temp[kk] = ureg.Quantity(vv, cunit)
                                 else:
