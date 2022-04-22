@@ -433,6 +433,9 @@ and other parameters in <code class="docutils literal notranslate"><span class="
 <li><p>the data for the arguments listed in <code class="docutils literal notranslate"><span class="pre">cols</span></code> is sourced from the columns
 of the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>, using the provided <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> arguments to
 find the appropriate columns</p></li>
+<li><p>if <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> is provided as the data type, and no column name is
+provided by the user, the index of the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> is passed
+into the called function</p></li>
 <li><p>data from unit-aware <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> objects is loaded using the
 <a class="reference internal" href="#dgpost.transform.helpers.pQ" title="dgpost.transform.helpers.pQ"><code class="xref py py-func docutils literal notranslate"><span class="pre">pQ()</span></code></a> accessor accordingly</p></li>
 <li><p>data from unit-naive <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> objects are coerced into
@@ -721,8 +724,40 @@ with the output as keys.</p>
 </section>
 <section id="module-dgpost.transform.rates">
 <span id="dgpost-transform-rates-module"></span><h2>dgpost.transform.rates module<a class="headerlink" href="#module-dgpost.transform.rates" title="Permalink to this headline"></a></h2>
-<p>Module of transformations for determining rates of chemical species.</p>
-<p><em>Code author: Peter Kraus &lt;<a class="reference external" href="mailto:peter&#46;kraus&#37;&#52;&#48;empa&#46;ch">peter<span>&#46;</span>kraus<span>&#64;</span>empa<span>&#46;</span>ch</a>&gt;</em></p>
+<section id="rates-determining-molar-rates-of-chemical-species">
+<h3><code class="docutils literal notranslate"><span class="pre">rates</span></code>: determining molar rates of chemical species<a class="headerlink" href="#rates-determining-molar-rates-of-chemical-species" title="Permalink to this headline"></a></h3>
+<p><em>Code author: Peter Kraus</em></p>
+<p>This module contains functions to convert mixture compositions (concentration,
+mol fraction) into rates (dimension of <code class="docutils literal notranslate"><span class="pre">[quantity]/[time]</span></code>). Such functions
+are useful for converting gas-phase flows into instantaneous molar flow rates,
+or determining formation rates from the concentration profile of a batch mixture.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.rates.batch_to_molar">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">batch_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rate'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.rates.batch_to_molar" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates a molar rate of species from specified volume and composition at
+the specified timesteps. The units of the rate have to be either dimensionless
+(for unit-naive dataframes) or in dimensions of [substance]/[time].</p>
+<p>First, the <span class="math notranslate nohighlight">\(\delta t\)</span> and <span class="math notranslate nohighlight">\(\delta c(x)\)</span> at each timestep <span class="math notranslate nohighlight">\(n\)</span> is
+calculated:</p>
+<div class="math notranslate nohighlight">
+\[\delta t_n = t_n - t_{n-1}
+\delta c(x)_n = c(x)_n - c(x)_{n-1}\]</div>
+<p>Then, the formation rate is calculated using the volume:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the concentrations and volumes are measured.</p></li>
+<li><p><strong>c</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A dictionary containing concentrations of species at the specified timestamps.</p></li>
+<li><p><strong>V</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Volume of the batch at the timestamps.</p></li>
+<li><p><strong>output</strong> – Prefix of the columns where the calculated rate will be stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.rates.flow_to_molar">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">flow_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tref=&lt;Quantity(273.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pref=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'standard_atmosphere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output='rate'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.rates.flow_to_molar" title="Permalink to this definition"></a></dt>
@@ -757,16 +792,16 @@ specifying the state at which the flow <span class="math notranslate nohighlight
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> – A pandas dataframe.</p></li>
-<li><p><strong>flow</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Column containing the total flow.</p></li>
-<li><p><strong>comp</strong> – Prefix of the columns determining the flow composition.</p></li>
-<li><p><strong>rate</strong> – Prefix of the columns where the calculated rate will be stored.</p></li>
-<li><p><strong>Tref</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Reference temperature of the flow measurement, used when <code class="docutils literal notranslate"><span class="pre">comp</span></code> is a mol
-fraction. Can be a column name or a numerical value in Kelvin; by default
-set to 0°C.</p></li>
-<li><p><strong>pref</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Reference pressure of the flow measurement, used when <code class="docutils literal notranslate"><span class="pre">comp</span></code> is a mol
-fraction. Can be a column name or a numerical value in Pa; by default set
-to 1 atm.</p></li>
+<li><p><strong>flow</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The total flow of the mixture.</p></li>
+<li><p><strong>c</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – A dictionary containing the composition of the mixture as concentration.
+Cannot be supplied at the same time as <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p></li>
+<li><p><strong>x</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – A dictionary containing the composition of the mixture as mole fraction.
+Assuming ideal gas-phase flow. Cannot be supplied at the same time as <code class="docutils literal notranslate"><span class="pre">c</span></code>.</p></li>
+<li><p><strong>Tref</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Reference temperature of the flow measurement, used when composition is
+specified using a mol fraction. By default set to 273.15 K.</p></li>
+<li><p><strong>pref</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Reference pressure of the flow measurement, used when composition is
+specified using a mol fraction. By default set to 1 atm.</p></li>
+<li><p><strong>output</strong> – Prefix of the keys of the returned rate dictionary.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -775,6 +810,7 @@ to 1 atm.</p></li>
 </dl>
 </dd></dl>
 
+</section>
 </section>
 </section>
 
