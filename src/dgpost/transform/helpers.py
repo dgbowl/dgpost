@@ -243,7 +243,9 @@ def load_data(*cols: tuple[str, str, type]):
                 data_kwargs = {}
                 for cname, cunit, ctype in fcols:
                     cval = kwargs.pop(cname, None)
-                    if cval is None:
+                    if ctype is pd.Index and cval is None:
+                        data_kwargs[cname] = ureg.Quantity(df.index, cunit)
+                    elif cval is None:
                         # cval is optional -> we want to let func use its default
                         continue
                     elif not isinstance(cval, str):
@@ -315,7 +317,7 @@ def load_data(*cols: tuple[str, str, type]):
                         continue
                     elif isinstance(v, pint.Quantity):
                         kwargs[cname] = v
-                    elif isinstance(v, (np.ndarray, float, int)):
+                    elif isinstance(v, (np.ndarray, float, int, list)):
                         if cunit is not None:
                             kwargs[cname] = ureg.Quantity(v, cunit)
                         else:
@@ -325,7 +327,7 @@ def load_data(*cols: tuple[str, str, type]):
                         for kk, vv in v.items():
                             if isinstance(vv, pint.Quantity):
                                 temp[kk] = vv
-                            elif isinstance(vv, (np.ndarray, float, int)):
+                            elif isinstance(vv, (np.ndarray, float, int, list)):
                                 if cunit is not None:
                                     temp[kk] = ureg.Quantity(vv, cunit)
                                 else:

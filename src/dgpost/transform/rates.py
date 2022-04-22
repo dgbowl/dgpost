@@ -7,6 +7,9 @@ import pint
 
 from dgpost.transform.helpers import load_data
 from yadg.dgutils import ureg
+import pandas as pd
+import numpy as np
+from typing import Iterable
 
 
 @load_data(
@@ -96,4 +99,74 @@ def flow_to_molar(
             r = flow * (pref / (ureg("molar_gas_constant") * Tref.to("K"))) * v
             ret[f"{output}->{k}"] = r.to_base_units()
 
+    return ret
+
+
+@load_data(
+    ("time", "s", pd.Index),
+    ("c", "mol/m³", dict),
+    ("V", "m³"),
+)
+def batch_to_molar(
+    time: pint.Quantity,
+    c: dict[str, pint.Quantity],
+    V: pint.Quantity,
+    t0: pint.Quantity = None,
+    output="rate",
+) -> dict[str, pint.Quantity]:
+    """
+    Calculates a molar rate of species from specified volume and composition at
+    the specified timesteps. The units of the rate have to be either dimensionless 
+    (for unit-naive dataframes) or in dimensions of [substance]/[time].
+
+    First, the :math:`\\delta t` and :math:`\\delta c(x)` at each timestep :math:`n` is 
+    calculated:
+
+    .. math::
+
+        \\delta t_n = t_n - t_{n-1}
+        \\delta c(x)_n = c(x)_n - c(x)_{n-1}
+    
+    Then, the formation rate is calculated using the volume:
+
+    .. math:
+
+        \\text{rate}(x)_n = V_n \\frac{\\delta c(x)_n}{\\delta t_n}
+
+
+    Parameters
+    ----------
+    time
+        An array of timestamps at which the concentrations and volumes are measured.
+
+    c
+        A dictionary containing concentrations of species at the specified timestamps.
+
+    V
+        Volume of the batch at the timestamps.
+
+    output
+        Prefix of the columns where the calculated rate will be stored.
+
+    """
+    nts = len(time)
+    if nts == 1 and t0 is not None:
+        raise RuntimeError("A single timestep was provided without specifying 't0'.")
+    elif t0 is not None:
+        time = np.insert(time, 0, t0)
+        c0 = ureg.Quantity(0, "mol/m³")
+        for k, v in c.items():
+            c[k] = np.insert(v, 0, c0)
+    elif isinstance(V.magnitude, Iterable) and len(V) == nts:
+        V = V[1:]
+
+    dt = np.diff(time)
+    dc = {k: np.diff(c_k) for k, c_k in c.items()}
+    ret = {}
+    for k, dc_k in dc.items():
+        r = (dc_k / dt) * V
+        if len(r) < nts:
+            r0 = ureg.Quantity(0, "mol/s")
+            r = np.insert(r, 0, r0)
+        ret[f"{output}->{k}"] = r.to_base_units()
     return ret
