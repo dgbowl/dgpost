@@ -5,9 +5,9 @@
     Peter Kraus
 
 Module of transformations relevant to electrochemistry applications. Includes
-applied voltage correction via the Nernst equation, Faradayic efficiency calculation,
-as well as the calculation of charge from current and time, and average current
-from charge and time.
+applied voltage correction via the Nernst equation, Faradaic efficiency calculation,
+as well as the calculation of total charge from current and timestamps, and the 
+average current from the total charge and timestamps.
 
 """
 import pint
