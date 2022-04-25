@@ -31,4 +31,4 @@ In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
    :caption: dgpost components
    :hidden:
 
-   modules
+   dgpost

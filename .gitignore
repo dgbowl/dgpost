@@ -6,4 +6,3 @@ dist/
 *.egg
 build/
 public/
-docs/source/dgpost.*

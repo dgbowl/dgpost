@@ -4,10 +4,12 @@
 .. codeauthor:: 
     Peter Kraus
 
-Module of transformations relevant to electrochemistry applications. Includes
-applied voltage correction via the Nernst equation, Faradaic efficiency calculation,
-as well as the calculation of total charge from current and timestamps, and the 
-average current from the total charge and timestamps.
+Includes functions for calculating applied voltage correction via the 
+:func:`~dgpost.transform.electrochemistry.nernst` equation, calculation of the 
+Faradaic efficiency (:func:`~dgpost.transform.electrochemistry.fe`), as well as 
+the calculation of total :func:`~dgpost.transform.electrochemistry.charge`, and 
+the :func:`~dgpost.transform.electrochemistry.average_current` from the total 
+charge and timestamps.
 
 """
 import pint

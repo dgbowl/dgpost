@@ -1,5 +1,8 @@
 """
-Main module - execution functions for dgpost.
+dgpost.main
+===========
+
+Module containing the execution functions for dgpost.
 
 """
 import argparse

@@ -1,12 +1,15 @@
 """
-Module of functions relevant to Electrochemical Impedance Spectroscopy (EIS).
+``impedance``: fitting electrochemical impedance spectra
+--------------------------------------------------------
+.. codeauthor::
+    Ueli Sauter,
+    Peter Kraus
 
-The main functions in this module are two functions relevant for the fitting and 
-evaluation of equivalent circuits, :func:`fit_circuit` and :func:`calc_circuit`,
-respectively. The two functions expect frequency-resolved complex impedance data.
-
-For less rigorous analysis, the :func:`lowest_real_impedance` can be used, to
-find and/or interpolate the lowest real-valued point of the complex impedance.
+Including functions relevant for Electrochemical Impedance Spectroscopy (EIS):
+evaluation of an equivalent circuit as well as the fitting of the circuit to data 
+(:func:`~dgpost.transform.impedance.calc_circuit` and 
+:func:`~dgpost.transform.impedance.fit_circuit`), and an interpolation function 
+to find the :func:`~dgpost.transform.impedance.lowest_real_impedance` in the data.
 
 .. note::
     The functions in this module expect the whole EIS trace as input - the 
@@ -16,8 +19,6 @@ find and/or interpolate the lowest real-valued point of the complex impedance.
     values. This means that for processing time resolved data, the functions
     in this module have to be called on each timestep individually.
 
-.. codeauthor:: Ueli Sauter 
-.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
 """
 import logging
 from typing import Union

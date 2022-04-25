@@ -1,8 +1,10 @@
 """
-Module of helper functions for chemicals, elements, and unit handling.
+**helpers**: helper functions for the ``transform`` package
+-----------------------------------------------------------
+.. codeauthor:: 
+    Peter Kraus,
+    Ueli Sauter
 
-.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
-.. codeauthor:: Ueli Sauter
 """
 
 import pint
