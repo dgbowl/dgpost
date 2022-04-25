@@ -1,4 +1,7 @@
 **dgpost** version history
 --------------------------
 
-No currently released version.
+.. toctree::
+   :maxdepth: 1
+
+   version.v1.0
