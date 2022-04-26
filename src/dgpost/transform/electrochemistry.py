@@ -1,5 +1,5 @@
 """
-``electrochemistry``: calculations relevant in electrochemistry
+**electrochemistry**: calculations relevant in electrochemistry
 ---------------------------------------------------------------
 .. codeauthor:: 
     Peter Kraus

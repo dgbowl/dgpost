@@ -1,5 +1,5 @@
 """
-``save``: Save a table into a file.
+**save**: Save a table into a file.
 -----------------------------------
 .. codeauthor:: 
     Ueli Sauter, 

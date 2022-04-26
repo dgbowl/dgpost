@@ -1,5 +1,5 @@
 """
-``catalysis``: common calculations in catalytic testing
+**catalysis**: common calculations in catalytic testing
 -------------------------------------------------------
 .. codeauthor:: 
     Peter Kraus

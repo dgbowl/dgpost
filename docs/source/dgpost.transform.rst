@@ -1,5 +1,5 @@
-dgpost.transform package
-========================
+**dgpost.transform** package
+============================
 
 .. automodule:: dgpost.transform
    :members:

@@ -1,6 +1,6 @@
 """
-**helpers**: helper functions for the ``transform`` package
------------------------------------------------------------
+**helpers**: helper functions for the :mod:`~dgpost.transform` package
+----------------------------------------------------------------------
 .. codeauthor:: 
     Peter Kraus,
     Ueli Sauter

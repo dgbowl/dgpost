@@ -1,5 +1,5 @@
 """
-``rates``: determining molar rates of chemical species
+**rates**: determining molar rates of chemical species
 ------------------------------------------------------
 .. codeauthor:: 
     Peter Kraus

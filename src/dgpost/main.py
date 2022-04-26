@@ -19,11 +19,11 @@ def run(path: str) -> tuple[dict, dict]:
     Main API execution function. Loads the `recipe` from the provided ``path``, 
     and processes the following entries, in order:
 
-    - ``load``,
-    - ``extract``,
-    - ``transform``,
-    - ``plot``,
-    - ``save``.
+    - :mod:`~dgpost.utils.load`,
+    - :mod:`~dgpost.utils.extract`,
+    - :mod:`~dgpost.utils.transform`,
+    - :mod:`~dgpost.utils.plot`,
+    - :mod:`~dgpost.utils.save`.
 
     .. note::
 

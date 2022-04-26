@@ -1,5 +1,5 @@
 """
-``impedance``: fitting electrochemical impedance spectra
+**impedance**: fitting electrochemical impedance spectra
 --------------------------------------------------------
 .. codeauthor::
     Ueli Sauter,

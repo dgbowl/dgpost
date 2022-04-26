@@ -1,5 +1,5 @@
 """
-``transform``: Reproducible transformations made simple.
+**transform**: Reproducible transformations made simple.
 --------------------------------------------------------
 .. codeauthor:: 
     Peter Kraus

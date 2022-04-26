@@ -1,5 +1,5 @@
 """
-``plot``: Reproducible plots from a table.
+**plot**: Reproducible plots from a table.
 ------------------------------------------
 .. codeauthor:: 
     Ueli Sauter, 

@@ -1,5 +1,5 @@
-dgpost.utils package
-====================
+**dgpost.utils** package
+========================
 
 .. automodule:: dgpost.utils
    :members:
