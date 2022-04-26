@@ -15,7 +15,7 @@ setuptools.setup(
     cmdclass=cmdclass,
     author="Peter Kraus",
     author_email="peter@tondon.de",
-    description="datagram postprocessing tools",
+    description="datagram post-processing toolkit",
     long_description=readme,
     long_description_content_type="text/markdown",
     url="https://github.com/dgbowl/dgpost",

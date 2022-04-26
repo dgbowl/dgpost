@@ -1,4 +1,4 @@
-# dgpost: datagram postprocessing tools
+# dgpost: datagram post-processing toolkit
 
 [![Documentation](https://badgen.net/badge/docs/dgbowl.github.io/grey?icon=firefox)](https://dgbowl.github.io/dgpost)
 [![PyPi version](https://badgen.net/pypi/v/dgpost/?icon=pypi)](https://pypi.org/project/dgpost)

@@ -1,5 +1,5 @@
-**dgpost**: Datagram postprocessing tools
-=========================================
+**dgpost**: datagram post-processing toolkit
+============================================
 
 A set of datagram postprocessing tools, functions, visualisations and export scripts.
 

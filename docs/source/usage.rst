@@ -3,7 +3,7 @@
 dgpost is intended for use in two modes:
 
 - with a recipe as an executable: ``dgpost <recipe.yml>``
-- as a Python library (``import dgpost``)
+- as a Python library: ``import dgpost.utils`` and ``import dgpost.transform``
 
 These two usage modes are described below:
 
