@@ -40,20 +40,22 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">dgpost features</span></p>
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html"><strong>dgpost</strong> installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html"><strong>dgpost</strong> usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>dgpost</strong> features</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pandas-compatibility">Pandas compatibility</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#units-and-uncertainties">Units and uncertainties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#provenance">Provenance</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="version.html"><strong>dgpost</strong> version history</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">dgpost components</span></p>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html"><strong>dgpost</strong> autodocs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong> autodocs</a></li>
 </ul>
 
         </div>
@@ -82,36 +84,47 @@
              
   <section id="dgpost-features">
 <h1><strong>dgpost</strong> features<a class="headerlink" href="#dgpost-features" title="Permalink to this headline"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For an overview of the data-processing features within dgpost, see the
+documentation of the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module.</p>
+</div>
 <section id="pandas-compatibility">
 <h2><a class="reference external" href="https://pandas.pydata.org/">Pandas</a> compatibility<a class="headerlink" href="#pandas-compatibility" title="Permalink to this headline"></a></h2>
-<p>One of the design goals of dgpost was to create a library that can be used with
-<cite>datagrams</cite> and “custom” <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> created by dgpost, as well as with
-“standard” <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> created e.g. by parsing an <code class="docutils literal notranslate"><span class="pre">xlsx</span></code> or <code class="docutils literal notranslate"><span class="pre">csv</span></code>
+<p>One of the design goals of dgpost was to develop a library that can be used with
+<cite>datagrams</cite>, the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> created by dgpost, as well as with any
+other <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code>, created e.g. by parsing an <code class="docutils literal notranslate"><span class="pre">xlsx</span></code> or <code class="docutils literal notranslate"><span class="pre">csv</span></code>
 file.</p>
 <p>This is achieved by placing some necessary requirements on the functions in the
-<a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module (able to process <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects,
-returning data in a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">pint.Quantity]</span></code> format), as well as by the
-custom decorator function <a class="reference internal" href="dgpost.transform.html#dgpost.transform.helpers.load_data" title="dgpost.transform.helpers.load_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.transform.helpers.load_data()</span></code></a> which handles
-data extraction from <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> for the called <code class="docutils literal notranslate"><span class="pre">transform</span></code> function
-transparently to the user.</p>
+<a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module. The key requirements are:</p>
+<ul class="simple">
+<li><p>the function must process <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects,</p></li>
+<li><p>the function must return data in a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">pint.Quantity]</span></code> format.</p></li>
+</ul>
+<p>If these requirements are met, the decorator function
+<a class="reference internal" href="dgpost.transform.html#dgpost.transform.helpers.load_data" title="dgpost.transform.helpers.load_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_data()</span></code></a> can be used to either extract data
+from the supplied <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>, or wrap directly supplied data into
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects, and supply those into the called <code class="docutils literal notranslate"><span class="pre">transform</span></code>
+function transparently to the user.</p>
 </section>
 <section id="units-and-uncertainties">
 <h2>Units and uncertainties<a class="headerlink" href="#units-and-uncertainties" title="Permalink to this headline"></a></h2>
 <p>Another key objective of dgpost is to allow and encourage annotating data by units
 as well as error estimates / uncertainties. The design philosophy here is that by
-building unit- and uncertainty- awareness into the toolchain, its may be encouraged
+building unit- and uncertainty- awareness into the toolchain, users will be encouraged
 to use it, and in case of uncertainties, be more thoughtful about the limitations
 of their data.</p>
-<p>As discussed in the <a class="reference external" href="https://dgbowl.github.io/yadg/master/features.html">documentation of yadg</a>,
+<p>As discussed in the
+<a class="reference external" href="https://dgbowl.github.io/yadg/master/features.html">documentation of yadg</a>,
 when experimental data is loaded from <cite>datagrams</cite>, it is annotated with units by
 default. In dgpost, the units for the data in each column in each table are stored
-in the <code class="docutils literal notranslate"><span class="pre">df.attrs[&quot;units&quot;]</span></code> <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">str]</span></code>, and they are exported
-appropriately when the table is saved. If the <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code> attribute does not
-contain the <code class="docutils literal notranslate"><span class="pre">&quot;units&quot;</span></code> entry, the underlying data is assumed to be unitless,
-and the default units selected by the developers are applied to the data passed
-into each function from the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module. Internally, all units
-are handled using yadg’s custom <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.UnitRegistry</span></code>, via the
-<a class="reference external" href="https://pint.readthedocs.io/en/stable/">pint</a> library.</p>
+as a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">str]</span></code> in the <code class="docutils literal notranslate"><span class="pre">&quot;units&quot;</span></code> key of the  <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code> attribute,
+and they are extracted and exported appropriately when the table is saved.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code> attribute does not contain the <code class="docutils literal notranslate"><span class="pre">&quot;units&quot;</span></code> entry, dgpost assumes
+the underlying data is unitless, and the default units selected for each function in
+the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> library by its developers are applied to the data.
+Internally, all units are handled using yadg’s custom <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.UnitRegistry</span></code>,
+via the <a class="reference external" href="https://pint.readthedocs.io/en/stable/">pint</a> library.</p>
 <p>Uncertainties are handled using the linear uncertainty propagation library,
 <a class="reference external" href="https://pythonhosted.org/uncertainties/">uncertainties</a>. As the input data for
 the functions in the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module is passed using
@@ -122,7 +135,14 @@ The notable exceptions here are transformations using fitting functions from the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">floats</span></code> are expected - this has to be handled explicitly by the developer.</p>
 <p>When saving tables created in dgpost, the units are appended to the column
 names (<code class="docutils literal notranslate"><span class="pre">csv/xlsx</span></code>) or stored in the table (<code class="docutils literal notranslate"><span class="pre">pkl/json</span></code>), while the uncertainties
-may be optionally dropped from the exported table.</p>
+may be optionally dropped from the exported table; see <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.save</span></code></a>.</p>
+</section>
+<section id="provenance">
+<h2>Provenance<a class="headerlink" href="#provenance" title="Permalink to this headline"></a></h2>
+<p>Provenance tracking is implemented in dgpost using the <code class="docutils literal notranslate"><span class="pre">&quot;meta&quot;</span></code> entry of the
+<code class="docutils literal notranslate"><span class="pre">df.attrs</span></code> attribute of the created <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>. This entry is exported
+when the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> is saved as <code class="docutils literal notranslate"><span class="pre">pkl/json</span></code>, and contains dgpost version
+information as well as a copy of the <cite>recipe</cite> used to create the saved object.</p>
 </section>
 </section>
 
@@ -137,7 +157,7 @@ may be optionally dropped from the exported table.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022, dgbowl contributors.</p>
+    <p>&#169; Copyright 2021-2022, dgpost authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

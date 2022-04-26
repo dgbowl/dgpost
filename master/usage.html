@@ -40,7 +40,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">dgpost features</span></p>
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html"><strong>dgpost</strong> installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>dgpost</strong> usage</a><ul>
@@ -51,9 +51,10 @@
 <li class="toctree-l1"><a class="reference internal" href="features.html"><strong>dgpost</strong> features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="version.html"><strong>dgpost</strong> version history</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">dgpost components</span></p>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html"><strong>dgpost</strong> autodocs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong> autodocs</a></li>
 </ul>
 
         </div>
@@ -85,7 +86,7 @@
 <p>dgpost is intended for use in two modes:</p>
 <ul class="simple">
 <li><p>with a recipe as an executable: <code class="docutils literal notranslate"><span class="pre">dgpost</span> <span class="pre">&lt;recipe.yml&gt;</span></code></p></li>
-<li><p>as a Python library (<code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">dgpost</span></code>)</p></li>
+<li><p>as a Python library: <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">dgpost.utils</span></code> and <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">dgpost.transform</span></code></p></li>
 </ul>
 <p>These two usage modes are described below:</p>
 <section id="dgpost-as-an-executable">
@@ -94,14 +95,14 @@
 <cite>recipe</cite>, written in <code class="docutils literal notranslate"><span class="pre">yaml</span></code>, which includes a prescription of the steps to be
 performed by dgpost. Currently supported steps are:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.load</span></code></a>: load a <cite>datagram</cite> or a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></li>
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.extract" title="dgpost.utils.extract"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.extract</span></code></a>: extract and interpolate data from the loaded files
+<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a>: load a <cite>datagram</cite> or a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></li>
+<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.extract" title="dgpost.utils.extract"><code class="xref py py-mod docutils literal notranslate"><span class="pre">extract</span></code></a>: extract and interpolate data from the loaded files
 into a table</p></li>
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.transform" title="dgpost.utils.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.transform</span></code></a>: use a function from the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a>
+<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.transform" title="dgpost.utils.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">transform</span></code></a>: use a function from the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a>
 library to process the data in the table, creating new columns</p></li>
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.plot" title="dgpost.utils.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.plot</span></code></a>: plot parts of the table using our custom wrapper
+<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.plot" title="dgpost.utils.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code></a>: plot parts of the table using our custom wrapper
 around <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.save</span></code></a>: export the created table for further use</p></li>
+<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">save</span></code></a>: export the created table for further use</p></li>
 </ul>
 <p>Each of the above keywords can be only specified once in the <cite>recipe</cite>, however more
 than one command can be specified for each of the keywords (i.e. it’s possible to
@@ -116,7 +117,7 @@ standard python library with <code class="docutils literal notranslate"><span cl
 split into two key modules:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils" title="dgpost.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils</span></code></a> module, containing the ancilliary data management functions
-of dgbowl, and</p></li>
+of dgpost, and</p></li>
 <li><p><a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module, containing all “scientific” data transformation
 functions.</p></li>
 </ul>
@@ -136,7 +137,7 @@ of dgpost can be used from within e.g. Jupyter notebooks in this way.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022, dgbowl contributors.</p>
+    <p>&#169; Copyright 2021-2022, dgpost authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
