@@ -1,5 +1,5 @@
 """
-``parse``: YAML and JSON input handler
+**parse**: YAML and JSON input handler
 --------------------------------------
 
 .. codeauthor:: 

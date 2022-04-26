@@ -1,5 +1,5 @@
 """
-``extract``: Data extraction and interpolation routine.
+**extract**: Data extraction and interpolation routine.
 -------------------------------------------------------
 .. codeauthor::
     Peter Kraus

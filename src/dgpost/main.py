@@ -1,5 +1,8 @@
 """
-Main module - execution functions for dgpost.
+dgpost.main
+===========
+
+Module containing the execution functions for dgpost.
 
 """
 import argparse
@@ -13,7 +16,20 @@ from dgpost.utils import parse, load, extract, transform, save, plot
 
 def run(path: str) -> tuple[dict, dict]:
     """
-    Main API execution function.
+    Main API execution function. Loads the `recipe` from the provided ``path``,
+    and processes the following entries, in order:
+
+    - :mod:`~dgpost.utils.load`,
+    - :mod:`~dgpost.utils.extract`,
+    - :mod:`~dgpost.utils.transform`,
+    - :mod:`~dgpost.utils.plot`,
+    - :mod:`~dgpost.utils.save`.
+
+    .. note::
+
+        When saving a table, its metadata entry will contain dgpost version
+        information, as well as a copy of the `recipe` used to create the saved
+        object.
 
     Parameters
     ----------

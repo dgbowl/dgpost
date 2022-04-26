@@ -1,6 +1,6 @@
 **dgpost** installation
 -----------------------
-Released versions of dgpost are available on the Python Package Index (|pypi|).
+Released versions of dgpost are available on the Python Package Index |pypi|.
 Those can be installed using ``pip``:
 
 .. code:: bash
@@ -9,7 +9,7 @@ Those can be installed using ``pip``:
 
 Use the optional argument ``--pre`` to get the latest tagged development version.
 
-To install dgpost from source on Github (|gh|), you first need to clone the repository 
+To install dgpost from source on Github, |gh|, you first need to clone the repository 
 and then you can install the development version of the package using ``pip``:
 
 .. code:: bash

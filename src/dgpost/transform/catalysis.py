@@ -1,11 +1,18 @@
 """
-Module of transformations relevant to catalysis applications.
+**catalysis**: common calculations in catalytic testing
+-------------------------------------------------------
+.. codeauthor:: 
+    Peter Kraus
 
-For the functions in this module, the inlet and outlet compositions are specified using
-the ``xin`` and ``xout`` arguments, the keys of which are the species names in the 
-inlet / outlet compositions, respectively. These keys are parsed to SMILES, and the
-cross-matching of ``feestock``, ``standard``, and components of ``xin`` and ``xout``
-is performed using these SMILES.
+Includes functions to calculate the reactant- and product-based 
+:func:`~dgpost.transform.catalysis.conversion`, atom-based 
+:func:`~dgpost.transform.catalysis.selectivity`, catalytic 
+:func:`~dgpost.transform.catalysis.yield`, and 
+:func:`~dgpost.transform.catalysis.atom_balance`.
+
+Names of compounds within the specified mixtures are parsed to SMILES, and the
+cross-matching of the ``feestock``, internal ``standard``, and the components of 
+``xin`` and ``xout`` is performed using these SMILES.
 
 .. note::
     This module assumes that the provided inlet (``xin``) and outlet (``xout``) 
@@ -15,7 +22,6 @@ is performed using these SMILES.
     using functions in the :mod:`dgpost.transform.rates` before using the functions 
     in this module.
 
-.. codeauthor:: Peter Kraus <peter.kraus@empa.ch>
 """
 
 import pint
@@ -35,9 +41,9 @@ from .helpers import (
     ("xout", None, dict),
 )
 def conversion(
-    feedstock: str,
     xin: dict[str, pint.Quantity],
     xout: dict[str, pint.Quantity],
+    feedstock: str,
     element: str = None,
     product: bool = True,
     standard: str = "N2",
@@ -76,7 +82,7 @@ def conversion(
 
     Returns
     -------
-    ret
+    ret: dict[str, pint.Quantity]
         A :class:`dict` containing the calculated conversion with ``output`` as its key.
 
     """
@@ -124,27 +130,27 @@ def conversion(
     ("xout", None, dict),
 )
 def selectivity(
-    feedstock: str,
     xin: dict[str, pint.Quantity],
     xout: dict[str, pint.Quantity],
+    feedstock: str,
     element: str = None,
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
-    Calculates product-based elemental selectivities, excluding the feedstock. The sum
+    Calculates product-based atomic selectivities, excluding the feedstock. The sum
     of selectivities is normalised to unity.
 
     Parameters
     ----------
-    feedstock
-        Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
-        ``xout``.
-
     xin
         Prefix of the columns determining the inlet composition.
 
     xout
         Prefix of the columns determining the outlet composition.
+
+    feedstock
+        Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
+        ``xout``.
 
     element
         The element for determining conversion. If not specified, set from ``feedstock``
@@ -155,7 +161,7 @@ def selectivity(
 
     Returns
     -------
-    ret
+    ret: dict[str, pint.Quantity]
         A :class:`dict` containing the calculated selectivities using ``output`` as
         the prefix for each key.
 
@@ -196,9 +202,9 @@ def selectivity(
     ("xout", None, dict),
 )
 def catalytic_yield(
-    feedstock: str,
     xin: dict[str, pint.Quantity],
     xout: dict[str, pint.Quantity],
+    feedstock: str,
     element: str = None,
     standard: str = "N2",
     output: str = None,
@@ -211,15 +217,16 @@ def catalytic_yield(
 
     Parameters
     ----------
-    feedstock
-        Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
-        ``xout``.
-
     xin
         Prefix of the columns determining the inlet composition.
 
     xout
         Prefix of the columns determining the outlet composition.
+
+    feedstock
+        Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
+        ``xout``.
+
 
     element
         The element for determining conversion. If not specified, set from ``feedstock``
@@ -233,7 +240,7 @@ def catalytic_yield(
 
     Returns
     -------
-    ret
+    ret: dict[str, pint.Quantity]
         A :class:`dict` containing the calculated yields using ``output`` as
         the prefix for each key.
 
@@ -310,10 +317,9 @@ def atom_balance(
 
     Returns
     -------
-    ret
+    ret: dict[str, pint.Quantity]
         A :class:`dict` containing the calculated atomic balance using ``output`` as
         the key.
-
 
     """
     smiles = columns_to_smiles(xin=xin, xout=xout)

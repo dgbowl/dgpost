@@ -1,5 +1,5 @@
 """
-``load``: Datagram and table loading routine
+**load**: Datagram and table loading routine
 --------------------------------------------
 .. codeauthor:: 
     Ueli Sauter, 
