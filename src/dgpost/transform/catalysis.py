@@ -147,7 +147,7 @@ def selectivity(
 
     xout
         Prefix of the columns determining the outlet composition.
-    
+
     feedstock
         Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
         ``xout``.
@@ -222,7 +222,7 @@ def catalytic_yield(
 
     xout
         Prefix of the columns determining the outlet composition.
-    
+
     feedstock
         Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
         ``xout``.

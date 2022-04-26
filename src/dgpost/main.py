@@ -16,7 +16,7 @@ from dgpost.utils import parse, load, extract, transform, save, plot
 
 def run(path: str) -> tuple[dict, dict]:
     """
-    Main API execution function. Loads the `recipe` from the provided ``path``, 
+    Main API execution function. Loads the `recipe` from the provided ``path``,
     and processes the following entries, in order:
 
     - :mod:`~dgpost.utils.load`,
@@ -27,8 +27,8 @@ def run(path: str) -> tuple[dict, dict]:
 
     .. note::
 
-        When saving a table, its metadata entry will contain dgpost version 
-        information, as well as a copy of the `recipe` used to create the saved 
+        When saving a table, its metadata entry will contain dgpost version
+        information, as well as a copy of the `recipe` used to create the saved
         object.
 
     Parameters
