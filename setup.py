@@ -24,13 +24,15 @@ setuptools.setup(
         "Documentation": "https://dgbowl.github.io/dgpost/"
     },
     classifiers=[
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Operating System :: OS Independent",
     ],
     package_dir={"": packagedir},
     packages=setuptools.find_packages(where=packagedir),
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     install_requires=[
         "numpy",
         "uncertainties",
@@ -38,7 +40,7 @@ setuptools.setup(
         "openpyxl",
         "pint>=0.18",
         "chemicals>=1.0.0",
-        "rdkit-pypi>=2021",
+        "rdkit-pypi>=2022",
         "yadg>=4.1.0rc1",
         "dgbowl-schemas>=102",
         "matplotlib>=3.5.0",
