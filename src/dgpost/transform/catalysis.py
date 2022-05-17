@@ -12,16 +12,16 @@ Includes functions to calculate the reactant- and product-based
 
 Names of compounds within the specified mixtures are parsed to SMILES, and the
 cross-matching of the ``feestock``, internal ``standard``, and the components of 
-``xin`` and ``xout`` is performed using these SMILES.
+``xin`` and ``xout`` (or ``rin`` and ``rout``) is performed using these SMILES.
 
 .. note::
 
-    This module assumes that the provided inlet (``xin``) and outlet (``xout``) 
-    compositions contains all species, and that the atomic balance of the inlet and 
-    outlet is near unity. If multiple inlet/outlet streams are present in the 
-    experiment, they need to be appropriately combined into a single namespace, e.g.
-    using functions in the :mod:`dgpost.transform.rates` before using the functions 
-    in this module.
+    This module assumes that the provided inlet and outlet compositions, whether
+    mole fractions or molar rates, contain all species. This implies that the 
+    atomic balance of the inlet and outlet is near unity. If multiple inlet/outlet 
+    streams are present in the experiment, they need to be appropriately combined 
+    into a single namespace, e.g. using functions in the :mod:`dgpost.transform.rates` 
+    before using the functions in this module.
 
 """
 
@@ -66,7 +66,8 @@ def conversion(
     The product-based conversion :math:`X_p` is calculated using the outlet mole 
     fractions :math:`x_\\text{out}(s)` of species :math:`s`, or the outlet molar 
     rates :math:`\\dot{n}_\\text{out}(s)`. It is calculated on an elemental basis 
-    by considering the number of atoms of a certain element :math:`n_\\text{el}` as:
+    by considering the number of atoms of a certain element, :math:`n_\\text{el}`, 
+    as:
 
     .. math::
 
@@ -90,16 +91,17 @@ def conversion(
         {n_\\text{el}(f) \\dot{n}_\\text{in}(f)}
 
     Here, the expansion factor :math:`f_e` is introduced, which is defined as the
-    expansion ratio of the internal standard (by default N2) in the mixture: 
-    :math:`f_e = x_\\text{out}(\\text{i.s.}) / x_\\text{in}(\\text{i.s.})`. When
-    molar rates :math:`\\dot{n}` are used, accounting for expansion in this way is 
-    not necessary.
+    expansion ratio of the internal ``standard`` in the mixture: 
+    :math:`f_e = x_\\text{out}(\\text{i.s.}) / x_\\text{in}(\\text{i.s.})`. The 
+    internal standard is set to N2 by default. When molar rates :math:`\\dot{n}` 
+    are used, accounting for expansion in this way is not necessary.
 
     .. note::
 
-        Calculating product-based conversion :math:`X_p` using inlet mole fraction
-        of feedstock is not ideal and should be avoided. A warning will be raised 
-        by the program.
+        Calculating product-based conversion :math:`X_m` using inlet mole fraction
+        of feedstock is not ideal and should be avoided, as the value is strongly
+        convoluted with the :func:`atom_balance` of the mixtures. A warning will be 
+        raised by the program.
     
     Finally, the calculation of reactant-based (or feedstock-based) conversion, 
     :math:`X_r`, proceeds as follows:
@@ -114,9 +116,9 @@ def conversion(
 
     .. warning::
 
-        Note that the calculated values of :math:`X_p` and :math:`X_r` will differ
-        from one another in cases where the atomic balances of the inlet and outlet
-        mixtures are different from unity!
+        Note that the calculated values of :math:`X_p`, :math:`X_m`, and :math:`X_r` 
+        will differ from one another in cases where the atomic balances of the inlet 
+        and outlet mixtures are different from unity!
 
     Parameters
     ----------
@@ -435,10 +437,10 @@ def atom_balance(
     output: str = None,
 ) -> None:
     """
-    Calculates the atom balance of an ``element`` :math:`el` between the inlet 
-    and outlet mixtures. The total number of atoms of the specified element is 
-    compared between between the inlet and outlet, normalized by an internal 
-    standard if necessary:
+    Calculates the atom balance of an ``element`` :math:`\\text{el}` between the 
+    inlet and outlet mixtures. The total number of atoms of the specified element 
+    is compared between between the inlet and outlet, normalized by an internal 
+    ``standard`` if necessary:
 
     .. math::
 
@@ -450,7 +452,7 @@ def atom_balance(
 
     Here the sum runs over all species :math:`s`, :math:`n_\\text{el}(s)` is the 
     number of atoms of element :math:`\\text{el}` in :math:`s`,  and :math:`f_e` 
-    is the expansion factor calculated using the internal standard as
+    is the expansion factor calculated using the internal ``standard`` as
     :math:`f_e = x_\\text{out}(\\text{i.s.}) / x_\\text{in}(\\text{i.s.})`.
 
     Parameters
