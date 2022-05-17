@@ -9,11 +9,7 @@
         {
             "metadata": {
                 "tag": "a",
-                "parser": {
-                    "meascsv": {
-                        "version": "4.0.0"
-                    }
-                }
+                "parser": "meascsv"
             },
             "data": [
                 {
@@ -81,11 +77,7 @@
         {
             "metadata": {
                 "tag": "b1",
-                "parser": {
-                    "chromtrace": {
-                        "version": "4.0.0"
-                    }
-                }
+                "parser": "chromtrace"
             },
             "data": [
                 {
@@ -138,11 +130,7 @@
         {
             "metadata": {
                 "tag": "b2",
-                "parser": {
-                    "chromtrace": {
-                        "version": "4.0.0"
-                    }
-                }
+                "parser": "chromtrace"
             },
             "data": [
                 {
@@ -165,11 +153,7 @@
         {
             "metadata": {
                 "tag": "b3",
-                "parser": {
-                    "chromtrace": {
-                        "version": "4.0.0"
-                    }
-                }
+                "parser": "chromtrace"
             },
             "data": [
                 {
@@ -222,11 +206,7 @@
         {
             "metadata": {
                 "tag": "c",
-                "parser": {
-                    "chromtrace": {
-                        "version": "4.0.0"
-                    }
-                }
+                "parser": "chromtrace"
             },
             "data": [
                 {
