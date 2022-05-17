@@ -41,7 +41,7 @@ setuptools.setup(
         "pint>=0.18",
         "chemicals>=1.0.0",
         "rdkit-pypi>=2022",
-        "yadg>=4.1.0rc1",
+        "yadg>=4.1",
         "dgbowl-schemas>=102",
         "matplotlib>=3.5.0",
     ],

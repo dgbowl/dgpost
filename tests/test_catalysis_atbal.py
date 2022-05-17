@@ -91,6 +91,7 @@ def test_atbal_against_excel(inpath, spec, outkeys, datadir):
     for col in outkeys:
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
 
+
 def test_atbal_rinxin(datadir):
     os.chdir(datadir)
     df = pd.read_pickle("rinxin.pkl")
@@ -102,4 +103,3 @@ def test_atbal_rinxin(datadir):
     assert np.allclose(df["C2"], np.array([1.0, 1.0, 0.995, 1.005, 1.01, 0.99]))
     assert np.allclose(df["O1"], np.array([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))
     assert np.allclose(df["O2"], np.array([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))
-    

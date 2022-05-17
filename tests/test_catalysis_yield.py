@@ -92,10 +92,10 @@ def test_yield_rinxin(datadir):
             atol=1e-6,
         ), f"yield of CO is wrong for {col}"
         assert np.allclose(
-            df[f"{col}->CO2"], 
+            df[f"{col}->CO2"],
             np.array([0.04, 0.09, 0.08593, 0.09403, 0.09, 0.09]),
             atol=1e-6,
-       ), f"yield of CO2 is wrong for {col}"
+        ), f"yield of CO2 is wrong for {col}"
     for col in ["Yp3"]:
         assert np.allclose(
             df[f"{col}->CO"],
@@ -103,7 +103,7 @@ def test_yield_rinxin(datadir):
             atol=1e-6,
         ), f"yield of CO is wrong for {col}"
         assert np.allclose(
-            df[f"{col}->CO2"], 
+            df[f"{col}->CO2"],
             np.array([0.04, 0.09, 0.0855, 0.0945, 0.0909, 0.0891]),
             atol=1e-6,
-       ), f"yield of CO2 is wrong for {col}"
+        ), f"yield of CO2 is wrong for {col}"

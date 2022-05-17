@@ -58,57 +58,57 @@ def conversion(
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
-    Calculates the conversion of ``feedstock`` :math:`f` into other products 
-    :math:`p`. The feedstock must be a species present in the inlet. By default, 
-    a product-based carbon conversion (:math:`\\text{el} = \\text{C}`), using 
+    Calculates the conversion of ``feedstock`` :math:`f` into other products
+    :math:`p`. The feedstock must be a species present in the inlet. By default,
+    a product-based carbon conversion (:math:`\\text{el} = \\text{C}`), using
     data from the outlet, is computed.
 
-    The product-based conversion :math:`X_p` is calculated using the outlet mole 
-    fractions :math:`x_\\text{out}(s)` of species :math:`s`, or the outlet molar 
-    rates :math:`\\dot{n}_\\text{out}(s)`. It is calculated on an elemental basis 
-    by considering the number of atoms of a certain element, :math:`n_\\text{el}`, 
+    The product-based conversion :math:`X_p` is calculated using the outlet mole
+    fractions :math:`x_\\text{out}(s)` of species :math:`s`, or the outlet molar
+    rates :math:`\\dot{n}_\\text{out}(s)`. It is calculated on an elemental basis
+    by considering the number of atoms of a certain element, :math:`n_\\text{el}`,
     as:
 
     .. math::
 
-        X_{p, \\text{el}} = 
+        X_{p, \\text{el}} =
         \\frac{\\sum_{s} n_\\text{el}(s) x_\\text{out}(s) - n_\\text{el}(f) x_\\text{out}(f)}
-        {\\sum_{s} n_\\text{el}(s) x_\\text{out}(s)} = 
+        {\\sum_{s} n_\\text{el}(s) x_\\text{out}(s)} =
         \\frac{\\sum_{s} n_\\text{el}(s) \\dot{n}_\\text{out}(s) - n_\\text{el}(f) \\dot{n}_\\text{out}(f)}
         {\\sum_{s} n_\\text{el}(s) \\dot{n}_\\text{out}(s)}
-    
+
     Which requires the feedstock :math:`f` to be quantified in the outlet composition.
     If the outlet composition of :math:`f` is found to be zero at all timesteps, its
-    value in the the inlet composition is used instead, and a "mixed" conversion 
-    :math:`X_m` is calculated instead: 
+    value in the the inlet composition is used instead, and a "mixed" conversion
+    :math:`X_m` is calculated instead:
 
     .. math::
 
-        X_{m, \\text{el}} = 
+        X_{m, \\text{el}} =
         \\frac{\\sum_{p}^{p\\ne f} n_\\text{el}(p) x_\\text{out}(p) f_e}
-        {n_\\text{el}(f) x_\\text{in}(f)} = 
+        {n_\\text{el}(f) x_\\text{in}(f)} =
         \\frac{\\sum_{p}^{p\\ne f} n_\\text{el}(p) \\dot{n}_\\text{out}(s)}
         {n_\\text{el}(f) \\dot{n}_\\text{in}(f)}
 
     Here, the expansion factor :math:`f_e` is introduced, which is defined as the
-    expansion ratio of the internal ``standard`` in the mixture: 
-    :math:`f_e = x_\\text{out}(\\text{i.s.}) / x_\\text{in}(\\text{i.s.})`. The 
-    internal standard is set to N2 by default. When molar rates :math:`\\dot{n}` 
+    expansion ratio of the internal ``standard`` in the mixture:
+    :math:`f_e = x_\\text{out}(\\text{i.s.}) / x_\\text{in}(\\text{i.s.})`. The
+    internal standard is set to N2 by default. When molar rates :math:`\\dot{n}`
     are used, accounting for expansion in this way is not necessary.
 
     .. note::
 
         Calculating product-based conversion :math:`X_m` using inlet mole fraction
         of feedstock is not ideal and should be avoided, as the value is strongly
-        convoluted with the :func:`atom_balance` of the mixtures. A warning will be 
+        convoluted with the :func:`atom_balance` of the mixtures. A warning will be
         raised by the program.
-    
-    Finally, the calculation of reactant-based (or feedstock-based) conversion, 
+
+    Finally, the calculation of reactant-based (or feedstock-based) conversion,
     :math:`X_r`, proceeds as follows:
 
     .. math::
 
-        X_{r} = \\frac{x_\\text{in}(f) -  x_\\text{out}(f) f_e}{x_\\text{in}(f)} = 
+        X_{r} = \\frac{x_\\text{in}(f) -  x_\\text{out}(f) f_e}{x_\\text{in}(f)} =
         \\frac{\\dot{n}_\\text{in}(f) - \\dot{n}_\\text{out}(f)}{\\dot{n}_\\text{in}(f)}
 
     The selection of the element :math:`\\text{el}` is meaningless for the reactant
@@ -116,8 +116,8 @@ def conversion(
 
     .. warning::
 
-        Note that the calculated values of :math:`X_p`, :math:`X_m`, and :math:`X_r` 
-        will differ from one another in cases where the atomic balances of the inlet 
+        Note that the calculated values of :math:`X_p`, :math:`X_m`, and :math:`X_r`
+        will differ from one another in cases where the atomic balances of the inlet
         and outlet mixtures are different from unity!
 
     Parameters
@@ -135,15 +135,15 @@ def conversion(
         A dictionary containing the composition of the outlet mixture with the names
         of the chemicals as :class:`str` keys. Has to be supplied with ``xin``.
         Cannot be supplied with ``rin`` or ``rout``.
-    
+
     rin
-        A dictionary containing the molar rates of species in the inlet mixture 
-        with the names of the chemicals as :class:`str` keys. Has to be supplied 
+        A dictionary containing the molar rates of species in the inlet mixture
+        with the names of the chemicals as :class:`str` keys. Has to be supplied
         with ``rout``. Cannot be supplied with ``xin`` or ``xout``.
 
     rout
-        A dictionary containing the molar rates of species in the outlet mixture 
-        with the names of the chemicals as :class:`str` keys. Has to be supplied 
+        A dictionary containing the molar rates of species in the outlet mixture
+        with the names of the chemicals as :class:`str` keys. Has to be supplied
         with ``rin``. Cannot be supplied with ``xin`` or ``xout``.
 
     element
@@ -186,7 +186,7 @@ def conversion(
     else:
         logging.debug(
             "Calculation using molar fractions. Expansion factor derived from '%s'",
-            standard
+            standard,
         )
         sd = smiles[name_to_chem(standard).smiles]
         exp = inp[sd["inp"]] / out[sd["out"]]
@@ -211,7 +211,7 @@ def conversion(
             f_out = out[fd["out"]] * element_from_formula(fform, element)
         else:
             f_out = None
-        
+
         for v in smiles.values():
             if "out" in v:
                 formula = v["chem"].formula
@@ -242,22 +242,22 @@ def selectivity(
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
-    Calculates product-based atomic selectivities of all species :math:`s`, 
-    excluding the ``feedstock`` :math:`f`. The sum of selectivities is normalised 
-    to unity. Works with both mole fractions :math:`x` as well as molar rates 
+    Calculates product-based atomic selectivities of all species :math:`s`,
+    excluding the ``feedstock`` :math:`f`. The sum of selectivities is normalised
+    to unity. Works with both mole fractions :math:`x` as well as molar rates
     :math:`\\dot{n}`:
 
     .. math::
 
-        S_\\text{el}(p) = 
+        S_\\text{el}(p) =
         \\frac{\\sum_{p}^{p \\ne f} n_\\text{el}(p) x_\\text{out}(p)}
-        {\\sum_{s} n_\\text{el}(s) x_\\text{out}(s)} = 
+        {\\sum_{s} n_\\text{el}(s) x_\\text{out}(s)} =
         \\frac{\\sum_{p}^{p \\ne f} n_\\text{el}(p) \\dot{n}_\\text{out}(p)}
         {\\sum_{s} n_\\text{el}(s) \\dot{n}_\\text{out}(s)}
 
-    Only the outlet fractions/rates are considered. The sum on in the numerator runs 
-    over all products :math:`p` (i.e. :math:`p \\ne f`), while the sum in the 
-    denominator runs over all species :math:`s`. The value :math:`n_\\text{el}(s)` 
+    Only the outlet fractions/rates are considered. The sum on in the numerator runs
+    over all products :math:`p` (i.e. :math:`p \\ne f`), while the sum in the
+    denominator runs over all species :math:`s`. The value :math:`n_\\text{el}(s)`
     is the number of atoms of element :math:`\\text{el}` in species :math:`s`.
 
     .. note::
@@ -276,7 +276,7 @@ def selectivity(
 
     rout
         Prefix of the columns determining the outlet molar rates.
-    
+
     element
         The element for determining conversion. If not specified, set from ``feedstock``
         using :func:`dgpost.transform.chemhelpers.default_element`.
@@ -342,17 +342,17 @@ def catalytic_yield(
     output: str = None,
 ) -> None:
     """
-    Calculates the catalytic yield :math:`Y_p`, defined as the product of conversion 
-    and selectivity. Uses product-based conversion of feedstock for an internal 
-    consistency with selectivity. The sum of all yields is equal to the conversion. 
-    Implicitly runs :func:`conversion` and :func:`selectivity` on the 
+    Calculates the catalytic yield :math:`Y_p`, defined as the product of conversion
+    and selectivity. Uses product-based conversion of feedstock for an internal
+    consistency with selectivity. The sum of all yields is equal to the conversion.
+    Implicitly runs :func:`conversion` and :func:`selectivity` on the
     :class:`pd.DataFrame`:
 
     .. math::
 
         Y_{p, \\text{el}}(s) = X_{p, \\text{el}}(s) \\times S_{p, \\text{el}}(s)
-    
-    Where :math:`s` is the product species, and the subscript :math:`p` denotes it 
+
+    Where :math:`s` is the product species, and the subscript :math:`p` denotes it
     is a product-based quantity, with respect to element :math:`\\text{el}`.
 
     Parameters
@@ -398,12 +398,7 @@ def catalytic_yield(
         product=True,
         standard=standard,
     )
-    ret_Sp = selectivity(
-        feedstock=feedstock, 
-        xout=xout, 
-        rout=rout,
-        element=element
-    )
+    ret_Sp = selectivity(feedstock=feedstock, xout=xout, rout=rout, element=element)
 
     if f"Xp_{element}->{feedstock}" in ret_Xp:
         Xp = ret_Xp[f"Xp_{element}->{feedstock}"]
@@ -437,21 +432,21 @@ def atom_balance(
     output: str = None,
 ) -> None:
     """
-    Calculates the atom balance of an ``element`` :math:`\\text{el}` between the 
-    inlet and outlet mixtures. The total number of atoms of the specified element 
-    is compared between between the inlet and outlet, normalized by an internal 
+    Calculates the atom balance of an ``element`` :math:`\\text{el}` between the
+    inlet and outlet mixtures. The total number of atoms of the specified element
+    is compared between between the inlet and outlet, normalized by an internal
     ``standard`` if necessary:
 
     .. math::
 
-        \\text{atbal}_\\text{el} = 
+        \\text{atbal}_\\text{el} =
         \\frac{\\sum_s n_\\text{el}(s) x_\\text{out}(s) f_e}
-        {\\sum_s n_\\text{el}(s) x_\\text{in}(s)} = 
+        {\\sum_s n_\\text{el}(s) x_\\text{in}(s)} =
         \\frac{\\sum_s n_\\text{el}(s) \\dot{n}_\\text{out}(s)}
         {\\sum_s n_\\text{el}(s) \\dot{n}_\\text{in}(s)}
 
-    Here the sum runs over all species :math:`s`, :math:`n_\\text{el}(s)` is the 
-    number of atoms of element :math:`\\text{el}` in :math:`s`,  and :math:`f_e` 
+    Here the sum runs over all species :math:`s`, :math:`n_\\text{el}(s)` is the
+    number of atoms of element :math:`\\text{el}` in :math:`s`,  and :math:`f_e`
     is the expansion factor calculated using the internal ``standard`` as
     :math:`f_e = x_\\text{out}(\\text{i.s.}) / x_\\text{in}(\\text{i.s.})`.
 
@@ -489,7 +484,7 @@ def atom_balance(
     inp = xin if rin is None else rin
     out = xout if rout is None else rout
     smiles = columns_to_smiles(inp=inp, out=out)
-    
+
     if rin is None:
         sd = smiles[name_to_chem(standard).smiles]
         exp = inp[sd["inp"]] / out[sd["out"]]
