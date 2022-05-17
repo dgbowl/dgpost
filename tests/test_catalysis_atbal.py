@@ -1,6 +1,7 @@
 import os
 import pytest
 import pandas as pd
+import numpy as np
 
 from dgpost.transform import catalysis
 from dgpost.utils import transform
@@ -89,3 +90,16 @@ def test_atbal_against_excel(inpath, spec, outkeys, datadir):
     transform(df, "catalysis.atom_balance", using=spec)
     for col in outkeys:
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
+
+def test_atbal_rinxin(datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle("rinxin.pkl")
+    catalysis.atom_balance(df, xin="xin", xout="xout", element="C", output="C1")
+    catalysis.atom_balance(df, rin="nin", rout="nout", element="C", output="C2")
+    catalysis.atom_balance(df, xin="xin", xout="xout", element="O", output="O1")
+    catalysis.atom_balance(df, rin="nin", rout="nout", element="O", output="O2")
+    assert np.allclose(df["C1"], np.array([1.0, 1.0, 0.995, 1.005, 1.01, 0.99]))
+    assert np.allclose(df["C2"], np.array([1.0, 1.0, 0.995, 1.005, 1.01, 0.99]))
+    assert np.allclose(df["O1"], np.array([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))
+    assert np.allclose(df["O2"], np.array([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))
+    

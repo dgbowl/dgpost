@@ -1,8 +1,9 @@
 import os
 import pytest
 import pandas as pd
+import numpy as np
 
-from dgpost.transform import catalysis
+from dgpost.transform import catalysis, rates
 from dgpost.utils import transform
 from .utils import compare_dfs
 
@@ -128,7 +129,7 @@ def test_conversion_with_transform(inpath, spec, outpath, datadir):
 @pytest.mark.parametrize(
     "inpath, spec, outkeys",
     [
-        (  # ts0 - dataframe with ufloats
+        (  # ts0
             "catalysis.xlsx",
             [
                 {
@@ -158,6 +159,19 @@ def test_conversion_with_transform(inpath, spec, outpath, datadir):
             ],
             ["Xr->C3H8", "Xr->O2", "Xp_C->propane", "Xp_O->oxygen"],
         ),
+        (  # ts1
+            "molar_rates.xlsx",
+            [
+                {
+                    "feedstock": "CO2",
+                    "rin": "nin",
+                    "rout": "nout",
+                    "product": True,
+                    "element": "C",
+                }
+            ],
+            ["Xm_C->CO2"],
+        ),
     ],
 )
 def test_conversion_against_excel(inpath, spec, outkeys, datadir):
@@ -166,3 +180,49 @@ def test_conversion_against_excel(inpath, spec, outkeys, datadir):
     transform(df, "catalysis.conversion", using=spec)
     for col in outkeys:
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
+
+
+def test_conversion_rinxin(datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle("rinxin.pkl")
+    catalysis.conversion(
+        df, feedstock="CH4", xin="xin", xout="xout", product=False, output="Xr1"
+    )
+    catalysis.conversion(
+        df, feedstock="CH4", rin="nin", rout="nout", product=False, output="Xr2"
+    )
+    catalysis.conversion(
+        df, feedstock="CH4", xin="xin", xout="xout", product=True, output="Xp1"
+    )
+    catalysis.conversion(
+        df, feedstock="CH4", rin="nin", rout="nout", product=True, output="Xp2"
+    )
+    catalysis.conversion(
+        df, feedstock="CH4", xin="xin", xout="xout", standard="Ar", output="Xp3"
+    )
+    df["nout->CH4"] = 0
+    catalysis.conversion(
+        df, feedstock="CH4", rin="nin", rout="nout", product=True, output="Xm1"
+    )
+    del df["nout->CH4"]
+    catalysis.conversion(
+        df, feedstock="CH4", rin="nin", rout="nout", product=True, output="Xm2"
+    )
+    for col in ["Xr1", "Xr2"]:
+        assert np.allclose(
+            df[f"{col}->CH4"],
+            np.array([0.05, 0.1, 0.1, 0.1, 0.091, 0.109]),
+            atol=1e-6,
+        ), f"Failed calculating {col}."
+    for col in ["Xp1", "Xp2", "Xp3"]:
+        assert np.allclose(
+            df[f"{col}->CH4"],
+            np.array([0.05, 0.1, 0.095477, 0.104478, 0.1, 0.1]),
+            atol=1e-6,
+        ), f"Failed calculating {col}."
+    for col in ["Xm1", "Xm2"]:
+        assert np.allclose(
+            df[f"{col}->CH4"],
+            np.array([0.05, 0.1, 0.095, 0.105, 0.101, 0.099]),
+            atol=1e-6,
+        ), f"Failed calculating {col}."

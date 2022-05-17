@@ -6,8 +6,8 @@
 
 Includes functions to calculate the reactant- and product-based 
 :func:`~dgpost.transform.catalysis.conversion`, atom-based 
-:func:`~dgpost.transform.catalysis.selectivity`, catalytic 
-:func:`~dgpost.transform.catalysis.yield`, and 
+:func:`~dgpost.transform.catalysis.selectivity`,  
+:func:`~dgpost.transform.catalysis.catalytic_yield`, and 
 :func:`~dgpost.transform.catalysis.atom_balance`.
 
 Names of compounds within the specified mixtures are parsed to SMILES, and the
@@ -15,6 +15,7 @@ cross-matching of the ``feestock``, internal ``standard``, and the components of
 ``xin`` and ``xout`` is performed using these SMILES.
 
 .. note::
+
     This module assumes that the provided inlet (``xin``) and outlet (``xout``) 
     compositions contains all species, and that the atomic balance of the inlet and 
     outlet is near unity. If multiple inlet/outlet streams are present in the 
@@ -25,7 +26,10 @@ cross-matching of the ``feestock``, internal ``standard``, and the components of
 """
 
 import pint
+import numpy as np
+import logging
 
+logger = logging.getLogger(__name__)
 
 from .helpers import (
     name_to_chem,
@@ -39,19 +43,80 @@ from .helpers import (
 @load_data(
     ("xin", None, dict),
     ("xout", None, dict),
+    ("rin", "mol/s", dict),
+    ("rout", "mol/s", dict),
 )
 def conversion(
-    xin: dict[str, pint.Quantity],
-    xout: dict[str, pint.Quantity],
     feedstock: str,
+    xin: dict[str, pint.Quantity] = None,
+    xout: dict[str, pint.Quantity] = None,
+    rin: dict[str, pint.Quantity] = None,
+    rout: dict[str, pint.Quantity] = None,
     element: str = None,
     product: bool = True,
     standard: str = "N2",
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
-    Calculates the conversion of ``feedstock``, a species present in ``xin``. By
-    default, a product-based carbon conversion (using data from ``xout``) is computed.
+    Calculates the conversion of ``feedstock`` :math:`f` into other products 
+    :math:`p`. The feedstock must be a species present in the inlet. By default, 
+    a product-based carbon conversion (:math:`\\text{el} = \\text{C}`), using 
+    data from the outlet, is computed.
+
+    The product-based conversion :math:`X_p` is calculated using the outlet mole 
+    fractions :math:`x_\\text{out}(s)` of species :math:`s`, or the outlet molar 
+    rates :math:`\\dot{n}_\\text{out}(s)`. It is calculated on an elemental basis 
+    by considering the number of atoms of a certain element :math:`n_\\text{el}` as:
+
+    .. math::
+
+        X_{p, \\text{el}} = 
+        \\frac{\\sum_{s} n_\\text{el}(s) x_\\text{out}(s) - n_\\text{el}(f) x_\\text{out}(f)}
+        {\\sum_{s} n_\\text{el}(s) x_\\text{out}(s)} = 
+        \\frac{\\sum_{s} n_\\text{el}(s) \\dot{n}_\\text{out}(s) - n_\\text{el}(f) \\dot{n}_\\text{out}(f)}
+        {\\sum_{s} n_\\text{el}(s) \\dot{n}_\\text{out}(s)}
+    
+    Which requires the feedstock :math:`f` to be quantified in the outlet composition.
+    If the outlet composition of :math:`f` is found to be zero at all timesteps, its
+    value in the the inlet composition is used instead, and a "mixed" conversion 
+    :math:`X_m` is calculated instead: 
+
+    .. math::
+
+        X_{m, \\text{el}} = 
+        \\frac{\\sum_{p}^{p\\ne f} n_\\text{el}(p) x_\\text{out}(p) f_e}
+        {n_\\text{el}(f) x_\\text{in}(f)} = 
+        \\frac{\\sum_{p}^{p\\ne f} n_\\text{el}(p) \\dot{n}_\\text{out}(s)}
+        {n_\\text{el}(f) \\dot{n}_\\text{in}(f)}
+
+    Here, the expansion factor :math:`f_e` is introduced, which is defined as the
+    expansion ratio of the internal standard (by default N2) in the mixture: 
+    :math:`f_e = x_\\text{out}(\\text{i.s.}) / x_\\text{in}(\\text{i.s.})`. When
+    molar rates :math:`\\dot{n}` are used, accounting for expansion in this way is 
+    not necessary.
+
+    .. note::
+
+        Calculating product-based conversion :math:`X_p` using inlet mole fraction
+        of feedstock is not ideal and should be avoided. A warning will be raised 
+        by the program.
+    
+    Finally, the calculation of reactant-based (or feedstock-based) conversion, 
+    :math:`X_r`, proceeds as follows:
+
+    .. math::
+
+        X_{r} = \\frac{x_\\text{in}(f) -  x_\\text{out}(f) f_e}{x_\\text{in}(f)} = 
+        \\frac{\\dot{n}_\\text{in}(f) - \\dot{n}_\\text{out}(f)}{\\dot{n}_\\text{in}(f)}
+
+    The selection of the element :math:`\\text{el}` is meaningless for the reactant
+    -based conversion.
+
+    .. warning::
+
+        Note that the calculated values of :math:`X_p` and :math:`X_r` will differ
+        from one another in cases where the atomic balances of the inlet and outlet
+        mixtures are different from unity!
 
     Parameters
     ----------
@@ -61,11 +126,23 @@ def conversion(
 
     xin
         A dictionary containing the composition of the inlet mixture with the names
-        of the chemicals as :class:`str` keys.
+        of the chemicals as :class:`str` keys. Has to be supplied with ``xout``.
+        Cannot be supplied with ``rin`` or ``rout``.
 
     xout
         A dictionary containing the composition of the outlet mixture with the names
-        of the chemicals as :class:`str` keys.
+        of the chemicals as :class:`str` keys. Has to be supplied with ``xin``.
+        Cannot be supplied with ``rin`` or ``rout``.
+    
+    rin
+        A dictionary containing the molar rates of species in the inlet mixture 
+        with the names of the chemicals as :class:`str` keys. Has to be supplied 
+        with ``rout``. Cannot be supplied with ``xin`` or ``xout``.
+
+    rout
+        A dictionary containing the molar rates of species in the outlet mixture 
+        with the names of the chemicals as :class:`str` keys. Has to be supplied 
+        with ``rin``. Cannot be supplied with ``xin`` or ``xout``.
 
     element
         Name of the element for determining conversion. If not specified, set to the
@@ -76,6 +153,7 @@ def conversion(
 
     standard
         Internal standard for normalizing the compositions. By default set to "N2".
+        Only used when ``xin`` and ``xout`` are supplied.
 
     output
         A :class:`str` name of the output variable.
@@ -86,72 +164,117 @@ def conversion(
         A :class:`dict` containing the calculated conversion with ``output`` as its key.
 
     """
-
-    smiles = columns_to_smiles(xin=xin, xout=xout)
+    assert (xin is None and xout is None) or (rin is None and rout is None)
+    inp = xin if rin is None else rin
+    out = xout if rout is None else rout
+    smiles = columns_to_smiles(inp=inp, out=out)
     fchem = name_to_chem(feedstock)
     fsmi = fchem.smiles
     fform = fchem.formula
-    fd = smiles[fsmi]
     assert fsmi in smiles, f"conversion: Feedstock '{feedstock}' not present."
-    assert "xin" in smiles[fsmi], f"conversion: Feedstock '{feedstock}' not in inlet."
+    fd = smiles[fsmi]
 
     if element is None:
         element = default_element(fform)
 
     # expansion factor
-    sd = smiles[name_to_chem(standard).smiles]
-    exp = xin[sd["xin"]] / xout[sd["xout"]]
+    if xin is None and xout is None:
+        logging.debug("Calculation using molar rates. Expansion factor set to 1.0.")
+        exp = 1.0
+    else:
+        logging.debug(
+            "Calculation using molar fractions. Expansion factor derived from '%s'",
+            standard
+        )
+        sd = smiles[name_to_chem(standard).smiles]
+        exp = inp[sd["inp"]] / out[sd["out"]]
 
     # reactant-based conversion
     if not product:
-        dfsm = xin[fd["xin"]] - xout[fd["xout"]] * exp
-        Xr = dfsm / xin[fd["xin"]]
+        assert "inp" in fd, f"Feedstock '{feedstock}' not in inlet."
+        assert "out" in fd, f"Feedstock '{feedstock}' not in outlet."
+        logger.debug("Calculating reactant-based conversion.")
+        dfsm = inp[fd["inp"]] - out[fd["out"]] * exp
+        Xr = dfsm / inp[fd["inp"]]
         tag = f"{'Xr' if output is None else output}->{feedstock}"
         ret = {tag: Xr}
 
     # product-based conversion
     else:
-        f_out = xout[fd["xout"]] * element_from_formula(fform, element)
-        nat_out = f_out * 0.0
+        assert "inp" in fd, f"Feedstock '{feedstock}' not in inlet."
+        f_in = inp[fd["inp"]] * element_from_formula(fform, element)
+        nat_out = f_in * 0.0
+
+        if "out" in fd:
+            f_out = out[fd["out"]] * element_from_formula(fform, element)
+        else:
+            f_out = None
+        
         for v in smiles.values():
-            if "xout" in v:
+            if "out" in v:
                 formula = v["chem"].formula
-                dnat = xout[v["xout"]] * element_from_formula(formula, element)
+                dnat = out[v["out"]] * element_from_formula(formula, element)
                 nat_out += dnat
-        Xp = (nat_out - f_out) / nat_out
-        prefix = f"Xp_{element}" if output is None else output
+        if f_out is not None and np.any(f_out > 0.0):
+            logger.debug("Calculating product-based conversion using reactant outlet.")
+            Xp = (nat_out - f_out) / nat_out
+            prefix = f"Xp_{element}" if output is None else output
+        else:
+            logger.warning("Calculating product-based conversion using reactant inlet.")
+            Xp = nat_out / f_in
+            prefix = f"Xm_{element}" if output is None else output
         tag = f"{prefix}->{feedstock}"
         ret = {tag: Xp}
     return ret
 
 
 @load_data(
-    ("xin", None, dict),
     ("xout", None, dict),
+    ("rout", "mol/s", dict),
 )
 def selectivity(
-    xin: dict[str, pint.Quantity],
-    xout: dict[str, pint.Quantity],
     feedstock: str,
+    xout: dict[str, pint.Quantity] = None,
+    rout: dict[str, pint.Quantity] = None,
     element: str = None,
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
-    Calculates product-based atomic selectivities, excluding the feedstock. The sum
-    of selectivities is normalised to unity.
+    Calculates product-based atomic selectivities of all species :math:`s`, 
+    excluding the ``feedstock`` :math:`f`. The sum of selectivities is normalised 
+    to unity. Works with both mole fractions :math:`x` as well as molar rates 
+    :math:`\\dot{n}`:
+
+    .. math::
+
+        S_\\text{el}(p) = 
+        \\frac{\\sum_{p}^{p \\ne f} n_\\text{el}(p) x_\\text{out}(p)}
+        {\\sum_{s} n_\\text{el}(s) x_\\text{out}(s)} = 
+        \\frac{\\sum_{p}^{p \\ne f} n_\\text{el}(p) \\dot{n}_\\text{out}(p)}
+        {\\sum_{s} n_\\text{el}(s) \\dot{n}_\\text{out}(s)}
+
+    Only the outlet fractions/rates are considered. The sum on in the numerator runs 
+    over all products :math:`p` (i.e. :math:`p \\ne f`), while the sum in the 
+    denominator runs over all species :math:`s`. The value :math:`n_\\text{el}(s)` 
+    is the number of atoms of element :math:`\\text{el}` in species :math:`s`.
+
+    .. note::
+
+        The selectivity calculation assumes that all products have been determined;
+        it provides no information about the mass or atomic balance.
 
     Parameters
     ----------
-    xin
-        Prefix of the columns determining the inlet composition.
+    feedstock
+        Name of the feedstock. Parsed into SMILES and matched against the specified
+        inlet and outlet species
 
     xout
         Prefix of the columns determining the outlet composition.
 
-    feedstock
-        Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
-        ``xout``.
-
+    rout
+        Prefix of the columns determining the outlet molar rates.
+    
     element
         The element for determining conversion. If not specified, set from ``feedstock``
         using :func:`dgpost.transform.chemhelpers.default_element`.
@@ -166,7 +289,10 @@ def selectivity(
         the prefix for each key.
 
     """
-    smiles = columns_to_smiles(xin=xin, xout=xout)
+    assert xout is None or rout is None
+    out = xout if rout is None else rout
+
+    smiles = columns_to_smiles(out=out)
     fchem = name_to_chem(feedstock)
     fsmi = fchem.smiles
     fform = fchem.formula
@@ -177,22 +303,22 @@ def selectivity(
 
     nat_out = None
     for k, v in smiles.items():
-        if k != fsmi and "xout" in v:
+        if k != fsmi and "out" in v:
             formula = v["chem"].formula
-            dnat = xout[v["xout"]] * element_from_formula(formula, element)
+            dnat = out[v["out"]] * element_from_formula(formula, element)
             if nat_out is None:
                 nat_out = dnat
             else:
                 nat_out += dnat
     ret = {}
     for k, v in smiles.items():
-        if k != fsmi and "xout" in v:
+        if k != fsmi and "out" in v:
             formula = v["chem"].formula
             els = element_from_formula(formula, element)
             if els > 0:
-                Sp = xout[v["xout"]] * els / nat_out
+                Sp = out[v["out"]] * els / nat_out
                 pretag = f"Sp_{element}" if output is None else output
-                tag = f"{pretag}->{v['xout']}"
+                tag = f"{pretag}->{v['out']}"
                 ret[tag] = Sp
     return ret
 
@@ -200,20 +326,32 @@ def selectivity(
 @load_data(
     ("xin", None, dict),
     ("xout", None, dict),
+    ("rin", "mol/s", dict),
+    ("rout", "mol/s", dict),
 )
 def catalytic_yield(
-    xin: dict[str, pint.Quantity],
-    xout: dict[str, pint.Quantity],
     feedstock: str,
+    xin: dict[str, pint.Quantity] = None,
+    xout: dict[str, pint.Quantity] = None,
+    rin: dict[str, pint.Quantity] = None,
+    rout: dict[str, pint.Quantity] = None,
     element: str = None,
     standard: str = "N2",
     output: str = None,
 ) -> None:
     """
-    Calculates the catalytic yield, defined as the product of conversion and
-    selectivity. Uses product-based conversion of feedstock for consistency with
-    selectivity. The sum of all yields is equal to the conversion. Implicitly runs
-    :func:`conversion` and :func:`selectivity` on the dataframe.
+    Calculates the catalytic yield :math:`Y_p`, defined as the product of conversion 
+    and selectivity. Uses product-based conversion of feedstock for an internal 
+    consistency with selectivity. The sum of all yields is equal to the conversion. 
+    Implicitly runs :func:`conversion` and :func:`selectivity` on the 
+    :class:`pd.DataFrame`:
+
+    .. math::
+
+        Y_{p, \\text{el}}(s) = X_{p, \\text{el}}(s) \\times S_{p, \\text{el}}(s)
+    
+    Where :math:`s` is the product species, and the subscript :math:`p` denotes it 
+    is a product-based quantity, with respect to element :math:`\\text{el}`.
 
     Parameters
     ----------
@@ -226,7 +364,6 @@ def catalytic_yield(
     feedstock
         Name of the feedstock. Parsed into SMILES and matched against ``xin`` and
         ``xout``.
-
 
     element
         The element for determining conversion. If not specified, set from ``feedstock``
@@ -253,13 +390,24 @@ def catalytic_yield(
         feedstock=feedstock,
         xin=xin,
         xout=xout,
+        rin=rin,
+        rout=rout,
         element=element,
         product=True,
         standard=standard,
     )
-    ret_Sp = selectivity(feedstock=feedstock, xin=xin, xout=xout, element=element)
+    ret_Sp = selectivity(
+        feedstock=feedstock, 
+        xout=xout, 
+        rout=rout,
+        element=element
+    )
 
-    Xp = ret_Xp[f"Xp_{element}->{feedstock}"]
+    if f"Xp_{element}->{feedstock}" in ret_Xp:
+        Xp = ret_Xp[f"Xp_{element}->{feedstock}"]
+    else:
+        logger.warning("Using Xm_%s to calculate Yp_%s.", element, element)
+        Xp = ret_Xp[f"Xm_{element}->{feedstock}"]
 
     ret = {}
     for k, v in ret_Sp.items():
@@ -274,43 +422,56 @@ def catalytic_yield(
 @load_data(
     ("xin", None, dict),
     ("xout", None, dict),
-    ("fin", None),
-    ("fout", None),
+    ("rin", "mol/s", dict),
+    ("rout", "mol/s", dict),
 )
 def atom_balance(
-    xin: dict[str, pint.Quantity],
-    xout: dict[str, pint.Quantity],
-    fin: pint.Quantity = None,
-    fout: pint.Quantity = None,
+    xin: dict[str, pint.Quantity] = None,
+    xout: dict[str, pint.Quantity] = None,
+    rin: dict[str, pint.Quantity] = None,
+    rout: dict[str, pint.Quantity] = None,
     element: str = "C",
     standard: str = "N2",
     output: str = None,
 ) -> None:
     """
-    Calculates atom balance. The total number of atoms of the specified element is
-    compared between between the inlet and outlet, normalized by an internal standard,
-    or optionally weighed by the supplied flows.
+    Calculates the atom balance of an ``element`` :math:`el` between the inlet 
+    and outlet mixtures. The total number of atoms of the specified element is 
+    compared between between the inlet and outlet, normalized by an internal 
+    standard if necessary:
+
+    .. math::
+
+        \\text{atbal}_\\text{el} = 
+        \\frac{\\sum_s n_\\text{el}(s) x_\\text{out}(s) f_e}
+        {\\sum_s n_\\text{el}(s) x_\\text{in}(s)} = 
+        \\frac{\\sum_s n_\\text{el}(s) \\dot{n}_\\text{out}(s)}
+        {\\sum_s n_\\text{el}(s) \\dot{n}_\\text{in}(s)}
+
+    Here the sum runs over all species :math:`s`, :math:`n_\\text{el}(s)` is the 
+    number of atoms of element :math:`\\text{el}` in :math:`s`,  and :math:`f_e` 
+    is the expansion factor calculated using the internal standard as
+    :math:`f_e = x_\\text{out}(\\text{i.s.}) / x_\\text{in}(\\text{i.s.})`.
 
     Parameters
     ----------
     xin
-        Prefix of the columns determining the inlet composition.
+        Prefix of the columns determining the inlet composition as a mole fraction.
 
     xout
-        Prefix of the columns determining the outlet composition.
+        Prefix of the columns determining the outlet composition as a mole fraction.
 
-    fin
-        Inlet flow. If not supplied, assumed to be equal to outlet flow.
+    rin
+        Prefix of the columns determining the inlet composition as a molar rate.
 
-    fout
-        Outlet flow. If not supplied, assumed to be equal to inlet flow.
+    rout
+        Prefix of the columns determining the outlet composition as a molar rate.
 
     element
         The element for determining conversion. If not specified, set to ``"C"``.
 
     standard
         Internal standard for normalizing flows. By default set to ``"N2"``.
-        Overriden when ``fin`` and ``fout`` are set.
 
     output
         A :class:`str` prefix for the output variables.
@@ -322,27 +483,26 @@ def atom_balance(
         the key.
 
     """
-    smiles = columns_to_smiles(xin=xin, xout=xout)
-
-    assert standard is not None or (
-        fin is not None and fout is not None
-    ), f"atom_balance: Neither 'standard' nor 'fin' and 'fout' are defined. "
-
-    if fin is None or fout is None:
+    assert (xin is None and xout is None) or (rin is None and rout is None)
+    inp = xin if rin is None else rin
+    out = xout if rout is None else rout
+    smiles = columns_to_smiles(inp=inp, out=out)
+    
+    if rin is None:
         sd = smiles[name_to_chem(standard).smiles]
-        exp = xin[sd["xin"]] / xout[sd["xout"]]
+        exp = inp[sd["inp"]] / out[sd["out"]]
     else:
-        exp = fin / fout
+        exp = 1.0
 
     nat_in = None
     nat_out = None
     for k, v in smiles.items():
         formula = v["chem"].formula
-        if "xin" in v:
-            din = xin[v["xin"]] * element_from_formula(formula, element)
+        if "inp" in v:
+            din = inp[v["inp"]] * element_from_formula(formula, element)
             nat_in = din if nat_in is None else nat_in + din
-        if "xout" in v:
-            dout = exp * xout[v["xout"]] * element_from_formula(formula, element)
+        if "out" in v:
+            dout = exp * out[v["out"]] * element_from_formula(formula, element)
             nat_out = dout if nat_out is None else nat_out + dout
     dnat = nat_in - nat_out
     atbal = 1 - dnat / nat_in

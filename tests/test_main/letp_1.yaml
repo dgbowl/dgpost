@@ -22,7 +22,6 @@ transform:
     with: catalysis.selectivity
     using:
       - feedstock: propane
-        xin: xin
         xout: xout
   - table: df
     with: catalysis.atom_balance
