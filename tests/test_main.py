@@ -136,29 +136,12 @@ def test_run_with_plot(inpath, tname, outpath, outfig, datadir):
     compare_images("test.png", outfig)
 
 
-
-
 @pytest.mark.parametrize(
     "inpath, patch, tname, outpath",
     [
-        (  # ts0
-            "lee_2a.yaml",
-            None,
-            "df",
-            "lee_2.pkl"
-        ),
-        (  # ts1
-            "lee_2c.yaml",
-            "normalized.dg.json",
-            "df",
-            "lee_2.pkl"
-        ),
-        (  # ts2
-            "lee_2d.yaml",
-            "sparse",
-            "df",
-            "lee_2.pkl"
-        ),
+        ("lee_2a.yaml", None, "df", "lee_2.pkl"),  # ts0
+        ("lee_2c.yaml", "normalized.dg.json", "df", "lee_2.pkl"),  # ts1
+        ("lee_2d.yaml", "sparse", "df", "lee_2.pkl"),  # ts2
     ],
 )
 def test_run_with_patch(inpath, patch, tname, outpath, datadir):
