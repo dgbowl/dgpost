@@ -17,7 +17,8 @@ from dgpost.utils import parse, load, extract, transform, save, plot
 def run(path: str, patch: str = None) -> tuple[dict, dict]:
     """
     Main API execution function. Loads the `recipe` from the provided ``path``,
-    and processes the following entries, in order:
+    patches the file paths specified within the `recipe`, if necessary, and 
+    processes the following entries, in order:
 
     - :mod:`~dgpost.utils.load`,
     - :mod:`~dgpost.utils.extract`,

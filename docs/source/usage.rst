@@ -28,6 +28,18 @@ than one command can be specified for each of the keywords (i.e. it's possible t
 syntax of each of the above steps is further described in the documentation of each
 of the keywords within the :mod:`dgpost.utils` module.
 
+dgpost can be used to process multiple datasets, in a batch-like mode, using the 
+``--patch`` argument. For this, the `recipe` has to contain either ``$patch`` or
+``$PATCH`` in the :class:`str` defining the path of the loaded file. Then, dgpost 
+can be executed using
+
+.. code::
+
+    dgpost --patch <patchname> <yamlfile>
+  
+and the paths in the provided ``yamlfile`` containing the `recipe` will be patched
+using ``patchname``.
+
 **dgpost** as a Python library
 ``````````````````````````````
 For advanced users and more complex workflows, dgpost can be also imported as a
