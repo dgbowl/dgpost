@@ -14,10 +14,11 @@ import copy
 from dgpost.utils import parse, load, extract, transform, save, plot
 
 
-def run(path: str) -> tuple[dict, dict]:
+def run(path: str, patch: str = None) -> tuple[dict, dict]:
     """
     Main API execution function. Loads the `recipe` from the provided ``path``,
-    and processes the following entries, in order:
+    patches the file paths specified within the `recipe`, if necessary, and 
+    processes the following entries, in order:
 
     - :mod:`~dgpost.utils.load`,
     - :mod:`~dgpost.utils.extract`,
@@ -53,10 +54,14 @@ def run(path: str) -> tuple[dict, dict]:
     tables = {}
     l = spec.pop("load")
     for el in l:
-        if el["type"] == "datagram":
-            datagrams[el["as"]] = load(el["path"], el["check"], el["type"])
+        if patch is None:
+            fp = el["path"]
         else:
-            tables[el["as"]] = load(el["path"], el["check"], el["type"])
+            fp = el["path"].replace("$patch", patch).replace("$PATCH", patch)
+        if el["type"] == "datagram":
+            datagrams[el["as"]] = load(fp, el["check"], el["type"])
+        else:
+            tables[el["as"]] = load(fp, el["check"], el["type"])
 
     e = spec.get("extract", [])
     for el in e:
@@ -137,6 +142,13 @@ def run_with_arguments():
     )
 
     parser.add_argument(
+        "--patch",
+        "-p",
+        help="Patch the YAML infile using the provided file name.",
+        default=None,
+    )
+
+    parser.add_argument(
         "infile",
         help="File containing the YAML to be processed by dgpost.",
         default=None,
@@ -148,4 +160,4 @@ def run_with_arguments():
     logging.basicConfig(level=loglevel)
     logging.debug(f"loglevel set to '{logging._levelToName[loglevel]}'")
 
-    run(args.infile)
+    run(args.infile, patch=args.patch)

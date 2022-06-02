@@ -1,0 +1,24 @@
+version: v1.0
+load:
+  - as: norm
+    path: normalized.dg.json
+  - as: sparse
+    path: $PATCH.dg.json
+extract:
+  - into: df
+    from: norm
+    at:
+      step: "a"
+    columns:
+      - key: raw->T_f
+        as: rawT
+      - key: derived->T
+        as: derT
+  - into: df
+    from: sparse
+    at:
+      steps: ["b1", "b2", "b3"]
+    columns:
+      - key: derived->xout->*
+        as: xout
+  
