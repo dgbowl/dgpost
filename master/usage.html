@@ -106,9 +106,20 @@ around <code class="xref py py-mod docutils literal notranslate"><span class="pr
 </ul>
 <p>Each of the above keywords can be only specified once in the <cite>recipe</cite>, however more
 than one command can be specified for each of the keywords (i.e. it’s possible to
-<code class="docutils literal notranslate"><span class="pre">load</span></code> multiple files, apply several <code class="docutils literal notranslate"><span class="pre">transform</span></code> functions, etc.). Detailed
-syntax of each of the above steps is further described in the documentation of each
-of the keywords within the <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils" title="dgpost.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils</span></code></a> module.</p>
+<a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a> multiple files, apply several <code class="docutils literal notranslate"><span class="pre">transform</span></code> functions, etc.).
+Detailed syntax of each of the above steps is further described in the documentation of
+each of the keywords within the <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils" title="dgpost.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils</span></code></a> module.</p>
+<p>dgpost can be used to process multiple datasets, in a batch-like mode, using the
+<code class="docutils literal notranslate"><span class="pre">--patch</span></code> argument. For this, the <cite>recipe</cite> should contain either <code class="docutils literal notranslate"><span class="pre">$patch</span></code> or
+<code class="docutils literal notranslate"><span class="pre">$PATCH</span></code> in the <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> defining the <code class="docutils literal notranslate"><span class="pre">path</span></code> in the <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a>
+step. The same string can be included in the <code class="docutils literal notranslate"><span class="pre">as</span></code> argument of the <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">save</span></code></a>
+and/or the <code class="docutils literal notranslate"><span class="pre">save-&gt;as</span></code> argument of the <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.plot" title="dgpost.utils.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code></a> steps. Then, dgpost
+can be executed using</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dgpost</span> <span class="o">--</span><span class="n">patch</span> <span class="o">&lt;</span><span class="n">patchname</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">yamlfile</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>and the paths in the provided <code class="docutils literal notranslate"><span class="pre">yamlfile</span></code> containing the <cite>recipe</cite> will be patched
+using <code class="docutils literal notranslate"><span class="pre">patchname</span></code>.</p>
 </section>
 <section id="dgpost-as-a-python-library">
 <h2><strong>dgpost</strong> as a Python library<a class="headerlink" href="#dgpost-as-a-python-library" title="Permalink to this headline"></a></h2>

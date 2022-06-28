@@ -111,9 +111,10 @@
 <p>Module containing the execution functions for dgpost.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.main.run">
-<span class="sig-prename descclassname"><span class="pre">dgpost.main.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.main.run" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.main.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.main.run" title="Permalink to this definition"></a></dt>
 <dd><p>Main API execution function. Loads the <cite>recipe</cite> from the provided <code class="docutils literal notranslate"><span class="pre">path</span></code>,
-and processes the following entries, in order:</p>
+patches the file paths specified within the <cite>recipe</cite>, if necessary, and
+processes the following entries, in order:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a>,</p></li>
 <li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.extract" title="dgpost.utils.extract"><code class="xref py py-mod docutils literal notranslate"><span class="pre">extract</span></code></a>,</p></li>
