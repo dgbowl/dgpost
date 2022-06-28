@@ -36,7 +36,7 @@ def apply_plot_style(style: dict) -> None:
         matplotlib.rcdefaults()
 
 
-def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> None:
+def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bool:
     """
     Processes ax_args and plots the data
 
@@ -49,6 +49,11 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> No
     ax_args
         arguments for the axes
 
+    Returns
+    -------
+    ret: bool
+        True if axes contain only timeseries as x-axis, False otherwise.
+
     """
     series: list[dict] = ax_args.pop("series", [])
 
@@ -59,6 +64,8 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> No
             attr = getattr(attr, met)
         attr(**arguments)
 
+    ret = True
+
     for spec in series:
         kind = spec.pop("kind", "scatter")
 
@@ -68,6 +75,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> No
             x_values = unp.nominal_values(x_data)
             x_err = unp.std_devs(x_data)
             x_unit = table.attrs.get("units", {}).get(x, None)
+            ret = False
         else:
             i_pars = {"from_zero": None, "to_units": None}
             i_pars.update(spec.pop("index", {}))
@@ -85,6 +93,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> No
                 elif i_pars["to_units"] == "h" or max(x_values) >= 7200:
                     x_unit = "h"
                     x_values = x_values / 3600.0
+            ret = True and ret
 
         x_label = f"{x} [{x_unit}]" if x_unit is not None else x
 
@@ -127,6 +136,8 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> No
         ax.set_ylabel(y_label)
     ax.set(**ax_args)
 
+    return ret
+
 
 def plot(
     table: pd.DataFrame,
@@ -148,6 +159,9 @@ def plot(
         fig_args = {}
 
     fig = plt.figure(**fig_args)
+    axes = []
+    lim = None
+    samex = True
 
     for specs in ax_args:
         ax = fig.add_subplot(
@@ -156,10 +170,18 @@ def plot(
                 slice(*specs.pop("cols", (0, ncols))),
             ]
         )
+        axes.append(ax)
         legend = specs.pop("legend", False)
-        plt_axes(ax, table, specs)
+        samex = plt_axes(ax, table, specs) and samex
         if legend:
             ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+        xl = ax.get_xlim()
+        lim = xl if lim is None else (min(lim[0], xl[0]), max(lim[1], xl[1]))
+
+    for ax in axes:
+        if ncols == 1 and samex:
+            ax.set_xlim(lim)
+
     if not save:
         fig.show()
         return
