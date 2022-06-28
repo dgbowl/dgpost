@@ -8,7 +8,7 @@ The function :func:`dgpost.utils.transform.transform` processes the below specif
 in order to do data transformation on an extracted (or supplied) :class:`pd.DataFrame`.
 
 .. _dgpost.recipe transform:
-.. autopydantic_model:: dgbowl_schemas.dgpost_recipe.transform.Transform
+.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_1_1.transform.Transform
 
 .. warning::
 

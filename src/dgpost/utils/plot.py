@@ -9,7 +9,7 @@ The function :func:`dgpost.utils.plot.plot` processes the below specification
 in order to generate a plot:
 
 .. _dgpost.recipe plot:
-.. autopydantic_model:: dgbowl_schemas.dgpost_recipe.plot.Plot
+.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_1_1.plot.Plot
 """
 import matplotlib
 import matplotlib.pyplot as plt
