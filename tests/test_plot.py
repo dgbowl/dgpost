@@ -418,7 +418,7 @@ def test_plot_direct(input, datadir):
                                 "y": "Ewe",
                                 "color": "C0",
                                 "kind": "line",
-                                "index": {"from_zero": True}
+                                "index": {"from_zero": True},
                             },
                         ],
                         "methods": {
@@ -433,7 +433,7 @@ def test_plot_direct(input, datadir):
                                 "y": "I",
                                 "color": "C2",
                                 "kind": "line",
-                                "index": {"from_zero": True}
+                                "index": {"from_zero": True},
                             },
                         ],
                         "methods": {

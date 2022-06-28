@@ -48,7 +48,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
         dataframe containing the data
     ax_args
         arguments for the axes
-    
+
     Returns
     -------
     ret: bool
@@ -92,7 +92,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
                     x_values = x_values / 60.0
                 elif i_pars["to_units"] == "h" or max(x_values) >= 7200:
                     x_unit = "h"
-                    x_values = x_values / 3600.
+                    x_values = x_values / 3600.0
             ret = True and ret
 
         x_label = f"{x} [{x_unit}]" if x_unit is not None else x
