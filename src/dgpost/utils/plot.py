@@ -148,6 +148,8 @@ def plot(
         fig_args = {}
 
     fig = plt.figure(**fig_args)
+    axes = []
+    lim = None
 
     for specs in ax_args:
         ax = fig.add_subplot(
@@ -156,10 +158,18 @@ def plot(
                 slice(*specs.pop("cols", (0, ncols))),
             ]
         )
+        axes.append(ax)
         legend = specs.pop("legend", False)
         plt_axes(ax, table, specs)
         if legend:
             ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+        xl = ax.get_xlim()
+        lim = xl if lim is None else (min(lim[0], xl[0]), max(lim[1], xl[1]))
+        print(lim)
+
+    for ax in axes:
+        ax.set_xlim(lim)
+
     if not save:
         fig.show()
         return
