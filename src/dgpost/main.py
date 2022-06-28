@@ -101,11 +101,21 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
     p = spec.get("plot", [])
     for el in p:
         table = tables[el.pop("table")]
+        if "save" in el and "as" in el["save"]:
+            if patch is None:
+                fp = el["save"]["as"]
+            else:
+                fp = el["save"]["as"].replace("$patch", patch).replace("$PATCH", patch)
+            el["save"]["as"] = fp
         plot(table, **el)
 
     s = spec.get("save", [])
     for el in s:
-        save(tables[el["table"]], el["as"], el.get("type"), el.get("sigma", True), meta)
+        if patch is None:
+            fp = el["as"]
+        else:
+            fp = el["as"].replace("$patch", patch).replace("$PATCH", patch)
+        save(tables[el["table"]], fp, el.get("type"), el.get("sigma", True), meta)
     return datagrams, tables
 
 

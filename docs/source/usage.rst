@@ -24,13 +24,15 @@ performed by dgpost. Currently supported steps are:
 
 Each of the above keywords can be only specified once in the `recipe`, however more
 than one command can be specified for each of the keywords (i.e. it's possible to 
-``load`` multiple files, apply several ``transform`` functions, etc.). Detailed 
-syntax of each of the above steps is further described in the documentation of each
-of the keywords within the :mod:`dgpost.utils` module.
+:mod:`~dgpost.utils.load` multiple files, apply several ``transform`` functions, etc.). 
+Detailed syntax of each of the above steps is further described in the documentation of 
+each of the keywords within the :mod:`dgpost.utils` module.
 
 dgpost can be used to process multiple datasets, in a batch-like mode, using the 
-``--patch`` argument. For this, the `recipe` has to contain either ``$patch`` or
-``$PATCH`` in the :class:`str` defining the path of the loaded file. Then, dgpost 
+``--patch`` argument. For this, the `recipe` should contain either ``$patch`` or
+``$PATCH`` in the :class:`str` defining the ``path`` in the :mod:`~dgpost.utils.load`
+step. The same string can be included in the ``as`` argument of the :mod:`~dgpost.utils.save` 
+and/or the ``save->as`` argument of the :mod:`~dgpost.utils.plot` steps. Then, dgpost 
 can be executed using
 
 .. code::
