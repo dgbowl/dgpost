@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dgpost.transform.circuit_utils package &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="dgpost.utils package" href="dgpost.utils.html" />
+    <link rel="prev" title="dgpost.transform package" href="dgpost.transform.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> dgpost
+            <img src="_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong> autodocs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="dgpost.transform.html"><strong>dgpost.transform</strong> package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.html#catalysis-common-calculations-in-catalytic-testing"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.html#electrochemistry-calculations-relevant-in-electrochemistry"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.html#impedance-fitting-electrochemical-impedance-spectra"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.html#rates-determining-molar-rates-of-chemical-species"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.html#helpers-helper-functions-for-the-transform-package"><strong>helpers</strong>: helper functions for the <code class="xref py py-mod docutils literal notranslate"><span class="pre">transform</span></code> package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="dgpost.transform.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">dgpost.transform.circuit_utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.html"><strong>dgpost.utils</strong> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.html#dgpost-main">dgpost.main</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="dgpost.html"><strong>dgpost</strong> autodocs</a> &raquo;</li>
+          <li><a href="dgpost.transform.html"><strong>dgpost.transform</strong> package</a> &raquo;</li>
+      <li>dgpost.transform.circuit_utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dgpost.transform.circuit_utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dgpost.transform.circuit_utils">
+<span id="dgpost-transform-circuit-utils-package"></span><h1>dgpost.transform.circuit_utils package<a class="headerlink" href="#module-dgpost.transform.circuit_utils" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-dgpost.transform.circuit_utils.circuit_components">
+<span id="dgpost-transform-circuit-utils-circuit-components-module"></span><h2>dgpost.transform.circuit_utils.circuit_components module<a class="headerlink" href="#module-dgpost.transform.circuit_utils.circuit_components" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.create_parameter">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_components.</span></span><span class="sig-name descname"><span class="pre">create_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.create_parameter" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dictionary with keys <cite>name</cite>, <cite>bounds</cite> and <cite>unit</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the parameter</p></li>
+<li><p><strong>bounds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – default bounds of the parameter</p></li>
+<li><p><strong>unit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – SI unit of the parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary containing the input values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Component">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_components.</span></span><span class="sig-name descname"><span class="pre">Component</span></span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Component" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A component stores information needed for the fitting.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Component.get_symbol">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Component.get_symbol" title="Permalink to this definition"></a></dt>
+<dd><p>Unique symbol used to identify the component in the circuit string</p>
+<p>The symbol can only contain letters, i.e. a-z, A-Z</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Component.get_parameters">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Component.get_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>returns the parameter(s) that describe the component</p>
+<p>A parameter is a dictionary with the keys: <cite>name</cite>, <cite>bounds</cite> and <cite>unit</cite>.
+The <cite>name</cite> of the parameter should be based on the symbol. It can also contain any character except a whitespace.
+The <cite>bounds</cite> are given as a tuple with the lower (<cite>lb</cite>) and upper bounds (<cite>ub</cite>) like <cite>(lb, ub)</cite>.
+The unit needs to be recognised by pint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the component in the circuit string, made out of the symbol with an additional digit.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The parameters that describes the component.
+A parameter is a dictionary with 3 keys: ‘name’, ‘bounds’ and ‘unit’</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Component.calc_impedance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Component.calc_impedance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the impedance of the component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – dictionary of parameter values with the name as the key</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the name of the component</p></li>
+<li><p><strong>freq</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>) – the frequencies at which the impedance should be calculated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array with the complex impedance of the component for the given frequencies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Resistor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_components.</span></span><span class="sig-name descname"><span class="pre">Resistor</span></span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Resistor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dgpost.transform.circuit_utils.circuit_components.Component" title="dgpost.transform.circuit_utils.circuit_components.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgpost.transform.circuit_utils.circuit_components.Component</span></code></a></p>
+<p>defines a resistor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Resistor.get_symbol">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Resistor.get_symbol" title="Permalink to this definition"></a></dt>
+<dd><p>Unique symbol used to identify the component in the circuit string</p>
+<p>The symbol can only contain letters, i.e. a-z, A-Z</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Resistor.get_parameters">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Resistor.get_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>returns the parameter(s) that describe the component</p>
+<p>A parameter is a dictionary with the keys: <cite>name</cite>, <cite>bounds</cite> and <cite>unit</cite>.
+The <cite>name</cite> of the parameter should be based on the symbol. It can also contain any character except a whitespace.
+The <cite>bounds</cite> are given as a tuple with the lower (<cite>lb</cite>) and upper bounds (<cite>ub</cite>) like <cite>(lb, ub)</cite>.
+The unit needs to be recognised by pint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of the component in the circuit string, made out of the symbol with an additional digit.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The parameters that describes the component.
+A parameter is a dictionary with 3 keys: ‘name’, ‘bounds’ and ‘unit’</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Resistor.calc_impedance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Resistor.calc_impedance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the impedance of the component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – dictionary of parameter values with the name as the key</p></li>
+<li><p><strong>name</strong> – the name of the component</p></li>
+<li><p><strong>freq</strong> – the frequencies at which the impedance should be calculated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array with the complex impedance of the component for the given frequencies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Capacitor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_components.</span></span><span class="sig-name descname"><span class="pre">Capacitor</span></span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Capacitor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dgpost.transform.circuit_utils.circuit_components.Component" title="dgpost.transform.circuit_utils.circuit_components.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgpost.transform.circuit_utils.circuit_components.Component</span></code></a></p>
+<p>defines a capacitor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Capacitor.get_symbol">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Capacitor.get_symbol" title="Permalink to this definition"></a></dt>
+<dd><p>Unique symbol used to identify the component in the circuit string</p>
+<p>The symbol can only contain letters, i.e. a-z, A-Z</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Capacitor.get_parameters">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Capacitor.get_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>returns the parameter(s) that describe the component</p>
+<p>A parameter is a dictionary with the keys: <cite>name</cite>, <cite>bounds</cite> and <cite>unit</cite>.
+The <cite>name</cite> of the parameter should be based on the symbol. It can also contain any character except a whitespace.
+The <cite>bounds</cite> are given as a tuple with the lower (<cite>lb</cite>) and upper bounds (<cite>ub</cite>) like <cite>(lb, ub)</cite>.
+The unit needs to be recognised by pint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of the component in the circuit string, made out of the symbol with an additional digit.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The parameters that describes the component.
+A parameter is a dictionary with 3 keys: ‘name’, ‘bounds’ and ‘unit’</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Capacitor.calc_impedance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Capacitor.calc_impedance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the impedance of the component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – dictionary of parameter values with the name as the key</p></li>
+<li><p><strong>name</strong> – the name of the component</p></li>
+<li><p><strong>freq</strong> – the frequencies at which the impedance should be calculated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array with the complex impedance of the component for the given frequencies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.CPE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_components.</span></span><span class="sig-name descname"><span class="pre">CPE</span></span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.CPE" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dgpost.transform.circuit_utils.circuit_components.Component" title="dgpost.transform.circuit_utils.circuit_components.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgpost.transform.circuit_utils.circuit_components.Component</span></code></a></p>
+<p>defines a constant phase element</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.CPE.get_symbol">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.CPE.get_symbol" title="Permalink to this definition"></a></dt>
+<dd><p>Unique symbol used to identify the component in the circuit string</p>
+<p>The symbol can only contain letters, i.e. a-z, A-Z</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.CPE.get_parameters">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.CPE.get_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>returns the parameter(s) that describe the component</p>
+<p>A parameter is a dictionary with the keys: <cite>name</cite>, <cite>bounds</cite> and <cite>unit</cite>.
+The <cite>name</cite> of the parameter should be based on the symbol. It can also contain any character except a whitespace.
+The <cite>bounds</cite> are given as a tuple with the lower (<cite>lb</cite>) and upper bounds (<cite>ub</cite>) like <cite>(lb, ub)</cite>.
+The unit needs to be recognised by pint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of the component in the circuit string, made out of the symbol with an additional digit.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The parameters that describes the component.
+A parameter is a dictionary with 3 keys: ‘name’, ‘bounds’ and ‘unit’</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.CPE.calc_impedance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.CPE.calc_impedance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the impedance of the component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – dictionary of parameter values with the name as the key</p></li>
+<li><p><strong>name</strong> – the name of the component</p></li>
+<li><p><strong>freq</strong> – the frequencies at which the impedance should be calculated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array with the complex impedance of the component for the given frequencies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Warburg">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_components.</span></span><span class="sig-name descname"><span class="pre">Warburg</span></span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Warburg" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dgpost.transform.circuit_utils.circuit_components.Component" title="dgpost.transform.circuit_utils.circuit_components.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgpost.transform.circuit_utils.circuit_components.Component</span></code></a></p>
+<p>defines a semi-infinite Warburg element</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Warburg.get_symbol">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Warburg.get_symbol" title="Permalink to this definition"></a></dt>
+<dd><p>Unique symbol used to identify the component in the circuit string</p>
+<p>The symbol can only contain letters, i.e. a-z, A-Z</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Warburg.get_parameters">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Warburg.get_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>returns the parameter(s) that describe the component</p>
+<p>A parameter is a dictionary with the keys: <cite>name</cite>, <cite>bounds</cite> and <cite>unit</cite>.
+The <cite>name</cite> of the parameter should be based on the symbol. It can also contain any character except a whitespace.
+The <cite>bounds</cite> are given as a tuple with the lower (<cite>lb</cite>) and upper bounds (<cite>ub</cite>) like <cite>(lb, ub)</cite>.
+The unit needs to be recognised by pint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of the component in the circuit string, made out of the symbol with an additional digit.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The parameters that describes the component.
+A parameter is a dictionary with 3 keys: ‘name’, ‘bounds’ and ‘unit’</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.Warburg.calc_impedance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.Warburg.calc_impedance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the impedance of the component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – dictionary of parameter values with the name as the key</p></li>
+<li><p><strong>name</strong> – the name of the component</p></li>
+<li><p><strong>freq</strong> – the frequencies at which the impedance should be calculated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array with the complex impedance of the component for the given frequencies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.WarburgOpen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_components.</span></span><span class="sig-name descname"><span class="pre">WarburgOpen</span></span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.WarburgOpen" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dgpost.transform.circuit_utils.circuit_components.Component" title="dgpost.transform.circuit_utils.circuit_components.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgpost.transform.circuit_utils.circuit_components.Component</span></code></a></p>
+<p>defines a finite-space Warburg element</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.WarburgOpen.get_symbol">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.WarburgOpen.get_symbol" title="Permalink to this definition"></a></dt>
+<dd><p>Unique symbol used to identify the component in the circuit string</p>
+<p>The symbol can only contain letters, i.e. a-z, A-Z</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.WarburgOpen.get_parameters">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.WarburgOpen.get_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>returns the parameter(s) that describe the component</p>
+<p>A parameter is a dictionary with the keys: <cite>name</cite>, <cite>bounds</cite> and <cite>unit</cite>.
+The <cite>name</cite> of the parameter should be based on the symbol. It can also contain any character except a whitespace.
+The <cite>bounds</cite> are given as a tuple with the lower (<cite>lb</cite>) and upper bounds (<cite>ub</cite>) like <cite>(lb, ub)</cite>.
+The unit needs to be recognised by pint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of the component in the circuit string, made out of the symbol with an additional digit.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The parameters that describes the component.
+A parameter is a dictionary with 3 keys: ‘name’, ‘bounds’ and ‘unit’</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.WarburgOpen.calc_impedance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.WarburgOpen.calc_impedance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the impedance of the component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – dictionary of parameter values with the name as the key</p></li>
+<li><p><strong>name</strong> – the name of the component</p></li>
+<li><p><strong>freq</strong> – the frequencies at which the impedance should be calculated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array with the complex impedance of the component for the given frequencies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.WarburgShort">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_components.</span></span><span class="sig-name descname"><span class="pre">WarburgShort</span></span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.WarburgShort" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dgpost.transform.circuit_utils.circuit_components.Component" title="dgpost.transform.circuit_utils.circuit_components.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">dgpost.transform.circuit_utils.circuit_components.Component</span></code></a></p>
+<p>defines a finite-length Warburg element</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.WarburgShort.get_symbol">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.WarburgShort.get_symbol" title="Permalink to this definition"></a></dt>
+<dd><p>Unique symbol used to identify the component in the circuit string</p>
+<p>The symbol can only contain letters, i.e. a-z, A-Z</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.WarburgShort.get_parameters">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.WarburgShort.get_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>returns the parameter(s) that describe the component</p>
+<p>A parameter is a dictionary with the keys: <cite>name</cite>, <cite>bounds</cite> and <cite>unit</cite>.
+The <cite>name</cite> of the parameter should be based on the symbol. It can also contain any character except a whitespace.
+The <cite>bounds</cite> are given as a tuple with the lower (<cite>lb</cite>) and upper bounds (<cite>ub</cite>) like <cite>(lb, ub)</cite>.
+The unit needs to be recognised by pint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of the component in the circuit string, made out of the symbol with an additional digit.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The parameters that describes the component.
+A parameter is a dictionary with 3 keys: ‘name’, ‘bounds’ and ‘unit’</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_components.WarburgShort.calc_impedance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_impedance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_components.WarburgShort.calc_impedance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the impedance of the component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – dictionary of parameter values with the name as the key</p></li>
+<li><p><strong>name</strong> – the name of the component</p></li>
+<li><p><strong>freq</strong> – the frequencies at which the impedance should be calculated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array with the complex impedance of the component for the given frequencies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-dgpost.transform.circuit_utils.circuit_parser">
+<span id="dgpost-transform-circuit-utils-circuit-parser-module"></span><h2>dgpost.transform.circuit_utils.circuit_parser module<a class="headerlink" href="#module-dgpost.transform.circuit_utils.circuit_parser" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_parser.parse_circuit">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_parser.</span></span><span class="sig-name descname"><span class="pre">parse_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circ</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_parser.parse_circuit" title="Permalink to this definition"></a></dt>
+<dd><p>Extended Backus–Naur form (EBNF) parser for a circuit string.</p>
+<p>Implements an extended Backus–Naur form (EBNF) to parse a string containing a description of a circuit.</p>
+<dl class="simple">
+<dt>The syntax of the EBNF is given by:</dt><dd><ul class="simple">
+<li><p>circuit = element | element-circuit</p></li>
+<li><p>element = component | parallel</p></li>
+<li><p>parallel = p(circuit {,circuit})</p></li>
+<li><p>component = a circuit component defined in <code class="docutils literal notranslate"><span class="pre">circuit_components</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>So to put elements in series connect them through ‘-’
+Parallel elements are created by p(…,… ,…)</p>
+<p>To use a component in the circuit string use its symbol. The symbol can be followed by a digit to differentiate similar components.
+Already implemented circuit elements are located in <code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform.circuit_utils.circuit_components.py</span></code>.</p>
+<p>From this a function is generated and which evaluates the impedance of the circuit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>circ</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – String describing a circuit</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>], <code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>[[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>param_info</em> – list of used parameter. For more information about parameters look in <code class="docutils literal notranslate"><span class="pre">circuit_components</span></code></p></li>
+<li><p><em>calculate</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_parser.fit_routine">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_parser.</span></span><span class="sig-name descname"><span class="pre">fit_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_guess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_parser.fit_routine" title="Permalink to this definition"></a></dt>
+<dd><p>Fitting routine which uses scipy least_squares and minimize.</p>
+<p>Least_squares is a good fitting method but will get stuck in local minima.
+For this reason, the Nelder-Mead-Simplex algorithm is used to get out of these local minima.
+The fitting routine is inspired by Relaxis 3 fitting procedure.
+More information about it can be found on page 188 of revision 1.25 of Relaxis User Manual.
+<a class="reference external" href="https://www.rhd-instruments.de/download/manuals/relaxis_manual.pdf">https://www.rhd-instruments.de/download/manuals/relaxis_manual.pdf</a></p>
+<p>Open issue is estimate the errors of the parameters. For further information look:
+- <a class="reference external" href="https://github.com/andsor/notebooks/blob/master/src/nelder-mead.md">https://github.com/andsor/notebooks/blob/master/src/nelder-mead.md</a>
+- <a class="reference external" href="https://math.stackexchange.com/questions/2447382/nelder-mead-function-fit-error-estimation-via-surface-fit">https://math.stackexchange.com/questions/2447382/nelder-mead-function-fit-error-estimation-via-surface-fit</a>
+- <a class="reference external" href="https://stats.stackexchange.com/questions/424073/calculate-the-uncertainty-of-a-mle">https://stats.stackexchange.com/questions/424073/calculate-the-uncertainty-of-a-mle</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>opt_func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>[[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – function that gets minimized</p></li>
+<li><p><strong>fit_guess</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – initial guess for minimization</p></li>
+<li><p><strong>bounds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]) – bounds of the fitting parameters</p></li>
+<li><p><strong>repeat</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – how many times the least squares and minimize step gets repeated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>opt_result</strong> – the result of the optimization from the last step of Nelder-Mead.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>scipy.optimize.OptimizeResult</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.transform.html" class="btn btn-neutral float-left" title="dgpost.transform package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.utils.html" class="btn btn-neutral float-right" title="dgpost.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 1.1
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
