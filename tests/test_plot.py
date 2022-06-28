@@ -408,6 +408,48 @@ def test_plot_direct(input, datadir):
                 "save": {"as": "test.flowcx.nolabel.png", "tight_layout": {}},
             },
         ),
+        (  # ts2 - 2 images, different x-axis
+            "Ewe_I.df.pkl",
+            {
+                "ax_args": [
+                    {
+                        "series": [
+                            {
+                                "y": "Ewe",
+                                "color": "C0",
+                                "kind": "line",
+                                "index": {"from_zero": True}
+                            },
+                        ],
+                        "methods": {
+                            "tick_params": {"top": True, "labelbottom": False},
+                        },
+                        "rows": (0, 2),
+                        "xlabel": "",
+                    },
+                    {
+                        "series": [
+                            {
+                                "y": "I",
+                                "color": "C2",
+                                "kind": "line",
+                                "index": {"from_zero": True}
+                            },
+                        ],
+                        "methods": {
+                            "tick_params": {"top": True},
+                        },
+                        "rows": (2, 3),
+                    },
+                ],
+                "nrows": 3,
+                "style": test_style_1,
+                "fig_args": {
+                    "figsize": (12, 8),
+                },
+                "save": {"as": "test.Ewe_I.png", "tight_layout": {}},
+            },
+        ),
     ],
 )
 def test_plot_from_df(data_file, input, datadir):
