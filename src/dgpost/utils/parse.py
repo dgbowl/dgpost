@@ -10,7 +10,7 @@ import os
 import yaml
 import json
 from typing import Any
-from dgbowl_schemas.dgpost_recipe import recipe_parser
+from dgbowl_schemas.dgpost import to_recipe
 
 
 def parse(fn: str) -> dict[str, Any]:
@@ -18,7 +18,7 @@ def parse(fn: str) -> dict[str, Any]:
     Input file parsing function.
 
     Supports loading ``yaml`` and ``json`` files using the `recipe`-parsing
-    function and schema provided in the :mod:`dgbowl_schemas.dgpost_recipe`
+    function and schema provided in the :mod:`dgbowl_schemas.dgpost..recipe_1_1`
     module.
 
     Parameters
@@ -41,5 +41,5 @@ def parse(fn: str) -> dict[str, Any]:
             indict = yaml.safe_load(infile)
         elif fn.endswith("json"):
             indict = json.load(infile)
-    ret = recipe_parser(indict)
+    ret = to_recipe(**indict).dict(by_alias=True, exclude_none=True)
     return ret
