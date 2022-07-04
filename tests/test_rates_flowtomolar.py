@@ -61,7 +61,7 @@ Trefs = [293.15, ureg.Quantity(20, "degC"), uc.ufloat(293.15, 0.0)]
         ),
     ],
 )
-def test_rates_flowtomolar(infile, spec, outfile, datadir):
+def test_rates_flowtomolar_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
     for args in spec:

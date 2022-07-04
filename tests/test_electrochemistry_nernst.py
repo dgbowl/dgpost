@@ -47,7 +47,7 @@ from .utils import compare_dfs
         ),
     ],
 )
-def test_nernst_direct(inputs, output):
+def test_electrochemistry_nernst_direct(inputs, output):
     n = inputs.get("output", "Eapp")
     ret = electrochemistry.nernst(**inputs)
     assert np.allclose(ret[n], output[n])
@@ -81,7 +81,7 @@ def test_nernst_direct(inputs, output):
         ),
     ],
 )
-def test_nernst_df(infile, spec, outfile, datadir):
+def test_electrochemistry_nernst_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
     for args in spec:

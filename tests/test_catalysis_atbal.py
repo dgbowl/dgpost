@@ -42,7 +42,7 @@ from .utils import compare_dfs
         ),
     ],
 )
-def test_atbal_against_df(inpath, spec, outpath, datadir):
+def test_catalysis_atbal_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
@@ -63,7 +63,7 @@ def test_atbal_against_df(inpath, spec, outpath, datadir):
         ),
     ],
 )
-def test_atbal_with_transform(inpath, spec, outpath, datadir):
+def test_catalysis_atbal_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     transform(df, "catalysis.atom_balance", using=spec)
@@ -84,7 +84,7 @@ def test_atbal_with_transform(inpath, spec, outpath, datadir):
         ),
     ],
 )
-def test_atbal_against_excel(inpath, spec, outkeys, datadir):
+def test_catalysis_atbal_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
     transform(df, "catalysis.atom_balance", using=spec)
@@ -92,7 +92,7 @@ def test_atbal_against_excel(inpath, spec, outkeys, datadir):
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
 
 
-def test_atbal_rinxin(datadir):
+def test_catalysis_atbal_rinxin(datadir):
     os.chdir(datadir)
     df = pd.read_pickle("rinxin.pkl")
     catalysis.atom_balance(df, xin="xin", xout="xout", element="C", output="C1")
