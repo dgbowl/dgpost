@@ -301,6 +301,8 @@ def load_data(*cols: tuple[str, str, type]):
                 else:
                     retvals = func(**data_kwargs, **kwargs)
                     for name, qty in retvals.items():
+                        print(f"{name=}")
+                        print(f"{qty=}")
                         if isinstance(qty, pint.Quantity):
                             qty.ito_reduced_units()
                             df[name] = qty.m
