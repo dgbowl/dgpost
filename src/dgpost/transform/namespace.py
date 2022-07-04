@@ -17,6 +17,7 @@ from dgpost.transform.helpers import load_data
 from .helpers import columns_to_smiles
 from collections import defaultdict
 
+
 @load_data(
     ("a", None, dict),
     ("b", None, dict),
@@ -30,10 +31,10 @@ def combine(
 ) -> dict[str, pint.Quantity]:
     """
     Combines two namespaces into one. Unit checks are performed, with the resulting
-    units corresponding to the units in namespace ``a``. By default, the output 
+    units corresponding to the units in namespace ``a``. By default, the output
     namespace is called ``"c"``. Optionally, the keys in each namespace can be treated
     as chemicals.
-    
+
     Parameters
     ----------
     a
@@ -41,11 +42,11 @@ def combine(
 
     b
         Namespace ``b``.
-    
+
     conflicts
         Name resolution scheme. Can be either ``"sum"`` where conflicts are summed,
         or ``"replace"``, where conflicting values in ``a`` are overwritten by ``b``.
-    
+
     chemicals
         Treat keys within ``a`` and ``b`` as chemicals, and combine them accordingly.
         Default is ``False``.
@@ -78,7 +79,7 @@ def combine(
             ret[v["a"]] = a[v["a"]]
         elif "b" in v:
             ret[v["b"]] = b[v["b"]].to(u)
-    
+
     out = {}
     for k, v in ret.items():
         out[f"{output}->{k}"] = v

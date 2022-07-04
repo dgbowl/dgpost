@@ -9,6 +9,7 @@ from .utils import compare_dfs
 
 from yadg.dgutils import ureg
 
+
 @pytest.mark.parametrize(
     "a, b, conflicts, output",
     [
@@ -26,7 +27,7 @@ from yadg.dgutils import ureg
                 "c->a": ureg.Quantity(10.0, "ml/min"),
                 "c->b": ureg.Quantity(16.0, "ml/min"),
                 "c->c": ureg.Quantity(100.0, "ml/min"),
-            }
+            },
         ),
         (  # ts1 - replace
             {
@@ -42,33 +43,30 @@ from yadg.dgutils import ureg
                 "c->a": ureg.Quantity(10.0, "mmol/s"),
                 "c->b": ureg.Quantity(1.0, "mmol/s"),
                 "c->c": ureg.Quantity(20.0, "mmol/s"),
-            }
+            },
         ),
     ],
 )
 def test_namespace_combine_direct(a, b, conflicts, output):
-    ret = namespace.combine(a = a, b = b, conflicts = conflicts, output = "c")
+    ret = namespace.combine(a=a, b=b, conflicts=conflicts, output="c")
     for k, v in ret.items():
         assert np.allclose(v, output[k])
+
 
 @pytest.mark.parametrize(
     "inpath, spec, outprefix",
     [
         (  # ts0 - sum
-        "namespaces_1.xlsx",
-        [
-            {"a": "rin(GC)", "b": "rin(LC)", "output": "rtot"}
-        ],
-        "rtot"
+            "namespaces_1.xlsx",
+            [{"a": "rin(GC)", "b": "rin(LC)", "output": "rtot"}],
+            "rtot",
         ),
         (  # ts0 - sum
-        "namespaces_2.xlsx",
-        [
-            {"a": "rin(GC)", "b": "rin(LC)", "output": "rtot", "chemicals": True}
-        ],
-        "rtot"
-        )
-    ]
+            "namespaces_2.xlsx",
+            [{"a": "rin(GC)", "b": "rin(LC)", "output": "rtot", "chemicals": True}],
+            "rtot",
+        ),
+    ],
 )
 def test_namespace_combine_excel(inpath, spec, outprefix, datadir):
     os.chdir(datadir)
