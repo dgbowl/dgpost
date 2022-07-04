@@ -47,15 +47,13 @@ from .utils import compare_dfs
         ),
         (  # ts4 - Francesco's data
             {
-                "Ewe": ureg.Quantity(-3.42246, "volt"), 
+                "Ewe": ureg.Quantity(-3.42246, "volt"),
                 "R": ureg.Quantity(0.997466, "ohm"),
                 "Eref": ureg.Quantity(0.197, "volt"),
                 "I": ureg.Quantity(-199.919, "milliampere"),
             },
-            {
-                "Eapp": ureg.Quantity(-3.02605, "volt")
-            }
-        )
+            {"Eapp": ureg.Quantity(-3.02605, "volt")},
+        ),
     ],
 )
 def test_nernst_direct(inputs, output):
