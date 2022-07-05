@@ -26,7 +26,6 @@ cross-matching of the ``feestock``, internal ``standard``, and the components of
 """
 
 import pint
-import numpy as np
 import logging
 
 logger = logging.getLogger(__name__)
@@ -255,8 +254,8 @@ def selectivity(
     """
     Calculates product-based atomic selectivities of all species :math:`s`,
     excluding the ``feedstock`` :math:`f`. The sum of selectivities is normalised
-    to unity. Works with both mole fractions :math:`x` as well as molar rates
-    :math:`\\dot{n}`:
+    to unity. Works with both mole fractions :math:`x` as well as molar production
+    rates :math:`\\dot{n}`:
 
     .. math::
 
@@ -275,6 +274,11 @@ def selectivity(
 
         The selectivity calculation assumes that all products have been determined;
         it provides no information about the mass or atomic balance.
+
+    .. note::
+
+        When molar rates :math:`\\dot{n}` are used, only creation rates (i.e.
+        where :math:`\\dot{n}(p) > 0`) are used for calculation of selectivity.
 
     Parameters
     ----------
@@ -319,6 +323,7 @@ def selectivity(
         if k != fsmi and "out" in v:
             formula = v["chem"].formula
             dnat = out[v["out"]] * element_from_formula(formula, element)
+            dnat = dnat * (dnat > 0)
             if nat_out is None:
                 nat_out = dnat
             else:
@@ -329,7 +334,8 @@ def selectivity(
             formula = v["chem"].formula
             els = element_from_formula(formula, element)
             if els > 0:
-                Sp = out[v["out"]] * els / nat_out
+                nat = out[v["out"]] * els
+                Sp = nat * (nat > 0) / nat_out
                 pretag = f"Sp_{element}" if output is None else output
                 tag = f"{pretag}->{v['out']}"
                 ret[tag] = Sp
