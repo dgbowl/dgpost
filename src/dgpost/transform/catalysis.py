@@ -80,7 +80,7 @@ def conversion(
 
     Which requires the feedstock :math:`f` to be quantified in the outlet composition.
 
-    If the outlet composition of :math:`f` is not defined or not suitable, the user 
+    If the outlet composition of :math:`f` is not defined or not suitable, the user
     should request a "mixed" conversion :math:`X_m`, which is calculated using:
 
     .. math::
@@ -152,8 +152,8 @@ def conversion(
 
     type
         Conversion type. Can be one of ``{"reactant", "product", "mixed"}``, selecting
-        the conversion calculation algorithm. 
-    
+        the conversion calculation algorithm.
+
     product
         **Deprecated.** Switches between reactant and product-based conversion.
 
@@ -355,8 +355,8 @@ def catalytic_yield(
 ) -> None:
     """
     Calculates the catalytic yield :math:`Y_p`, defined as the product of conversion
-    and selectivity. By default, uses product-based conversion of feedstock for an 
-    internal consistency with selectivity. The sum of all yields is equal to the 
+    and selectivity. By default, uses product-based conversion of feedstock for an
+    internal consistency with selectivity. The sum of all yields is equal to the
     conversion. Implicitly runs :func:`conversion` and :func:`selectivity` on the
     :class:`pd.DataFrame`:
 
@@ -385,9 +385,9 @@ def catalytic_yield(
 
     standard
         Internal standard for normalizing the compositions. By default set to "N2".
-    
+
     type
-        Select conversion calculation algorithm, see 
+        Select conversion calculation algorithm, see
         :func:`~dgpost.transform.catalysis.conversion`.
 
     output
