@@ -49,7 +49,7 @@ plot:
             marker: "."
         ylabel: "$E_{app}$ [V]"
         xlim: [0, 60]
-        ylim: [-4, -3]
+        ylim: [-2, 0]
         methods:
           tick_params:
             labeltop: True

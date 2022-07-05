@@ -47,18 +47,26 @@ def nernst(
     providing the :math:`pH`.
 
     This function corrects the measured voltage :math:`E_\\text{we}` to applied
-    voltage :math:`E` by implementing the following equation:
+    voltage :math:`E`. For :math:`E_\\text{we} > 0~\\text{V}`, the following equation
+    is used:
 
     .. math::
 
-        E &= E_\\text{we} + E_\\text{ref} + RI + E_N \\\\
+        E &= E_\\text{we} - R |I| + E_\\text{ref} + E_N \\\\
         E_N &= - \\frac{\\overline{R} T}{nF} ln(Q) = \\frac{\\overline{R} T}{F} ln(10) \\text{pH}
 
-    where :math:`E_\\text{ref}` is the potential of the reference electrode vs RHE,
-    :math:`RI` is the product of cell resistance and applied current, :math:`\\overline{R}`
-    is the molar gas constant, :math:`T` is the temperature, :math:`n` is the number
-    of electrones transferred, :math:`F` is the Faraday constant, :math:`Q` is the 
-    reaction quotient, and :math:`\\text{pH}` is the pH of the electrolyte.
+    where :math:`R |I|` is the product of cell resistance and the magnitude of the 
+    applied current, :math:`E_\\text{ref}` is the potential of the reference electrode 
+    vs RHE, :math:`\\overline{R}` is the molar gas constant, :math:`T` is the 
+    temperature, :math:`n` is the number of electrones transferred, :math:`F` is 
+    the Faraday constant, :math:`Q` is the reaction quotient, and :math:`\\text{pH}` 
+    is the pH of the electrolyte.
+
+    .. note ::
+
+        The Ohmic loss :math:`R |I|` always acts against the magnitude of the working 
+        potential :math:`E_\\text{we}`. If :math:`E_\\text{we} < 0~\\text{V}`, the Ohmic 
+        term :math:`R |I|` is added to :math:`E_\\text{we}` to reduce its magnitude.
     
     Parameters
     ----------
@@ -107,7 +115,7 @@ def nernst(
     if Eref is not None:
         E += Eref
     if R is not None and I is not None:
-        E += R * I
+        E -= np.sign(Ewe) * R * abs(I)
     if (pH is not None) or (n is not None and Q is not None):
         EN = ureg("molar_gas_constant") * T.to("K") / ureg("faraday_constant")
         if pH is not None:
