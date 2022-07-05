@@ -79,9 +79,9 @@ def conversion(
         {\\sum_{s} n_\\text{el}(s) \\dot{n}_\\text{out}(s)}
 
     Which requires the feedstock :math:`f` to be quantified in the outlet composition.
-    If the outlet composition of :math:`f` is found to be zero at all timesteps, its
-    value in the the inlet composition is used instead, and a "mixed" conversion
-    :math:`X_m` is calculated instead:
+
+    If the outlet composition of :math:`f` is not defined or not suitable, the user 
+    should request a "mixed" conversion :math:`X_m`, which is calculated using:
 
     .. math::
 
@@ -99,10 +99,9 @@ def conversion(
 
     .. note::
 
-        Calculating product-based conversion :math:`X_m` using inlet mole fraction
+        Calculating mixed conversion :math:`X_m` using inlet mole fraction
         of feedstock is not ideal and should be avoided, as the value is strongly
-        convoluted with the :func:`atom_balance` of the mixtures. A warning will be
-        raised by the program.
+        convoluted with the :func:`atom_balance` of the mixtures.
 
     Finally, the calculation of reactant-based (or feedstock-based) conversion,
     :math:`X_r`, proceeds as follows:
@@ -156,6 +155,7 @@ def conversion(
         the conversion calculation algorithm. 
     
     product
+        **Deprecated.** Switches between reactant and product-based conversion.
 
     standard
         Internal standard for normalizing the compositions. By default set to "N2".
@@ -171,7 +171,7 @@ def conversion(
 
     """
     if product is not None:
-        logging.warning(
+        logger.warning(
             "Specifying reactant- and product-based conversion using "
             f"'product' is deprecated and will stop working in dgpost-2.0. "
             "Use 'type={product,reactant,mixed}' instead."
@@ -192,10 +192,10 @@ def conversion(
 
     # expansion factor
     if xin is None and xout is None:
-        logging.debug("Calculation using molar rates. Expansion factor set to 1.0.")
+        logger.debug("Calculation using molar rates. Expansion factor set to 1.0.")
         exp = 1.0
     else:
-        logging.debug(
+        logger.debug(
             "Calculation using molar fractions. Expansion factor derived from '%s'",
             standard,
         )
@@ -355,9 +355,9 @@ def catalytic_yield(
 ) -> None:
     """
     Calculates the catalytic yield :math:`Y_p`, defined as the product of conversion
-    and selectivity. Uses product-based conversion of feedstock for an internal
-    consistency with selectivity. The sum of all yields is equal to the conversion.
-    Implicitly runs :func:`conversion` and :func:`selectivity` on the
+    and selectivity. By default, uses product-based conversion of feedstock for an 
+    internal consistency with selectivity. The sum of all yields is equal to the 
+    conversion. Implicitly runs :func:`conversion` and :func:`selectivity` on the
     :class:`pd.DataFrame`:
 
     .. math::
@@ -385,6 +385,10 @@ def catalytic_yield(
 
     standard
         Internal standard for normalizing the compositions. By default set to "N2".
+    
+    type
+        Select conversion calculation algorithm, see 
+        :func:`~dgpost.transform.catalysis.conversion`.
 
     output
         A :class:`str` prefix for the output variables.
