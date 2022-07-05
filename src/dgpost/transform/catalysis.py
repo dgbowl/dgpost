@@ -53,8 +53,9 @@ def conversion(
     rin: dict[str, pint.Quantity] = None,
     rout: dict[str, pint.Quantity] = None,
     element: str = None,
-    product: bool = True,
+    type: str = "product",
     standard: str = "N2",
+    product: bool = None,
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
@@ -150,8 +151,11 @@ def conversion(
         Name of the element for determining conversion. If not specified, set to the
         highest-priority (C > H > O) element in ``feedstock``.
 
+    type
+        Conversion type. Can be one of ``{"reactant", "product", "mixed"}``, selecting
+        the conversion calculation algorithm. 
+    
     product
-        Product-based conversion toggle. Default is ``True``.
 
     standard
         Internal standard for normalizing the compositions. By default set to "N2".
@@ -166,6 +170,13 @@ def conversion(
         A :class:`dict` containing the calculated conversion with ``output`` as its key.
 
     """
+    if product is not None:
+        logging.warning(
+            "Specifying reactant- and product-based conversion using "
+            f"'product' is deprecated and will stop working in dgpost-2.0. "
+            "Use 'type={product,reactant,mixed}' instead."
+        )
+        type = "product" if product else "reactant"
     assert (xin is None and xout is None) or (rin is None and rout is None)
     inp = xin if rin is None else rin
     out = xout if rout is None else rout
@@ -192,7 +203,7 @@ def conversion(
         exp = inp[sd["inp"]] / out[sd["out"]]
 
     # reactant-based conversion
-    if not product:
+    if type == "reactant":
         assert "inp" in fd, f"Feedstock '{feedstock}' not in inlet."
         assert "out" in fd, f"Feedstock '{feedstock}' not in outlet."
         logger.debug("Calculating reactant-based conversion.")
@@ -210,20 +221,20 @@ def conversion(
         if "out" in fd:
             f_out = out[fd["out"]] * element_from_formula(fform, element)
         else:
-            f_out = None
+            f_out = 0
 
         for v in smiles.values():
             if "out" in v:
                 formula = v["chem"].formula
                 dnat = out[v["out"]] * element_from_formula(formula, element)
                 nat_out += dnat
-        if f_out is not None and np.any(f_out > 0.0):
+        if type == "product":
             logger.debug("Calculating product-based conversion using reactant outlet.")
             Xp = (nat_out - f_out) / nat_out
             prefix = f"Xp_{element}" if output is None else output
-        else:
-            logger.warning("Calculating product-based conversion using reactant inlet.")
-            Xp = nat_out / f_in
+        elif type == "mixed":
+            logger.debug("Calculating product-based conversion using reactant inlet.")
+            Xp = (nat_out - f_out) / f_in
             prefix = f"Xm_{element}" if output is None else output
         tag = f"{prefix}->{feedstock}"
         ret = {tag: Xp}
@@ -339,6 +350,7 @@ def catalytic_yield(
     rout: dict[str, pint.Quantity] = None,
     element: str = None,
     standard: str = "N2",
+    type: str = "product",
     output: str = None,
 ) -> None:
     """
@@ -395,7 +407,7 @@ def catalytic_yield(
         rin=rin,
         rout=rout,
         element=element,
-        product=True,
+        type=type,
         standard=standard,
     )
     ret_Sp = selectivity(feedstock=feedstock, xout=xout, rout=rout, element=element)

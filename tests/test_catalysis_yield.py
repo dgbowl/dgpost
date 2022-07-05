@@ -83,8 +83,9 @@ def test_catalysis_yield_rinxin(datadir):
     df = pd.read_pickle("rinxin.pkl")
     catalysis.catalytic_yield(df, feedstock="CH4", xin="xin", xout="xout", output="Yp1")
     catalysis.catalytic_yield(df, feedstock="CH4", rin="nin", rout="nout", output="Yp2")
-    df["nout->CH4"] = 0
-    catalysis.catalytic_yield(df, feedstock="CH4", rin="nin", rout="nout", output="Yp3")
+    catalysis.catalytic_yield(
+        df, feedstock="CH4", rin="nin", rout="nout", type="mixed", output="Yp3"
+    )
     for col in ["Yp1", "Yp2"]:
         assert np.allclose(
             df[f"{col}->CO"],

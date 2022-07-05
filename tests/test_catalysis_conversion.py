@@ -166,7 +166,7 @@ def test_catalysis_conversion_transform(inpath, spec, outpath, datadir):
                     "feedstock": "CO2",
                     "rin": "nin",
                     "rout": "nout",
-                    "product": True,
+                    "type": "mixed",
                     "element": "C",
                 }
             ],
@@ -186,27 +186,26 @@ def test_catalysis_conversion_rinxin(datadir):
     os.chdir(datadir)
     df = pd.read_pickle("rinxin.pkl")
     catalysis.conversion(
-        df, feedstock="CH4", xin="xin", xout="xout", product=False, output="Xr1"
+        df, feedstock="CH4", xin="xin", xout="xout", type="reactant", output="Xr1"
     )
     catalysis.conversion(
-        df, feedstock="CH4", rin="nin", rout="nout", product=False, output="Xr2"
+        df, feedstock="CH4", rin="nin", rout="nout", type="reactant", output="Xr2"
     )
     catalysis.conversion(
-        df, feedstock="CH4", xin="xin", xout="xout", product=True, output="Xp1"
+        df, feedstock="CH4", xin="xin", xout="xout", type="product", output="Xp1"
     )
     catalysis.conversion(
-        df, feedstock="CH4", rin="nin", rout="nout", product=True, output="Xp2"
+        df, feedstock="CH4", rin="nin", rout="nout", type="product", output="Xp2"
     )
     catalysis.conversion(
         df, feedstock="CH4", xin="xin", xout="xout", standard="Ar", output="Xp3"
     )
-    df["nout->CH4"] = 0
     catalysis.conversion(
-        df, feedstock="CH4", rin="nin", rout="nout", product=True, output="Xm1"
+        df, feedstock="CH4", rin="nin", rout="nout", type="mixed", output="Xm1"
     )
     del df["nout->CH4"]
     catalysis.conversion(
-        df, feedstock="CH4", rin="nin", rout="nout", product=True, output="Xm2"
+        df, feedstock="CH4", rin="nin", rout="nout", type="mixed", output="Xm2"
     )
     for col in ["Xr1", "Xr2"]:
         assert np.allclose(
