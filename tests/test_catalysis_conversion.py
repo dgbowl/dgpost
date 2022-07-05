@@ -79,7 +79,7 @@ from .utils import compare_dfs
         ),
     ],
 )
-def test_conversion_against_df(inpath, spec, outpath, datadir):
+def test_catalysis_conversion_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
@@ -118,7 +118,7 @@ def test_conversion_against_df(inpath, spec, outpath, datadir):
         ),
     ],
 )
-def test_conversion_with_transform(inpath, spec, outpath, datadir):
+def test_catalysis_conversion_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     transform(df, "catalysis.conversion", using=spec)
@@ -174,7 +174,7 @@ def test_conversion_with_transform(inpath, spec, outpath, datadir):
         ),
     ],
 )
-def test_conversion_against_excel(inpath, spec, outkeys, datadir):
+def test_catalysis_conversion_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
     transform(df, "catalysis.conversion", using=spec)
@@ -182,7 +182,7 @@ def test_conversion_against_excel(inpath, spec, outkeys, datadir):
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
 
 
-def test_conversion_rinxin(datadir):
+def test_catalysis_conversion_rinxin(datadir):
     os.chdir(datadir)
     df = pd.read_pickle("rinxin.pkl")
     catalysis.conversion(

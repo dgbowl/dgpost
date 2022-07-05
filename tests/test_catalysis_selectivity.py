@@ -53,7 +53,7 @@ from .utils import compare_dfs
         ),
     ],
 )
-def test_selectivity_against_df(inpath, spec, outpath, datadir):
+def test_catalysis_selectivity_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
@@ -75,7 +75,7 @@ def test_selectivity_against_df(inpath, spec, outpath, datadir):
         )
     ],
 )
-def test_selectivity_with_transform(inpath, spec, outpath, datadir):
+def test_catalysis_selectivity_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     transform(df, "catalysis.selectivity", using=spec)
@@ -93,7 +93,7 @@ def test_selectivity_with_transform(inpath, spec, outpath, datadir):
         ),
     ],
 )
-def test_selectivity_against_excel(inpath, spec, outkeys, datadir):
+def test_catalysis_selectivity_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
     transform(df, "catalysis.selectivity", using=spec)
@@ -101,7 +101,7 @@ def test_selectivity_against_excel(inpath, spec, outkeys, datadir):
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
 
 
-def test_selectivity_rinxin(datadir):
+def test_catalysis_selectivity_rinxin(datadir):
     os.chdir(datadir)
     df = pd.read_pickle("rinxin.pkl")
     catalysis.selectivity(df, feedstock="CH4", xout="xout", output="Sp1")
