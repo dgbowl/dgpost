@@ -340,15 +340,23 @@ for Ohmic drop, reference potential vs RHE, and ionic concentration using
 the Nernst equation, either by providing <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(n\)</span>, or by
 providing the <span class="math notranslate nohighlight">\(pH\)</span>.</p>
 <p>This function corrects the measured voltage <span class="math notranslate nohighlight">\(E_\text{we}\)</span> to applied
-voltage <span class="math notranslate nohighlight">\(E\)</span> by implementing the following equation:</p>
+voltage <span class="math notranslate nohighlight">\(E\)</span>. For <span class="math notranslate nohighlight">\(E_\text{we} &gt; 0~\text{V}\)</span>, the following equation
+is used:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}E &amp;= E_\text{we} + E_\text{ref} + RI + E_N \\
+\[\begin{split}E &amp;= E_\text{we} - R |I| + E_\text{ref} + E_N \\
 E_N &amp;= - \frac{\overline{R} T}{nF} ln(Q) = \frac{\overline{R} T}{F} ln(10) \text{pH}\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(E_\text{ref}\)</span> is the potential of the reference electrode vs RHE,
-<span class="math notranslate nohighlight">\(RI\)</span> is the product of cell resistance and applied current, <span class="math notranslate nohighlight">\(\overline{R}\)</span>
-is the molar gas constant, <span class="math notranslate nohighlight">\(T\)</span> is the temperature, <span class="math notranslate nohighlight">\(n\)</span> is the number
-of electrones transferred, <span class="math notranslate nohighlight">\(F\)</span> is the Faraday constant, <span class="math notranslate nohighlight">\(Q\)</span> is the
-reaction quotient, and <span class="math notranslate nohighlight">\(\text{pH}\)</span> is the pH of the electrolyte.</p>
+<p>where <span class="math notranslate nohighlight">\(R |I|\)</span> is the product of cell resistance and the magnitude of the
+applied current, <span class="math notranslate nohighlight">\(E_\text{ref}\)</span> is the potential of the reference electrode
+vs RHE, <span class="math notranslate nohighlight">\(\overline{R}\)</span> is the molar gas constant, <span class="math notranslate nohighlight">\(T\)</span> is the
+temperature, <span class="math notranslate nohighlight">\(n\)</span> is the number of electrones transferred, <span class="math notranslate nohighlight">\(F\)</span> is
+the Faraday constant, <span class="math notranslate nohighlight">\(Q\)</span> is the reaction quotient, and <span class="math notranslate nohighlight">\(\text{pH}\)</span>
+is the pH of the electrolyte.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Ohmic loss <span class="math notranslate nohighlight">\(R |I|\)</span> always acts against the magnitude of the working
+potential <span class="math notranslate nohighlight">\(E_\text{we}\)</span>. If <span class="math notranslate nohighlight">\(E_\text{we} &lt; 0~\text{V}\)</span>, the Ohmic
+term <span class="math notranslate nohighlight">\(R |I|\)</span> is added to <span class="math notranslate nohighlight">\(E_\text{we}\)</span> to reduce its magnitude.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
