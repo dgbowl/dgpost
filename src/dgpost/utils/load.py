@@ -56,11 +56,13 @@ def load(
     else:
         if path.endswith("pkl"):
             df = pd.read_pickle(path)
+            df.sort_index(axis="index", inplace=True)
             return df
         elif path.endswith("json"):
             with open(path, "r") as f:
                 json_file = json.load(f, object_hook=_parse_ufloat)
             df = pd.DataFrame.from_dict(json_file["table"])
+            df.sort_index(axis="index", inplace=True)
             df.index = [float(i) for i in df.index]
             df.attrs.update(json_file["attrs"])
             return df
