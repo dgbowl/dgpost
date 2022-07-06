@@ -16,6 +16,9 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import pandas as pd
 import uncertainties.unumpy as unp
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def apply_plot_style(style: dict) -> None:
@@ -186,6 +189,7 @@ def plot(
         fig.show()
         return
 
+    logger.debug("saving plot to '%s'" % save["as"])
     if save.get("tight_layout") is not None:
         fig.tight_layout(**save.pop("tight_layout"))
     else:

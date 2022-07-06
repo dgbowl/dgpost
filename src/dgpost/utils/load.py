@@ -24,6 +24,9 @@ from yadg.core import validate_datagram
 from uncertainties import ufloat_fromstr
 import re
 from typing import Union
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def _parse_ufloat(d: dict) -> dict:
@@ -48,12 +51,14 @@ def load(
     assert os.path.isfile(path), f"Provided 'path' '{path}' is not a file."
 
     if type == "datagram":
+        logger.debug("loading datagram from '%s'" % path)
         with open(path, "r") as infile:
             dg = json.load(infile)
         if check:
             validate_datagram(dg)
         return dg
     else:
+        logger.debug("loading table from '%s'" % path)
         if path.endswith("pkl"):
             df = pd.read_pickle(path)
             df.sort_index(axis="index", inplace=True)

@@ -11,6 +11,9 @@ import yaml
 import json
 from typing import Any
 from dgbowl_schemas.dgpost import to_recipe
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def parse(fn: str) -> dict[str, Any]:
@@ -36,10 +39,12 @@ def parse(fn: str) -> dict[str, Any]:
         f"provided file name '{fn}' does not exist " f"or is not a valid file"
     )
 
+    logger.debug("loading recipe from '%s'" % fn)
     with open(fn, "r") as infile:
         if fn.endswith("yml") or fn.endswith("yaml"):
             indict = yaml.safe_load(infile)
         elif fn.endswith("json"):
             indict = json.load(infile)
+    logger.debug("parsing loaded recipe dictionary")
     ret = to_recipe(**indict).dict(by_alias=True, exclude_none=True)
     return ret
