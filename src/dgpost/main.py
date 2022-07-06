@@ -13,6 +13,8 @@ import copy
 
 from dgpost.utils import parse, load, extract, transform, save, plot
 
+logger = logging.getLogger(__name__)
+
 
 def run(path: str, patch: str = None) -> tuple[dict, dict]:
     """
@@ -52,6 +54,8 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
 
     datagrams = {}
     tables = {}
+
+    logger.info("Processing 'load'.")
     l = spec.pop("load")
     for el in l:
         if patch is None:
@@ -63,6 +67,7 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
         else:
             tables[el["as"]] = load(fp, el["check"], el["type"])
 
+    logger.info("Processing 'extract'.")
     e = spec.get("extract", [])
     for el in e:
         saveas = el.pop("into")
@@ -94,10 +99,12 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
         else:
             tables[saveas] = newdf
 
+    logger.info("Processing 'transform'.")
     t = spec.get("transform", [])
     for el in t:
         transform(tables[el["table"]], el["with"], el["using"])
 
+    logger.info("Processing 'plot'.")
     p = spec.get("plot", [])
     for el in p:
         table = tables[el.pop("table")]
@@ -109,6 +116,7 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
             el["save"]["as"] = fp
         plot(table, **el)
 
+    logger.info("Processing 'save'.")
     s = spec.get("save", [])
     for el in s:
         if patch is None:

@@ -20,12 +20,11 @@ in order to save the given DataFrame:
 
 """
 import json
-import logging
 import os
 from yadg.dgutils.pintutils import ureg
 from uncertainties import unumpy as unp
-
 import pandas as pd
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -38,12 +37,15 @@ def save(
     meta: dict = None,
 ) -> None:
     """"""
-    if os.path.isdir(os.path.dirname(path)):
-        logger.warning(f"save: Provided 'path' '{path}' does not exist.")
+    folder = os.path.dirname(path)
+    if os.path.isdir(folder) or folder == "":
+        pass
+    else:
+        raise ValueError(f"Parent folder '{folder}' provided in 'path' does not exist.")
 
     # strip uncertainties if required
     if not sigma:
-        logger.warning(f"save: Stripping uncertainties from table.")
+        logger.warning(f"Stripping uncertainties from table.")
         for col in table.columns:
             table[col] = unp.nominal_values(table[col].array)
 
@@ -54,12 +56,13 @@ def save(
             type = "pkl"
 
     # pkl and json store the whole dataframe
-
     if type == "pkl":
+        logger.debug("Writing pickle into '%s'." % path)
         table.attrs["meta"] = meta
         table.to_pickle(path)
         return None
     elif type == "json":
+        logger.debug("Writing json into '%s'." % path)
         table.attrs["meta"] = meta
         json_file = {
             "table": table.to_dict(),
@@ -70,23 +73,20 @@ def save(
         return None
 
     # for excel and csv the unit gets added to the column names
-
     units = table.attrs.get("units", {})
     names = {}
-
     for col in table.columns:
         unit = units.get(col, " ")
         if unit == " ":
             continue
-
         name = col + f" [{ureg.Unit(unit):~P}]"
         names[col] = name
-
     dframe = table.rename(columns=names).sort_index(axis=1)
-
     if type == "csv":
+        logger.debug("Writing csv into '%s'." % path)
         dframe.to_csv(path)
     elif type == "xlsx":
+        logger.debug("Writing xlsx into '%s'." % path)
         dframe.to_excel(path)
     else:
-        raise ValueError(f"save: Provided 'type'  '{type}' is not supported.")
+        raise ValueError(f"save: Provided 'type' '{type}' is not supported.")
