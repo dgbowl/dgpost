@@ -26,7 +26,6 @@ cross-matching of the ``feestock``, internal ``standard``, and the components of
 """
 
 import pint
-import numpy as np
 import logging
 
 logger = logging.getLogger(__name__)
@@ -53,8 +52,9 @@ def conversion(
     rin: dict[str, pint.Quantity] = None,
     rout: dict[str, pint.Quantity] = None,
     element: str = None,
-    product: bool = True,
+    type: str = "product",
     standard: str = "N2",
+    product: bool = None,
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
@@ -78,9 +78,9 @@ def conversion(
         {\\sum_{s} n_\\text{el}(s) \\dot{n}_\\text{out}(s)}
 
     Which requires the feedstock :math:`f` to be quantified in the outlet composition.
-    If the outlet composition of :math:`f` is found to be zero at all timesteps, its
-    value in the the inlet composition is used instead, and a "mixed" conversion
-    :math:`X_m` is calculated instead:
+
+    If the outlet composition of :math:`f` is not defined or not suitable, the user
+    should request a "mixed" conversion :math:`X_m`, which is calculated using:
 
     .. math::
 
@@ -98,10 +98,9 @@ def conversion(
 
     .. note::
 
-        Calculating product-based conversion :math:`X_m` using inlet mole fraction
+        Calculating mixed conversion :math:`X_m` using inlet mole fraction
         of feedstock is not ideal and should be avoided, as the value is strongly
-        convoluted with the :func:`atom_balance` of the mixtures. A warning will be
-        raised by the program.
+        convoluted with the :func:`atom_balance` of the mixtures.
 
     Finally, the calculation of reactant-based (or feedstock-based) conversion,
     :math:`X_r`, proceeds as follows:
@@ -150,8 +149,12 @@ def conversion(
         Name of the element for determining conversion. If not specified, set to the
         highest-priority (C > H > O) element in ``feedstock``.
 
+    type
+        Conversion type. Can be one of ``{"reactant", "product", "mixed"}``, selecting
+        the conversion calculation algorithm.
+
     product
-        Product-based conversion toggle. Default is ``True``.
+        **Deprecated.** Switches between reactant and product-based conversion.
 
     standard
         Internal standard for normalizing the compositions. By default set to "N2".
@@ -166,6 +169,13 @@ def conversion(
         A :class:`dict` containing the calculated conversion with ``output`` as its key.
 
     """
+    if product is not None:
+        logger.warning(
+            "Specifying reactant- and product-based conversion using "
+            f"'product' is deprecated and will stop working in dgpost-2.0. "
+            "Use 'type={product,reactant,mixed}' instead."
+        )
+        type = "product" if product else "reactant"
     assert (xin is None and xout is None) or (rin is None and rout is None)
     inp = xin if rin is None else rin
     out = xout if rout is None else rout
@@ -181,10 +191,10 @@ def conversion(
 
     # expansion factor
     if xin is None and xout is None:
-        logging.debug("Calculation using molar rates. Expansion factor set to 1.0.")
+        logger.debug("Calculation using molar rates. Expansion factor set to 1.0.")
         exp = 1.0
     else:
-        logging.debug(
+        logger.debug(
             "Calculation using molar fractions. Expansion factor derived from '%s'",
             standard,
         )
@@ -192,7 +202,7 @@ def conversion(
         exp = inp[sd["inp"]] / out[sd["out"]]
 
     # reactant-based conversion
-    if not product:
+    if type == "reactant":
         assert "inp" in fd, f"Feedstock '{feedstock}' not in inlet."
         assert "out" in fd, f"Feedstock '{feedstock}' not in outlet."
         logger.debug("Calculating reactant-based conversion.")
@@ -210,20 +220,20 @@ def conversion(
         if "out" in fd:
             f_out = out[fd["out"]] * element_from_formula(fform, element)
         else:
-            f_out = None
+            f_out = 0
 
         for v in smiles.values():
             if "out" in v:
                 formula = v["chem"].formula
                 dnat = out[v["out"]] * element_from_formula(formula, element)
                 nat_out += dnat
-        if f_out is not None and np.any(f_out > 0.0):
+        if type == "product":
             logger.debug("Calculating product-based conversion using reactant outlet.")
             Xp = (nat_out - f_out) / nat_out
             prefix = f"Xp_{element}" if output is None else output
-        else:
-            logger.warning("Calculating product-based conversion using reactant inlet.")
-            Xp = nat_out / f_in
+        elif type == "mixed":
+            logger.debug("Calculating product-based conversion using reactant inlet.")
+            Xp = (nat_out - f_out) / f_in
             prefix = f"Xm_{element}" if output is None else output
         tag = f"{prefix}->{feedstock}"
         ret = {tag: Xp}
@@ -244,8 +254,8 @@ def selectivity(
     """
     Calculates product-based atomic selectivities of all species :math:`s`,
     excluding the ``feedstock`` :math:`f`. The sum of selectivities is normalised
-    to unity. Works with both mole fractions :math:`x` as well as molar rates
-    :math:`\\dot{n}`:
+    to unity. Works with both mole fractions :math:`x` as well as molar production
+    rates :math:`\\dot{n}`:
 
     .. math::
 
@@ -264,6 +274,11 @@ def selectivity(
 
         The selectivity calculation assumes that all products have been determined;
         it provides no information about the mass or atomic balance.
+
+    .. note::
+
+        When molar rates :math:`\\dot{n}` are used, only creation rates (i.e.
+        where :math:`\\dot{n}(p) > 0`) are used for calculation of selectivity.
 
     Parameters
     ----------
@@ -308,6 +323,7 @@ def selectivity(
         if k != fsmi and "out" in v:
             formula = v["chem"].formula
             dnat = out[v["out"]] * element_from_formula(formula, element)
+            dnat = dnat * (dnat > 0)
             if nat_out is None:
                 nat_out = dnat
             else:
@@ -318,7 +334,8 @@ def selectivity(
             formula = v["chem"].formula
             els = element_from_formula(formula, element)
             if els > 0:
-                Sp = out[v["out"]] * els / nat_out
+                nat = out[v["out"]] * els
+                Sp = nat * (nat > 0) / nat_out
                 pretag = f"Sp_{element}" if output is None else output
                 tag = f"{pretag}->{v['out']}"
                 ret[tag] = Sp
@@ -339,13 +356,14 @@ def catalytic_yield(
     rout: dict[str, pint.Quantity] = None,
     element: str = None,
     standard: str = "N2",
+    type: str = "product",
     output: str = None,
 ) -> None:
     """
     Calculates the catalytic yield :math:`Y_p`, defined as the product of conversion
-    and selectivity. Uses product-based conversion of feedstock for an internal
-    consistency with selectivity. The sum of all yields is equal to the conversion.
-    Implicitly runs :func:`conversion` and :func:`selectivity` on the
+    and selectivity. By default, uses product-based conversion of feedstock for an
+    internal consistency with selectivity. The sum of all yields is equal to the
+    conversion. Implicitly runs :func:`conversion` and :func:`selectivity` on the
     :class:`pd.DataFrame`:
 
     .. math::
@@ -374,6 +392,10 @@ def catalytic_yield(
     standard
         Internal standard for normalizing the compositions. By default set to "N2".
 
+    type
+        Select conversion calculation algorithm, see
+        :func:`~dgpost.transform.catalysis.conversion`.
+
     output
         A :class:`str` prefix for the output variables.
 
@@ -395,7 +417,7 @@ def catalytic_yield(
         rin=rin,
         rout=rout,
         element=element,
-        product=True,
+        type=type,
         standard=standard,
     )
     ret_Sp = selectivity(feedstock=feedstock, xout=xout, rout=rout, element=element)
