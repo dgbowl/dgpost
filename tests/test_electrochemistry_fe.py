@@ -82,7 +82,7 @@ def test_electrochemistry_fe_direct(inputs, output):
 def test_electrochemistry_fe_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
-    rates.flow_to_molar(df, **spec[0])
-    electrochemistry.fe(df, **spec[1])
+    df = rates.flow_to_molar(df, **spec[0])
+    df = electrochemistry.fe(df, **spec[1])
     ref = pd.read_pickle(outfile)
     compare_dfs(ref, df)

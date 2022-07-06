@@ -31,7 +31,7 @@ def test_yield_against_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
-        catalysis.catalytic_yield(df, **args)
+        df = catalysis.catalytic_yield(df, **args)
     ref = pd.read_pickle(outpath)
     compare_dfs(ref, df)
 
@@ -51,10 +51,8 @@ def test_yield_against_df(inpath, spec, outpath, datadir):
 def test_catalysis_yield_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
-    print(df.head())
-    transform(df, "catalysis.catalytic_yield", using=spec)
+    df = transform(df, "catalysis.catalytic_yield", using=spec)
     ref = pd.read_pickle(outpath)
-    print(ref.head())
     compare_dfs(ref, df)
 
 
@@ -73,7 +71,7 @@ def test_catalysis_yield_transform(inpath, spec, outpath, datadir):
 def test_catalysis_yield_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
-    transform(df, "catalysis.catalytic_yield", using=spec)
+    df = transform(df, "catalysis.catalytic_yield", using=spec)
     for col in outkeys:
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
 
@@ -81,9 +79,13 @@ def test_catalysis_yield_excel(inpath, spec, outkeys, datadir):
 def test_catalysis_yield_rinxin(datadir):
     os.chdir(datadir)
     df = pd.read_pickle("rinxin.pkl")
-    catalysis.catalytic_yield(df, feedstock="CH4", xin="xin", xout="xout", output="Yp1")
-    catalysis.catalytic_yield(df, feedstock="CH4", rin="nin", rout="nout", output="Yp2")
-    catalysis.catalytic_yield(
+    df = catalysis.catalytic_yield(
+        df, feedstock="CH4", xin="xin", xout="xout", output="Yp1"
+    )
+    df = catalysis.catalytic_yield(
+        df, feedstock="CH4", rin="nin", rout="nout", output="Yp2"
+    )
+    df = catalysis.catalytic_yield(
         df, feedstock="CH4", rin="nin", rout="nout", type="mixed", output="Yp3"
     )
     for col in ["Yp1", "Yp2"]:

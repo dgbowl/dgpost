@@ -83,7 +83,7 @@ def test_catalysis_conversion_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
-        catalysis.conversion(df, **args)
+        df = catalysis.conversion(df, **args)
     ref = pd.read_pickle(outpath)
     compare_dfs(ref, df)
 
@@ -121,7 +121,7 @@ def test_catalysis_conversion_df(inpath, spec, outpath, datadir):
 def test_catalysis_conversion_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
-    transform(df, "catalysis.conversion", using=spec)
+    df = transform(df, "catalysis.conversion", using=spec)
     ref = pd.read_pickle(outpath)
     compare_dfs(ref, df)
 
@@ -177,7 +177,7 @@ def test_catalysis_conversion_transform(inpath, spec, outpath, datadir):
 def test_catalysis_conversion_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
-    transform(df, "catalysis.conversion", using=spec)
+    df = transform(df, "catalysis.conversion", using=spec)
     for col in outkeys:
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
 
@@ -185,26 +185,26 @@ def test_catalysis_conversion_excel(inpath, spec, outkeys, datadir):
 def test_catalysis_conversion_rinxin(datadir):
     os.chdir(datadir)
     df = pd.read_pickle("rinxin.pkl")
-    catalysis.conversion(
+    df = catalysis.conversion(
         df, feedstock="CH4", xin="xin", xout="xout", type="reactant", output="Xr1"
     )
-    catalysis.conversion(
+    df = catalysis.conversion(
         df, feedstock="CH4", rin="nin", rout="nout", type="reactant", output="Xr2"
     )
-    catalysis.conversion(
+    df = catalysis.conversion(
         df, feedstock="CH4", xin="xin", xout="xout", type="product", output="Xp1"
     )
-    catalysis.conversion(
+    df = catalysis.conversion(
         df, feedstock="CH4", rin="nin", rout="nout", type="product", output="Xp2"
     )
-    catalysis.conversion(
+    df = catalysis.conversion(
         df, feedstock="CH4", xin="xin", xout="xout", standard="Ar", output="Xp3"
     )
-    catalysis.conversion(
+    df = catalysis.conversion(
         df, feedstock="CH4", rin="nin", rout="nout", type="mixed", output="Xm1"
     )
     del df["nout->CH4"]
-    catalysis.conversion(
+    df = catalysis.conversion(
         df, feedstock="CH4", rin="nin", rout="nout", type="mixed", output="Xm2"
     )
     for col in ["Xr1", "Xr2"]:

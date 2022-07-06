@@ -57,7 +57,7 @@ def test_catalysis_selectivity_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
-        catalysis.selectivity(df, **args)
+        df = catalysis.selectivity(df, **args)
     ref = pd.read_pickle(outpath)
     compare_dfs(ref, df)
 
@@ -78,7 +78,7 @@ def test_catalysis_selectivity_df(inpath, spec, outpath, datadir):
 def test_catalysis_selectivity_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
-    transform(df, "catalysis.selectivity", using=spec)
+    df = transform(df, "catalysis.selectivity", using=spec)
     ref = pd.read_pickle(outpath)
     compare_dfs(ref, df)
 
@@ -96,7 +96,7 @@ def test_catalysis_selectivity_transform(inpath, spec, outpath, datadir):
 def test_catalysis_selectivity_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
-    transform(df, "catalysis.selectivity", using=spec)
+    df = transform(df, "catalysis.selectivity", using=spec)
     for col in outkeys:
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
 
@@ -104,10 +104,10 @@ def test_catalysis_selectivity_excel(inpath, spec, outkeys, datadir):
 def test_catalysis_selectivity_rinxin(datadir):
     os.chdir(datadir)
     df = pd.read_pickle("rinxin.pkl")
-    catalysis.selectivity(df, feedstock="CH4", xout="xout", output="Sp1")
-    catalysis.selectivity(df, feedstock="CH4", rout="nout", output="Sp2")
+    df = catalysis.selectivity(df, feedstock="CH4", xout="xout", output="Sp1")
+    df = catalysis.selectivity(df, feedstock="CH4", rout="nout", output="Sp2")
     df["nout->CH4"] = 0
-    catalysis.selectivity(df, feedstock="CH4", rout="nout", output="Sp3")
+    df = catalysis.selectivity(df, feedstock="CH4", rout="nout", output="Sp3")
     for col in ["Sp1", "Sp2", "Sp3"]:
         assert np.allclose(df[f"{col}->CO"], np.array([0.2, 0.1, 0.1, 0.1, 0.1, 0.1]))
         assert np.allclose(df[f"{col}->CO2"], np.array([0.8, 0.9, 0.9, 0.9, 0.9, 0.9]))
