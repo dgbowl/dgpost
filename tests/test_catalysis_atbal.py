@@ -46,7 +46,7 @@ def test_catalysis_atbal_df(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
     for args in spec:
-        catalysis.atom_balance(df, **args)
+        df = catalysis.atom_balance(df, **args)
     ref = pd.read_pickle(outpath)
     compare_dfs(ref, df)
 
@@ -66,7 +66,7 @@ def test_catalysis_atbal_df(inpath, spec, outpath, datadir):
 def test_catalysis_atbal_transform(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(inpath)
-    transform(df, "catalysis.atom_balance", using=spec)
+    df = transform(df, "catalysis.atom_balance", using=spec)
     ref = pd.read_pickle(outpath)
     compare_dfs(ref, df)
 
@@ -87,7 +87,7 @@ def test_catalysis_atbal_transform(inpath, spec, outpath, datadir):
 def test_catalysis_atbal_excel(inpath, spec, outkeys, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
-    transform(df, "catalysis.atom_balance", using=spec)
+    df = transform(df, "catalysis.atom_balance", using=spec)
     for col in outkeys:
         pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
 
@@ -95,10 +95,10 @@ def test_catalysis_atbal_excel(inpath, spec, outkeys, datadir):
 def test_catalysis_atbal_rinxin(datadir):
     os.chdir(datadir)
     df = pd.read_pickle("rinxin.pkl")
-    catalysis.atom_balance(df, xin="xin", xout="xout", element="C", output="C1")
-    catalysis.atom_balance(df, rin="nin", rout="nout", element="C", output="C2")
-    catalysis.atom_balance(df, xin="xin", xout="xout", element="O", output="O1")
-    catalysis.atom_balance(df, rin="nin", rout="nout", element="O", output="O2")
+    df = catalysis.atom_balance(df, xin="xin", xout="xout", element="C", output="C1")
+    df = catalysis.atom_balance(df, rin="nin", rout="nout", element="C", output="C2")
+    df = catalysis.atom_balance(df, xin="xin", xout="xout", element="O", output="O1")
+    df = catalysis.atom_balance(df, rin="nin", rout="nout", element="O", output="O2")
     assert np.allclose(df["C1"], np.array([1.0, 1.0, 0.995, 1.005, 1.01, 0.99]))
     assert np.allclose(df["C2"], np.array([1.0, 1.0, 0.995, 1.005, 1.01, 0.99]))
     assert np.allclose(df["O1"], np.array([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))

@@ -85,6 +85,6 @@ def test_rates_batchtomolar_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
     for args in spec:
-        rates.batch_to_molar(df, **args)
+        df = rates.batch_to_molar(df, **args)
     ref = pd.read_pickle(outfile)
     compare_dfs(ref, df)

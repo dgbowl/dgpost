@@ -52,6 +52,6 @@ def test_electrochemistry_charge_direct(spec, ref):
 def test_electrochemistry_charge_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
-    electrochemistry.charge(df, **spec)
+    df = electrochemistry.charge(df, **spec)
     ref = pd.read_pickle(outfile)
     compare_dfs(ref, df)

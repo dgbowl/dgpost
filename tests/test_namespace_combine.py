@@ -71,7 +71,7 @@ def test_namespace_combine_direct(a, b, conflicts, output):
 def test_namespace_combine_excel(inpath, spec, outprefix, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
-    transform(df, "namespace.combine", using=spec)
+    df = transform(df, "namespace.combine", using=spec)
     for col in df.columns:
         if col.startswith(outprefix):
             pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)

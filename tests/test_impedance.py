@@ -78,12 +78,10 @@ from dgpost.utils import extract, transform
         ),
     ],
 )
-def test_pkl_fit_circuit(filepath, fit_info, expected, datadir):
+def test_impedance_fit_circuit_pkl(filepath, fit_info, expected, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(filepath)
-
-    transform(df, "impedance.fit_circuit", using=fit_info)
-
+    df = transform(df, "impedance.fit_circuit", using=fit_info)
     cols = [col for col in df if col.startswith("fit")]
     for index, expect in enumerate(expected):
         assert len(cols) == len(expect)
@@ -191,14 +189,12 @@ def test_pkl_fit_circuit(filepath, fit_info, expected, datadir):
         ),
     ],
 )
-def test_dg_fit_circuit(data_info, fit_info, expected, datadir):
+def test_impedance_fit_circuit_dg(data_info, fit_info, expected, datadir):
     os.chdir(datadir)
     with open(data_info["filepath"], "r") as infile:
         dg = json.load(infile)
     df = extract(dg, data_info["spec"])
-
-    transform(df, "impedance.fit_circuit", using=fit_info)
-
+    df = transform(df, "impedance.fit_circuit", using=fit_info)
     cols = [col for col in df if col.startswith("fit")]
     for index, expect in enumerate(expected):
         assert len(cols) == len(expect)
@@ -209,14 +205,12 @@ def test_dg_fit_circuit(data_info, fit_info, expected, datadir):
             assert value == pytest.approx(expect[name])
 
 
-def test_direct_fit_circuit(datadir):
+def test_impedance_fit_circuit_direct(datadir):
     os.chdir(datadir)
     df = pd.read_pickle("test.single.Data.pkl")
-
     real = df["Re(Z)"][0]
     imag = df["-Im(Z)"][0]
     freq = df["freq"][0]
-
     fit_info = {
         "circuit": "R0-p(R1,C1)-p(R2,C2)",
         "initial_values": {
@@ -227,9 +221,7 @@ def test_direct_fit_circuit(datadir):
             "C2": 3e-6,
         },
     }
-
     retvals = impedance.fit_circuit(real, imag, freq, **fit_info)
-
     expected = {
         "circuit": "R0-p(R1,C1)-p(R2,C2)",
         "R0": 100,
@@ -238,13 +230,12 @@ def test_direct_fit_circuit(datadir):
         "R2": 150,
         "C2": 1e-6,
     }
-
     for key, val in retvals.items():
         ref = expected.get(key.split(">")[-1])
         assert val == ref or val.m == pytest.approx(ref)
 
 
-def test_calc_circuit(datadir):
+def test_impedance_calc_circuit(datadir):
     os.chdir(datadir)
     calc_info = [
         {
@@ -262,15 +253,12 @@ def test_calc_circuit(datadir):
     ]
     df = pd.DataFrame.from_dict({"freq": [np.logspace(-3, 9, 120)]})
     df.attrs["units"] = {"freq": "Hz"}
-
-    transform(df, "impedance.calc_circuit", using=calc_info)
-
+    df = transform(df, "impedance.calc_circuit", using=calc_info)
     ref = pd.read_pickle("test.single.Data.pkl")
-
     cols = [col for col in df if col.startswith("test")]
     for col in cols:
         name = col.split("->")[-1]
-        np.testing.assert_array_equal(df[col].iloc[0], ref[name].iloc[0])
+        assert np.array_equal(df[col].iloc[0], ref[name].iloc[0])
         assert df.attrs["units"][col] == ref.attrs["units"][name]
 
 
@@ -320,10 +308,10 @@ def test_calc_circuit(datadir):
         ),
     ],
 )
-def test_lowest_real(filepath, inp_extr, inp_using, expected, datadir):
+def test_impedance_lowest_real(filepath, inp_extr, inp_using, expected, datadir):
     os.chdir(datadir)
     with open(filepath, "r") as infile:
         dg = json.load(infile)
     df = extract(dg, inp_extr)
-    transform(df, "impedance.lowest_real_impedance", using=inp_using)
-    np.testing.assert_allclose(expected, unp.nominal_values(df["min Re(Z)"]))
+    df = transform(df, "impedance.lowest_real_impedance", using=inp_using)
+    assert np.allclose(expected, unp.nominal_values(df["min Re(Z)"]))

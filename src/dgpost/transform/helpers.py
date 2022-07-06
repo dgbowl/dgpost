@@ -281,6 +281,9 @@ def load_data(*cols: tuple[str, str, type]):
                                 temp[onlyc] = pQ(df, c)
                         data_kwargs[cname] = temp
 
+                units = df.attrs.get("units", {})
+                ddf = pd.DataFrame(index=df.index)
+
                 # if a "list" is specified as type, we need to transpose the input:
                 if list in {col[2] for col in fcols}:
                     row_k = data_kwargs.keys()
@@ -289,25 +292,32 @@ def load_data(*cols: tuple[str, str, type]):
                         row_data = {k: v for k, v in zip(row_k, r)}
                         retvals = func(**row_data, **kwargs)
                         for name, qty in retvals.items():
-                            if name not in df.columns:
-                                df[name] = ""
+                            if name not in ddf.columns:
+                                ddf[name] = ""
                             if isinstance(qty, pint.Quantity):
                                 qty.ito_reduced_units()
-                                df[name].iloc[i] = qty.m
+                                ddf[name].iloc[i] = qty.m
                                 if not uconv and not qty.unitless:
-                                    df.attrs["units"][name] = f"{qty.u:~P}"
+                                    units[name] = f"{qty.u:~P}"
                             else:
-                                df[name].iloc[i] = qty
+                                ddf[name].iloc[i] = qty
+
                 else:
                     retvals = func(**data_kwargs, **kwargs)
                     for name, qty in retvals.items():
                         if isinstance(qty, pint.Quantity):
                             qty.ito_reduced_units()
-                            df[name] = qty.m
+                            ddf[name] = qty.m
                             if not uconv and not qty.unitless:
-                                df.attrs["units"][name] = f"{qty.u:~P}"
+                                units[name] = f"{qty.u:~P}"
                         else:
-                            df[name] = qty
+                            ddf[name] = qty
+
+                newdf = pd.concat([df, ddf], axis=1)
+                if "units" in df.attrs:
+                    newdf.attrs["units"] = units
+                return newdf
+
             # Direct call with user-supplied data.
             else:
                 # Merge any args into kwargs using cols. Only works when

@@ -102,7 +102,7 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
     logger.info("Processing 'transform'.")
     t = spec.get("transform", [])
     for el in t:
-        transform(tables[el["table"]], el["with"], el["using"])
+        tables[el["table"]] = transform(tables[el["table"]], el["with"], el["using"])
 
     logger.info("Processing 'plot'.")
     p = spec.get("plot", [])

@@ -53,7 +53,7 @@ def test_electrochemistry_current_direct(spec, ref):
 def test_electrochemistry_current_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
-    electrochemistry.charge(df, **spec[0])
-    electrochemistry.average_current(df, **spec[1])
+    df = electrochemistry.charge(df, **spec[0])
+    df = electrochemistry.average_current(df, **spec[1])
     ref = pd.read_pickle(outfile)
     compare_dfs(ref, df)
