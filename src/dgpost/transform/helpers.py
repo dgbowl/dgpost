@@ -272,7 +272,7 @@ def load_data(*cols: tuple[str, str, type]):
                         # so we need to match all columns in pd.DataFrame
                         temp = {}
                         for c in df.columns:
-                            if not c.startswith(cval):
+                            if not c.startswith(f"{cval}->"):
                                 continue
                             onlyc = c.split("->")[-1]
                             if uconv:
