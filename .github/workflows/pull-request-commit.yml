@@ -39,6 +39,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-${{ matrix.os }}-${{ matrix.pyver }}
+      - uses: ./.github/workflows/install-job
       - run: pip install --pre --find-links=. dgpost[testing]
         shell: bash
       - uses: ./.github/workflows/test-job

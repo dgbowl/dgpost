@@ -1,0 +1,13 @@
+name: "Install job"
+description: "Install the built package with pip."
+runs:
+  using: "composite"
+  steps:
+    - run: echo "import os" > script.py
+      shell: bash
+    - run: echo "fns = [f for f in os.listdir() if f.endswith("whl") and f.startswith("dgpost")]" >> script.py
+      shell: bash
+    - run: echo "print(fns)" >> script.py
+      shell: bash
+    - run: python script.py
+      shell: bash
