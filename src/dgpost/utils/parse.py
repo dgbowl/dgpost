@@ -15,6 +15,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def parse(fn: str) -> dict[str, Any]:
     """
     Input file parsing function.
