@@ -247,6 +247,8 @@ def test_extract_from_table(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
     ret = dgpost.utils.extract(df, spec)
+    print(f"{ret.head()=}")
     ref = pd.read_pickle(outfile)
+    print(f"{ref.head()=}")
     pd.testing.assert_frame_equal(ret, ref, check_like=True)
     assert ret.attrs == ref.attrs

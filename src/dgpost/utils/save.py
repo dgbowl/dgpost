@@ -64,8 +64,15 @@ def save(
     elif type == "json":
         logger.debug("Writing json into '%s'." % path)
         table.attrs["meta"] = meta
+        tab_dict = {}
+        for col, vals in table.to_dict().items():
+            cols = list(col)
+            while len(cols) > 0:
+                vals = {cols.pop(-1): vals}
+            tab_dict.update(vals)
+
         json_file = {
-            "table": table.to_dict(),
+            "table": tab_dict,
             "attrs": table.attrs,
         }
         with open(path, "w") as f:

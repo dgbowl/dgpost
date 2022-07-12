@@ -278,10 +278,22 @@ def extract(
     elif "columns" in spec:
         cns, cvs, cus = _get_direct(spec.pop("columns"), obj, spec.pop("at", None))
 
-    df = pd.DataFrame(index=ts)
-    df.attrs["units"] = {}
+    df = None
     for name, vals, unit in zip(cns, cvs, cus):
-        df[name] = vals
-        if unit is not None:
-            df.attrs["units"][name] = unit
+        if "->" in name:
+            names = name.split("->")
+        else:
+            names = [name]
+        s = pd.DataFrame(
+            vals, 
+            index = ts, 
+            columns = pd.MultiIndex.from_tuples([names])
+        )
+        if df is None:
+            df = s
+        else:
+            df = df.join(s, how="outer")
+        if "units" not in df.attrs:
+            df.attrs["units"] = {}
+        df.attrs["units"][names[0]] = unit
     return df
