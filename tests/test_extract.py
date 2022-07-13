@@ -122,10 +122,13 @@ def test_extract_single(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     with open(inpath, "r") as infile:
         dg = json.load(infile)
-    df = dgpost.utils.extract(dg, spec)
+    ret = dgpost.utils.extract(dg, spec)
+    print(f"{ret.head()=}")
     ref = pd.read_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
-    assert ref.attrs == df.attrs
+    print(f"{ref.head()=}")
+    ret.to_pickle(outpath)
+    pd.testing.assert_frame_equal(ref, ret, check_like=True)
+    assert ref.attrs == ret.attrs
 
 
 @pytest.mark.parametrize(
@@ -250,5 +253,6 @@ def test_extract_from_table(infile, spec, outfile, datadir):
     print(f"{ret.head()=}")
     ref = pd.read_pickle(outfile)
     print(f"{ref.head()=}")
+    ret.to_pickle(outfile)
     pd.testing.assert_frame_equal(ret, ref, check_like=True)
     assert ret.attrs == ref.attrs
