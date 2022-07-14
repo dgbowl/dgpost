@@ -20,7 +20,6 @@ from chemicals.elements import periodic_table, simple_formula_parser
 from chemicals.identifiers import search_chemical
 from yadg.dgutils import ureg
 
-
 def element_from_formula(f: str, el: str) -> int:
     """
     Given a chemical formula ``f``, returns the number of atoms of element ``el``
@@ -132,7 +131,10 @@ def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
         Unit-aware :class:`ping.Quantity` object containing the data from ``df[col]``.
 
     """
-    vals = df[col].array
+    if df.columns.nlevels == 1:
+        vals = df[col].array
+    else:
+        vals = df[col].squeeze().array
     unit = df.attrs.get("units", {}).get(col, "")
     return ureg.Quantity(vals, unit)
 
@@ -282,38 +284,38 @@ def load_data(*cols: tuple[str, str, type]):
                         data_kwargs[cname] = temp
 
                 units = df.attrs.get("units", {})
-                ddf = pd.DataFrame(index=df.index)
 
                 # if a "list" is specified as type, we need to transpose the input:
                 if list in {col[2] for col in fcols}:
                     row_k = data_kwargs.keys()
                     row_v = data_kwargs.values()
-                    for i, r in enumerate(zip(*row_v)):
+                    ret_data = {}
+                    for r in zip(*row_v):
                         row_data = {k: v for k, v in zip(row_k, r)}
                         retvals = func(**row_data, **kwargs)
                         for name, qty in retvals.items():
-                            if name not in ddf.columns:
-                                ddf[name] = ""
+                            if name not in ret_data:
+                                ret_data[name] = []
                             if isinstance(qty, pint.Quantity):
                                 qty.ito_reduced_units()
-                                ddf[name].iloc[i] = qty.m
+                                ret_data[name].append(qty.m)
                                 if not uconv and not qty.unitless:
                                     units[name] = f"{qty.u:~P}"
                             else:
-                                ddf[name].iloc[i] = qty
-
+                                ret_data[name].append(qty)
                 else:
                     retvals = func(**data_kwargs, **kwargs)
+                    ret_data = {}
                     for name, qty in retvals.items():
                         if isinstance(qty, pint.Quantity):
                             qty.ito_reduced_units()
-                            ddf[name] = qty.m
+                            ret_data[name] = qty.m
                             if not uconv and not qty.unitless:
                                 units[name] = f"{qty.u:~P}"
                         else:
-                            ddf[name] = qty
-
-                newdf = pd.concat([df, ddf], axis=1)
+                            ret_data[name] = qty
+                ddf = pd.DataFrame(ret_data, index=df.index)
+                newdf = combine_tables(df, ddf)
                 if "units" in df.attrs:
                     newdf.attrs["units"] = units
                 return newdf
@@ -360,3 +362,31 @@ def load_data(*cols: tuple[str, str, type]):
         return wrapper
 
     return loading
+
+
+def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
+    print(f"{a.columns.nlevels=}")
+    print(f"{b.columns.nlevels=}")
+    if a.columns.nlevels == b.columns.nlevels:
+        temp = a.join(b, how="outer")
+    else:
+        if a.columns.nlevels > b.columns.nlevels:
+            l = a
+            r = b
+        else:
+            l = b
+            r = a
+        rlevels = [pd.Index([None])] * l.columns.nlevels
+        if isinstance(r.columns, pd.Index):
+            rlevels[0] = r.columns
+        else:
+            for i, level in enumerate(r.columns.levels):
+                rlevels[i] = level
+        r.columns = pd.MultiIndex.from_product(rlevels)
+        temp = l.join(r, how="outer")
+    temp.attrs = a.attrs
+    if "units" in b.attrs:
+        if "units" not in temp.attrs:
+            temp.attrs["units"] = {}
+        temp.attrs["units"].update(b.attrs.get("units", {}))
+    return temp

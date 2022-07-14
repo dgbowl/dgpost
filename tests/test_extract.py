@@ -4,6 +4,7 @@ import json
 import os
 import pandas as pd
 
+from dgpost.transform.helpers import combine_tables
 import dgpost.utils
 
 
@@ -202,11 +203,11 @@ def test_extract_multiple(inpath, spec, outpath, datadir):
             df = ret
         else:
             ret = dgpost.utils.extract(dg, spec[si], ret.index)
-            temp = pd.concat([df, ret], axis=1)
-            temp.attrs = df.attrs
-            temp.attrs["units"].update(ret.attrs["units"])
-            df = temp
+            df = combine_tables(df, ret)
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outpath)
+    print(f"{ref.head()=}")
+    df.to_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
     assert ref.attrs == df.attrs
 

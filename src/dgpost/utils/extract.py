@@ -69,6 +69,8 @@ import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union
 
+from dgpost.transform.helpers import combine_tables
+
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:
     spec = []
@@ -284,13 +286,13 @@ def extract(
         if "->" in name:
             names = tuple(name.split("->"))
         else:
-            names = tuple([name])
+            names = name
         ddf = pd.DataFrame({names: pd.Series(vals, index = ts)})
         if df is None:
             df = ddf
         else:
-            df = df.join(ddf, how="outer")
+            df = combine_tables(df, ddf)
         if unit is not None:
-            units["->".join(names)] = unit
+            units[names if isinstance(names, str) else "->".join(names)] = unit
     df.attrs["units"] = units
     return df
