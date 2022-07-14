@@ -33,6 +33,10 @@ def test_yield_against_df(inpath, spec, outpath, datadir):
     for args in spec:
         df = catalysis.catalytic_yield(df, **args)
     ref = pd.read_pickle(outpath)
+    print(f"{df.head()=}")
+    ref = pd.read_pickle(outpath)
+    print(f"{ref.head()=}")
+    df.to_pickle(outpath)
     compare_dfs(ref, df)
 
 
@@ -64,7 +68,7 @@ def test_catalysis_yield_transform(inpath, spec, outpath, datadir):
             [
                 {"feedstock": "propane", "element": "C", "xin": "xin", "xout": "xout"},
             ],
-            ["Yp_C->CO2", "Yp_C->CO", "Yp_C->C3H6"],
+            ["Yp_C"],
         ),
     ],
 )
@@ -73,7 +77,7 @@ def test_catalysis_yield_excel(inpath, spec, outkeys, datadir):
     df = pd.read_excel(inpath)
     df = transform(df, "catalysis.catalytic_yield", using=spec)
     for col in outkeys:
-        pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
+        pd.testing.assert_frame_equal(df[col], df[f"r{col}"], check_names=False)
 
 
 def test_catalysis_yield_rinxin(datadir):
@@ -90,23 +94,23 @@ def test_catalysis_yield_rinxin(datadir):
     )
     for col in ["Yp1", "Yp2"]:
         assert np.allclose(
-            df[f"{col}->CO"],
+            df[col]["CO"],
             np.array([0.01, 0.01, 0.009548, 0.010448, 0.01, 0.01]),
             atol=1e-6,
         ), f"yield of CO is wrong for {col}"
         assert np.allclose(
-            df[f"{col}->CO2"],
+            df[col]["CO2"],
             np.array([0.04, 0.09, 0.08593, 0.09403, 0.09, 0.09]),
             atol=1e-6,
         ), f"yield of CO2 is wrong for {col}"
     for col in ["Yp3"]:
         assert np.allclose(
-            df[f"{col}->CO"],
+            df[col]["CO"],
             np.array([0.01, 0.01, 0.0095, 0.0105, 0.0101, 0.0099]),
             atol=1e-6,
         ), f"yield of CO is wrong for {col}"
         assert np.allclose(
-            df[f"{col}->CO2"],
+            df[col]["CO2"],
             np.array([0.04, 0.09, 0.0855, 0.0945, 0.0909, 0.0891]),
             atol=1e-6,
         ), f"yield of CO2 is wrong for {col}"

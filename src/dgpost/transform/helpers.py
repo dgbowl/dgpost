@@ -19,6 +19,10 @@ from typing import Any
 from chemicals.elements import periodic_table, simple_formula_parser
 from chemicals.identifiers import search_chemical
 from yadg.dgutils import ureg
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def element_from_formula(f: str, el: str) -> int:
     """
@@ -239,7 +243,7 @@ def load_data(*cols: tuple[str, str, type]):
                 if len(args) > 1:
                     raise ValueError("Only the DataFrame should be given as argument")
 
-                df = args[0]
+                df = arrow_to_multiindex(args[0])
                 # Check if the dataframe has a units attribute. If not, the quantities
                 # in the dataframe are unitless and need to be converted.
                 if "units" not in df.attrs:
@@ -273,14 +277,13 @@ def load_data(*cols: tuple[str, str, type]):
                         # cval is a string, but the row walues (ctype) are dict
                         # so we need to match all columns in pd.DataFrame
                         temp = {}
-                        for c in df.columns:
-                            if not c.startswith(f"{cval}->"):
-                                continue
-                            onlyc = c.split("->")[-1]
+                        print(f"{df[cval]=}")
+                        for c in df[cval].columns:
+                            print(f"{df[cval][c]=}")
                             if uconv:
-                                temp[onlyc] = ureg.Quantity(df[c].array, cunit)
+                                temp[c] = ureg.Quantity(df[cval][c].array, cunit)
                             else:
-                                temp[onlyc] = pQ(df, c)
+                                temp[c] = pQ(df[cval], c)
                         data_kwargs[cname] = temp
 
                 units = df.attrs.get("units", {})
@@ -314,7 +317,7 @@ def load_data(*cols: tuple[str, str, type]):
                                 units[name] = f"{qty.u:~P}"
                         else:
                             ret_data[name] = qty
-                ddf = pd.DataFrame(ret_data, index=df.index)
+                ddf = arrow_to_multiindex(pd.DataFrame(ret_data, index=df.index))
                 newdf = combine_tables(df, ddf)
                 if "units" in df.attrs:
                     newdf.attrs["units"] = units
@@ -390,3 +393,25 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
             temp.attrs["units"] = {}
         temp.attrs["units"].update(b.attrs.get("units", {}))
     return temp
+
+def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
+    print(f"{df.head()=}")
+    cols = []
+    d = 1
+    for oldcol in df.columns:
+        if "->" in oldcol:
+            parts = oldcol.split("->")
+            d = max(d, len(parts))
+        else:
+            parts = [oldcol]
+        cols.append(parts)
+    if d == 1:
+        return df
+    else:
+        logger.debug("converting '->' to pandas.MultiIndex")
+        for i, col in enumerate(cols):
+            if len(col) < d:
+                cols[i] = col + [None] * (d - len(col))
+        df.columns = pd.MultiIndex.from_tuples(cols)
+        print(f"{df.head()=}")
+        return df

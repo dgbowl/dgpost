@@ -47,7 +47,10 @@ def test_catalysis_atbal_df(inpath, spec, outpath, datadir):
     df = pd.read_pickle(inpath)
     for args in spec:
         df = catalysis.atom_balance(df, **args)
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outpath)
+    print(f"{ref.head()=}")
+    df.to_pickle(outpath)
     compare_dfs(ref, df)
 
 
@@ -68,6 +71,7 @@ def test_catalysis_atbal_transform(inpath, spec, outpath, datadir):
     df = pd.read_pickle(inpath)
     df = transform(df, "catalysis.atom_balance", using=spec)
     ref = pd.read_pickle(outpath)
+    df.to_pickle(outpath)
     compare_dfs(ref, df)
 
 
@@ -89,7 +93,7 @@ def test_catalysis_atbal_excel(inpath, spec, outkeys, datadir):
     df = pd.read_excel(inpath)
     df = transform(df, "catalysis.atom_balance", using=spec)
     for col in outkeys:
-        pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
+        pd.testing.assert_frame_equal(df[col], df[f"r{col}"], check_names=False)
 
 
 def test_catalysis_atbal_rinxin(datadir):
@@ -99,7 +103,7 @@ def test_catalysis_atbal_rinxin(datadir):
     df = catalysis.atom_balance(df, rin="nin", rout="nout", element="C", output="C2")
     df = catalysis.atom_balance(df, xin="xin", xout="xout", element="O", output="O1")
     df = catalysis.atom_balance(df, rin="nin", rout="nout", element="O", output="O2")
-    assert np.allclose(df["C1"], np.array([1.0, 1.0, 0.995, 1.005, 1.01, 0.99]))
-    assert np.allclose(df["C2"], np.array([1.0, 1.0, 0.995, 1.005, 1.01, 0.99]))
-    assert np.allclose(df["O1"], np.array([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))
-    assert np.allclose(df["O2"], np.array([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))
+    assert np.allclose(df["C1"], pd.DataFrame([1.0, 1.0, 0.995, 1.005, 1.01, 0.99]))
+    assert np.allclose(df["C2"], pd.DataFrame([1.0, 1.0, 0.995, 1.005, 1.01, 0.99]))
+    assert np.allclose(df["O1"], pd.DataFrame([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))
+    assert np.allclose(df["O2"], pd.DataFrame([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))

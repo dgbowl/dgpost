@@ -62,7 +62,6 @@ def load(
         if path.endswith("pkl"):
             df = pd.read_pickle(path)
             df.sort_index(axis="index", inplace=True)
-            return df
         elif path.endswith("json"):
             with open(path, "r") as f:
                 json_file = json.load(f, object_hook=_parse_ufloat)
@@ -70,6 +69,25 @@ def load(
             df.sort_index(axis="index", inplace=True)
             df.index = [float(i) for i in df.index]
             df.attrs.update(json_file["attrs"])
-            return df
         else:
             raise RuntimeError(f"File type of '{path}' is not yet supported.")
+        cols = []
+        d = 1
+        for oldcol in df.columns:
+            if "->" in oldcol:
+                parts = oldcol.split("->")
+                d = max(d, len(parts))
+            else:
+                parts = [oldcol]
+            cols.append(parts)
+        if d == 1:
+            print(f"{df.head()=}")
+            return df
+        else:
+            for i, col in enumerate(cols):
+                if len(col) < d:
+                    cols[i] = col + [None] * (d - len(col))
+            df.columns = pd.MultiIndex.from_tuples(cols)
+            print(f"{df.head()=}")
+            return df
+
