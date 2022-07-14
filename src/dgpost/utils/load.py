@@ -81,13 +81,11 @@ def load(
                 parts = [oldcol]
             cols.append(parts)
         if d == 1:
-            print(f"{df.head()=}")
             return df
         else:
             for i, col in enumerate(cols):
                 if len(col) < d:
                     cols[i] = col + [None] * (d - len(col))
             df.columns = pd.MultiIndex.from_tuples(cols)
-            print(f"{df.head()=}")
             return df
 

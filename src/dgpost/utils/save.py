@@ -66,7 +66,10 @@ def save(
         table.attrs["meta"] = meta
         tab_dict = {}
         for col, vals in table.to_dict().items():
-            cols = list(col)
+            if isinstance(col, tuple):
+                cols = list(col)
+            else:
+                cols = [col]
             while len(cols) > 0:
                 vals = {cols.pop(-1): vals}
             tab_dict.update(vals)

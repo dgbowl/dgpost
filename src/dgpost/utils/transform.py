@@ -34,8 +34,5 @@ def transform(table: pd.DataFrame, withstr: str, using: list[dict]) -> None:
     m = importlib.import_module(modname)
     func = getattr(m, funcname)
     for argset in using:
-        print(f"{table.columns=}")
         table = func(table, **argset)
-        print(f"{table.columns=}")
-
     return table

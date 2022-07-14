@@ -282,23 +282,17 @@ def load_data(*cols: tuple[str, str, type]):
                             data_kwargs[cname] = pQ(df, cval, unit=cunit)
                         else:
                             data_kwargs[cname] = pQ(df, cval)
-                        print(f"{data_kwargs[cname]=}")
                     else:
                         # cval is a string, but the row walues (ctype) are dict
                         # so we need to match all columns in pd.DataFrame
                         temp = {}
-                        print(f"{uconv=}")
-                        print(f"{df[cval]=}")
-                        print(f"{df.attrs=}")
                         for c in df[cval].columns:
-                            print(f"{df[(cval, c)]=}")
                             if uconv:
                                 temp[c] = pQ(df, (cval, c), unit=cunit)
                             else:
                                 temp[c] = pQ(df, (cval, c))
                         data_kwargs[cname] = temp
-                        print(f"{data_kwargs[cname]=}")
-
+                        
                 units = df.attrs.get("units", {})
 
                 # if a "list" is specified as type, we need to transpose the input:
@@ -381,8 +375,6 @@ def load_data(*cols: tuple[str, str, type]):
 
 
 def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
-    print(f"{a.columns.nlevels=}")
-    print(f"{b.columns.nlevels=}")
     if a.columns.nlevels == b.columns.nlevels:
         temp = a.join(b, how="outer")
     else:
@@ -408,7 +400,6 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
     return temp
 
 def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
-    print(f"{df.head()=}")
     cols = []
     d = 1
     for oldcol in df.columns:
@@ -426,7 +417,6 @@ def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
             if len(col) < d:
                 cols[i] = col + [None] * (d - len(col))
         df.columns = pd.MultiIndex.from_tuples(cols)
-        print(f"{df.head()=}")
         return df
 
 
@@ -438,8 +428,9 @@ def keys_in_df(key: str, df: pd.DataFrame) -> list:
     if key in df.columns:
         keys = [key]
     elif key[-1] == "*":
+        key = key[:-1]
         keys = []
-        for k in df[key[:-1]].columns:
-            thisk = tuple([*key[:-1], k])
+        for k in df[key].columns:
+            thisk = tuple([*key, k])
             keys.append(thisk)
     return keys

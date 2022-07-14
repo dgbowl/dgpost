@@ -6,6 +6,7 @@ import pandas as pd
 
 from dgpost.transform.helpers import combine_tables
 import dgpost.utils
+from .utils import compare_dfs
 
 
 def test_valid_datagram(datadir):
@@ -247,13 +248,12 @@ def test_extract_multiple(inpath, spec, outpath, datadir):
         ),
     ],
 )
-def test_extract_from_table(infile, spec, outfile, datadir):
+def test_extract_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
-    ret = dgpost.utils.extract(df, spec)
-    print(f"{ret.head()=}")
+    df = dgpost.utils.extract(df, spec)
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outfile)
     print(f"{ref.head()=}")
-    ret.to_pickle(outfile)
-    pd.testing.assert_frame_equal(ret, ref, check_like=True)
-    assert ret.attrs == ref.attrs
+    df.to_pickle(outfile)
+    compare_dfs(ref, df)

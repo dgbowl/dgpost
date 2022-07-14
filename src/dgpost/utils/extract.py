@@ -69,7 +69,7 @@ import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union
 
-from dgpost.transform.helpers import combine_tables, keys_in_df
+from dgpost.transform.helpers import arrow_to_multiindex, combine_tables, keys_in_df
 
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:
@@ -169,20 +169,23 @@ def _get_constant(spec, ts):
 
 
 def _get_direct_df(spec, df):
+    df = arrow_to_multiindex(df)
     colvals = []
     colnames = []
     colunits = []
     for el in spec:
         keys = keys_in_df(el["key"], df)
+        print(f"{keys=}")
         for k in keys:
-            if k == el["key"]:
-                asname = el["as"]
-            else:
+            if el["key"].endswith("->*"):
                 asname = tuple([el["as"], k[-1]])
+            else:
+                asname = el["as"]
             colnames.append(asname)
             colvals.append(df[k])
-            if k in df.attrs["units"]:
-                colunits.append(df.attrs["units"][k])
+            unitkey = k if isinstance(k, str) else "->".join(k)
+            if unitkey in df.attrs["units"]:
+                colunits.append(df.attrs["units"][unitkey])
             else:
                 colunits.append(None)
     return colnames, colvals, colunits
