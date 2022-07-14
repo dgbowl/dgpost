@@ -15,7 +15,7 @@ from uncertainties import unumpy as unp
 from rdkit import Chem
 
 from collections import defaultdict
-from typing import Any
+from typing import Any, Union
 from chemicals.elements import periodic_table, simple_formula_parser
 from chemicals.identifiers import search_chemical
 from yadg.dgutils import ureg
@@ -109,7 +109,11 @@ def electrons_from_smiles(
     return float(n)
 
 
-def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
+def pQ(
+    df: pd.DataFrame, 
+    col: Union[str, tuple[str]], 
+    unit: str = None
+) -> pint.Quantity:
     """
     Unit-aware dataframe accessor function.
 
@@ -139,7 +143,12 @@ def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
         vals = df[col].array
     else:
         vals = df[col].squeeze().array
-    unit = df.attrs.get("units", {}).get(col, "")
+    if unit is not None:
+        pass
+    elif isinstance(col, str):
+        unit = df.attrs.get("units", {}).get(col, "")
+    elif isinstance(col, tuple):
+        unit = df.attrs.get("units", {}).get("->".join(col), "")
     return ureg.Quantity(vals, unit)
 
 
@@ -270,21 +279,25 @@ def load_data(*cols: tuple[str, str, type]):
                     elif ctype is not dict:
                         # cval is a string, and the row values (ctype) are list or scalar
                         if uconv:
-                            data_kwargs[cname] = ureg.Quantity(df[cval].array, cunit)
+                            data_kwargs[cname] = pQ(df, cval, unit=cunit)
                         else:
                             data_kwargs[cname] = pQ(df, cval)
+                        print(f"{data_kwargs[cname]=}")
                     else:
                         # cval is a string, but the row walues (ctype) are dict
                         # so we need to match all columns in pd.DataFrame
                         temp = {}
+                        print(f"{uconv=}")
                         print(f"{df[cval]=}")
+                        print(f"{df.attrs=}")
                         for c in df[cval].columns:
-                            print(f"{df[cval][c]=}")
+                            print(f"{df[(cval, c)]=}")
                             if uconv:
-                                temp[c] = ureg.Quantity(df[cval][c].array, cunit)
+                                temp[c] = pQ(df, (cval, c), unit=cunit)
                             else:
-                                temp[c] = pQ(df[cval], c)
+                                temp[c] = pQ(df, (cval, c))
                         data_kwargs[cname] = temp
+                        print(f"{data_kwargs[cname]=}")
 
                 units = df.attrs.get("units", {})
 

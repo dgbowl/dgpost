@@ -72,6 +72,13 @@ def compare_result_dicts(result, reference, atol=1e-6):
 
 
 def compare_dfs(ref, df):
+    if "units" in ref.attrs or "units" in df.attrs:
+        assert ref.attrs.get("units") == df.attrs.get("units")
+    if "meta" in ref.attrs or "meta" in df.attrs:
+        assert "provenance" in df.attrs["meta"]
+        rrec = ref.attrs.get("meta", {}).get("recipe")
+        drec = df.attrs.get("meta", {}).get("recipe")
+        assert rrec == drec
     pd.testing.assert_index_equal(ref.columns, df.columns, check_order=False)
     for col in ref.columns:
         r = ref[col].array
@@ -80,13 +87,7 @@ def compare_dfs(ref, df):
             for func in {unp.nominal_values, unp.std_devs}:
                 np.testing.assert_allclose(func(ri), func(ti))
 
-    if "units" in ref.attrs or "units" in df.attrs:
-        assert ref.attrs.get("units") == df.attrs.get("units")
-    if "meta" in ref.attrs or "meta" in df.attrs:
-        assert "provenance" in df.attrs["meta"]
-        rrec = ref.attrs.get("meta", {}).get("recipe")
-        drec = df.attrs.get("meta", {}).get("recipe")
-        assert rrec == drec
+    
 
 
 def compare_images(path_one, path_two):
