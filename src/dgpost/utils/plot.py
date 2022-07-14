@@ -17,6 +17,9 @@ import matplotlib.gridspec as gridspec
 import pandas as pd
 import uncertainties.unumpy as unp
 import logging
+import numpy as np
+
+from dgpost.transform.helpers import keys_in_df
 
 logger = logging.getLogger(__name__)
 
@@ -103,21 +106,31 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
         ys: list[dict] = []
         y = spec.pop("y")
         # check if multiple columns should be plotted
-        if y.endswith("->*"):
-            for col in sorted(table.columns):
-                if y[:-1] in col:
-                    ys.append(
-                        {"k": col, "p": y.replace("->*", ""), "s": col.split("->")[-1]}
-                    )
-        else:
-            ys.append({"k": y, "p": y, "s": y})
+        keys = keys_in_df(y, table)
+        print(f"{keys=}")
+        for k in sorted(keys):
+            print(f"{k=}")
+            print(f"{table[k]=}")
+            if isinstance(table[k], pd.Series) and isinstance(k, str):
+                ys.append({"k": k, "p": k, "s": k, "u": k})
+            elif isinstance(table[k], pd.Series) and isinstance(k, tuple):
+                ys.append({"k": k, "p": k[0], "s": k[-1], "u": "->".join(k)})
+            elif isinstance(table[k], pd.DataFrame) and isinstance(k, str):
+                for col in sorted(table[k].columns):
+                    if col is np.NaN:
+                        ys.append({"k": (k, np.NaN), "p": k, "s": k, "u": k})
+                    else:
+                        ys.append({"k": (k, col), "p": k, "s": col, "u": f"{k}->{col}"})
+            else:
+                logger.critical("Error - should not be here!")
+                logger.critical(f"{k=}")
+                logger.critical(f"{table[k]=}")
 
         for yi, yk in enumerate(ys):
             y_data = table[yk["k"]]
             y_values = unp.nominal_values(y_data.array)
             y_err = unp.std_devs(y_data.array)
-            y_unit = table.attrs.get("units", {}).get(yk["k"], None)
-
+            y_unit = table.attrs.get("units", {}).get(yk["u"], None)
             y_label = f"{yk['p']} [{y_unit}]" if y_unit is not None else yk["p"]
             kwargs = spec.copy()
             if "label" not in kwargs:

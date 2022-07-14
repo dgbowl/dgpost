@@ -69,7 +69,7 @@ import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union
 
-from dgpost.transform.helpers import combine_tables
+from dgpost.transform.helpers import combine_tables, keys_in_df
 
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:
@@ -173,19 +173,12 @@ def _get_direct_df(spec, df):
     colnames = []
     colunits = []
     for el in spec:
-        if el["key"] in df.columns:
-            keys = [el["key"]]
-        elif el["key"].endswith("*"):
-            keys = []
-            for k in df.columns:
-                if k.startswith(el["key"][:-1]):
-                    keys.append(k)
+        keys = keys_in_df(el["key"], df)
         for k in keys:
-
             if k == el["key"]:
                 asname = el["as"]
             else:
-                asname = el["as"] + "->" + k.split("->")[-1]
+                asname = tuple([el["as"], k[-1]])
             colnames.append(asname)
             colvals.append(df[k])
             if k in df.attrs["units"]:
@@ -201,6 +194,7 @@ def _get_direct_dg(spec, datagram, at):
     colunits = []
     steps = _get_steps(datagram, at)
     for el in spec:
+        print(f"{el=}")
         keys, vals = _get_key(datagram, steps, el["key"])
         for kk, vv in zip(keys, vals):
             if kk is None:
@@ -279,8 +273,8 @@ def extract(
         cns, cvs, cus = _get_interp(spec.pop("columns"), obj, spec.pop("at", None), ts)
     elif "columns" in spec:
         cns, cvs, cus = _get_direct(spec.pop("columns"), obj, spec.pop("at", None))
-
-    df = None
+    
+    df = pd.DataFrame(index=ts)
     units = {}
     for name, vals, unit in zip(cns, cvs, cus):
         if "->" in name:
@@ -288,10 +282,7 @@ def extract(
         else:
             names = name
         ddf = pd.DataFrame({names: pd.Series(vals, index = ts)})
-        if df is None:
-            df = ddf
-        else:
-            df = combine_tables(df, ddf)
+        df = combine_tables(df, ddf)
         if unit is not None:
             units[names if isinstance(names, str) else "->".join(names)] = unit
     df.attrs["units"] = units

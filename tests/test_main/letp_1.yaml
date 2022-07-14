@@ -39,7 +39,7 @@ plot:
         legend: True
       - rows: [1, 2]
         series:
-          - y: xout->*
+          - y: xout
             kind: line
         legend: True
     save:

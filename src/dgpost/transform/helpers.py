@@ -428,3 +428,18 @@ def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
         df.columns = pd.MultiIndex.from_tuples(cols)
         print(f"{df.head()=}")
         return df
+
+
+def keys_in_df(key: str, df: pd.DataFrame) -> list:
+    if "->" in key:
+        key = tuple(key.split("->"))
+    else:
+        pass
+    if key in df.columns:
+        keys = [key]
+    elif key[-1] == "*":
+        keys = []
+        for k in df[key[:-1]].columns:
+            thisk = tuple([*key[:-1], k])
+            keys.append(thisk)
+    return keys

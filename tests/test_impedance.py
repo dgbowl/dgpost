@@ -7,6 +7,7 @@ from uncertainties import unumpy as unp
 import pytest
 from dgpost.transform import impedance
 from dgpost.utils import extract, transform
+from .utils import compare_dfs
 
 
 @pytest.mark.parametrize(
@@ -82,14 +83,11 @@ def test_impedance_fit_circuit_pkl(filepath, fit_info, expected, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(filepath)
     df = transform(df, "impedance.fit_circuit", using=fit_info)
-    cols = [col for col in df if col.startswith("fit")]
     for index, expect in enumerate(expected):
-        assert len(cols) == len(expect)
-        for col in cols:
-            value = df[col].iloc[index]
-            name = col.split(">")[-1]
-            assert name in expect
-            assert value == pytest.approx(expect[name])
+        for col in df['fit_circuit'].columns:
+            value = df['fit_circuit'][col].iloc[index]
+            assert col in expect
+            assert value == pytest.approx(expect[col])
 
 
 @pytest.mark.parametrize(
@@ -195,14 +193,11 @@ def test_impedance_fit_circuit_dg(data_info, fit_info, expected, datadir):
         dg = json.load(infile)
     df = extract(dg, data_info["spec"])
     df = transform(df, "impedance.fit_circuit", using=fit_info)
-    cols = [col for col in df if col.startswith("fit")]
     for index, expect in enumerate(expected):
-        assert len(cols) == len(expect)
-        for col in cols:
-            value = df[col].iloc[index]
-            name = col.split(">")[-1]
-            assert name in expect
-            assert value == pytest.approx(expect[name])
+        for col in df['fit_circuit'].columns:
+            assert col in expect
+            value = df['fit_circuit'][col].iloc[index]
+            assert value == pytest.approx(expect[col])
 
 
 def test_impedance_fit_circuit_direct(datadir):
@@ -255,11 +250,9 @@ def test_impedance_calc_circuit(datadir):
     df.attrs["units"] = {"freq": "Hz"}
     df = transform(df, "impedance.calc_circuit", using=calc_info)
     ref = pd.read_pickle("test.single.Data.pkl")
-    cols = [col for col in df if col.startswith("test")]
-    for col in cols:
-        name = col.split("->")[-1]
-        assert np.array_equal(df[col].iloc[0], ref[name].iloc[0])
-        assert df.attrs["units"][col] == ref.attrs["units"][name]
+    for col in df['test'].columns:
+        pd.testing.assert_series_equal(ref[col], df['test'][col])
+        assert ref.attrs["units"][col] == df.attrs["units"][f"test->{col}"]
 
 
 @pytest.mark.parametrize(
