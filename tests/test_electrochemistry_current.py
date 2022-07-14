@@ -55,5 +55,8 @@ def test_electrochemistry_current_df(infile, spec, outfile, datadir):
     df = pd.read_pickle(infile)
     df = electrochemistry.charge(df, **spec[0])
     df = electrochemistry.average_current(df, **spec[1])
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outfile)
+    print(f"{ref.head()=}")
+    df.to_pickle(outfile)
     compare_dfs(ref, df)
