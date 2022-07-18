@@ -87,8 +87,6 @@ def compare_dfs(ref, df):
             for func in {unp.nominal_values, unp.std_devs}:
                 np.testing.assert_allclose(func(ri), func(ti))
 
-    
-
 
 def compare_images(path_one, path_two):
     """

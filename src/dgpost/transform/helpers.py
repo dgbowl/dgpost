@@ -110,9 +110,7 @@ def electrons_from_smiles(
 
 
 def pQ(
-    df: pd.DataFrame, 
-    col: Union[str, tuple[str]], 
-    unit: str = None
+    df: pd.DataFrame, col: Union[str, tuple[str]], unit: str = None
 ) -> pint.Quantity:
     """
     Unit-aware dataframe accessor function.
@@ -249,9 +247,7 @@ def load_data(*cols: tuple[str, str, type]):
             if len(args) > 0 and isinstance(args[0], pd.DataFrame):
                 if len(args) > 1:
                     raise ValueError("Only the DataFrame should be given as argument")
-                print(f"{args[0].attrs=}")
                 df = arrow_to_multiindex(args[0])
-                print(f"{df.attrs=}")
                 # Check if the dataframe has a units attribute. If not, the quantities
                 # in the dataframe are unitless and need to be converted.
                 if "units" not in df.attrs:
@@ -291,7 +287,7 @@ def load_data(*cols: tuple[str, str, type]):
                             else:
                                 temp[c] = pQ(df, (cval, c))
                         data_kwargs[cname] = temp
-                        
+
                 units = {}
                 # if a "list" is specified as type, we need to transpose the input:
                 if list in {col[2] for col in fcols}:
@@ -326,7 +322,6 @@ def load_data(*cols: tuple[str, str, type]):
                 newdf = combine_tables(df, ddf)
                 if "units" in df.attrs:
                     newdf.attrs["units"] = df.attrs["units"]
-                    print(f"{units=}")
                     for k, v in units.items():
                         set_units(k.split("->"), v, newdf)
                 return newdf
@@ -446,7 +441,6 @@ def keys_in_df(key: str, df: pd.DataFrame) -> list:
 
 
 def get_units(key: Union[str, tuple], df: pd.DataFrame) -> Union[str, None]:
-
     def recurse(key: Union[str, Sequence], units: dict) -> Union[str, None]:
         if isinstance(key, str):
             return units.get(key, None)
@@ -457,13 +451,13 @@ def get_units(key: Union[str, tuple], df: pd.DataFrame) -> Union[str, None]:
                 return recurse(key[1:], units[key[0]])
             else:
                 return None
+
     if not isinstance(key, str):
         key = [k for k in key if isinstance(k, str)]
     return recurse(key, df.attrs.get("units", {}))
 
 
 def set_units(key: Union[str, tuple], unit: Union[str, None], target: dict) -> None:
-
     def recurse(key: Union[str, Sequence], unit: str, target: dict) -> None:
         if isinstance(key, str):
             target[key] = unit
@@ -474,7 +468,7 @@ def set_units(key: Union[str, tuple], unit: Union[str, None], target: dict) -> N
                 if key[0] not in target:
                     target[key[0]] = {}
                 recurse(key[1:], unit, target[key[0]])
-    
+
     if unit is None:
         return
     if isinstance(target, pd.DataFrame):

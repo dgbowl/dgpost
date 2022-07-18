@@ -97,7 +97,7 @@ def save(
             names.append(col)
         else:
             names.append((col[0] + f" [{ureg.Unit(unit):~P}]", *col[1:]))
-        
+
     savedf = table.copy()
     if all([isinstance(name, str) for name in names]):
         savedf.columns = pd.Index(names)

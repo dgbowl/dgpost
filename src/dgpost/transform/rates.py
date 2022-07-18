@@ -177,13 +177,8 @@ def batch_to_molar(
     dt = np.diff(time)
     dc = {k: np.diff(c_k) for k, c_k in c.items()}
     ret = {}
-    print(f"{dc=}")
     for k, dc_k in dc.items():
         r = (dc_k / dt) * V
-        print(f"{dc_k=}")
-        print(f"{dt=}")
-        print(f"{V=}")
-        print(f"{r=}")
         if len(r) < nts:
             r0 = ureg.Quantity(0, "mol/s")
             r = np.insert(r, 0, r0)

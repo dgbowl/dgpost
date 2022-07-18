@@ -91,4 +91,3 @@ def test_rates_batchtomolar_df(infile, spec, outfile, datadir):
     print(f"{ref.head()=}")
     df.to_pickle(outfile)
     compare_dfs(ref, df)
-    

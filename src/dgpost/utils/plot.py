@@ -107,10 +107,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
         y = spec.pop("y")
         # check if multiple columns should be plotted
         keys = keys_in_df(y, table)
-        print(f"{keys=}")
         for k in sorted(keys):
-            print(f"{k=}")
-            print(f"{table[k]=}")
             if isinstance(table[k], pd.Series) and isinstance(k, str):
                 ys.append({"k": k, "p": k, "s": k, "u": k})
             elif isinstance(table[k], pd.Series) and isinstance(k, tuple):

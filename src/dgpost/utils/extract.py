@@ -69,7 +69,13 @@ import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union
 
-from dgpost.transform.helpers import arrow_to_multiindex, combine_tables, keys_in_df, set_units, get_units
+from dgpost.transform.helpers import (
+    arrow_to_multiindex,
+    combine_tables,
+    keys_in_df,
+    set_units,
+    get_units,
+)
 
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:
@@ -175,7 +181,6 @@ def _get_direct_df(spec, df):
     colunits = []
     for el in spec:
         keys = keys_in_df(el["key"], df)
-        print(f"{keys=}")
         for k in keys:
             if el["key"].endswith("->*"):
                 asname = tuple([el["as"], k[-1]])
@@ -193,7 +198,6 @@ def _get_direct_dg(spec, datagram, at):
     colunits = []
     steps = _get_steps(datagram, at)
     for el in spec:
-        print(f"{el=}")
         keys, vals = _get_key(datagram, steps, el["key"])
         for kk, vv in zip(keys, vals):
             if kk is None:
@@ -272,7 +276,7 @@ def extract(
         cns, cvs, cus = _get_interp(spec.pop("columns"), obj, spec.pop("at", None), ts)
     elif "columns" in spec:
         cns, cvs, cus = _get_direct(spec.pop("columns"), obj, spec.pop("at", None))
-    
+
     df = pd.DataFrame(index=ts)
     units = {}
     for name, vals, unit in zip(cns, cvs, cus):
@@ -280,7 +284,7 @@ def extract(
             names = tuple(name.split("->"))
         else:
             names = name
-        ddf = pd.DataFrame({names: pd.Series(vals, index = ts)})
+        ddf = pd.DataFrame({names: pd.Series(vals, index=ts)})
         df = combine_tables(df, ddf)
         if unit is not None:
             set_units(names, unit, units)

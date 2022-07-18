@@ -72,6 +72,5 @@ def load(
             df.attrs.update(json_file["attrs"])
         else:
             raise RuntimeError(f"File type of '{path}' is not yet supported.")
-        
-        return arrow_to_multiindex(df)
 
+        return arrow_to_multiindex(df)

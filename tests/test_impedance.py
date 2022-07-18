@@ -84,8 +84,8 @@ def test_impedance_fit_circuit_pkl(filepath, fit_info, expected, datadir):
     df = pd.read_pickle(filepath)
     df = transform(df, "impedance.fit_circuit", using=fit_info)
     for index, expect in enumerate(expected):
-        for col in df['fit_circuit'].columns:
-            value = df['fit_circuit'][col].iloc[index]
+        for col in df["fit_circuit"].columns:
+            value = df["fit_circuit"][col].iloc[index]
             assert col in expect
             assert value == pytest.approx(expect[col])
 
@@ -194,9 +194,9 @@ def test_impedance_fit_circuit_dg(data_info, fit_info, expected, datadir):
     df = extract(dg, data_info["spec"])
     df = transform(df, "impedance.fit_circuit", using=fit_info)
     for index, expect in enumerate(expected):
-        for col in df['fit_circuit'].columns:
+        for col in df["fit_circuit"].columns:
             assert col in expect
-            value = df['fit_circuit'][col].iloc[index]
+            value = df["fit_circuit"][col].iloc[index]
             assert value == pytest.approx(expect[col])
 
 
@@ -250,8 +250,8 @@ def test_impedance_calc_circuit(datadir):
     df.attrs["units"] = {"freq": "Hz"}
     df = transform(df, "impedance.calc_circuit", using=calc_info)
     ref = pd.read_pickle("test.single.Data.pkl")
-    for col in df['test'].columns:
-        pd.testing.assert_series_equal(ref[col], df['test'][col])
+    for col in df["test"].columns:
+        pd.testing.assert_series_equal(ref[col], df["test"][col])
         assert ref.attrs["units"][col] == df.attrs["units"][f"test"][col]
 
 

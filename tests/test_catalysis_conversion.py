@@ -173,7 +173,7 @@ def test_catalysis_conversion_transform(inpath, spec, outpath, datadir):
                     "element": "C",
                 }
             ],
-            ["Xm_C"]
+            ["Xm_C"],
         ),
     ],
 )
