@@ -28,3 +28,7 @@
 .. automodule:: dgpost.utils.save
    :members:
    :show-inheritance:
+
+.. automodule:: dgpost.utils.helpers
+   :members:
+   :show-inheritance:
