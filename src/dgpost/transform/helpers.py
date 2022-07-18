@@ -15,7 +15,7 @@ from uncertainties import unumpy as unp
 from rdkit import Chem
 
 from collections import defaultdict
-from typing import Any, Union
+from typing import Any, Union, Sequence
 from chemicals.elements import periodic_table, simple_formula_parser
 from chemicals.identifiers import search_chemical
 from yadg.dgutils import ureg
@@ -399,6 +399,7 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
         temp.attrs["units"].update(b.attrs.get("units", {}))
     return temp
 
+
 def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
     cols = []
     d = 1
@@ -434,3 +435,42 @@ def keys_in_df(key: str, df: pd.DataFrame) -> list:
             thisk = tuple([*key, k])
             keys.append(thisk)
     return keys
+
+
+def get_units(key: Union[str, tuple], df: pd.DataFrame) -> Union[str, None]:
+
+    def recurse(key: Union[str, Sequence], units: dict) -> Union[str, None]:
+        if isinstance(key, str):
+            return units.get(key, None)
+        elif isinstance(key, Sequence):
+            if len(key) == 1:
+                return recurse(key[0], units)
+            else:
+                return recurse(key[1:], units[key[0]])
+
+    print(f"{key=}")
+    key = [k for k in key if isinstance(k, str)]
+    print(f"{key=}")
+    print(f"{df.attrs=}")
+    return recurse(key, df.attrs.get("units", {}))
+
+
+def set_units(key: Union[str, tuple], unit: Union[str, None], target: dict) -> dict:
+
+    def recurse(key: Union[str, Sequence], unit: str, target: dict) -> None:
+        if isinstance(key, str):
+            target[key] = unit
+        elif isinstance(key, Sequence):
+            if len(key) == 1:
+                recurse(key[0], unit, target)
+            else:
+                if key[0] not in target:
+                    target[key[0]] = {}
+                recurse(key[1:], unit, target[key[0]])
+    
+    if unit is None:
+        return
+    if isinstance(target, pd.DataFrame):
+        recurse(key, unit, target.attrs["units"])
+    else:
+        recurse(key, unit, target)
