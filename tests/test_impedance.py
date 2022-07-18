@@ -252,7 +252,7 @@ def test_impedance_calc_circuit(datadir):
     ref = pd.read_pickle("test.single.Data.pkl")
     for col in df['test'].columns:
         pd.testing.assert_series_equal(ref[col], df['test'][col])
-        assert ref.attrs["units"][col] == df.attrs["units"][f"test->{col}"]
+        assert ref.attrs["units"][col] == df.attrs["units"][f"test"][col]
 
 
 @pytest.mark.parametrize(

@@ -122,6 +122,8 @@ def nernst(
             EN = pH * EN * np.log(10)
         else:
             EN = -(EN / n) * np.log(Q)
+        print(f"{E=}")
+        print(f"{EN=}")
         E += EN
     return {output: E}
 

@@ -25,7 +25,7 @@ from uncertainties import ufloat_fromstr
 import re
 from typing import Union
 import logging
-from dgpost.transform.helpers import set_units
+from dgpost.transform.helpers import arrow_to_multiindex, set_units
 
 logger = logging.getLogger(__name__)
 
@@ -72,30 +72,6 @@ def load(
             df.attrs.update(json_file["attrs"])
         else:
             raise RuntimeError(f"File type of '{path}' is not yet supported.")
-        cols = []
-        d = 1
-        for oldcol in df.columns:
-            if "->" in oldcol:
-                if d == 1:
-                    logger.warning(
-                        "Loading table with namespaces stored using old '->' syntax. "
-                        "Consider updating your table to a MultiIndexed one."
-                    )
-                parts = oldcol.split("->")
-                d = max(d, len(parts))
-            else:
-                parts = [oldcol]
-            cols.append(parts)
-        if d == 1:
-            return df
-        else:
-            for i, col in enumerate(cols):
-                if len(col) < d:
-                    cols[i] = col + [None] * (d - len(col))
-                if "units" in df.attrs:
-                    unit = df.attrs["units"].pop(df.columns[i], None)
-                    set_units(col, unit, df)
-            print(f"{df.attrs=}")
-            df.columns = pd.MultiIndex.from_tuples(cols)
-            return df
+        
+        return arrow_to_multiindex(df)
 

@@ -69,7 +69,7 @@ import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union
 
-from dgpost.transform.helpers import arrow_to_multiindex, combine_tables, keys_in_df
+from dgpost.transform.helpers import arrow_to_multiindex, combine_tables, keys_in_df, set_units, get_units
 
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:
@@ -183,11 +183,7 @@ def _get_direct_df(spec, df):
                 asname = el["as"]
             colnames.append(asname)
             colvals.append(df[k])
-            unitkey = k if isinstance(k, str) else "->".join(k)
-            if unitkey in df.attrs["units"]:
-                colunits.append(df.attrs["units"][unitkey])
-            else:
-                colunits.append(None)
+            colunits.append(get_units(k, df))
     return colnames, colvals, colunits
 
 
@@ -287,6 +283,6 @@ def extract(
         ddf = pd.DataFrame({names: pd.Series(vals, index = ts)})
         df = combine_tables(df, ddf)
         if unit is not None:
-            units[names if isinstance(names, str) else "->".join(names)] = unit
+            set_units(names, unit, units)
     df.attrs["units"] = units
     return df

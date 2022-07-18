@@ -19,7 +19,7 @@ import uncertainties.unumpy as unp
 import logging
 import numpy as np
 
-from dgpost.transform.helpers import keys_in_df
+from dgpost.transform.helpers import get_units, keys_in_df
 
 logger = logging.getLogger(__name__)
 
@@ -120,7 +120,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
                     if col is np.NaN:
                         ys.append({"k": (k, np.NaN), "p": k, "s": k, "u": k})
                     else:
-                        ys.append({"k": (k, col), "p": k, "s": col, "u": f"{k}->{col}"})
+                        ys.append({"k": (k, col), "p": k, "s": col, "u": (k, col)})
             else:
                 logger.critical("Error - should not be here!")
                 logger.critical(f"{k=}")
@@ -130,7 +130,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
             y_data = table[yk["k"]]
             y_values = unp.nominal_values(y_data.array)
             y_err = unp.std_devs(y_data.array)
-            y_unit = table.attrs.get("units", {}).get(yk["u"], None)
+            y_unit = get_units(yk["u"], table)
             y_label = f"{yk['p']} [{y_unit}]" if y_unit is not None else yk["p"]
             kwargs = spec.copy()
             if "label" not in kwargs:

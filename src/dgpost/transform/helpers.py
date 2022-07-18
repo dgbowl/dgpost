@@ -145,10 +145,8 @@ def pQ(
         vals = df[col].squeeze().array
     if unit is not None:
         pass
-    elif isinstance(col, str):
-        unit = df.attrs.get("units", {}).get(col, "")
-    elif isinstance(col, tuple):
-        unit = df.attrs.get("units", {}).get("->".join(col), "")
+    else:
+        unit = get_units(col, df)
     return ureg.Quantity(vals, unit)
 
 
@@ -251,8 +249,9 @@ def load_data(*cols: tuple[str, str, type]):
             if len(args) > 0 and isinstance(args[0], pd.DataFrame):
                 if len(args) > 1:
                     raise ValueError("Only the DataFrame should be given as argument")
-
+                print(f"{args[0].attrs=}")
                 df = arrow_to_multiindex(args[0])
+                print(f"{df.attrs=}")
                 # Check if the dataframe has a units attribute. If not, the quantities
                 # in the dataframe are unitless and need to be converted.
                 if "units" not in df.attrs:
@@ -293,8 +292,7 @@ def load_data(*cols: tuple[str, str, type]):
                                 temp[c] = pQ(df, (cval, c))
                         data_kwargs[cname] = temp
                         
-                units = df.attrs.get("units", {})
-
+                units = {}
                 # if a "list" is specified as type, we need to transpose the input:
                 if list in {col[2] for col in fcols}:
                     row_k = data_kwargs.keys()
@@ -327,7 +325,10 @@ def load_data(*cols: tuple[str, str, type]):
                 ddf = arrow_to_multiindex(pd.DataFrame(ret_data, index=df.index))
                 newdf = combine_tables(df, ddf)
                 if "units" in df.attrs:
-                    newdf.attrs["units"] = units
+                    newdf.attrs["units"] = df.attrs["units"]
+                    print(f"{units=}")
+                    for k, v in units.items():
+                        set_units(k.split("->"), v, newdf)
                 return newdf
 
             # Direct call with user-supplied data.
@@ -405,6 +406,11 @@ def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
     d = 1
     for oldcol in df.columns:
         if "->" in oldcol:
+            if d == 1:
+                logger.warning(
+                    "Loading table with namespaces stored using old '->' syntax. "
+                    "Consider updating your table to a MultiIndexed one."
+                )
             parts = oldcol.split("->")
             d = max(d, len(parts))
         else:
@@ -413,10 +419,12 @@ def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
     if d == 1:
         return df
     else:
-        logger.debug("converting '->' to pandas.MultiIndex")
         for i, col in enumerate(cols):
             if len(col) < d:
                 cols[i] = col + [None] * (d - len(col))
+            if "units" in df.attrs:
+                unit = df.attrs["units"].pop(df.columns[i], None)
+                set_units(col, unit, df)
         df.columns = pd.MultiIndex.from_tuples(cols)
         return df
 
@@ -445,17 +453,16 @@ def get_units(key: Union[str, tuple], df: pd.DataFrame) -> Union[str, None]:
         elif isinstance(key, Sequence):
             if len(key) == 1:
                 return recurse(key[0], units)
-            else:
+            elif key[0] in units:
                 return recurse(key[1:], units[key[0]])
-
-    print(f"{key=}")
-    key = [k for k in key if isinstance(k, str)]
-    print(f"{key=}")
-    print(f"{df.attrs=}")
+            else:
+                return None
+    if not isinstance(key, str):
+        key = [k for k in key if isinstance(k, str)]
     return recurse(key, df.attrs.get("units", {}))
 
 
-def set_units(key: Union[str, tuple], unit: Union[str, None], target: dict) -> dict:
+def set_units(key: Union[str, tuple], unit: Union[str, None], target: dict) -> None:
 
     def recurse(key: Union[str, Sequence], unit: str, target: dict) -> None:
         if isinstance(key, str):
