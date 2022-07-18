@@ -69,7 +69,7 @@ import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union
 
-from dgpost.transform.helpers import (
+from dgpost.utils.helpers import (
     arrow_to_multiindex,
     combine_tables,
     keys_in_df,

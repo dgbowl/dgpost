@@ -11,8 +11,7 @@ from importlib import metadata
 import copy
 
 from dgpost.utils import parse, load, extract, transform, save, plot
-
-from dgpost.transform.helpers import combine_tables
+from dgpost.utils.helpers import combine_tables
 
 logger = logging.getLogger(__name__)
 

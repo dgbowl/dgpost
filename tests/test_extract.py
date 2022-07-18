@@ -4,7 +4,7 @@ import json
 import os
 import pandas as pd
 
-from dgpost.transform.helpers import combine_tables
+from dgpost.utils.helpers import combine_tables
 import dgpost.utils
 from .utils import compare_dfs
 

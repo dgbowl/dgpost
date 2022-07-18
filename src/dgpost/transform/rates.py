@@ -14,11 +14,12 @@ rates from the concentration profile of a batch mixture.
 """
 import pint
 
-from dgpost.transform.helpers import load_data
 from yadg.dgutils import ureg
 import pandas as pd
 import numpy as np
 from typing import Iterable
+
+from dgpost.utils.helpers import load_data
 
 
 @load_data(

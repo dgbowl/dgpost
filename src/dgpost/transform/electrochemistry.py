@@ -16,7 +16,7 @@ import pint
 from yadg.dgutils import ureg
 import numpy as np
 import pandas as pd
-from .helpers import load_data, name_to_chem, electrons_from_smiles
+from dgpost.utils.helpers import load_data, name_to_chem, electrons_from_smiles
 
 
 @load_data(
