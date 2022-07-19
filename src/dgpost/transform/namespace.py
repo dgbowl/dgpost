@@ -9,7 +9,6 @@ single namespace.
 .. codeauthor:: 
     Peter Kraus
 
-
 """
 import pint
 

@@ -26,6 +26,11 @@
    :undoc-members:
    :show-inheritance:
 
+.. automodule:: dgpost.transform.namespace
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
