@@ -1,9 +1,9 @@
 ﻿.. automodule:: dgpost.transform.catalysis
+   :noindex:
 
    
    
    
-
    
    
    .. rubric:: Functions

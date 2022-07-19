@@ -1,5 +1,5 @@
 ﻿.. automodule:: dgpost.transform.rates
-
+   :noindex:
    
    
    
