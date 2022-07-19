@@ -118,7 +118,7 @@ def pQ(
 
     Given a dataframe in ``df`` and a column name in ``col``, the function looks
     through the units stored in ``df.attrs["units"]`` and returns a unit-annotated
-    :class:`pint.Quantity` containing the column data. Alternatively, the data in 
+    :class:`pint.Quantity` containing the column data. Alternatively, the data in
     ``df[col]`` can be annotated by the provided ``unit``.
 
     .. note::
@@ -133,7 +133,7 @@ def pQ(
 
     col
         The :class:`str` name of the column to be loaded from the ``df``.
-    
+
     unit
         Optional override for units.
 
@@ -464,7 +464,7 @@ def keys_in_df(key: str, df: pd.DataFrame) -> set[str, tuple]:
 
 
 def get_units(
-    key: Union[str, Sequence], 
+    key: Union[str, Sequence],
     df: pd.DataFrame,
 ) -> Union[str, None]:
     """
@@ -473,6 +473,7 @@ def get_units(
     or any other :class:`Sequence` for a ``df`` with :class:`pd.MultiIndex`.
 
     """
+
     def recurse(key: Union[str, Sequence], units: dict) -> Union[str, None]:
         if isinstance(key, str):
             return units.get(key, None)
@@ -490,15 +491,16 @@ def get_units(
 
 
 def set_units(
-    key: Union[str, Sequence], 
-    unit: Union[str, None], 
+    key: Union[str, Sequence],
+    unit: Union[str, None],
     target: Union[dict, pd.DataFrame],
 ) -> None:
     """
-    Set the units of ``key`` to ``unit`` in the ``target`` object, which can be 
+    Set the units of ``key`` to ``unit`` in the ``target`` object, which can be
     either a :class:`dict` or a :class:`pd.DataFrame`. See also :func:`get_units`.
 
     """
+
     def recurse(key: Union[str, Sequence], unit: str, target: dict) -> None:
         if isinstance(key, str):
             target[key] = unit

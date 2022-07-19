@@ -29,6 +29,7 @@ from dgpost.utils.helpers import arrow_to_multiindex
 
 logger = logging.getLogger(__name__)
 
+
 def _parse_ufloat(v: Union[str, Any]) -> Union[UFloat, Any]:
     if isinstance(v, str) and re.match(r"[0-9\.]+\+/-[0-9\.]+", v):
         return ufloat_fromstr(v)
@@ -60,10 +61,10 @@ def load(
         elif path.endswith("json"):
             with open(path, "r") as f:
                 json_data = json.load(f)
-            table = json_data['table']
-            attrs = json_data['attrs']
-            for i, v in enumerate(table['data']):
-                table['data'][i] = [_parse_ufloat(vv) for vv in v]
+            table = json_data["table"]
+            attrs = json_data["attrs"]
+            for i, v in enumerate(table["data"]):
+                table["data"][i] = [_parse_ufloat(vv) for vv in v]
             df = pd.DataFrame.from_dict(table, orient="tight")
             df.index = [float(i) for i in df.index]
             df.attrs.update(attrs)

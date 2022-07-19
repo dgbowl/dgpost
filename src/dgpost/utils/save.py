@@ -71,7 +71,7 @@ def save(
         logger.debug("Writing json into '%s'." % path)
         table.attrs["meta"] = meta
         json_file = {
-            "table": table.to_dict(orient='tight'),
+            "table": table.to_dict(orient="tight"),
             "attrs": table.attrs,
         }
         with open(path, "w") as f:

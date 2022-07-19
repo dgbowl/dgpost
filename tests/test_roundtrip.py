@@ -25,11 +25,11 @@ from .utils import compare_dfs
         (  # ts2 - load dg, with check, multiple extracts, implicit starred
             {"path": "normalized.dg.json"},
             {
-                "at": {"step": "a"}, 
+                "at": {"step": "a"},
                 "columns": [
                     {"key": "derived->xin", "as": "xin"},
                     {"key": "raw->T_f", "as": "T"},
-                ]
+                ],
             },
         ),
     ],
