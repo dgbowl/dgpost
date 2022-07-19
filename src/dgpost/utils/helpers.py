@@ -41,6 +41,7 @@ def default_element(f: str) -> str:
     """
     Given a formula ``f``, return the default element for calculating
     conversion. The priority list is ``["C", "O", "H"]``.
+
     """
     elements = simple_formula_parser(f)
     for el in ["C", "O", "H"]:
@@ -117,9 +118,11 @@ def pQ(
 
     Given a dataframe in ``df`` and a column name in ``col``, the function looks
     through the units stored in ``df.attrs["units"]`` and returns a unit-annotated
-    :class:`pint.Quantity` containing the column data.
+    :class:`pint.Quantity` containing the column data. Alternatively, the data in 
+    ``df[col]`` can be annotated by the provided ``unit``.
 
     .. note::
+
         If ``df.attrs`` has no units, or ``col`` is not in ``df.attrs["units"]``,
         the returned :class:`pint.Quantity` is dimensionless.
 
@@ -130,6 +133,9 @@ def pQ(
 
     col
         The :class:`str` name of the column to be loaded from the ``df``.
+    
+    unit
+        Optional override for units.
 
     Returns
     -------
@@ -371,6 +377,14 @@ def load_data(*cols: tuple[str, str, type]):
 
 
 def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
+    """
+    Helper function to combine tables with various indexes. If both tables
+    have a :class:`pd.Index`, a table with a :class:`pd.Index` will be returned.
+    If one or bothe of the tables have a :class:`pd.MultiIndex`, a table with a
+    :class:`pd.MultiIndex` will be returned, with any column names padded as
+    required.
+
+    """
     if a.columns.nlevels == b.columns.nlevels:
         temp = a.join(b, how="outer")
     else:
@@ -397,6 +411,11 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
 
 
 def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Helper function to convert `->` separated namespaces into a :class:`pd.MultiIndex`
+    table. Also converts the units, if present, into nested :class:`dicts`.
+
+    """
     cols = []
     d = 1
     for oldcol in df.columns:
@@ -424,23 +443,36 @@ def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
         return df
 
 
-def keys_in_df(key: str, df: pd.DataFrame) -> list:
+def keys_in_df(key: str, df: pd.DataFrame) -> set[str, tuple]:
+    """
+    Returns a :class:`set` of all columns in the ``df`` which are matched by ``key``.
+    The items within the :class:`set` can be either :class:`tuples` in a ``df`` with
+    :class:`pd.MultiIndex`, or :class:`str` for a ``df`` with :class:`pd.Index`.
+
+    """
     if "->" in key:
         key = tuple(key.split("->"))
     else:
         pass
-    if key in df.columns:
-        keys = [key]
+    t = df.sort_index(axis=1)
+    if key in t.columns:
+        keys = {key}
     elif key[-1] == "*":
         key = key[:-1]
-        keys = []
-        for k in df[key].columns:
-            thisk = tuple([*key, k])
-            keys.append(thisk)
+        keys = {tuple([*key, k]) for k in t[key].columns}
     return keys
 
 
-def get_units(key: Union[str, tuple], df: pd.DataFrame) -> Union[str, None]:
+def get_units(
+    key: Union[str, Sequence], 
+    df: pd.DataFrame,
+) -> Union[str, None]:
+    """
+    Given a ``key`` corresponding to a column in the ``df``, return the units. The
+    provided ``key`` can be both a :class:`str` for ``df`` with :class:`pd.Index`,
+    or any other :class:`Sequence` for a ``df`` with :class:`pd.MultiIndex`.
+
+    """
     def recurse(key: Union[str, Sequence], units: dict) -> Union[str, None]:
         if isinstance(key, str):
             return units.get(key, None)
@@ -457,7 +489,16 @@ def get_units(key: Union[str, tuple], df: pd.DataFrame) -> Union[str, None]:
     return recurse(key, df.attrs.get("units", {}))
 
 
-def set_units(key: Union[str, tuple], unit: Union[str, None], target: dict) -> None:
+def set_units(
+    key: Union[str, Sequence], 
+    unit: Union[str, None], 
+    target: Union[dict, pd.DataFrame],
+) -> None:
+    """
+    Set the units of ``key`` to ``unit`` in the ``target`` object, which can be 
+    either a :class:`dict` or a :class:`pd.DataFrame`. See also :func:`get_units`.
+
+    """
     def recurse(key: Union[str, Sequence], unit: str, target: dict) -> None:
         if isinstance(key, str):
             target[key] = unit

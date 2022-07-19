@@ -27,6 +27,16 @@ In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
    version
 
 .. toctree::
+   :maxdepth: 2
+   :caption: dgpost function library
+   :hidden:
+
+   stubs/dgpost.transform.catalysis
+   stubs/dgpost.transform.electrochemistry
+   stubs/dgpost.transform.impedance
+   stubs/dgpost.transform.rates
+
+.. toctree::
    :maxdepth: 1
    :caption: dgpost developer manual
    :hidden:
