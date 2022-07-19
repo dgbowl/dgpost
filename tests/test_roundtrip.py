@@ -4,6 +4,7 @@ import pandas as pd
 
 import dgpost.utils
 from copy import deepcopy
+from .utils import compare_dfs
 
 
 @pytest.mark.parametrize(
@@ -13,25 +14,37 @@ from copy import deepcopy
 @pytest.mark.parametrize(
     "input",
     [
-        (  # ts0 - load with check = True
+        (  # ts0 - load dg, with check, simple extract
             {"path": "sparse.dg.json"},
             {"at": {"step": "a"}, "columns": [{"key": "raw->T_f", "as": "T"}]},
-        )
+        ),
+        (  # ts1 - load dg, with check, starred extract
+            {"path": "normalized.dg.json"},
+            {"at": {"step": "a"}, "columns": [{"key": "derived->xin->*", "as": "xin"}]},
+        ),
+        (  # ts2 - load dg, with check, multiple extracts, implicit starred
+            {"path": "normalized.dg.json"},
+            {
+                "at": {"step": "a"}, 
+                "columns": [
+                    {"key": "derived->xin", "as": "xin"},
+                    {"key": "raw->T_f", "as": "T"},
+                ]
+            },
+        ),
     ],
 )
 def test_roundtrip_direct(input, filetype, datadir):
     os.chdir(datadir)
     l, e = deepcopy(input)
-    outpath = l["path"] + "." + filetype
+    outpath = f"out.{l['path']}.{filetype}"
     dg = dgpost.utils.load(**l)
-    df = dgpost.utils.extract(dg, spec=e)
-    dgpost.utils.save(table=df, path=outpath, type=filetype)
+    ref = dgpost.utils.extract(dg, spec=e)
+    dgpost.utils.save(table=ref, path=outpath, type=filetype)
 
     assert os.path.exists(outpath)
-    ret = dgpost.utils.load(**{"path": outpath, "type": "table"})
-
-    pd.testing.assert_frame_equal(df, ret, check_like=True)
-    assert df.attrs == ret.attrs
+    df = dgpost.utils.load(**{"path": outpath, "type": "table"})
+    compare_dfs(ref, df)
 
 
 @pytest.mark.parametrize(

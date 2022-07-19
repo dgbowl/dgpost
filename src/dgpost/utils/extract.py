@@ -114,7 +114,7 @@ def _get_key_recurse(data, keylist):
         if key == "*":
             keyset = set()
             for tstep in data:
-                if len({"n", "s", "u"}.intersection(tstep.keys())) != 3:
+                if len({"n", "s", "u"}.intersection(tstep)) < 3:
                     for k in tstep.keys():
                         keyset.add(k)
             keys = []
@@ -131,7 +131,11 @@ def _get_key_recurse(data, keylist):
                         vals.append(nv)
             return keys, vals
         else:
-            return [None], [[i.get(key, None) for i in data]]
+            ret = [i.get(key, None) for i in data]
+            if any([isinstance(i, dict) and len({"n", "s", "u"}.intersection(i)) < 3 for i in ret]):
+                return _get_key_recurse([i[key] for i in data], ["*"])
+            else:
+                return [None], [ret]
     else:
         return _get_key_recurse([i[key] for i in data], keylist)
 

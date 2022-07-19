@@ -21,25 +21,19 @@ import os
 import json
 import pandas as pd
 from yadg.core import validate_datagram
-from uncertainties import ufloat_fromstr
+from uncertainties import ufloat_fromstr, UFloat
 import re
-from typing import Union
+from typing import Union, Any
 import logging
 from dgpost.utils.helpers import arrow_to_multiindex
 
 logger = logging.getLogger(__name__)
 
-
-def _parse_ufloat(d: dict) -> dict:
-    ret = {}
-    for k, v in d.items():
-        new_v = v
-        if type(v) is str:
-            # match for ufloat
-            if re.match(r"[0-9\.]+\+/-[0-9\.]+", v):
-                new_v = ufloat_fromstr(v)
-        ret[k] = new_v
-    return ret
+def _parse_ufloat(v: Union[str, Any]) -> Union[UFloat, Any]:
+    if isinstance(v, str) and re.match(r"[0-9\.]+\+/-[0-9\.]+", v):
+        return ufloat_fromstr(v)
+    else:
+        return v
 
 
 def load(
@@ -65,11 +59,14 @@ def load(
             df.sort_index(axis="index", inplace=True)
         elif path.endswith("json"):
             with open(path, "r") as f:
-                json_file = json.load(f, object_hook=_parse_ufloat)
-            df = pd.DataFrame.from_dict(json_file["table"])
-            df.sort_index(axis="index", inplace=True)
+                json_data = json.load(f)
+            table = json_data['table']
+            attrs = json_data['attrs']
+            for i, v in enumerate(table['data']):
+                table['data'][i] = [_parse_ufloat(vv) for vv in v]
+            df = pd.DataFrame.from_dict(table, orient="tight")
             df.index = [float(i) for i in df.index]
-            df.attrs.update(json_file["attrs"])
+            df.attrs.update(attrs)
         else:
             raise RuntimeError(f"File type of '{path}' is not yet supported.")
 

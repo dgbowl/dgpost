@@ -27,7 +27,7 @@ from importlib import metadata
 import pandas as pd
 import logging
 
-from dgpost.utils.helpers import get_units
+from dgpost.utils.helpers import get_units, set_units
 
 logger = logging.getLogger(__name__)
 
@@ -70,18 +70,8 @@ def save(
     elif type == "json":
         logger.debug("Writing json into '%s'." % path)
         table.attrs["meta"] = meta
-        tab_dict = {}
-        for col, vals in table.to_dict().items():
-            if isinstance(col, tuple):
-                cols = list(col)
-            else:
-                cols = [col]
-            while len(cols) > 0:
-                vals = {cols.pop(-1): vals}
-            tab_dict.update(vals)
-
         json_file = {
-            "table": tab_dict,
+            "table": table.to_dict(orient='tight'),
             "attrs": table.attrs,
         }
         with open(path, "w") as f:
