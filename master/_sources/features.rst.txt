@@ -25,6 +25,16 @@ from the supplied :class:`pd.DataFrame`, or wrap directly supplied data into
 :class:`pint.Quantity` objects, and supply those into the called ``transform`` 
 function transparently to the user.
 
+.. note::
+
+    As of ``dgpost-2.0``, dgpost internally convert the loaded tables into 
+    :class:`pd.DataFrames` with :class:`pd.MultiIndex` as the column index, if 
+    necessary. All namespaces separated by ``->`` will be split into a 
+    :class:`pd.MultiIndex`, and the units of those columns will be organised
+    accordingly. This means dgpost can read :class:`pd.MultiIndexed` tables, and
+    extract data from tables with standard a :class:`pd.Index` as well as 
+    :class:`pd.MultiIndex` seamlessly.
+
 Units and uncertainties
 ```````````````````````
 Another key objective of dgpost is to allow and encourage annotating data by units
@@ -55,9 +65,14 @@ The notable exceptions here are transformations using fitting functions from the
 `scipy <https://docs.scipy.org/doc/>`_ library, where arrays containing 
 :class:`floats` are expected - this has to be handled explicitly by the developer.
 
-When saving tables created in dgpost, the units are appended to the column
-names (``csv/xlsx``) or stored in the table (``pkl/json``), while the uncertainties
-may be optionally dropped from the exported table; see :mod:`dgpost.utils.save`.
+When saving tables created in dgpost, the units are appended to the column names 
+(``csv/xlsx``) or stored in the table (``pkl/json``). When exporting a 
+:class:`pd.MultiIndexed` table to ``csv/xlsx``, units will be appended to the top-level 
+index. 
+
+The uncertainties may be optionally dropped from the exported table; see 
+:mod:`dgpost.utils.save`. This is especially handy for post-processing of tables in
+spreadsheets.
 
 Provenance
 ``````````

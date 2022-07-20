@@ -44,6 +44,13 @@
 <li class="toctree-l1"><a class="reference internal" href="features.html"><strong>dgpost</strong> features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="version.html"><strong>dgpost</strong> version history</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">contributing to <strong>dgpost</strong></a></li>
@@ -85,6 +92,7 @@
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -100,6 +108,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dgpost.utils.html#dgpost.utils.plot.apply_plot_style">apply_plot_style() (in module dgpost.utils.plot)</a>
+</li>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.arrow_to_multiindex">arrow_to_multiindex() (in module dgpost.utils.helpers)</a>
 </li>
       <li><a href="dgpost.utils.html#dgbowl_schemas.dgpost.recipe_1_1.load.Load.as_">as_ (dgbowl_schemas.dgpost.recipe_1_1.load.Load attribute)</a>
 
@@ -153,17 +163,21 @@
 </li>
       <li><a href="dgpost.transform.html#dgpost.transform.catalysis.catalytic_yield">catalytic_yield() (in module dgpost.transform.catalysis)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dgpost.transform.html#dgpost.transform.electrochemistry.charge">charge() (in module dgpost.transform.electrochemistry)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dgpost.utils.html#dgbowl_schemas.dgpost.recipe_1_1.load.Load.check">check (dgbowl_schemas.dgpost.recipe_1_1.load.Load attribute)</a>
 </li>
       <li><a href="dgpost.utils.html#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input">check_one_input() (dgbowl_schemas.dgpost.recipe_1_1.extract.Extract class method)</a>
 </li>
       <li><a href="dgpost.utils.html#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.columns">columns (dgbowl_schemas.dgpost.recipe_1_1.extract.Extract attribute)</a>
 </li>
-      <li><a href="dgpost.transform.html#dgpost.transform.helpers.columns_to_smiles">columns_to_smiles() (in module dgpost.transform.helpers)</a>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.columns_to_smiles">columns_to_smiles() (in module dgpost.utils.helpers)</a>
+</li>
+      <li><a href="dgpost.transform.html#dgpost.transform.namespace.combine">combine() (in module dgpost.transform.namespace)</a>
+</li>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.combine_tables">combine_tables() (in module dgpost.utils.helpers)</a>
 </li>
       <li><a href="dgpost.transform.circuit_utils.html#dgpost.transform.circuit_utils.circuit_components.Component">Component (class in dgpost.transform.circuit_utils.circuit_components)</a>
 </li>
@@ -181,7 +195,7 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="dgpost.transform.html#dgpost.transform.helpers.default_element">default_element() (in module dgpost.transform.helpers)</a>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.default_element">default_element() (in module dgpost.utils.helpers)</a>
 </li>
       <li>
     dgpost
@@ -240,19 +254,19 @@
 </li>
       </ul></li>
       <li>
-    dgpost.transform.helpers
+    dgpost.transform.impedance
 
       <ul>
-        <li><a href="dgpost.transform.html#module-dgpost.transform.helpers">module</a>
+        <li><a href="dgpost.transform.html#module-dgpost.transform.impedance">module</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
-    dgpost.transform.impedance
+    dgpost.transform.namespace
 
       <ul>
-        <li><a href="dgpost.transform.html#module-dgpost.transform.impedance">module</a>
+        <li><a href="dgpost.transform.html#module-dgpost.transform.namespace">module</a>
 </li>
       </ul></li>
       <li>
@@ -274,6 +288,13 @@
 
       <ul>
         <li><a href="dgpost.utils.html#module-dgpost.utils.extract">module</a>
+</li>
+      </ul></li>
+      <li>
+    dgpost.utils.helpers
+
+      <ul>
+        <li><a href="dgpost.utils.html#module-dgpost.utils.helpers">module</a>
 </li>
       </ul></li>
       <li>
@@ -317,11 +338,7 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="dgpost.transform.html#dgpost.transform.helpers.electrons_from_smiles">electrons_from_smiles() (in module dgpost.transform.helpers)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="dgpost.transform.html#dgpost.transform.helpers.element_from_formula">element_from_formula() (in module dgpost.transform.helpers)</a>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.element_from_formula">element_from_formula() (in module dgpost.utils.helpers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -383,6 +400,8 @@
         <li><a href="dgpost.transform.circuit_utils.html#dgpost.transform.circuit_utils.circuit_components.WarburgShort.get_symbol">(dgpost.transform.circuit_utils.circuit_components.WarburgShort static method)</a>
 </li>
       </ul></li>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.get_units">get_units() (in module dgpost.utils.helpers)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -394,10 +413,18 @@
   </ul></td>
 </tr></table>
 
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.keys_in_df">keys_in_df() (in module dgpost.utils.helpers)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="dgpost.transform.html#dgpost.transform.helpers.load_data">load_data() (in module dgpost.transform.helpers)</a>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.load_data">load_data() (in module dgpost.utils.helpers)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -429,15 +456,17 @@
 </li>
         <li><a href="dgpost.transform.html#module-dgpost.transform.electrochemistry">dgpost.transform.electrochemistry</a>
 </li>
-        <li><a href="dgpost.transform.html#module-dgpost.transform.helpers">dgpost.transform.helpers</a>
-</li>
         <li><a href="dgpost.transform.html#module-dgpost.transform.impedance">dgpost.transform.impedance</a>
+</li>
+        <li><a href="dgpost.transform.html#module-dgpost.transform.namespace">dgpost.transform.namespace</a>
 </li>
         <li><a href="dgpost.transform.html#module-dgpost.transform.rates">dgpost.transform.rates</a>
 </li>
         <li><a href="dgpost.utils.html#module-dgpost.utils">dgpost.utils</a>
 </li>
         <li><a href="dgpost.utils.html#module-dgpost.utils.extract">dgpost.utils.extract</a>
+</li>
+        <li><a href="dgpost.utils.html#module-dgpost.utils.helpers">dgpost.utils.helpers</a>
 </li>
         <li><a href="dgpost.utils.html#module-dgpost.utils.load">dgpost.utils.load</a>
 </li>
@@ -456,8 +485,6 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="dgpost.transform.html#dgpost.transform.helpers.name_to_chem">name_to_chem() (in module dgpost.transform.helpers)</a>
-</li>
       <li><a href="dgpost.utils.html#dgbowl_schemas.dgpost.recipe_1_1.plot.Plot.ncols">ncols (dgbowl_schemas.dgpost.recipe_1_1.plot.Plot attribute)</a>
 </li>
   </ul></td>
@@ -482,7 +509,7 @@
 </li>
       <li><a href="dgpost.utils.html#dgpost.utils.plot.plt_axes">plt_axes() (in module dgpost.utils.plot)</a>
 </li>
-      <li><a href="dgpost.transform.html#dgpost.transform.helpers.pQ">pQ() (in module dgpost.transform.helpers)</a>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.pQ">pQ() (in module dgpost.utils.helpers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -508,9 +535,11 @@
 </li>
       <li><a href="dgpost.transform.html#dgpost.transform.catalysis.selectivity">selectivity() (in module dgpost.transform.catalysis)</a>
 </li>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.separate_data">separate_data() (in module dgpost.utils.helpers)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="dgpost.transform.html#dgpost.transform.helpers.separate_data">separate_data() (in module dgpost.transform.helpers)</a>
+      <li><a href="dgpost.utils.html#dgpost.utils.helpers.set_units">set_units() (in module dgpost.utils.helpers)</a>
 </li>
       <li><a href="dgpost.utils.html#dgbowl_schemas.dgpost.recipe_1_1.save.Save.sigma">sigma (dgbowl_schemas.dgpost.recipe_1_1.save.Save attribute)</a>
 </li>

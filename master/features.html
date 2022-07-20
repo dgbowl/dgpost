@@ -52,6 +52,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="version.html"><strong>dgpost</strong> version history</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">contributing to <strong>dgpost</strong></a></li>
@@ -102,10 +109,20 @@ file.</p>
 <li><p>the function must return data in a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">pint.Quantity]</span></code> format.</p></li>
 </ul>
 <p>If these requirements are met, the decorator function
-<a class="reference internal" href="dgpost.transform.html#dgpost.transform.helpers.load_data" title="dgpost.transform.helpers.load_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_data()</span></code></a> can be used to either extract data
+<code class="xref py py-func docutils literal notranslate"><span class="pre">load_data()</span></code> can be used to either extract data
 from the supplied <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>, or wrap directly supplied data into
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects, and supply those into the called <code class="docutils literal notranslate"><span class="pre">transform</span></code>
 function transparently to the user.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As of <code class="docutils literal notranslate"><span class="pre">dgpost-2.0</span></code>, dgpost internally convert the loaded tables into
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> with <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code> as the column index, if
+necessary. All namespaces separated by <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code> will be split into a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>, and the units of those columns will be organised
+accordingly. This means dgpost can read <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndexed</span></code> tables, and
+extract data from tables with standard a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> as well as
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code> seamlessly.</p>
+</div>
 </section>
 <section id="units-and-uncertainties">
 <h2>Units and uncertainties<a class="headerlink" href="#units-and-uncertainties" title="Permalink to this headline"></a></h2>
@@ -133,9 +150,13 @@ arrays, uncertainty handling is generally transparent to both user and developer
 The notable exceptions here are transformations using fitting functions from the
 <a class="reference external" href="https://docs.scipy.org/doc/">scipy</a> library, where arrays containing
 <code class="xref py py-class docutils literal notranslate"><span class="pre">floats</span></code> are expected - this has to be handled explicitly by the developer.</p>
-<p>When saving tables created in dgpost, the units are appended to the column
-names (<code class="docutils literal notranslate"><span class="pre">csv/xlsx</span></code>) or stored in the table (<code class="docutils literal notranslate"><span class="pre">pkl/json</span></code>), while the uncertainties
-may be optionally dropped from the exported table; see <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.save</span></code></a>.</p>
+<p>When saving tables created in dgpost, the units are appended to the column names
+(<code class="docutils literal notranslate"><span class="pre">csv/xlsx</span></code>) or stored in the table (<code class="docutils literal notranslate"><span class="pre">pkl/json</span></code>). When exporting a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndexed</span></code> table to <code class="docutils literal notranslate"><span class="pre">csv/xlsx</span></code>, units will be appended to the top-level
+index.</p>
+<p>The uncertainties may be optionally dropped from the exported table; see
+<a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.save</span></code></a>. This is especially handy for post-processing of tables in
+spreadsheets.</p>
 </section>
 <section id="provenance">
 <h2>Provenance<a class="headerlink" href="#provenance" title="Permalink to this headline"></a></h2>

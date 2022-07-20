@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>electrochemistry: calculations relevant in electrochemistry &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="impedance: fitting electrochemical impedance spectra" href="dgpost.transform.impedance.html" />
+    <link rel="prev" title="catalysis: common calculations in catalytic testing" href="dgpost.transform.catalysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> dgpost
+            <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dgpost.html"><strong>dgpost</strong> autodocs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><strong>electrochemistry</strong>: calculations relevant in electrochemistry</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/stubs/dgpost.transform.electrochemistry.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="electrochemistry-calculations-relevant-in-electrochemistry">
+<h1><strong>electrochemistry</strong>: calculations relevant in electrochemistry<a class="headerlink" href="#electrochemistry-calculations-relevant-in-electrochemistry" title="Permalink to this headline"></a></h1>
+<p><em>Code author: Peter Kraus</em></p>
+<p>Includes functions for calculating applied voltage correction via the
+<a class="reference internal" href="../dgpost.transform.html#dgpost.transform.electrochemistry.nernst" title="dgpost.transform.electrochemistry.nernst"><code class="xref py py-func docutils literal notranslate"><span class="pre">nernst()</span></code></a> equation, calculation of the
+Faradaic efficiency (<a class="reference internal" href="../dgpost.transform.html#dgpost.transform.electrochemistry.fe" title="dgpost.transform.electrochemistry.fe"><code class="xref py py-func docutils literal notranslate"><span class="pre">fe()</span></code></a>), as well as
+the calculation of total <a class="reference internal" href="../dgpost.transform.html#dgpost.transform.electrochemistry.charge" title="dgpost.transform.electrochemistry.charge"><code class="xref py py-func docutils literal notranslate"><span class="pre">charge()</span></code></a>, and
+the <a class="reference internal" href="../dgpost.transform.html#dgpost.transform.electrochemistry.average_current" title="dgpost.transform.electrochemistry.average_current"><code class="xref py py-func docutils literal notranslate"><span class="pre">average_current()</span></code></a> from the total
+charge and timestamps.</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../dgpost.transform.html#dgpost.transform.electrochemistry.average_current" title="dgpost.transform.electrochemistry.average_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">average_current</span></code></a>(time, Q[, t0, output])</p></td>
+<td><p>Calculate the average current <span class="math notranslate nohighlight">\(&lt;I&gt;\)</span> from a set of timestamped values of electical charge,</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../dgpost.transform.html#dgpost.transform.electrochemistry.charge" title="dgpost.transform.electrochemistry.charge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">charge</span></code></a>(time, I[, t0, output])</p></td>
+<td><p>Calculate the total charge <span class="math notranslate nohighlight">\(Q\)</span> as a time-integral of the electric current:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../dgpost.transform.html#dgpost.transform.electrochemistry.fe" title="dgpost.transform.electrochemistry.fe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fe</span></code></a>(rate, I, charges[, output])</p></td>
+<td><p>Calculate the Faradaic efficiency <span class="math notranslate nohighlight">\(\eta_F\)</span> from a set of molar rates <span class="math notranslate nohighlight">\(\dot{n}\)</span> corresponding to a single mixture, and the applied current <span class="math notranslate nohighlight">\(I\)</span> required to produce that mixture from a source mixture.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../dgpost.transform.html#dgpost.transform.electrochemistry.nernst" title="dgpost.transform.electrochemistry.nernst"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nernst</span></code></a>(Ewe[, R, I, Eref, T, n, Q, pH, output])</p></td>
+<td><p>Correct measured voltage to calculate the applied voltage, using corrections for Ohmic drop, reference potential vs RHE, and ionic concentration using the Nernst equation, either by providing <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(n\)</span>, or by providing the <span class="math notranslate nohighlight">\(pH\)</span>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.transform.catalysis.html" class="btn btn-neutral float-left" title="catalysis: common calculations in catalytic testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.transform.impedance.html" class="btn btn-neutral float-right" title="impedance: fitting electrochemical impedance spectra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
