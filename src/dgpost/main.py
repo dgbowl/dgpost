@@ -8,10 +8,10 @@ Module containing the execution functions for dgpost.
 import argparse
 import logging
 from importlib import metadata
-import pandas as pd
 import copy
 
 from dgpost.utils import parse, load, extract, transform, save, plot
+from dgpost.utils.helpers import combine_tables
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +92,7 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
         newdf = extract(obj, el, index)
 
         if saveas in tables:
-            temp = pd.concat([tables[saveas], newdf], axis=1)
+            temp = combine_tables(tables[saveas], newdf)
             temp.attrs = tables[saveas].attrs
             temp.attrs["units"].update(newdf.attrs["units"])
             tables[saveas] = temp

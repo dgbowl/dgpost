@@ -23,8 +23,10 @@ def test_realworld(inpath, reflist, datadir):
     for i, reffn in enumerate(reflist):
         dgpost.run(flist[i])
         if reffn.endswith("pkl"):
-            df = pd.read_pickle(reffn)
+            ret = pd.read_pickle(reffn)
+            print(f"{ret.head()=}")
             ref = pd.read_pickle(f"ref.{reffn}")
-            compare_dfs(ref, df)
+            print(f"{ref.head()=}")
+            compare_dfs(ref, ret)
         elif reffn.endswith("png"):
             compare_images(f"ref.{reffn}", reffn)

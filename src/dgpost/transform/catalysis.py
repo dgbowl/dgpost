@@ -30,7 +30,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from .helpers import (
+from dgpost.utils.helpers import (
     name_to_chem,
     columns_to_smiles,
     default_element,

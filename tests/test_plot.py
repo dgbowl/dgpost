@@ -297,7 +297,7 @@ def test_plot_direct(input, datadir):
                     {
                         "series": [
                             {
-                                "y": "cin->*",
+                                "y": "cin",
                                 "colors": ["b", "r", "g"],
                                 "kind": "scatter",
                             },
@@ -312,7 +312,7 @@ def test_plot_direct(input, datadir):
                     {
                         "series": [
                             {
-                                "y": "xout->*",
+                                "y": "xout",
                                 "colors": ["b", "r", "g", "y", "brown"],
                                 "kind": "scatter",
                             },
@@ -358,7 +358,7 @@ def test_plot_direct(input, datadir):
                     {
                         "series": [
                             {
-                                "y": "cin->*",
+                                "y": "cin",
                                 "colors": ["b", "r", "g"],
                                 "kind": "scatter",
                             },
@@ -372,7 +372,7 @@ def test_plot_direct(input, datadir):
                     {
                         "series": [
                             {
-                                "y": "xout->*",
+                                "y": "xout",
                                 "colors": ["b", "r", "g", "y", "brown"],
                                 "kind": "scatter",
                             },

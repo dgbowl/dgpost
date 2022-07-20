@@ -69,6 +69,14 @@ import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union
 
+from dgpost.utils.helpers import (
+    arrow_to_multiindex,
+    combine_tables,
+    keys_in_df,
+    set_units,
+    get_units,
+)
+
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:
     spec = []
@@ -106,7 +114,7 @@ def _get_key_recurse(data, keylist):
         if key == "*":
             keyset = set()
             for tstep in data:
-                if len({"n", "s", "u"}.intersection(tstep.keys())) != 3:
+                if len({"n", "s", "u"}.intersection(tstep)) != 3:
                     for k in tstep.keys():
                         keyset.add(k)
             keys = []
@@ -123,7 +131,16 @@ def _get_key_recurse(data, keylist):
                         vals.append(nv)
             return keys, vals
         else:
-            return [None], [[i.get(key, None) for i in data]]
+            ret = [i.get(key, None) for i in data]
+            if any(
+                [
+                    isinstance(i, dict) and len({"n", "s", "u"}.intersection(i)) != 3
+                    for i in ret
+                ]
+            ):
+                return _get_key_recurse([i[key] for i in data], ["*"])
+            else:
+                return [None], [ret]
     else:
         return _get_key_recurse([i[key] for i in data], keylist)
 
@@ -167,29 +184,20 @@ def _get_constant(spec, ts):
 
 
 def _get_direct_df(spec, df):
+    df = arrow_to_multiindex(df)
     colvals = []
     colnames = []
     colunits = []
     for el in spec:
-        if el["key"] in df.columns:
-            keys = [el["key"]]
-        elif el["key"].endswith("*"):
-            keys = []
-            for k in df.columns:
-                if k.startswith(el["key"][:-1]):
-                    keys.append(k)
+        keys = keys_in_df(el["key"], df)
         for k in keys:
-
-            if k == el["key"]:
-                asname = el["as"]
+            if el["key"].endswith("->*"):
+                asname = tuple([el["as"], k[-1]])
             else:
-                asname = el["as"] + "->" + k.split("->")[-1]
+                asname = el["as"]
             colnames.append(asname)
             colvals.append(df[k])
-            if k in df.attrs["units"]:
-                colunits.append(df.attrs["units"][k])
-            else:
-                colunits.append(None)
+            colunits.append(get_units(k, df))
     return colnames, colvals, colunits
 
 
@@ -279,9 +287,15 @@ def extract(
         cns, cvs, cus = _get_direct(spec.pop("columns"), obj, spec.pop("at", None))
 
     df = pd.DataFrame(index=ts)
-    df.attrs["units"] = {}
+    units = {}
     for name, vals, unit in zip(cns, cvs, cus):
-        df[name] = vals
+        if "->" in name:
+            names = tuple(name.split("->"))
+        else:
+            names = name
+        ddf = pd.DataFrame({names: pd.Series(vals, index=ts)})
+        df = combine_tables(df, ddf)
         if unit is not None:
-            df.attrs["units"][name] = unit
+            set_units(names, unit, units)
+    df.attrs["units"] = units
     return df

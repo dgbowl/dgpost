@@ -27,7 +27,7 @@ import pint
 import uncertainties as uc
 
 from .circuit_utils.circuit_parser import parse_circuit, fit_routine
-from .helpers import separate_data, load_data
+from dgpost.utils.helpers import separate_data, load_data
 
 logger = logging.getLogger(__name__)
 

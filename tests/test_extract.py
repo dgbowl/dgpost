@@ -4,7 +4,9 @@ import json
 import os
 import pandas as pd
 
+from dgpost.utils.helpers import combine_tables
 import dgpost.utils
+from .utils import compare_dfs
 
 
 def test_valid_datagram(datadir):
@@ -122,10 +124,13 @@ def test_extract_single(inpath, spec, outpath, datadir):
     os.chdir(datadir)
     with open(inpath, "r") as infile:
         dg = json.load(infile)
-    df = dgpost.utils.extract(dg, spec)
+    ret = dgpost.utils.extract(dg, spec)
+    print(f"{ret.head()=}")
     ref = pd.read_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
-    assert ref.attrs == df.attrs
+    print(f"{ref.head()=}")
+    ret.to_pickle(outpath)
+    pd.testing.assert_frame_equal(ref, ret, check_like=True)
+    assert ref.attrs == ret.attrs
 
 
 @pytest.mark.parametrize(
@@ -199,11 +204,11 @@ def test_extract_multiple(inpath, spec, outpath, datadir):
             df = ret
         else:
             ret = dgpost.utils.extract(dg, spec[si], ret.index)
-            temp = pd.concat([df, ret], axis=1)
-            temp.attrs = df.attrs
-            temp.attrs["units"].update(ret.attrs["units"])
-            df = temp
+            df = combine_tables(df, ret)
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outpath)
+    print(f"{ref.head()=}")
+    df.to_pickle(outpath)
     pd.testing.assert_frame_equal(ref, df, check_like=True)
     assert ref.attrs == df.attrs
 
@@ -243,10 +248,12 @@ def test_extract_multiple(inpath, spec, outpath, datadir):
         ),
     ],
 )
-def test_extract_from_table(infile, spec, outfile, datadir):
+def test_extract_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
-    ret = dgpost.utils.extract(df, spec)
+    df = dgpost.utils.extract(df, spec)
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outfile)
-    pd.testing.assert_frame_equal(ret, ref, check_like=True)
-    assert ret.attrs == ref.attrs
+    print(f"{ref.head()=}")
+    df.to_pickle(outfile)
+    compare_dfs(ref, df)

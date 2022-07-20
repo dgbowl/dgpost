@@ -15,10 +15,13 @@ from uncertainties import unumpy as unp
 from rdkit import Chem
 
 from collections import defaultdict
-from typing import Any
+from typing import Any, Union, Sequence
 from chemicals.elements import periodic_table, simple_formula_parser
 from chemicals.identifiers import search_chemical
 from yadg.dgutils import ureg
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def element_from_formula(f: str, el: str) -> int:
@@ -38,6 +41,7 @@ def default_element(f: str) -> str:
     """
     Given a formula ``f``, return the default element for calculating
     conversion. The priority list is ``["C", "O", "H"]``.
+
     """
     elements = simple_formula_parser(f)
     for el in ["C", "O", "H"]:
@@ -106,15 +110,19 @@ def electrons_from_smiles(
     return float(n)
 
 
-def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
+def pQ(
+    df: pd.DataFrame, col: Union[str, tuple[str]], unit: str = None
+) -> pint.Quantity:
     """
     Unit-aware dataframe accessor function.
 
     Given a dataframe in ``df`` and a column name in ``col``, the function looks
     through the units stored in ``df.attrs["units"]`` and returns a unit-annotated
-    :class:`pint.Quantity` containing the column data.
+    :class:`pint.Quantity` containing the column data. Alternatively, the data in
+    ``df[col]`` can be annotated by the provided ``unit``.
 
     .. note::
+
         If ``df.attrs`` has no units, or ``col`` is not in ``df.attrs["units"]``,
         the returned :class:`pint.Quantity` is dimensionless.
 
@@ -126,14 +134,23 @@ def pQ(df: pd.DataFrame, col: str) -> pint.Quantity:
     col
         The :class:`str` name of the column to be loaded from the ``df``.
 
+    unit
+        Optional override for units.
+
     Returns
     -------
     Quantity: pint.Quantity
         Unit-aware :class:`ping.Quantity` object containing the data from ``df[col]``.
 
     """
-    vals = df[col].array
-    unit = df.attrs.get("units", {}).get(col, "")
+    if df.columns.nlevels == 1:
+        vals = df[col].array
+    else:
+        vals = df[col].squeeze().array
+    if unit is not None:
+        pass
+    else:
+        unit = get_units(col, df)
     return ureg.Quantity(vals, unit)
 
 
@@ -236,8 +253,7 @@ def load_data(*cols: tuple[str, str, type]):
             if len(args) > 0 and isinstance(args[0], pd.DataFrame):
                 if len(args) > 1:
                     raise ValueError("Only the DataFrame should be given as argument")
-
-                df = args[0]
+                df = arrow_to_multiindex(args[0])
                 # Check if the dataframe has a units attribute. If not, the quantities
                 # in the dataframe are unitless and need to be converted.
                 if "units" not in df.attrs:
@@ -264,58 +280,56 @@ def load_data(*cols: tuple[str, str, type]):
                     elif ctype is not dict:
                         # cval is a string, and the row values (ctype) are list or scalar
                         if uconv:
-                            data_kwargs[cname] = ureg.Quantity(df[cval].array, cunit)
+                            data_kwargs[cname] = pQ(df, cval, unit=cunit)
                         else:
                             data_kwargs[cname] = pQ(df, cval)
                     else:
                         # cval is a string, but the row walues (ctype) are dict
                         # so we need to match all columns in pd.DataFrame
                         temp = {}
-                        for c in df.columns:
-                            if not c.startswith(f"{cval}->"):
-                                continue
-                            onlyc = c.split("->")[-1]
+                        for c in df[cval].columns:
                             if uconv:
-                                temp[onlyc] = ureg.Quantity(df[c].array, cunit)
+                                temp[c] = pQ(df, (cval, c), unit=cunit)
                             else:
-                                temp[onlyc] = pQ(df, c)
+                                temp[c] = pQ(df, (cval, c))
                         data_kwargs[cname] = temp
 
-                units = df.attrs.get("units", {})
-                ddf = pd.DataFrame(index=df.index)
-
+                units = {}
                 # if a "list" is specified as type, we need to transpose the input:
                 if list in {col[2] for col in fcols}:
                     row_k = data_kwargs.keys()
                     row_v = data_kwargs.values()
-                    for i, r in enumerate(zip(*row_v)):
+                    ret_data = {}
+                    for r in zip(*row_v):
                         row_data = {k: v for k, v in zip(row_k, r)}
                         retvals = func(**row_data, **kwargs)
                         for name, qty in retvals.items():
-                            if name not in ddf.columns:
-                                ddf[name] = ""
+                            if name not in ret_data:
+                                ret_data[name] = []
                             if isinstance(qty, pint.Quantity):
                                 qty.ito_reduced_units()
-                                ddf[name].iloc[i] = qty.m
+                                ret_data[name].append(qty.m)
                                 if not uconv and not qty.unitless:
                                     units[name] = f"{qty.u:~P}"
                             else:
-                                ddf[name].iloc[i] = qty
-
+                                ret_data[name].append(qty)
                 else:
                     retvals = func(**data_kwargs, **kwargs)
+                    ret_data = {}
                     for name, qty in retvals.items():
                         if isinstance(qty, pint.Quantity):
                             qty.ito_reduced_units()
-                            ddf[name] = qty.m
+                            ret_data[name] = qty.m
                             if not uconv and not qty.unitless:
                                 units[name] = f"{qty.u:~P}"
                         else:
-                            ddf[name] = qty
-
-                newdf = pd.concat([df, ddf], axis=1)
+                            ret_data[name] = qty
+                ddf = arrow_to_multiindex(pd.DataFrame(ret_data, index=df.index))
+                newdf = combine_tables(df, ddf)
                 if "units" in df.attrs:
-                    newdf.attrs["units"] = units
+                    newdf.attrs["units"] = df.attrs["units"]
+                    for k, v in units.items():
+                        set_units(k.split("->"), v, newdf)
                 return newdf
 
             # Direct call with user-supplied data.
@@ -360,3 +374,147 @@ def load_data(*cols: tuple[str, str, type]):
         return wrapper
 
     return loading
+
+
+def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
+    """
+    Helper function to combine tables with various indexes. If both tables
+    have a :class:`pd.Index`, a table with a :class:`pd.Index` will be returned.
+    If one or bothe of the tables have a :class:`pd.MultiIndex`, a table with a
+    :class:`pd.MultiIndex` will be returned, with any column names padded as
+    required.
+
+    """
+    if a.columns.nlevels == b.columns.nlevels:
+        temp = a.join(b, how="outer")
+    else:
+        if a.columns.nlevels > b.columns.nlevels:
+            l = a
+            r = b
+        else:
+            l = b
+            r = a
+        rlevels = [pd.Index([None])] * l.columns.nlevels
+        if isinstance(r.columns, pd.Index):
+            rlevels[0] = r.columns
+        else:
+            for i, level in enumerate(r.columns.levels):
+                rlevels[i] = level
+        r.columns = pd.MultiIndex.from_product(rlevels)
+        temp = l.join(r, how="outer")
+    temp.attrs = a.attrs
+    if "units" in b.attrs:
+        if "units" not in temp.attrs:
+            temp.attrs["units"] = {}
+        temp.attrs["units"].update(b.attrs.get("units", {}))
+    return temp
+
+
+def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Helper function to convert `->` separated namespaces into a :class:`pd.MultiIndex`
+    table. Also converts the units, if present, into nested :class:`dicts`.
+
+    """
+    cols = []
+    d = 1
+    for oldcol in df.columns:
+        if "->" in oldcol:
+            if d == 1:
+                logger.warning(
+                    "Loading table with namespaces stored using old '->' syntax. "
+                    "Consider updating your table to a MultiIndexed one."
+                )
+            parts = oldcol.split("->")
+            d = max(d, len(parts))
+        else:
+            parts = [oldcol]
+        cols.append(parts)
+    if d == 1:
+        return df
+    else:
+        for i, col in enumerate(cols):
+            if len(col) < d:
+                cols[i] = col + [None] * (d - len(col))
+            if "units" in df.attrs:
+                unit = df.attrs["units"].pop(df.columns[i], None)
+                set_units(col, unit, df)
+        df.columns = pd.MultiIndex.from_tuples(cols)
+        return df
+
+
+def keys_in_df(key: str, df: pd.DataFrame) -> set[str, tuple]:
+    """
+    Returns a :class:`set` of all columns in the ``df`` which are matched by ``key``.
+    The items within the :class:`set` can be either :class:`tuples` in a ``df`` with
+    :class:`pd.MultiIndex`, or :class:`str` for a ``df`` with :class:`pd.Index`.
+
+    """
+    if "->" in key:
+        key = tuple(key.split("->"))
+    else:
+        pass
+    t = df.sort_index(axis=1)
+    if key in t.columns:
+        keys = {key}
+    elif key[-1] == "*":
+        key = key[:-1]
+        keys = {tuple([*key, k]) for k in t[key].columns}
+    return keys
+
+
+def get_units(
+    key: Union[str, Sequence],
+    df: pd.DataFrame,
+) -> Union[str, None]:
+    """
+    Given a ``key`` corresponding to a column in the ``df``, return the units. The
+    provided ``key`` can be both a :class:`str` for ``df`` with :class:`pd.Index`,
+    or any other :class:`Sequence` for a ``df`` with :class:`pd.MultiIndex`.
+
+    """
+
+    def recurse(key: Union[str, Sequence], units: dict) -> Union[str, None]:
+        if isinstance(key, str):
+            return units.get(key, None)
+        elif isinstance(key, Sequence):
+            if len(key) == 1:
+                return recurse(key[0], units)
+            elif key[0] in units:
+                return recurse(key[1:], units[key[0]])
+            else:
+                return None
+
+    if not isinstance(key, str):
+        key = [k for k in key if isinstance(k, str)]
+    return recurse(key, df.attrs.get("units", {}))
+
+
+def set_units(
+    key: Union[str, Sequence],
+    unit: Union[str, None],
+    target: Union[dict, pd.DataFrame],
+) -> None:
+    """
+    Set the units of ``key`` to ``unit`` in the ``target`` object, which can be
+    either a :class:`dict` or a :class:`pd.DataFrame`. See also :func:`get_units`.
+
+    """
+
+    def recurse(key: Union[str, Sequence], unit: str, target: dict) -> None:
+        if isinstance(key, str):
+            target[key] = unit
+        elif isinstance(key, Sequence):
+            if len(key) == 1:
+                recurse(key[0], unit, target)
+            else:
+                if key[0] not in target:
+                    target[key[0]] = {}
+                recurse(key[1:], unit, target[key[0]])
+
+    if unit is None:
+        return
+    if isinstance(target, pd.DataFrame):
+        recurse(key, unit, target.attrs["units"])
+    else:
+        recurse(key, unit, target)

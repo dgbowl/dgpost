@@ -63,7 +63,10 @@ def test_run(inpath, tname, outpath, datadir):
     os.chdir(datadir)
     dg, tab = dgpost.run(inpath)
     df = tab[tname]
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outpath)
+    print(f"{ref.head()=}")
+    df.to_pickle(outpath)
     compare_dfs(ref, df)
 
 
@@ -81,7 +84,10 @@ def test_run_withna(inpath, tname, outpath, datadir):
     os.chdir(datadir)
     dg, tab = dgpost.run(inpath)
     df = tab[tname]
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outpath)
+    print(f"{ref.head()=}")
+    df.to_pickle(outpath)
     pd.testing.assert_frame_equal(ref.isna(), df.isna(), check_like=True)
     r = ref.fillna(uc.ufloat(0, 0))
     t = df.fillna(uc.ufloat(0, 0))
@@ -113,13 +119,13 @@ def test_save(inpath, outpaths, datadir):
 @pytest.mark.parametrize(
     "inpath, tname, outpath, outfig",
     [
-        (  # ts0 - two figures, *-select, with legend
+        (  # ts0 - two figures, select by top level, with legend
             "letp_1.yaml",
             "df",
             "letp_1.pkl",
             "letp_1.png",
         ),
-        (  # ts0 - plot 1
+        (  # ts1 - three figures, select via ->
             "lp_1.yaml",
             "df",
             "ref.electrochemistry_fe.ts0.pkl",
@@ -131,8 +137,11 @@ def test_run_with_plot(inpath, tname, outpath, outfig, datadir):
     os.chdir(datadir)
     dg, tab = dgpost.run(inpath)
     df = tab[tname]
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outpath)
-    compare_dfs(df, ref)
+    print(f"{ref.head()=}")
+    df.to_pickle(outpath)
+    compare_dfs(ref, df)
     compare_images("test.png", outfig)
 
 
@@ -148,5 +157,8 @@ def test_run_with_patch(inpath, patch, tname, outpath, datadir):
     os.chdir(datadir)
     dg, tab = dgpost.run(inpath, patch=patch)
     df = tab[tname]
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outpath)
-    compare_dfs(df, ref)
+    print(f"{ref.head()=}")
+    df.to_pickle(outpath)
+    compare_dfs(ref, df)

@@ -23,8 +23,11 @@ import json
 import os
 from yadg.dgutils.pintutils import ureg
 from uncertainties import unumpy as unp
+from importlib import metadata
 import pandas as pd
 import logging
+
+from dgpost.utils.helpers import get_units, set_units
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +40,9 @@ def save(
     meta: dict = None,
 ) -> None:
     """"""
+    if meta is None:
+        meta = {"provenance": f"dgpost-{metadata.version('dgpost')}"}
+
     folder = os.path.dirname(path)
     if os.path.isdir(folder) or folder == "":
         pass
@@ -65,7 +71,7 @@ def save(
         logger.debug("Writing json into '%s'." % path)
         table.attrs["meta"] = meta
         json_file = {
-            "table": table.to_dict(),
+            "table": table.to_dict(orient="tight"),
             "attrs": table.attrs,
         }
         with open(path, "w") as f:
@@ -73,20 +79,25 @@ def save(
         return None
 
     # for excel and csv the unit gets added to the column names
-    units = table.attrs.get("units", {})
-    names = {}
+    names = []
     for col in table.columns:
-        unit = units.get(col, " ")
-        if unit == " ":
-            continue
-        name = col + f" [{ureg.Unit(unit):~P}]"
-        names[col] = name
-    dframe = table.rename(columns=names).sort_index(axis=1)
+        unit = get_units(col, table)
+        col = [c if isinstance(c, str) else "" for c in col]
+        if unit is None:
+            names.append(col)
+        else:
+            names.append((col[0] + f" [{ureg.Unit(unit):~P}]", *col[1:]))
+
+    savedf = table.copy()
+    if all([isinstance(name, str) for name in names]):
+        savedf.columns = pd.Index(names)
+    else:
+        savedf.columns = pd.MultiIndex.from_tuples(names)
     if type == "csv":
         logger.debug("Writing csv into '%s'." % path)
-        dframe.to_csv(path)
+        savedf.to_csv(path)
     elif type == "xlsx":
         logger.debug("Writing xlsx into '%s'." % path)
-        dframe.to_excel(path)
+        savedf.to_excel(path)
     else:
         raise ValueError(f"save: Provided 'type' '{type}' is not supported.")

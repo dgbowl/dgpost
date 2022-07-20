@@ -54,4 +54,8 @@ def test_electrochemistry_charge_df(infile, spec, outfile, datadir):
     df = pd.read_pickle(infile)
     df = electrochemistry.charge(df, **spec)
     ref = pd.read_pickle(outfile)
+    print(f"{df.head()=}")
+    ref = pd.read_pickle(outfile)
+    print(f"{ref.head()=}")
+    df.to_pickle(outfile)
     compare_dfs(ref, df)

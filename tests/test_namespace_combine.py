@@ -54,7 +54,7 @@ def test_namespace_combine_direct(a, b, conflicts, output):
 
 
 @pytest.mark.parametrize(
-    "inpath, spec, outprefix",
+    "inpath, spec, col",
     [
         (  # ts0 - sum
             "namespaces_1.xlsx",
@@ -68,10 +68,8 @@ def test_namespace_combine_direct(a, b, conflicts, output):
         ),
     ],
 )
-def test_namespace_combine_excel(inpath, spec, outprefix, datadir):
+def test_namespace_combine_excel(inpath, spec, col, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
     df = transform(df, "namespace.combine", using=spec)
-    for col in df.columns:
-        if col.startswith(outprefix):
-            pd.testing.assert_series_equal(df[col], df["r" + col], check_names=False)
+    pd.testing.assert_frame_equal(df[col], df[f"r{col}"], check_names=False)

@@ -9,12 +9,10 @@ single namespace.
 .. codeauthor:: 
     Peter Kraus
 
-
 """
 import pint
 
-from dgpost.transform.helpers import load_data
-from .helpers import columns_to_smiles
+from dgpost.utils.helpers import load_data, columns_to_smiles
 from collections import defaultdict
 
 
