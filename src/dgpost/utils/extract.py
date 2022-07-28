@@ -68,6 +68,7 @@ import pandas as pd
 import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union
+import logging
 
 from dgpost.utils.helpers import (
     arrow_to_multiindex,
@@ -76,6 +77,8 @@ from dgpost.utils.helpers import (
     set_units,
     get_units,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:
@@ -173,6 +176,7 @@ def _get_constant(spec, ts):
     colnames = []
     colunits = []
     for el in spec:
+        logger.debug("adding constant as '%s'", el["as"])
         colnames.append(el["as"])
         colunits.append(el.get("units", None))
         if isinstance(el["value"], str):
@@ -189,6 +193,7 @@ def _get_direct_df(spec, df):
     colnames = []
     colunits = []
     for el in spec:
+        logger.debug("extracting '%s' from table", el["key"])
         keys = keys_in_df(el["key"], df)
         for k in keys:
             if el["key"].endswith("->*"):
@@ -212,6 +217,7 @@ def _get_direct_dg(spec, datagram, at):
     colunits = []
     steps = _get_steps(datagram, at)
     for el in spec:
+        logger.debug("extracting '%s' from datagram", el["key"])
         keys, vals = _get_key(datagram, steps, el["key"])
         for kk, vv in zip(keys, vals):
             if kk is None:
@@ -254,6 +260,7 @@ def _get_interp(spec, obj, at, ts):
         index = obj.index
         colnames, colvals, colunits = _get_direct_df(spec, obj)
     colint = []
+    logger.debug("interpolating")
     for vals in colvals:
         noms = unp.nominal_values(vals)
         sigs = unp.std_devs(vals)
@@ -270,7 +277,7 @@ def extract(
     index: list = None,
 ) -> pd.DataFrame:
     """"""
-    cns = cvs = cus = []
+    cns, cvs, cus = [], [], []
     at = spec.get("at", None)
     if at is not None and "timestamps" in at:
         ts = np.array(at.pop("timestamps"))
