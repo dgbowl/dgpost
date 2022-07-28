@@ -193,10 +193,15 @@ def _get_direct_df(spec, df):
         for k in keys:
             if el["key"].endswith("->*"):
                 asname = tuple([el["as"], k[-1]])
+            elif isinstance(k, tuple):
+                if tuple(el["key"].split("->")) == k:
+                    asname = el["as"]
+                else:
+                    asname = tuple([el["as"], k[-1]])
             else:
                 asname = el["as"]
             colnames.append(asname)
-            colvals.append(df[k])
+            colvals.append(df[k].squeeze())
             colunits.append(get_units(k, df))
     return colnames, colvals, colunits
 

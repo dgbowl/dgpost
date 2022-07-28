@@ -456,7 +456,10 @@ def keys_in_df(key: str, df: pd.DataFrame) -> set[str, tuple]:
         pass
     t = df.sort_index(axis=1)
     if key in t.columns:
-        keys = {key}
+        if hasattr(t[key], "columns"):
+            keys = {tuple([key, k]) for k in t[key].columns}
+        else:
+            keys = {key}
     elif key[-1] == "*":
         key = key[:-1]
         keys = {tuple([*key, k]) for k in t[key].columns}

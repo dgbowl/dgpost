@@ -73,6 +73,7 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
         saveas = el.pop("into")
         if "from" in el and el["from"] is not None:
             objname = el.pop("from")
+            logger.debug("extracting from '%s' into '%s'", objname, saveas)
             if objname in datagrams:
                 obj = datagrams[objname]
             elif objname in tables:
