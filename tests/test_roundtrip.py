@@ -32,6 +32,16 @@ from .utils import compare_dfs
                 ],
             },
         ),
+        (  # ts3 - load df, multiple extracts, implicit starred
+            {"path": "normalized.df.pkl", "type": "table"},
+            {
+                "columns": [
+                    {"key": "xin", "as": "xin_l"},
+                    {"key": "T", "as": "T_l"},
+                ],
+            },
+        ),
+
     ],
 )
 def test_roundtrip_direct(input, filetype, datadir):
