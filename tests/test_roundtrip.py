@@ -41,7 +41,6 @@ from .utils import compare_dfs
                 ],
             },
         ),
-
     ],
 )
 def test_roundtrip_direct(input, filetype, datadir):
