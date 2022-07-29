@@ -397,11 +397,11 @@ def load_data(*cols: tuple[str, str, type]):
 
 def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
     """
-    Helper function to combine tables with various indexes. If both tables
-    have a :class:`pd.Index`, a table with a :class:`pd.Index` will be returned.
-    If one or bothe of the tables have a :class:`pd.MultiIndex`, a table with a
-    :class:`pd.MultiIndex` will be returned, with any column names padded as
-    required.
+    Combine two :class:`pd.DataFrames` into a new :class:`pd.DataFrame`.
+
+    Assumes the :class:`pd.DataFrames` contain a :class:`pd.MultiIndex`. Automatically
+    pads the :class:`pd.MultiIndex` to match the higher number of levels, if necessary.
+    Merges units.
 
     """
     if len(a.columns) == 0:
@@ -431,8 +431,11 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
 
 def arrow_to_multiindex(df: pd.DataFrame, warn: bool = True) -> pd.DataFrame:
     """
-    Helper function to convert `->` separated namespaces into a :class:`pd.MultiIndex`
-    table. Also converts the units, if present, into nested :class:`dicts`.
+    Convert the provided :class:`pd.DataFrame` to a ``dgpost``-compatible format.
+
+    - converts tables with :class:`pd.Index` into :class:`pd.MultiIndex`,
+    - converts ``->``-separated namespaces into :class:`pd.MultiIndex`,
+    - processes units into nested :class:`dicts`.
 
     """
     cols = []
@@ -453,9 +456,7 @@ def arrow_to_multiindex(df: pd.DataFrame, warn: bool = True) -> pd.DataFrame:
         elif isinstance(oldcol, list):
             parts = oldcol
         elif isinstance(oldcol, str):
-            parts = [
-                oldcol,
-            ]
+            parts = [oldcol]
         else:
             raise RuntimeError(f"column '{oldcol=}' is a '{type(oldcol)=}'")
         cols.append(parts)
@@ -477,9 +478,10 @@ def arrow_to_multiindex(df: pd.DataFrame, warn: bool = True) -> pd.DataFrame:
 
 def keys_in_df(key: Union[str, tuple], df: pd.DataFrame) -> set[tuple]:
     """
+    Find all columns in the provided :class:`pd.DataFrame` that match ``key``.
+
     Returns a :class:`set` of all columns in the ``df`` which are matched by ``key``.
-    The items within the :class:`set` can be either :class:`tuples` in a ``df`` with
-    :class:`pd.MultiIndex`, or :class:`str` for a ``df`` with :class:`pd.Index`.
+    Assumes the provided :class:`pd.DataFrame` contains a :class:`pd.MultiIndex`.
 
     """
     key = key_to_tuple(key)
@@ -492,6 +494,11 @@ def keys_in_df(key: Union[str, tuple], df: pd.DataFrame) -> set[tuple]:
 
 
 def key_to_tuple(key: Union[str, tuple]) -> tuple:
+    """
+    Convert a provided ``key`` to a :class:`tuple` for use with :class:`pd.DataFrames`
+    containing a :class:`pd.MultiIndex`.
+
+    """
     if isinstance(key, str):
         if "->" in key:
             key = key.split("->")

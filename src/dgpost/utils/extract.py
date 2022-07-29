@@ -236,12 +236,16 @@ def _get_direct_dg(spec, datagram, at):
                     uvals.append(uc.ufloat(i["n"], i["s"]))
                 elif isinstance(i, dict) and isinstance(i["n"], list):
                     uvals.append(unp.uarray(i["n"], i["s"]))
+                elif isinstance(i, (int, str)):
+                    uvals.append(i)
+                elif isinstance(i, list) and all(
+                    [isinstance(ii, (int, str)) for ii in i]
+                ):
+                    uvals.append(i)
                 else:
-                    raise ValueError
-                if units is None:
+                    raise ValueError(f"{i=} is of unknown {type(i)=}")
+                if units is None and isinstance(i, dict):
                     units = i["u"]
-                else:
-                    assert i["u"] == units
             colvals.append(uvals)
             colunits.append(None if units in [None, "-", " "] else units)
     return colnames, colvals, colunits
