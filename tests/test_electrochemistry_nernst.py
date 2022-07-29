@@ -95,5 +95,8 @@ def test_electrochemistry_nernst_df(infile, spec, outfile, datadir):
     df = pd.read_pickle(infile)
     for args in spec:
         df = electrochemistry.nernst(df, **args)
+    print(f"{df.head()=}")
     ref = pd.read_pickle(outfile)
+    print(f"{ref.head()=}")
+    df.to_pickle(outfile)
     compare_dfs(ref, df)

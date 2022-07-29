@@ -42,7 +42,7 @@ def test_load_datagram(input, datadir):
             {"path": "flowcx.units.float.df.pkl"},
             "ref.flowcx.units.float.df.pkl",
         ],
-        [  # ts2 - roundtrip table with flat columns and units
+        [  # ts2 - roundtrip table with MultiIndex flat columns and units
             {"path": "Ewe_I.df.pkl"},
             "Ewe_I.df.pkl",
         ],

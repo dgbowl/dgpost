@@ -77,7 +77,7 @@ def test_catalysis_yield_excel(inpath, spec, outkeys, datadir):
     df = pd.read_excel(inpath)
     df = transform(df, "catalysis.catalytic_yield", using=spec)
     for col in outkeys:
-        pd.testing.assert_frame_equal(df[col], df[f"r{col}"], check_names=False)
+        compare_dfs(df[f"r{col}"], df[col])
 
 
 def test_catalysis_yield_rinxin(datadir):

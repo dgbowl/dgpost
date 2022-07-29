@@ -206,7 +206,6 @@ def _get_direct_df(spec, df):
                 asname = tuple(list(atup) + list(rest))
             else:
                 raise RuntimeError(f"could not use '{el['as']=}' with {k=}")
-            print(f"{asname=}")
             colnames.append(asname)
             colvals.append(df[k])
             colunits.append(get_units(k, df))
@@ -226,7 +225,6 @@ def _get_direct_dg(spec, datagram, at):
             if kk is None:
                 colnames.append(atup)
             else:
-                print(f"{atup=}")
                 colnames.append(tuple(list(atup) + kk.split("->")))
             uvals = []
             units = None
@@ -306,15 +304,14 @@ def extract(
     units = {}
     for name, vals, unit in zip(cns, cvs, cus):
         ddf = pd.DataFrame({name: pd.Series(vals, index=ts)})
-        print(f"{ddf.columns=}")
         if df is None:
             df = ddf
         else:
             cc = pd.concat([df, ddf], axis = 1)
-            print(f"{cc.columns=}")
             df = combine_tables(df, ddf)
-        print(f"{df.columns=}")
         if unit is not None:
             set_units(name, unit, units)
+    if df is None:
+        df = pd.DataFrame(index=ts)
     df.attrs["units"] = units
     return df
