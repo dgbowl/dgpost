@@ -394,13 +394,11 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
         else:
             l = b
             r = a
-        rlevels = [pd.Index([None])] * l.columns.nlevels
-        if isinstance(r.columns, pd.Index):
-            rlevels[0] = r.columns
-        else:
-            for i, level in enumerate(r.columns.levels):
-                rlevels[i] = level
-        r.columns = pd.MultiIndex.from_product(rlevels)
+        llen = l.columns.nlevels
+        rcols = []
+        for col in r.columns:
+            rcols.append(tuple(list(col) + [None] * (llen - len(col))))
+        r.columns = pd.MultiIndex.from_tuples(rcols)
         temp = l.join(r, how="outer")
     temp.attrs = a.attrs
     if "units" in b.attrs:
@@ -410,7 +408,7 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
     return temp
 
 
-def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
+def arrow_to_multiindex(df: pd.DataFrame, warn: bool = True) -> pd.DataFrame:
     """
     Helper function to convert `->` separated namespaces into a :class:`pd.MultiIndex`
     table. Also converts the units, if present, into nested :class:`dicts`.
@@ -420,50 +418,64 @@ def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
     d = 1
     for oldcol in df.columns:
         if "->" in oldcol:
-            if d == 1:
+            if d == 1 and warn:
                 logger.warning(
                     "Loading table with namespaces stored using old '->' syntax. "
                     "Consider updating your table to a MultiIndexed one."
                 )
             parts = oldcol.split("->")
             d = max(d, len(parts))
+        elif isinstance(oldcol, tuple):
+            parts = list(oldcol)
         else:
-            parts = [oldcol]
+            parts = [oldcol,]
         cols.append(parts)
-    if d == 1:
-        return df
-    else:
-        for i, col in enumerate(cols):
-            if len(col) < d:
-                cols[i] = col + [None] * (d - len(col))
-            if "units" in df.attrs:
-                unit = df.attrs["units"].pop(df.columns[i], None)
-                set_units(col, unit, df)
-        df.columns = pd.MultiIndex.from_tuples(cols)
-        return df
+    print(f"{cols=}")
+    for i, col in enumerate(cols):
+        if len(col) < d:
+            cols[i] = col + [None] * (d - len(col))
+        col = tuple(col)
+        cols[i] = col
+        if "units" in df.attrs:
+            unit = df.attrs["units"].pop(df.columns[i], None)
+            set_units(col, unit, df)
+    print(f"{cols=}")
+    df.columns = pd.MultiIndex.from_tuples(cols)
+    return df
 
 
-def keys_in_df(key: str, df: pd.DataFrame) -> set[str, tuple]:
+def keys_in_df(key: Union[str, tuple], df: pd.DataFrame) -> set[tuple]:
     """
     Returns a :class:`set` of all columns in the ``df`` which are matched by ``key``.
     The items within the :class:`set` can be either :class:`tuples` in a ``df`` with
     :class:`pd.MultiIndex`, or :class:`str` for a ``df`` with :class:`pd.Index`.
 
     """
-    if "->" in key:
-        key = tuple(key.split("->"))
-    else:
-        pass
+    key = key_to_tuple(key)
     t = df.sort_index(axis=1)
-    if key in t.columns:
-        if hasattr(t[key], "columns"):
-            keys = {tuple([key, k]) for k in t[key].columns}
-        else:
-            keys = {key}
-    elif key[-1] == "*":
-        key = key[:-1]
-        keys = {tuple([*key, k]) for k in t[key].columns}
+    keys = set()
+    for col in t.columns:
+        if col[:len(key)] == key:
+            print(f"{col=}")
+            keys.add(col)
     return keys
+
+
+def key_to_tuple(key: Union[str, tuple]) -> tuple:
+    if isinstance(key, str):
+        if "->" in key:
+            key = key.split("->")
+            if key[-1] == "*":
+                key = key[:-1]
+        else:
+            key = [key]
+        key = tuple(key)
+    elif isinstance(key, tuple):
+        pass
+    else:
+        raise RuntimeError(f"passed '{key=}' is '{type(key)=}'")
+    return key
+
 
 
 def get_units(

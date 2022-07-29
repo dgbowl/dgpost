@@ -74,6 +74,7 @@ from dgpost.utils.helpers import (
     arrow_to_multiindex,
     combine_tables,
     keys_in_df,
+    key_to_tuple,
     set_units,
     get_units,
 )
@@ -177,7 +178,7 @@ def _get_constant(spec, ts):
     colunits = []
     for el in spec:
         logger.debug("adding constant as '%s'", el["as"])
-        colnames.append(el["as"])
+        colnames.append(key_to_tuple(el["as"]))
         colunits.append(el.get("units", None))
         if isinstance(el["value"], str):
             val = uc.ufloat_fromstr(el["value"])
@@ -195,18 +196,19 @@ def _get_direct_df(spec, df):
     for el in spec:
         logger.debug("extracting '%s' from table", el["key"])
         keys = keys_in_df(el["key"], df)
+        ktup = key_to_tuple(el["key"])
+        atup = key_to_tuple(el["as"])
         for k in keys:
-            if el["key"].endswith("->*"):
-                asname = tuple([el["as"], k[-1]])
-            elif isinstance(k, tuple):
-                if tuple(el["key"].split("->")) == k:
-                    asname = el["as"]
-                else:
-                    asname = tuple([el["as"], k[-1]])
+            if ktup == k:
+                asname = atup
+            elif len(ktup) < len(k):
+                rest = k[len(ktup):]
+                asname = tuple(list(atup) + list(rest))
             else:
-                asname = el["as"]
+                raise RuntimeError(f"could not use '{el['as']=}' with {k=}")
+            print(f"{asname=}")
             colnames.append(asname)
-            colvals.append(df[k].squeeze())
+            colvals.append(df[k])
             colunits.append(get_units(k, df))
     return colnames, colvals, colunits
 
@@ -219,11 +221,13 @@ def _get_direct_dg(spec, datagram, at):
     for el in spec:
         logger.debug("extracting '%s' from datagram", el["key"])
         keys, vals = _get_key(datagram, steps, el["key"])
+        atup = key_to_tuple(el["as"])
         for kk, vv in zip(keys, vals):
             if kk is None:
-                colnames.append(el["as"])
+                colnames.append(atup)
             else:
-                colnames.append(f"{el['as']}->{kk}")
+                print(f"{atup=}")
+                colnames.append(tuple(list(atup) + [kk]))
             uvals = []
             units = None
             for i in vv:
@@ -298,16 +302,19 @@ def extract(
     elif "columns" in spec:
         cns, cvs, cus = _get_direct(spec.pop("columns"), obj, spec.pop("at", None))
 
-    df = pd.DataFrame(index=ts)
+    df = None
     units = {}
     for name, vals, unit in zip(cns, cvs, cus):
-        if "->" in name:
-            names = tuple(name.split("->"))
+        ddf = pd.DataFrame({name: pd.Series(vals, index=ts)})
+        print(f"{ddf.columns=}")
+        if df is None:
+            df = ddf
         else:
-            names = name
-        ddf = pd.DataFrame({names: pd.Series(vals, index=ts)})
-        df = combine_tables(df, ddf)
+            cc = pd.concat([df, ddf], axis = 1)
+            print(f"{cc.columns=}")
+            df = combine_tables(df, ddf)
+        print(f"{df.columns=}")
         if unit is not None:
-            set_units(names, unit, units)
+            set_units(name, unit, units)
     df.attrs["units"] = units
     return df

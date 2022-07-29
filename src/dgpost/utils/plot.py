@@ -108,14 +108,19 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
         # check if multiple columns should be plotted
         keys = keys_in_df(y, table)
         for k in sorted(keys):
+            if isinstance(k, tuple):
+                k = tuple([i for i in k if isinstance(i, str)])
+                if len(k) == 1:
+                    k = k[0]
+            print(f"{k=}")
             if isinstance(table[k], pd.Series) and isinstance(k, str):
                 ys.append({"k": k, "p": k, "s": k, "u": k})
             elif isinstance(table[k], pd.Series) and isinstance(k, tuple):
                 ys.append({"k": k, "p": k[0], "s": k[-1], "u": "->".join(k)})
             elif isinstance(table[k], pd.DataFrame) and isinstance(k, str):
                 for col in sorted(table[k].columns):
-                    if col is np.NaN:
-                        ys.append({"k": (k, np.NaN), "p": k, "s": k, "u": k})
+                    if np.isnan(col):
+                        ys.append({"k": (k, col), "p": k, "s": k, "u": k})
                     else:
                         ys.append({"k": (k, col), "p": k, "s": col, "u": (k, col)})
             else:

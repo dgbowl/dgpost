@@ -57,7 +57,6 @@ def load(
         logger.debug("loading table from '%s'" % path)
         if path.endswith("pkl"):
             df = pd.read_pickle(path)
-            df.sort_index(axis="index", inplace=True)
         elif path.endswith("json"):
             with open(path, "r") as f:
                 json_data = json.load(f)
