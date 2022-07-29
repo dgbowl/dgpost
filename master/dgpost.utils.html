@@ -996,11 +996,10 @@ call the <code class="docutils literal notranslate"><span class="pre">func</span
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.utils.helpers.combine_tables">
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">combine_tables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.helpers.combine_tables" title="Permalink to this definition"></a></dt>
-<dd><p>Helper function to combine tables with various indexes. If both tables
-have a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code>, a table with a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> will be returned.
-If one or bothe of the tables have a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>, a table with a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code> will be returned, with any column names padded as
-required.</p>
+<dd><p>Combine two <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> into a new <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p>
+<p>Assumes the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> contain a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>. Automatically
+pads the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code> to match the higher number of levels, if necessary.
+Merges units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
@@ -1010,9 +1009,13 @@ required.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.utils.helpers.arrow_to_multiindex">
-<span class="sig-prename descclassname"><span class="pre">dgpost.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">arrow_to_multiindex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.helpers.arrow_to_multiindex" title="Permalink to this definition"></a></dt>
-<dd><p>Helper function to convert <cite>-&gt;</cite> separated namespaces into a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>
-table. Also converts the units, if present, into nested <code class="xref py py-class docutils literal notranslate"><span class="pre">dicts</span></code>.</p>
+<span class="sig-prename descclassname"><span class="pre">dgpost.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">arrow_to_multiindex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.helpers.arrow_to_multiindex" title="Permalink to this definition"></a></dt>
+<dd><p>Convert the provided <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> to a <code class="docutils literal notranslate"><span class="pre">dgpost</span></code>-compatible format.</p>
+<ul class="simple">
+<li><p>converts tables with <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> into <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>,</p></li>
+<li><p>converts <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>-separated namespaces into <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>,</p></li>
+<li><p>processes units into nested <code class="xref py py-class docutils literal notranslate"><span class="pre">dicts</span></code>.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
@@ -1023,12 +1026,24 @@ table. Also converts the units, if present, into nested <code class="xref py py-
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.utils.helpers.keys_in_df">
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">keys_in_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.helpers.keys_in_df" title="Permalink to this definition"></a></dt>
-<dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code> of all columns in the <code class="docutils literal notranslate"><span class="pre">df</span></code> which are matched by <code class="docutils literal notranslate"><span class="pre">key</span></code>.
-The items within the <code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code> can be either <code class="xref py py-class docutils literal notranslate"><span class="pre">tuples</span></code> in a <code class="docutils literal notranslate"><span class="pre">df</span></code> with
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>, or <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> for a <code class="docutils literal notranslate"><span class="pre">df</span></code> with <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code>.</p>
+<dd><p>Find all columns in the provided <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> that match <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p>
+<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code> of all columns in the <code class="docutils literal notranslate"><span class="pre">df</span></code> which are matched by <code class="docutils literal notranslate"><span class="pre">key</span></code>.
+Assumes the provided <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> contains a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.utils.helpers.key_to_tuple">
+<span class="sig-prename descclassname"><span class="pre">dgpost.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">key_to_tuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.helpers.key_to_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a provided <code class="docutils literal notranslate"><span class="pre">key</span></code> to a <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> for use with <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code>
+containing a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
 </dd>
 </dl>
 </dd></dl>
