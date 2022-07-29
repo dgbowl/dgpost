@@ -68,14 +68,18 @@ import pandas as pd
 import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union
+import logging
 
 from dgpost.utils.helpers import (
     arrow_to_multiindex,
     combine_tables,
     keys_in_df,
+    key_to_tuple,
     set_units,
     get_units,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def _get_steps(datagram: dict, at: dict) -> list[int]:
@@ -173,7 +177,8 @@ def _get_constant(spec, ts):
     colnames = []
     colunits = []
     for el in spec:
-        colnames.append(el["as"])
+        logger.debug("adding constant as '%s'", el["as"])
+        colnames.append(key_to_tuple(el["as"]))
         colunits.append(el.get("units", None))
         if isinstance(el["value"], str):
             val = uc.ufloat_fromstr(el["value"])
@@ -189,12 +194,18 @@ def _get_direct_df(spec, df):
     colnames = []
     colunits = []
     for el in spec:
+        logger.debug("extracting '%s' from table", el["key"])
         keys = keys_in_df(el["key"], df)
+        ktup = key_to_tuple(el["key"])
+        atup = key_to_tuple(el["as"])
         for k in keys:
-            if el["key"].endswith("->*"):
-                asname = tuple([el["as"], k[-1]])
+            if ktup == k:
+                asname = atup
+            elif len(ktup) < len(k):
+                rest = k[len(ktup) :]
+                asname = tuple(list(atup) + list(rest))
             else:
-                asname = el["as"]
+                raise RuntimeError(f"could not use '{el['as']=}' with {k=}")
             colnames.append(asname)
             colvals.append(df[k])
             colunits.append(get_units(k, df))
@@ -207,12 +218,14 @@ def _get_direct_dg(spec, datagram, at):
     colunits = []
     steps = _get_steps(datagram, at)
     for el in spec:
+        logger.debug("extracting '%s' from datagram", el["key"])
         keys, vals = _get_key(datagram, steps, el["key"])
+        atup = key_to_tuple(el["as"])
         for kk, vv in zip(keys, vals):
             if kk is None:
-                colnames.append(el["as"])
+                colnames.append(atup)
             else:
-                colnames.append(f"{el['as']}->{kk}")
+                colnames.append(tuple(list(atup) + kk.split("->")))
             uvals = []
             units = None
             for i in vv:
@@ -223,12 +236,16 @@ def _get_direct_dg(spec, datagram, at):
                     uvals.append(uc.ufloat(i["n"], i["s"]))
                 elif isinstance(i, dict) and isinstance(i["n"], list):
                     uvals.append(unp.uarray(i["n"], i["s"]))
+                elif isinstance(i, (int, str)):
+                    uvals.append(i)
+                elif isinstance(i, list) and all(
+                    [isinstance(ii, (int, str)) for ii in i]
+                ):
+                    uvals.append(i)
                 else:
-                    raise ValueError
-                if units is None:
+                    raise ValueError(f"{i=} is of unknown {type(i)=}")
+                if units is None and isinstance(i, dict):
                     units = i["u"]
-                else:
-                    assert i["u"] == units
             colvals.append(uvals)
             colunits.append(None if units in [None, "-", " "] else units)
     return colnames, colvals, colunits
@@ -249,6 +266,7 @@ def _get_interp(spec, obj, at, ts):
         index = obj.index
         colnames, colvals, colunits = _get_direct_df(spec, obj)
     colint = []
+    logger.debug("interpolating")
     for vals in colvals:
         noms = unp.nominal_values(vals)
         sigs = unp.std_devs(vals)
@@ -265,7 +283,7 @@ def extract(
     index: list = None,
 ) -> pd.DataFrame:
     """"""
-    cns = cvs = cus = []
+    cns, cvs, cus = [], [], []
     at = spec.get("at", None)
     if at is not None and "timestamps" in at:
         ts = np.array(at.pop("timestamps"))
@@ -286,16 +304,17 @@ def extract(
     elif "columns" in spec:
         cns, cvs, cus = _get_direct(spec.pop("columns"), obj, spec.pop("at", None))
 
-    df = pd.DataFrame(index=ts)
+    df = None
     units = {}
     for name, vals, unit in zip(cns, cvs, cus):
-        if "->" in name:
-            names = tuple(name.split("->"))
+        ddf = pd.DataFrame({name: pd.Series(vals, index=ts)})
+        if df is None:
+            df = ddf
         else:
-            names = name
-        ddf = pd.DataFrame({names: pd.Series(vals, index=ts)})
-        df = combine_tables(df, ddf)
+            df = combine_tables(df, ddf)
         if unit is not None:
-            set_units(names, unit, units)
+            set_units(name, unit, units)
+    if df is None:
+        df = pd.DataFrame(index=ts)
     df.attrs["units"] = units
     return df

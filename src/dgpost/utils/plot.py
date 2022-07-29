@@ -17,9 +17,13 @@ import matplotlib.gridspec as gridspec
 import pandas as pd
 import uncertainties.unumpy as unp
 import logging
-import numpy as np
 
-from dgpost.utils.helpers import get_units, keys_in_df
+from dgpost.utils.helpers import (
+    arrow_to_multiindex,
+    get_units,
+    key_to_tuple,
+    keys_in_df,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +65,9 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
         True if axes contain only timeseries as x-axis, False otherwise.
 
     """
+
+    table = arrow_to_multiindex(table)
+
     series: list[dict] = ax_args.pop("series", [])
 
     for method, arguments in ax_args.pop("methods", {}).items():
@@ -77,7 +84,12 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
 
         # data processing
         if (x := spec.pop("x", None)) is not None:
-            x_data = table[x]
+            keys = keys_in_df(x, table)
+            if len(keys) > 1:
+                raise RuntimeError(
+                    f"matched multiple X-axes wiht provided '{x=}': '{keys=}'"
+                )
+            x_data = table[keys.pop()]
             x_values = unp.nominal_values(x_data)
             x_err = unp.std_devs(x_data)
             x_unit = table.attrs.get("units", {}).get(x, None)
@@ -106,32 +118,43 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
         ys: list[dict] = []
         y = spec.pop("y")
         # check if multiple columns should be plotted
+        ytup = key_to_tuple(y)
         keys = keys_in_df(y, table)
         for k in sorted(keys):
-            if isinstance(table[k], pd.Series) and isinstance(k, str):
-                ys.append({"k": k, "p": k, "s": k, "u": k})
-            elif isinstance(table[k], pd.Series) and isinstance(k, tuple):
-                ys.append({"k": k, "p": k[0], "s": k[-1], "u": "->".join(k)})
-            elif isinstance(table[k], pd.DataFrame) and isinstance(k, str):
-                for col in sorted(table[k].columns):
-                    if col is np.NaN:
-                        ys.append({"k": (k, np.NaN), "p": k, "s": k, "u": k})
-                    else:
-                        ys.append({"k": (k, col), "p": k, "s": col, "u": (k, col)})
+            ktup = tuple([i for i in k if isinstance(i, str)])
+            if ytup == ktup:
+                ys.append(
+                    {
+                        "key": k,
+                        "axis": y,
+                        "legend": ktup[-1],
+                        "unit": k,
+                    }
+                )
+            elif len(ytup) < len(ktup):
+                ys.append(
+                    {
+                        "key": k,
+                        "axis": "->".join(ytup),
+                        "legend": "->".join(ktup[len(ytup) :]),
+                        "unit": k,
+                    }
+                )
             else:
-                logger.critical("Error - should not be here!")
-                logger.critical(f"{k=}")
-                logger.critical(f"{table[k]=}")
+                raise RuntimeError(f"{y=}, {ytup=}, {ktup=}")
 
         for yi, yk in enumerate(ys):
-            y_data = table[yk["k"]]
+            y_data = table[yk["key"]]
             y_values = unp.nominal_values(y_data.array)
             y_err = unp.std_devs(y_data.array)
-            y_unit = get_units(yk["u"], table)
-            y_label = f"{yk['p']} [{y_unit}]" if y_unit is not None else yk["p"]
+            y_unit = get_units(yk["unit"], table)
+            if y_unit is not None:
+                y_label = f"{yk['axis']} [{y_unit}]"
+            else:
+                y_label = yk["axis"]
             kwargs = spec.copy()
             if "label" not in kwargs:
-                kwargs["label"] = yk["s"]
+                kwargs["label"] = yk["legend"]
             for k in list(kwargs):
                 if k.endswith("s") and isinstance(kwargs[k], list):
                     klist = kwargs.pop(k)
@@ -141,6 +164,7 @@ def plt_axes(ax: matplotlib.axes.Axes, table: pd.DataFrame, ax_args: dict) -> bo
             elif kind == "scatter":
                 ax.scatter(x_values, y_values, **kwargs)
             elif kind == "errorbar":
+                print(f"{x_err=}")
                 ax.errorbar(x_values, y_values, xerr=x_err, yerr=y_err, **kwargs)
             else:
                 raise ValueError(f"This kind of plot is not supported: '{kind}'")

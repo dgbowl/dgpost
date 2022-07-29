@@ -84,8 +84,11 @@ def compare_dfs(ref, df):
         r = ref[col].array
         t = df[col].array
         for ri, ti in zip(r, t):
-            for func in {unp.nominal_values, unp.std_devs}:
-                np.testing.assert_allclose(func(ri), func(ti))
+            if isinstance(ri, (str, int)):
+                assert ri == ti
+            else:
+                for func in {unp.nominal_values, unp.std_devs}:
+                    np.testing.assert_allclose(func(ri), func(ti))
 
 
 def compare_images(path_one, path_two):

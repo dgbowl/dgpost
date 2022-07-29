@@ -253,13 +253,13 @@ def load_data(*cols: tuple[str, str, type]):
             if len(args) > 0 and isinstance(args[0], pd.DataFrame):
                 if len(args) > 1:
                     raise ValueError("Only the DataFrame should be given as argument")
-                df = arrow_to_multiindex(args[0])
+                df = arrow_to_multiindex(args[0], warn=True)
                 # Check if the dataframe has a units attribute. If not, the quantities
                 # in the dataframe are unitless and need to be converted.
-                if "units" not in df.attrs:
-                    uconv = True
-                else:
+                if "units" in df.attrs:
                     uconv = False
+                else:
+                    uconv = True
 
                 data_kwargs = {}
                 for cname, cunit, ctype in fcols:
@@ -279,19 +279,35 @@ def load_data(*cols: tuple[str, str, type]):
                             data_kwargs[cname] = ureg.Quantity(cval, cunit)
                     elif ctype is not dict:
                         # cval is a string, and the row values (ctype) are list or scalar
+                        keys = keys_in_df(cval, df)
+                        if len(keys) > 1:
+                            raise RuntimeError(
+                                f"multiple columns in DataFrame matched with '{cval=}':"
+                                f"{keys=}"
+                            )
+                        key = keys.pop()
                         if uconv:
-                            data_kwargs[cname] = pQ(df, cval, unit=cunit)
+                            data_kwargs[cname] = pQ(df, key, unit=cunit)
                         else:
-                            data_kwargs[cname] = pQ(df, cval)
+                            data_kwargs[cname] = pQ(df, key)
                     else:
                         # cval is a string, but the row walues (ctype) are dict
                         # so we need to match all columns in pd.DataFrame
+                        ctup = key_to_tuple(cval)
+                        keys = keys_in_df(cval, df)
                         temp = {}
-                        for c in df[cval].columns:
+                        for key in keys:
+                            if len(key) > len(ctup) + 1:
+                                raise RuntimeError(
+                                    f"DataFrame column '{key=}' matches column "
+                                    f"specification '{cval=}', but cannot be "
+                                    f"coerced into a dict."
+                                )
+                            c = key[-1]
                             if uconv:
-                                temp[c] = pQ(df, (cval, c), unit=cunit)
+                                temp[c] = pQ(df, key, unit=cunit)
                             else:
-                                temp[c] = pQ(df, (cval, c))
+                                temp[c] = pQ(df, key)
                         data_kwargs[cname] = temp
 
                 units = {}
@@ -324,7 +340,10 @@ def load_data(*cols: tuple[str, str, type]):
                                 units[name] = f"{qty.u:~P}"
                         else:
                             ret_data[name] = qty
-                ddf = arrow_to_multiindex(pd.DataFrame(ret_data, index=df.index))
+                ddf = arrow_to_multiindex(
+                    pd.DataFrame(ret_data, index=df.index),
+                    warn=False,
+                )
                 newdf = combine_tables(df, ddf)
                 if "units" in df.attrs:
                     newdf.attrs["units"] = df.attrs["units"]
@@ -378,14 +397,16 @@ def load_data(*cols: tuple[str, str, type]):
 
 def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
     """
-    Helper function to combine tables with various indexes. If both tables
-    have a :class:`pd.Index`, a table with a :class:`pd.Index` will be returned.
-    If one or bothe of the tables have a :class:`pd.MultiIndex`, a table with a
-    :class:`pd.MultiIndex` will be returned, with any column names padded as
-    required.
+    Combine two :class:`pd.DataFrames` into a new :class:`pd.DataFrame`.
+
+    Assumes the :class:`pd.DataFrames` contain a :class:`pd.MultiIndex`. Automatically
+    pads the :class:`pd.MultiIndex` to match the higher number of levels, if necessary.
+    Merges units.
 
     """
-    if a.columns.nlevels == b.columns.nlevels:
+    if len(a.columns) == 0:
+        temp = b
+    elif a.columns.nlevels == b.columns.nlevels:
         temp = a.join(b, how="outer")
     else:
         if a.columns.nlevels > b.columns.nlevels:
@@ -394,13 +415,11 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
         else:
             l = b
             r = a
-        rlevels = [pd.Index([None])] * l.columns.nlevels
-        if isinstance(r.columns, pd.Index):
-            rlevels[0] = r.columns
-        else:
-            for i, level in enumerate(r.columns.levels):
-                rlevels[i] = level
-        r.columns = pd.MultiIndex.from_product(rlevels)
+        llen = l.columns.nlevels
+        rcols = []
+        for col in r.columns:
+            rcols.append(tuple(list(col) + [None] * (llen - len(col))))
+        r.columns = pd.MultiIndex.from_tuples(rcols)
         temp = l.join(r, how="outer")
     temp.attrs = a.attrs
     if "units" in b.attrs:
@@ -410,57 +429,89 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
     return temp
 
 
-def arrow_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
+def arrow_to_multiindex(df: pd.DataFrame, warn: bool = True) -> pd.DataFrame:
     """
-    Helper function to convert `->` separated namespaces into a :class:`pd.MultiIndex`
-    table. Also converts the units, if present, into nested :class:`dicts`.
+    Convert the provided :class:`pd.DataFrame` to a ``dgpost``-compatible format.
+
+    - converts tables with :class:`pd.Index` into :class:`pd.MultiIndex`,
+    - converts ``->``-separated namespaces into :class:`pd.MultiIndex`,
+    - processes units into nested :class:`dicts`.
 
     """
     cols = []
+    oldunits = []
     d = 1
     for oldcol in df.columns:
         if "->" in oldcol:
-            if d == 1:
+            if warn:
                 logger.warning(
                     "Loading table with namespaces stored using old '->' syntax. "
                     "Consider updating your table to a MultiIndexed one."
                 )
+                warn = False
             parts = oldcol.split("->")
             d = max(d, len(parts))
-        else:
+        elif isinstance(oldcol, tuple):
+            parts = list(oldcol)
+        elif isinstance(oldcol, list):
+            parts = oldcol
+        elif isinstance(oldcol, str):
             parts = [oldcol]
+        else:
+            raise RuntimeError(f"column '{oldcol=}' is a '{type(oldcol)=}'")
         cols.append(parts)
-    if d == 1:
-        return df
-    else:
-        for i, col in enumerate(cols):
-            if len(col) < d:
-                cols[i] = col + [None] * (d - len(col))
-            if "units" in df.attrs:
-                unit = df.attrs["units"].pop(df.columns[i], None)
-                set_units(col, unit, df)
-        df.columns = pd.MultiIndex.from_tuples(cols)
-        return df
+        if "units" in df.attrs:
+            oldunits.append(get_units(oldcol, df))
+    units = {}
+    for i, tup in enumerate(zip(cols, oldunits)):
+        col, unit = tup
+        if len(col) < d:
+            cols[i] = col + [None] * (d - len(col))
+        col = tuple(col)
+        cols[i] = col
+        set_units(col, unit, units)
+    if "units" in df.attrs:
+        df.attrs["units"] = units
+    df.columns = pd.MultiIndex.from_tuples(cols)
+    return df
 
 
-def keys_in_df(key: str, df: pd.DataFrame) -> set[str, tuple]:
+def keys_in_df(key: Union[str, tuple], df: pd.DataFrame) -> set[tuple]:
     """
+    Find all columns in the provided :class:`pd.DataFrame` that match ``key``.
+
     Returns a :class:`set` of all columns in the ``df`` which are matched by ``key``.
-    The items within the :class:`set` can be either :class:`tuples` in a ``df`` with
-    :class:`pd.MultiIndex`, or :class:`str` for a ``df`` with :class:`pd.Index`.
+    Assumes the provided :class:`pd.DataFrame` contains a :class:`pd.MultiIndex`.
 
     """
-    if "->" in key:
-        key = tuple(key.split("->"))
-    else:
-        pass
+    key = key_to_tuple(key)
     t = df.sort_index(axis=1)
-    if key in t.columns:
-        keys = {key}
-    elif key[-1] == "*":
-        key = key[:-1]
-        keys = {tuple([*key, k]) for k in t[key].columns}
+    keys = set()
+    for col in t.columns:
+        if col[: len(key)] == key:
+            keys.add(col)
     return keys
+
+
+def key_to_tuple(key: Union[str, tuple]) -> tuple:
+    """
+    Convert a provided ``key`` to a :class:`tuple` for use with :class:`pd.DataFrames`
+    containing a :class:`pd.MultiIndex`.
+
+    """
+    if isinstance(key, str):
+        if "->" in key:
+            key = key.split("->")
+            if key[-1] == "*":
+                key = key[:-1]
+        else:
+            key = [key]
+        key = tuple(key)
+    elif isinstance(key, tuple):
+        pass
+    else:
+        raise RuntimeError(f"passed '{key=}' is '{type(key)=}'")
+    return key
 
 
 def get_units(
@@ -512,6 +563,8 @@ def set_units(
                     target[key[0]] = {}
                 recurse(key[1:], unit, target[key[0]])
 
+    if not isinstance(key, str):
+        key = [k for k in key if isinstance(k, str)]
     if unit is None:
         return
     if isinstance(target, pd.DataFrame):

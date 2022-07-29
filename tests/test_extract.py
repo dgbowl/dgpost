@@ -118,6 +118,29 @@ def test_valid_datagram(datadir):
             },
             "interpolated.at.single.pkl",
         ),
+        (  # ts10 - extract integer values in a trace
+            "ca+peis.datagram.json",
+            {
+                "at": {"step": "PEIS"},
+                "columns": [
+                    {"key": "raw->traces->PEIS->freq", "as": "freq"},
+                    {"key": "raw->traces->PEIS->cycle number", "as": "cn"},
+                ],
+            },
+            "ref.peis.single.pkl",
+        ),
+        (  # ts11 - extract integer and string values
+            "ca+peis.datagram.json",
+            {
+                "at": {"step": "CA"},
+                "columns": [
+                    {"key": "raw->Ewe", "as": "Ewe"},
+                    {"key": "raw->I Range", "as": "I Range"},
+                    {"key": "raw->ox/red", "as": "ox/red"},
+                ],
+            },
+            "ref.ca.single.pkl",
+        ),
     ],
 )
 def test_extract_single(inpath, spec, outpath, datadir):
@@ -129,8 +152,7 @@ def test_extract_single(inpath, spec, outpath, datadir):
     ref = pd.read_pickle(outpath)
     print(f"{ref.head()=}")
     ret.to_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, ret, check_like=True)
-    assert ref.attrs == ret.attrs
+    compare_dfs(ref, ret)
 
 
 @pytest.mark.parametrize(
