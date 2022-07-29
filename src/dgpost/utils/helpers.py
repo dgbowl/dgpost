@@ -407,6 +407,9 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
     if len(a.columns) == 0:
         temp = b
     elif a.columns.nlevels == b.columns.nlevels:
+        for k in a.columns:
+            if k in b.columns:
+                del a[k]
         temp = a.join(b, how="outer")
     else:
         if a.columns.nlevels > b.columns.nlevels:
@@ -420,6 +423,9 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
         for col in r.columns:
             rcols.append(tuple(list(col) + [None] * (llen - len(col))))
         r.columns = pd.MultiIndex.from_tuples(rcols)
+        for k in l.columns:
+            if k in r.columns:
+                del l[k]
         temp = l.join(r, how="outer")
     temp.attrs = a.attrs
     if "units" in b.attrs:

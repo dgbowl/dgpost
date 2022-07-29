@@ -1,0 +1,57 @@
+import os
+import pytest
+import pandas as pd
+import numpy as np
+
+from dgpost.transform import table
+from dgpost.utils import transform
+from .utils import compare_dfs
+
+from yadg.dgutils import ureg
+
+
+@pytest.mark.parametrize(
+    "a, b, output",
+    [
+        (  # ts0 - sum
+            ureg.Quantity(6.0, "ml/min"),
+            ureg.Quantity(0.6, "l/h"),
+            {"c": ureg.Quantity(16.0, "ml/min")},
+        ),
+        (  # ts1 - sum with nan
+            ureg.Quantity(float("NaN"), "ml/min"),
+            ureg.Quantity(0.6, "l/h"),
+            {
+                "c": ureg.Quantity(10.0, "ml/min"),
+            },
+        ),
+    ],
+)
+def test_table_combine_columns_direct(a, b, output):
+    ret = table.combine_columns(a=a, b=b, output="c")
+    for k, v in ret.items():
+        assert np.allclose(v, output[k])
+
+
+@pytest.mark.parametrize(
+    "inpath, spec, outpath",
+    [
+        (  # ts0 - sum
+            "test.electro.pkl",
+            [
+                {"a": "I", "b": "<I>"},
+                {"a": "Ewe", "b": "<Ewe>", "output": "Ewe"},
+            ],
+            "ref.electro.pkl",
+        ),
+    ],
+)
+def test_table_combine_columns_df(inpath, spec, outpath, datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle(inpath)
+    df = transform(df, "table.combine_columns", using=spec)
+    print(f"{df.head()=}")
+    ref = pd.read_pickle(outpath)
+    print(f"{ref.head()=}")
+    df.to_pickle(outpath)
+    compare_dfs(ref, df)
