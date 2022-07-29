@@ -253,7 +253,7 @@ def load_data(*cols: tuple[str, str, type]):
             if len(args) > 0 and isinstance(args[0], pd.DataFrame):
                 if len(args) > 1:
                     raise ValueError("Only the DataFrame should be given as argument")
-                df = arrow_to_multiindex(args[0], warn = True)
+                df = arrow_to_multiindex(args[0], warn=True)
                 # Check if the dataframe has a units attribute. If not, the quantities
                 # in the dataframe are unitless and need to be converted.
                 if "units" in df.attrs:
@@ -341,8 +341,8 @@ def load_data(*cols: tuple[str, str, type]):
                         else:
                             ret_data[name] = qty
                 ddf = arrow_to_multiindex(
-                    pd.DataFrame(ret_data, index=df.index), 
-                    warn = False,
+                    pd.DataFrame(ret_data, index=df.index),
+                    warn=False,
                 )
                 newdf = combine_tables(df, ddf)
                 if "units" in df.attrs:
@@ -453,7 +453,9 @@ def arrow_to_multiindex(df: pd.DataFrame, warn: bool = True) -> pd.DataFrame:
         elif isinstance(oldcol, list):
             parts = oldcol
         elif isinstance(oldcol, str):
-            parts = [oldcol,]
+            parts = [
+                oldcol,
+            ]
         else:
             raise RuntimeError(f"column '{oldcol=}' is a '{type(oldcol)=}'")
         cols.append(parts)
@@ -484,7 +486,7 @@ def keys_in_df(key: Union[str, tuple], df: pd.DataFrame) -> set[tuple]:
     t = df.sort_index(axis=1)
     keys = set()
     for col in t.columns:
-        if col[:len(key)] == key:
+        if col[: len(key)] == key:
             keys.add(col)
     return keys
 

@@ -202,7 +202,7 @@ def _get_direct_df(spec, df):
             if ktup == k:
                 asname = atup
             elif len(ktup) < len(k):
-                rest = k[len(ktup):]
+                rest = k[len(ktup) :]
                 asname = tuple(list(atup) + list(rest))
             else:
                 raise RuntimeError(f"could not use '{el['as']=}' with {k=}")
@@ -307,7 +307,7 @@ def extract(
         if df is None:
             df = ddf
         else:
-            cc = pd.concat([df, ddf], axis = 1)
+            cc = pd.concat([df, ddf], axis=1)
             df = combine_tables(df, ddf)
         if unit is not None:
             set_units(name, unit, units)
