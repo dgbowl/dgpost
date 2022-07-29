@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>impedance: fitting electrochemical impedance spectra &mdash; dgpost  documentation</title>
+  <title>table: utilities for operations with tables &mdash; dgpost  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
@@ -17,12 +17,11 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="rates: determining molar rates of chemical species" href="dgpost.transform.rates.html" />
-    <link rel="prev" title="electrochemistry: calculations relevant in electrochemistry" href="dgpost.transform.electrochemistry.html" /> 
+    <link rel="next" title="contributing to dgpost" href="../contributing.html" />
+    <link rel="prev" title="rates: determining molar rates of chemical species" href="dgpost.transform.rates.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,9 +51,9 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>table</strong>: utilities for operations with tables</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
@@ -76,9 +75,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><strong>impedance</strong>: fitting electrochemical impedance spectra</li>
+      <li><strong>table</strong>: utilities for operations with tables</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/stubs/dgpost.transform.impedance.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/stubs/dgpost.transform.table.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -86,24 +85,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="impedance-fitting-electrochemical-impedance-spectra">
-<h1><strong>impedance</strong>: fitting electrochemical impedance spectra<a class="headerlink" href="#impedance-fitting-electrochemical-impedance-spectra" title="Permalink to this headline"></a></h1>
-<p><em>Code author: Ueli Sauter,
-Peter Kraus</em></p>
-<p>Including functions relevant for Electrochemical Impedance Spectroscopy (EIS):
-evaluation of an equivalent circuit as well as the fitting of the circuit to data
-(<a class="reference internal" href="../dgpost.transform.html#dgpost.transform.impedance.calc_circuit" title="dgpost.transform.impedance.calc_circuit"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_circuit()</span></code></a> and
-<a class="reference internal" href="../dgpost.transform.html#dgpost.transform.impedance.fit_circuit" title="dgpost.transform.impedance.fit_circuit"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_circuit()</span></code></a>), and an interpolation function
-to find the <a class="reference internal" href="../dgpost.transform.html#dgpost.transform.impedance.lowest_real_impedance" title="dgpost.transform.impedance.lowest_real_impedance"><code class="xref py py-func docutils literal notranslate"><span class="pre">lowest_real_impedance()</span></code></a> in the data.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The functions in this module expect the whole EIS trace as input - the
-<span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span>, <span class="math notranslate nohighlight">\(-\text{Im}(Z)\)</span> and <span class="math notranslate nohighlight">\(f\)</span> are expected to
-be <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> containing an <code class="xref py py-class docutils literal notranslate"><span class="pre">np.ndarray</span></code> (or similar
-<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>-like object), which is then processed to a (set of) scalar
-values. This means that for processing time resolved data, the functions
-in this module have to be called on each timestep individually.</p>
-</div>
+  <section id="table-utilities-for-operations-with-tables">
+<h1><strong>table</strong>: utilities for operations with tables<a class="headerlink" href="#table-utilities-for-operations-with-tables" title="Permalink to this headline"></a></h1>
+<p>Provides convenience functions for operating with tables, including
+<a class="reference internal" href="../dgpost.transform.html#dgpost.transform.table.combine_namespaces" title="dgpost.transform.table.combine_namespaces"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_namespaces()</span></code></a> for combining <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>-separated
+namespaces of values or chemicals into a single namespace; and
+<a class="reference internal" href="../dgpost.transform.html#dgpost.transform.table.combine_columns" title="dgpost.transform.table.combine_columns"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_columns()</span></code></a> for combining individual columns
+into a single column.</p>
+<p><em>Code author: Peter Kraus</em></p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <colgroup>
@@ -111,14 +100,11 @@ in this module have to be called on each timestep individually.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../dgpost.transform.html#dgpost.transform.impedance.calc_circuit" title="dgpost.transform.impedance.calc_circuit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_circuit</span></code></a>(freq, circuit, parameters[, output])</p></td>
-<td><p>Calculates the complex impedance <span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span> and <span class="math notranslate nohighlight">\(-\text{Im}(Z)\)</span> of the prescribed equivalent circuit as a function of frequency <span class="math notranslate nohighlight">\(f\)</span>.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../dgpost.transform.html#dgpost.transform.table.combine_namespaces" title="dgpost.transform.table.combine_namespaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_namespaces</span></code></a>(a, b[, conflicts, ...])</p></td>
+<td><p>Combines two namespaces into one.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../dgpost.transform.html#dgpost.transform.impedance.fit_circuit" title="dgpost.transform.impedance.fit_circuit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_circuit</span></code></a>(real, imag, freq, circuit, ...)</p></td>
-<td><p>Fits an equivalent circuit to the frequency-resolved EIS data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../dgpost.transform.html#dgpost.transform.impedance.lowest_real_impedance" title="dgpost.transform.impedance.lowest_real_impedance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lowest_real_impedance</span></code></a>(real, imag[, ...])</p></td>
-<td><p>A function that finds and interpolates the lowest <span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span> value at which the complex impedance <span class="math notranslate nohighlight">\(Z = \text{Re}(Z) - j \text{Im}(Z)\)</span> is a real number (i.e.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../dgpost.transform.html#dgpost.transform.table.combine_columns" title="dgpost.transform.table.combine_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_columns</span></code></a>(a, b[, fillnan, output])</p></td>
+<td><p>Combines two columns into one.</p></td>
 </tr>
 </tbody>
 </table>
@@ -128,8 +114,8 @@ in this module have to be called on each timestep individually.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="dgpost.transform.electrochemistry.html" class="btn btn-neutral float-left" title="electrochemistry: calculations relevant in electrochemistry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="dgpost.transform.rates.html" class="btn btn-neutral float-right" title="rates: determining molar rates of chemical species" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dgpost.transform.rates.html" class="btn btn-neutral float-left" title="rates: determining molar rates of chemical species" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../contributing.html" class="btn btn-neutral float-right" title="contributing to dgpost" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
