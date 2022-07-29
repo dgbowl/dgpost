@@ -15,7 +15,7 @@ Second major release. Including all bug-fixes from the ``dgpost-1.x`` series, an
 the following new features:
 
 - support for :class:`pd.MultiIndex` in :class:`pd.DataFrames`;
-- the :mod:`~dgpost.transform.namespace` module of functions.
+- the :mod:`~dgpost.transform.table` module of functions for basic operations on tables.
 
 .. codeauthor::
     Ueli Sauter,

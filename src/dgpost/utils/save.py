@@ -27,7 +27,7 @@ from importlib import metadata
 import pandas as pd
 import logging
 
-from dgpost.utils.helpers import get_units, set_units
+from dgpost.utils.helpers import get_units
 
 logger = logging.getLogger(__name__)
 
