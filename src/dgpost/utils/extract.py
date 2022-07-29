@@ -227,7 +227,7 @@ def _get_direct_dg(spec, datagram, at):
                 colnames.append(atup)
             else:
                 print(f"{atup=}")
-                colnames.append(tuple(list(atup) + [kk]))
+                colnames.append(tuple(list(atup) + kk.split("->")))
             uvals = []
             units = None
             for i in vv:
