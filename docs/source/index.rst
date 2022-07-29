@@ -35,6 +35,7 @@ In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
    stubs/dgpost.transform.electrochemistry
    stubs/dgpost.transform.impedance
    stubs/dgpost.transform.rates
+   stubs/dgpost.transform.table
 
 .. toctree::
    :maxdepth: 1

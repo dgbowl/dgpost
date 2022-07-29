@@ -26,7 +26,7 @@
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: dgpost.transform.namespace
+.. automodule:: dgpost.transform.table
    :members:
    :undoc-members:
    :show-inheritance:
