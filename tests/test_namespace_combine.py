@@ -72,4 +72,4 @@ def test_namespace_combine_excel(inpath, spec, col, datadir):
     os.chdir(datadir)
     df = pd.read_excel(inpath)
     df = transform(df, "namespace.combine", using=spec)
-    pd.testing.assert_frame_equal(df[col], df[f"r{col}"], check_names=False)
+    compare_dfs(df[f"r{col}"], df[col])
