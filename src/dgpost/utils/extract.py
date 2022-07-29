@@ -311,7 +311,6 @@ def extract(
         if df is None:
             df = ddf
         else:
-            cc = pd.concat([df, ddf], axis=1)
             df = combine_tables(df, ddf)
         if unit is not None:
             set_units(name, unit, units)

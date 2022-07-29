@@ -17,7 +17,6 @@ import matplotlib.gridspec as gridspec
 import pandas as pd
 import uncertainties.unumpy as unp
 import logging
-import numpy as np
 
 from dgpost.utils.helpers import (
     arrow_to_multiindex,
