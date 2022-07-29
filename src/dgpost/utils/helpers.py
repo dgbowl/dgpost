@@ -479,7 +479,7 @@ def arrow_to_multiindex(df: pd.DataFrame, warn: bool = True) -> pd.DataFrame:
     if "units" in df.attrs:
         df.attrs["units"] = units
     df.columns = pd.MultiIndex.from_tuples(cols)
-    return df
+    return df.sort_index()
 
 
 def keys_in_df(key: Union[str, tuple], df: pd.DataFrame) -> set[tuple]:
