@@ -142,7 +142,7 @@ def _get_key_recurse(data, keylist):
                     for i in ret
                 ]
             ):
-                return _get_key_recurse([i[key] for i in data], ["*"])
+                return _get_key_recurse([i.get(key, {}) for i in data], ["*"])
             else:
                 return [None], [ret]
     else:
