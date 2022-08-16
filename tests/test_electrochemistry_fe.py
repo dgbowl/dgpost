@@ -45,6 +45,24 @@ from .utils import compare_dfs
                 "fe->CO": ureg.Quantity(0.02858024),
             },
         ),
+        (  # ts2 - arrays, with I == 0, all Quantities, weird units
+            {
+                "I": ureg.Quantity([0, 100], "mA"),
+                "rate": {
+                    "H2": ureg.Quantity([0.6811524, 0.6811524], "mmol/hour"),
+                    "CH4": ureg.Quantity([0.1134709, 0.1134709], "mmol/hour"),
+                    "C2H4": ureg.Quantity([0.0239087, 0.0239087], "mmol/hour"),
+                    "CO": ureg.Quantity([0.0533184, 0.0533184], "mmol/hour"),
+                },
+                "charges": {"C": 4, "H": 1, "O": -2},
+            },
+            {
+                "fe->H2": ureg.Quantity([np.NaN, 0.36511734]),
+                "fe->CH4": ureg.Quantity([np.NaN, 0.24329496]),
+                "fe->C2H4": ureg.Quantity([np.NaN, 0.07689462]),
+                "fe->CO": ureg.Quantity([np.NaN, 0.02858024]),
+            },
+        ),
     ],
 )
 def test_electrochemistry_fe_direct(inputs, output):
@@ -53,7 +71,7 @@ def test_electrochemistry_fe_direct(inputs, output):
     print(ret)
     for k in inputs["rate"].keys():
         n = f"{tag}->{k}"
-        assert np.allclose(ret[n], output[n])
+        assert np.allclose(ret[n], output[n], equal_nan=True)
 
 
 @pytest.mark.parametrize(
