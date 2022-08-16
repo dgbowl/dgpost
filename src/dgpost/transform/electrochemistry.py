@@ -213,6 +213,7 @@ def charge(
     ----------
     time
         An array of timestamps at which the instantaneous current was measured.
+        Defaults to the :class:`pd.Index` of the :class:`pd.DataFrame`.
 
     I
         Values of the instantaneous current.
@@ -273,9 +274,10 @@ def average_current(
     ----------
     time
         An array of timestamps at which the instantaneous current was measured.
+        Defaults to the :class:`pd.Index` of the :class:`pd.DataFrame`.
 
-    I
-        Values of the instantaneous current.
+    Q
+        Values of the overall charge.
 
     t0
         An optional timestamp representing the time at which charge was zero. If not

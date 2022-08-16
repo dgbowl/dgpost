@@ -141,6 +141,17 @@ def test_valid_datagram(datadir):
             },
             "ref.ca.single.pkl",
         ),
+        (  # ts12 - sparse extract with arrow and implicit
+            "sparse.dg.json",
+            {
+                "at": {"step": "a"},
+                "columns": [
+                    {"key": "derived->xin->*", "as": "a"},
+                    {"key": "derived->xin", "as": "b"},
+                ],
+            },
+            "ref.sparse.xin.pkl",
+        ),
     ],
 )
 def test_extract_single(inpath, spec, outpath, datadir):
