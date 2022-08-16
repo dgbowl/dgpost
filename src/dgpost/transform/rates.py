@@ -171,7 +171,7 @@ def batch_to_molar(
         c0 = ureg.Quantity(0, "mol/m³")
         for k, v in c.items():
             c[k] = np.insert(v, 0, c0)
-    elif isinstance(V.magnitude, Iterable) and len(V) == nts:
+    elif isinstance(V.m, Iterable) and len(V) == nts:
         V = V[1:]
 
     dt = np.diff(time)

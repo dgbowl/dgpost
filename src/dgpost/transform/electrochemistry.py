@@ -16,6 +16,7 @@ import pint
 from yadg.dgutils import ureg
 import numpy as np
 import pandas as pd
+from typing import Iterable
 from uncertainties import UFloat
 from uncertainties import unumpy as unp
 from dgpost.utils.helpers import (
@@ -184,6 +185,8 @@ def fe(
 
     """
     etot = abs(I) / (ureg("elementary_charge") * ureg("avogadro_constant"))
+    if isinstance(etot.m, Iterable):
+        etot.m[etot.m == 0] = np.NaN
     pretag = "fe" if output is None else output
     ret = {}
     for k, v in rate.items():
