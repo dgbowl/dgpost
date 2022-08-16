@@ -16,7 +16,14 @@ import pint
 from yadg.dgutils import ureg
 import numpy as np
 import pandas as pd
-from dgpost.utils.helpers import load_data, name_to_chem, electrons_from_smiles
+from uncertainties import UFloat
+from uncertainties import unumpy as unp
+from dgpost.utils.helpers import (
+    load_data,
+    separate_data, 
+    name_to_chem, 
+    electrons_from_smiles,
+)
 
 
 @load_data(
@@ -243,7 +250,11 @@ def charge(
 
     dQ = I * dt
 
-    Q = np.cumsum(dQ).to_base_units()
+    if any([isinstance(i.m, UFloat) for i in dQ]):
+        dQn, dQs, dQu = separate_data(dQ)
+        Q = ureg.Quantity(unp.uarray(np.cumsum(dQn), dQs), dQu).to_base_units()
+    else:
+        Q = np.cumsum(dQ).to_base_units()
 
     ret = {output: Q}
     return ret
