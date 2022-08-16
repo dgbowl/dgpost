@@ -449,7 +449,8 @@ mixture.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the instantaneous current was measured.</p></li>
+<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the instantaneous current was measured.
+Defaults to the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> of the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p></li>
 <li><p><strong>I</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Values of the instantaneous current.</p></li>
 <li><p><strong>t0</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – An optional timestamp representing the time at which charge was zero. If not
 supplied, the first value in the <code class="docutils literal notranslate"><span class="pre">time</span></code> array will be used, with the charge
@@ -478,8 +479,9 @@ datapoint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the instantaneous current was measured.</p></li>
-<li><p><strong>I</strong> – Values of the instantaneous current.</p></li>
+<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the instantaneous current was measured.
+Defaults to the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> of the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p></li>
+<li><p><strong>Q</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Values of the overall charge.</p></li>
 <li><p><strong>t0</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – An optional timestamp representing the time at which charge was zero. If not
 supplied, the first value in the <code class="docutils literal notranslate"><span class="pre">time</span></code> array will be used, with the charge
 at that timestamp set to zero.</p></li>
