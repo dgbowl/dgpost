@@ -19,7 +19,7 @@ import pandas as pd
 from typing import Iterable
 from uncertainties import UFloat
 from uncertainties import unumpy as unp
-from dgpost.utils.helpers import (
+from dgpost.transform.helpers import (
     load_data,
     separate_data,
     name_to_chem,

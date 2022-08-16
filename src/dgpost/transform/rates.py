@@ -17,7 +17,7 @@ from yadg.dgutils import ureg
 import pandas as pd
 import numpy as np
 from typing import Iterable
-
+from dgpost.transform.helpers import load_data
 
 @load_data(
     ("flow", "m³/s"),
