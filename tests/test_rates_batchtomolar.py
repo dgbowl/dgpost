@@ -36,8 +36,12 @@ from .utils import compare_dfs
                 "V": ureg.Quantity(1, "l"),
             },
             {
-                "rate->A": ureg.Quantity([np.NaN, 10.0 / 60, 5.0 / 60, 5.0 / 60], "mol/s"),
-                "rate->B": ureg.Quantity([np.NaN, 5.0 / 60, 5.0 / 60, 1.0 / 60], "mol/s"),
+                "rate->A": ureg.Quantity(
+                    [np.NaN, 10.0 / 60, 5.0 / 60, 5.0 / 60], "mol/s"
+                ),
+                "rate->B": ureg.Quantity(
+                    [np.NaN, 5.0 / 60, 5.0 / 60, 1.0 / 60], "mol/s"
+                ),
             },
         ),
     ],

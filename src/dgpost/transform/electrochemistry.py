@@ -20,8 +20,8 @@ from uncertainties import UFloat
 from uncertainties import unumpy as unp
 from dgpost.utils.helpers import (
     load_data,
-    separate_data, 
-    name_to_chem, 
+    separate_data,
+    name_to_chem,
     electrons_from_smiles,
 )
 
