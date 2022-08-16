@@ -36,8 +36,8 @@ from .utils import compare_dfs
                 "V": ureg.Quantity(1, "l"),
             },
             {
-                "rate->A": ureg.Quantity([0.0, 10.0 / 60, 5.0 / 60, 5.0 / 60], "mol/s"),
-                "rate->B": ureg.Quantity([0.0, 5.0 / 60, 5.0 / 60, 1.0 / 60], "mol/s"),
+                "rate->A": ureg.Quantity([np.NaN, 10.0 / 60, 5.0 / 60, 5.0 / 60], "mol/s"),
+                "rate->B": ureg.Quantity([np.NaN, 5.0 / 60, 5.0 / 60, 1.0 / 60], "mol/s"),
             },
         ),
     ],
@@ -45,7 +45,7 @@ from .utils import compare_dfs
 def test_rates_batchtomolar_direct(spec, ref):
     ret = rates.batch_to_molar(**spec)
     for k, v in ref.items():
-        assert np.allclose(v, ret[k])
+        assert np.allclose(v, ret[k], equal_nan=True)
 
 
 @pytest.mark.parametrize(
