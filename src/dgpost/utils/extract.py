@@ -268,11 +268,16 @@ def _get_interp(spec, obj, at, ts):
     colint = []
     logger.debug("interpolating")
     for vals in colvals:
+        print(f"{vals=}")
         noms = unp.nominal_values(vals)
         sigs = unp.std_devs(vals)
         mask = ~np.isnan(noms) & ~np.isnan(sigs)
-        inoms = np.interp(ts, index[mask], noms[mask])
-        isigs = np.interp(ts, index[mask], sigs[mask])
+        if np.any(mask):
+            inoms = np.interp(ts, index[mask], noms[mask])
+            isigs = np.interp(ts, index[mask], sigs[mask])
+        else:
+            inoms = np.ones(len(ts)) * np.NaN
+            isigs = np.ones(len(ts)) * np.NaN
         colint.append(unp.uarray(inoms, isigs))
     return colnames, colint, colunits
 
