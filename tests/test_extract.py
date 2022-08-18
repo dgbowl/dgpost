@@ -290,3 +290,23 @@ def test_extract_df(infile, spec, outfile, datadir):
     print(f"{ref.head()=}")
     df.to_pickle(outfile)
     compare_dfs(ref, df)
+
+
+@pytest.mark.parametrize(
+    "inpath, outpath",
+    [
+        (  # ts0 - interpolate tables with nans
+            "nan.yaml", "nan.df.pkl",
+        ),
+    ]
+)
+def test_extract_nan(inpath, outpath, datadir):
+    os.chdir(datadir)
+    dgpost.run(inpath)
+    df = pd.read_pickle(outpath)
+    print(f"{df.head()=}")
+    ref = pd.read_pickle(f"ref.{outpath}")
+    print(f"{ref.head()=}")
+    df.to_pickle(f"ref.{outpath}")
+    compare_dfs(ref, df)
+    

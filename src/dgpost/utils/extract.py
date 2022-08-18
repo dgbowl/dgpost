@@ -268,7 +268,6 @@ def _get_interp(spec, obj, at, ts):
     colint = []
     logger.debug("interpolating")
     for vals in colvals:
-        print(f"{vals=}")
         noms = unp.nominal_values(vals)
         sigs = unp.std_devs(vals)
         mask = ~np.isnan(noms) & ~np.isnan(sigs)
