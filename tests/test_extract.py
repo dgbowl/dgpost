@@ -296,9 +296,10 @@ def test_extract_df(infile, spec, outfile, datadir):
     "inpath, outpath",
     [
         (  # ts0 - interpolate tables with nans
-            "nan.yaml", "nan.df.pkl",
+            "nan.yaml",
+            "nan.df.pkl",
         ),
-    ]
+    ],
 )
 def test_extract_nan(inpath, outpath, datadir):
     os.chdir(datadir)
@@ -309,4 +310,3 @@ def test_extract_nan(inpath, outpath, datadir):
     print(f"{ref.head()=}")
     df.to_pickle(f"ref.{outpath}")
     compare_dfs(ref, df)
-    
