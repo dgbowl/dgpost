@@ -1,0 +1,23 @@
+version: "1.1"
+load:
+  - as: t1
+    path: nan.t1.pkl
+    type: table
+  - as: t2
+    path: nan.t2.pkl
+    type: table
+extract:
+  - into: df
+    from: t1
+    columns:
+      - key: xout
+        as: xout(t1)
+  - into: df
+    from: t2
+    columns:
+      - key: xout
+        as: xout(t2)
+save:
+  - table: df
+    as: nan.df.pkl
+      
