@@ -42,7 +42,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>dgpost</strong> installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-source">Installation from source</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html"><strong>dgpost</strong> usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html"><strong>dgpost</strong> features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="version.html"><strong>dgpost</strong> version history</a></li>
@@ -92,7 +95,36 @@ Those can be installed using <code class="docutils literal notranslate"><span cl
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install dgpost
 </pre></div>
 </div>
-<p>Use the optional argument <code class="docutils literal notranslate"><span class="pre">--pre</span></code> to get the latest tagged development version.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>With an optional argument <code class="docutils literal notranslate"><span class="pre">--pre</span></code>, you can install the latest tagged &amp; built
+development versions of dgpost.</p>
+</div>
+<p>You can test whether dgpost has been installed correctly by running either of:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dgpost</span> <span class="o">--</span><span class="n">version</span>
+<span class="go">dgpost version 2.0a4</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dgpost</span>
+<span class="go">usage: dgpost [-h] [--version] [-v] [-q] [--patch PATCH] infile</span>
+<span class="go">dgpost: error: the following arguments are required: infile</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If, after installation on Windows into a <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment, the above commands crash with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">ImportError</span><span class="p">:</span> <span class="n">DLL</span> <span class="n">load</span> <span class="n">failed</span> <span class="k">while</span> <span class="n">importing</span> <span class="n">rdBase</span><span class="p">:</span> <span class="n">The</span> <span class="n">specified</span> <span class="n">module</span> <span class="n">could</span> <span class="ow">not</span> <span class="n">be</span> <span class="n">found</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>You might have to re-install the <code class="docutils literal notranslate"><span class="pre">rdkit</span></code> library from a compatible source, such as
+<code class="docutils literal notranslate"><span class="pre">conda-forge</span></code>. Create a new environment, and install <code class="docutils literal notranslate"><span class="pre">rdkit</span></code> using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n newEnvName <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9 rdkit -c conda-forge
+</pre></div>
+</div>
+<p>Then install dgpost using <code class="docutils literal notranslate"><span class="pre">pip</span></code> as shown above.</p>
+</div>
+<section id="installation-from-source">
+<h2>Installation from source<a class="headerlink" href="#installation-from-source" title="Permalink to this headline"></a></h2>
 <p>To install dgpost from source on Github, <a class="reference external" href="https://github.com/dgbowl/dgpost"><img alt="gh" src="https://badgen.net/github/tag/dgbowl/dgpost/?icon=github" /></a>, you first need to clone the repository
 and then you can install the development version of the package using <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone git@github.com:dgbowl/dgpost.git
@@ -103,6 +135,7 @@ pip install -e .<span class="o">[</span>testing,docs<span class="o">]</span>
 <p>The targets <code class="docutils literal notranslate"><span class="pre">[testing]</span></code> and <code class="docutils literal notranslate"><span class="pre">[docs]</span></code> in the above are optional, and will install
 the required dependencies to run the test suite and build the documentation,
 respectively.</p>
+</section>
 </section>
 
 
