@@ -5,9 +5,13 @@ Those can be installed using ``pip``:
 
 .. code:: bash
 
-    pip install dgpost
+    pip install --pre dgpost
 
-Use the optional argument ``--pre`` to get the latest tagged development version.
+.. note::
+
+    With the optional argument ``--pre``, the latest tagged & built development 
+    version will be installed. To install the latest release, the ``--pre`` argument
+    may be omitted.
 
 To install dgpost from source on Github, |gh|, you first need to clone the repository 
 and then you can install the development version of the package using ``pip``:
