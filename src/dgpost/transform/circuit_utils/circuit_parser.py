@@ -1,3 +1,7 @@
+"""
+dgpost.transform.circuit_utils.circuit_parser
+=============================================
+"""
 import re
 import warnings
 import logging

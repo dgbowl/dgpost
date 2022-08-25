@@ -31,11 +31,22 @@ In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
    :caption: dgpost function library
    :hidden:
 
-   stubs/dgpost.transform.catalysis
-   stubs/dgpost.transform.electrochemistry
-   stubs/dgpost.transform.impedance
-   stubs/dgpost.transform.rates
-   stubs/dgpost.transform.table
+   apidoc/dgpost.transform.catalysis
+   apidoc/dgpost.transform.electrochemistry
+   apidoc/dgpost.transform.impedance
+   apidoc/dgpost.transform.rates
+   apidoc/dgpost.transform.table
+
+.. toctree::
+   :maxdepth: 2
+   :caption: dgpost utility library
+   :hidden:
+
+   apidoc/dgpost.utils.load
+   apidoc/dgpost.utils.extract
+   apidoc/dgpost.utils.transform
+   apidoc/dgpost.utils.plot
+   apidoc/dgpost.utils.save
 
 .. toctree::
    :maxdepth: 1
@@ -43,4 +54,4 @@ In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
    :hidden:
 
    contributing
-   dgpost
+   apidoc/dgpost
