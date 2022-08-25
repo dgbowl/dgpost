@@ -44,6 +44,7 @@ setuptools.setup(
         "yadg>=4.1",
         "dgbowl-schemas>=106",
         "matplotlib>=3.5.0",
+        "requests",
     ],
     extras_require={
         "testing": [
