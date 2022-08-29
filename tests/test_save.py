@@ -25,6 +25,8 @@ from .utils import compare_dfs
         "flowcx.units.float.df.pkl",
         # ts3 - dataframe with ufloat values and units
         "flowcx.units.ufloat.df.pkl",
+        # ts2 - real-world dataframe
+        #"fe_gc.ufloat.df.pkl"
     ],
 )
 def test_save_vs_pkl(table, filetype, datadir):
@@ -32,7 +34,7 @@ def test_save_vs_pkl(table, filetype, datadir):
     path = f"saved.{table.replace('pkl', filetype)}"
     refp = f"ref.{table}".replace(filetype, "pkl")
     dgpost.utils.save(table=pd.read_pickle(table), path=path, type=filetype)
-    df = dgpost.utils.load(**{"path": table, "type": "table"})
+    df = dgpost.utils.load(**{"path": path, "type": "table"})
     ref = dgpost.utils.load(**{"path": refp, "type": "table"})
     compare_dfs(ref, df)
 
@@ -53,6 +55,8 @@ def test_save_vs_pkl(table, filetype, datadir):
         "flowcx.float.df.pkl",
         # ts1 - dataframe with ufloat values
         "flowcx.ufloat.df.pkl",
+        # ts2 - real-world dataframe
+        "fe_gc.ufloat.df.pkl"
     ],
 )
 def test_save_vs_csv(table, filetype, datadir):
@@ -63,3 +67,15 @@ def test_save_vs_csv(table, filetype, datadir):
     df = dgpost.utils.load(**{"path": table, "type": "table"})
     ref = dgpost.utils.load(**{"path": refp, "type": "table"})
     compare_dfs(ref, df)
+
+
+def test_save_ordering(datadir):
+    os.chdir(datadir)
+    table = "fe_gc.ufloat.df.pkl"
+    filetype = "xlsx"
+    path = f"saved.{table.replace('pkl', filetype)}"
+    refp = f"ref.{table.replace('pkl', filetype)}"
+    dgpost.utils.save(table=pd.read_pickle(table), path=path, type=filetype)
+    df = pd.read_excel(path)
+    ref = pd.read_excel(refp)
+    compare_dfs(ref, df, order=True)

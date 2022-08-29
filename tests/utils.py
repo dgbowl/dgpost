@@ -71,7 +71,7 @@ def compare_result_dicts(result, reference, atol=1e-6):
     assert result["u"] == reference["u"]
 
 
-def compare_dfs(ref, df):
+def compare_dfs(ref, df, order=False):
     if "units" in ref.attrs or "units" in df.attrs:
         assert ref.attrs.get("units") == df.attrs.get("units")
     if "meta" in ref.attrs or "meta" in df.attrs:
@@ -79,7 +79,7 @@ def compare_dfs(ref, df):
         rrec = ref.attrs.get("meta", {}).get("recipe")
         drec = df.attrs.get("meta", {}).get("recipe")
         assert rrec == drec
-    pd.testing.assert_index_equal(ref.columns, df.columns, check_order=False)
+    pd.testing.assert_index_equal(ref.columns, df.columns, check_order=order)
     for col in ref.columns:
         r = ref[col].array
         t = df[col].array
