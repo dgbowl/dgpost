@@ -11,6 +11,14 @@ evaluation of an equivalent circuit as well as the fitting of the circuit to dat
 :func:`~dgpost.transform.impedance.fit_circuit`), and an interpolation function 
 to find the :func:`~dgpost.transform.impedance.lowest_real_impedance` in the data.
 
+.. rubric:: Functions
+
+.. autosummary::
+
+    calc_circuit
+    fit_circuit
+    lowest_real_impedance
+
 .. note::
     The functions in this module expect the whole EIS trace as input - the 
     :math:`\\text{Re}(Z)`, :math:`-\\text{Im}(Z)` and :math:`f` are expected to

@@ -11,6 +11,15 @@ the calculation of total :func:`~dgpost.transform.electrochemistry.charge`, and
 the :func:`~dgpost.transform.electrochemistry.average_current` from the total 
 charge and timestamps.
 
+.. rubric:: Functions
+
+.. autosummary::
+
+    average_current
+    charge
+    fe
+    nernst
+
 """
 import pint
 from yadg.dgutils import ureg
