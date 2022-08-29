@@ -1,5 +1,13 @@
 **dgpost**: datagram post-processing toolkit
 ============================================
+.. image:: https://badgen.net/badge/docs/dgbowl.github.io/grey?icon=firefox
+   :target: https://dgbowl.github.io/dgpost
+.. image:: https://badgen.net/pypi/v/dgpost/?icon=pypi
+   :target: https://pypi.org/project/dgpost
+.. image:: https://badgen.net/github/tag/dgbowl/dgpost/?icon=github
+   :target: https://github.com/dgbowl/dgpost
+.. image:: https://badgen.net/lgtm/grade/g/dgbowl/dgpost/python/?logo=lgtm
+   :target: https://lgtm.com/projects/g/dgbowl/dgpost/context:python
 
 A set of datagram postprocessing tools, functions, visualisations and export scripts.
 
