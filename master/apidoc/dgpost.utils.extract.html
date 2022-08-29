@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>extract: Data extraction and interpolation routine. &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="transform: Reproducible transformations made simple." href="dgpost.utils.transform.html" />
+    <link rel="prev" title="load: Datagram and table loading routine" href="dgpost.utils.load.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> dgpost
+            <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html">dgpost package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><strong>extract</strong>: Data extraction and interpolation routine.</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.utils.extract.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="module-dgpost.utils.extract"></span><section id="extract-data-extraction-and-interpolation-routine">
+<h1><strong>extract</strong>: Data extraction and interpolation routine.<a class="headerlink" href="#extract-data-extraction-and-interpolation-routine" title="Permalink to this headline"></a></h1>
+<p><em>Code author: Peter Kraus</em></p>
+<p>The function <a class="reference internal" href="#dgpost.utils.extract.extract" title="dgpost.utils.extract.extract"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.utils.extract.extract()</span></code></a> processes the below specification
+in order to extract the required data from the supplied datagram.</p>
+<span class="target" id="dgpost-recipe-extract"></span><dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgbowl_schemas.dgpost.recipe_1_1.extract.</span></span><span class="sig-name descname"><span class="pre">Extract</span></span><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract" title="Permalink to this definition"></a></dt>
+<dd><p><details  class="autodoc_pydantic_collapsable_json">
+<summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Extract&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;into&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Into&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;from&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;From&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;at&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/definitions/At&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;constants&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constants&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/definitions/Constant&quot;</span><span class="w"></span>
+<span class="w">         </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;columns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Columns&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/definitions/Column&quot;</span><span class="w"></span>
+<span class="w">         </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="p">},</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;into&quot;</span><span class="w"></span>
+<span class="w">   </span><span class="p">],</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;definitions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;At&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;At&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Steps&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">               </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;indices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Indices&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="w"></span>
+<span class="w">               </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;timestamps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Timestamps&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="w"></span>
+<span class="w">               </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">         </span><span class="p">},</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;Constant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;as&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;As&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;units&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Units&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">         </span><span class="p">},</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;as&quot;</span><span class="w"></span>
+<span class="w">         </span><span class="p">],</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;Column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Column&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Key&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;as&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;As&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">         </span><span class="p">},</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;key&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;as&quot;</span><span class="w"></span>
+<span class="w">         </span><span class="p">],</span><span class="w"></span>
+<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</details></p><dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.into">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">into</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.into" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input" title="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.from_">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'from')</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.from_" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input" title="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.at">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">at</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/dgbowl_schemas.dgpost.recipe_1_1.html#dgbowl_schemas.dgpost.recipe_1_1.extract.At" title="(in dgbowl-schemas vmaster)"><span class="pre">dgbowl_schemas.dgpost.recipe_1_1.extract.At</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.at" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input" title="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.constants">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">constants</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/dgbowl_schemas.dgpost.recipe_1_1.html#dgbowl_schemas.dgpost.recipe_1_1.extract.Constant" title="(in dgbowl-schemas vmaster)"><span class="pre">dgbowl_schemas.dgpost.recipe_1_1.extract.Constant</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.constants" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input" title="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.columns">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/dgbowl_schemas.dgpost.recipe_1_1.html#dgbowl_schemas.dgpost.recipe_1_1.extract.Column" title="(in dgbowl-schemas vmaster)"><span class="pre">dgbowl_schemas.dgpost.recipe_1_1.extract.Column</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.columns" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input" title="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_one_input</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_1.extract.Extract.check_one_input" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The keys <code class="docutils literal notranslate"><span class="pre">from</span></code> and <code class="docutils literal notranslate"><span class="pre">into</span></code> are not processed by <a class="reference internal" href="#dgpost.utils.extract.extract" title="dgpost.utils.extract.extract"><code class="xref py py-func docutils literal notranslate"><span class="pre">extract()</span></code></a>, they should
+be used by its caller to supply the requested <code class="docutils literal notranslate"><span class="pre">datagram</span></code> and assign the returned
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> into the correct variable.</p>
+</div>
+<p>Handling of sparse data depends on the extraction format specified:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>for direct extraction, if the value is not present at any of the timesteps
+specified in <code class="docutils literal notranslate"><span class="pre">at</span></code>, a <code class="xref py py-class docutils literal notranslate"><span class="pre">NaN</span></code> is added instead</p></li>
+<li><p>for interpolation, if a value is missing at any of the timesteps specified
+in <code class="docutils literal notranslate"><span class="pre">at</span></code> or in the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> index, that timestep is masked and
+the interpolation is performed from neighbouring points</p></li>
+</ul>
+</div></blockquote>
+<p>Interpolation of <code class="xref py py-class docutils literal notranslate"><span class="pre">uc.ufloat</span></code> is performed separately for the nominal and error
+component.</p>
+<p>Units are added into the <code class="docutils literal notranslate"><span class="pre">attrs</span></code> dictionary of the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> on a
+per-column basis.</p>
+<p>Data from multiple datagrams can be combined into one <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> using a
+YAML such as the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">load</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">as</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">norm</span><span class="w"></span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">normalized.dg.json</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">as</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sparse</span><span class="w"></span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sparse.dg.json</span><span class="w"></span>
+<span class="nt">extract</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">into</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">df</span><span class="w"></span>
+<span class="w">    </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">norm</span><span class="w"></span>
+<span class="w">    </span><span class="nt">at</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">columns</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">raw-&gt;T_f</span><span class="w"></span>
+<span class="w">        </span><span class="nt">as</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rawT</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">into</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">df</span><span class="w"></span>
+<span class="w">    </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sparse</span><span class="w"></span>
+<span class="w">    </span><span class="nt">at</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">b1, b2, b3</span><span class="w"></span>
+<span class="w">    </span><span class="nt">direct</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">derived-&gt;xout-&gt;*</span><span class="w"></span>
+<span class="w">        </span><span class="nt">as</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xout</span><span class="w"></span>
+</pre></div>
+</div>
+<p>In this example, the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> is created with an index corresponding to
+the timestamps of <code class="docutils literal notranslate"><span class="pre">step:</span> <span class="pre">&quot;a&quot;</span></code> of the datagram. The values specified using <code class="docutils literal notranslate"><span class="pre">columns</span></code>
+in the first section are entered directly, after renaming the column names.</p>
+<p>The data pulled out of the datagram in the second step using the prescription in <code class="docutils literal notranslate"><span class="pre">at</span></code>
+are interpolated onto the index of the existing <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.utils.extract.extract">
+<span class="sig-prename descclassname"><span class="pre">dgpost.utils.extract.</span></span><span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.extract.extract" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.utils.load.html" class="btn btn-neutral float-left" title="load: Datagram and table loading routine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.utils.transform.html" class="btn btn-neutral float-right" title="transform: Reproducible transformations made simple." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

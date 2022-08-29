@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>electrochemistry: calculations relevant in electrochemistry &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="impedance: fitting electrochemical impedance spectra" href="dgpost.transform.impedance.html" />
+    <link rel="prev" title="catalysis: common calculations in catalytic testing" href="dgpost.transform.catalysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> dgpost
+            <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html">dgpost package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><strong>electrochemistry</strong>: calculations relevant in electrochemistry</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.transform.electrochemistry.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="module-dgpost.transform.electrochemistry"></span><section id="electrochemistry-calculations-relevant-in-electrochemistry">
+<h1><strong>electrochemistry</strong>: calculations relevant in electrochemistry<a class="headerlink" href="#electrochemistry-calculations-relevant-in-electrochemistry" title="Permalink to this headline"></a></h1>
+<p><em>Code author: Peter Kraus</em></p>
+<p>Includes functions for calculating applied voltage correction via the
+<a class="reference internal" href="#dgpost.transform.electrochemistry.nernst" title="dgpost.transform.electrochemistry.nernst"><code class="xref py py-func docutils literal notranslate"><span class="pre">nernst()</span></code></a> equation, calculation of the
+Faradaic efficiency (<a class="reference internal" href="#dgpost.transform.electrochemistry.fe" title="dgpost.transform.electrochemistry.fe"><code class="xref py py-func docutils literal notranslate"><span class="pre">fe()</span></code></a>), as well as
+the calculation of total <a class="reference internal" href="#dgpost.transform.electrochemistry.charge" title="dgpost.transform.electrochemistry.charge"><code class="xref py py-func docutils literal notranslate"><span class="pre">charge()</span></code></a>, and
+the <a class="reference internal" href="#dgpost.transform.electrochemistry.average_current" title="dgpost.transform.electrochemistry.average_current"><code class="xref py py-func docutils literal notranslate"><span class="pre">average_current()</span></code></a> from the total
+charge and timestamps.</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.electrochemistry.average_current" title="dgpost.transform.electrochemistry.average_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">average_current</span></code></a>(time, Q[, t0, output])</p></td>
+<td><p>Calculate the average current <span class="math notranslate nohighlight">\(&lt;I&gt;\)</span> from a set of timestamped values of electical charge,</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.electrochemistry.charge" title="dgpost.transform.electrochemistry.charge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">charge</span></code></a>(time, I[, t0, output])</p></td>
+<td><p>Calculate the total charge <span class="math notranslate nohighlight">\(Q\)</span> as a time-integral of the electric current:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.electrochemistry.fe" title="dgpost.transform.electrochemistry.fe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fe</span></code></a>(rate, I, charges[, output])</p></td>
+<td><p>Calculate the Faradaic efficiency <span class="math notranslate nohighlight">\(\eta_F\)</span> from a set of molar rates <span class="math notranslate nohighlight">\(\dot{n}\)</span> corresponding to a single mixture, and the applied current <span class="math notranslate nohighlight">\(I\)</span> required to produce that mixture from a source mixture.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.electrochemistry.nernst" title="dgpost.transform.electrochemistry.nernst"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nernst</span></code></a>(Ewe[, R, I, Eref, T, n, Q, pH, output])</p></td>
+<td><p>Correct measured voltage to calculate the applied voltage, using corrections for Ohmic drop, reference potential vs RHE, and ionic concentration using the Nernst equation, either by providing <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(n\)</span>, or by providing the <span class="math notranslate nohighlight">\(pH\)</span>.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.electrochemistry.nernst">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">nernst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ewe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ohm')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ampere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eref=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'volt')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=&lt;Quantity(298.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pH=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output='Eapp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.nernst" title="Permalink to this definition"></a></dt>
+<dd><p>Correct measured voltage to calculate the applied voltage, using corrections
+for Ohmic drop, reference potential vs RHE, and ionic concentration using
+the Nernst equation, either by providing <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(n\)</span>, or by
+providing the <span class="math notranslate nohighlight">\(pH\)</span>.</p>
+<p>This function corrects the measured voltage <span class="math notranslate nohighlight">\(E_\text{we}\)</span> to applied
+voltage <span class="math notranslate nohighlight">\(E\)</span>. For <span class="math notranslate nohighlight">\(E_\text{we} &gt; 0~\text{V}\)</span>, the following equation
+is used:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}E &amp;= E_\text{we} - R |I| + E_\text{ref} + E_N \\
+E_N &amp;= - \frac{\overline{R} T}{nF} ln(Q) = \frac{\overline{R} T}{F} ln(10) \text{pH}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(R |I|\)</span> is the product of cell resistance and the magnitude of the
+applied current, <span class="math notranslate nohighlight">\(E_\text{ref}\)</span> is the potential of the reference electrode
+vs RHE, <span class="math notranslate nohighlight">\(\overline{R}\)</span> is the molar gas constant, <span class="math notranslate nohighlight">\(T\)</span> is the
+temperature, <span class="math notranslate nohighlight">\(n\)</span> is the number of electrones transferred, <span class="math notranslate nohighlight">\(F\)</span> is
+the Faraday constant, <span class="math notranslate nohighlight">\(Q\)</span> is the reaction quotient, and <span class="math notranslate nohighlight">\(\text{pH}\)</span>
+is the pH of the electrolyte.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Ohmic loss <span class="math notranslate nohighlight">\(R |I|\)</span> always acts against the magnitude of the working
+potential <span class="math notranslate nohighlight">\(E_\text{we}\)</span>. If <span class="math notranslate nohighlight">\(E_\text{we} &lt; 0~\text{V}\)</span>, the Ohmic
+term <span class="math notranslate nohighlight">\(R |I|\)</span> is added to <span class="math notranslate nohighlight">\(E_\text{we}\)</span> to reduce its magnitude.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ewe</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The measured working potential with respect to the reference electrode.
+By default in V.</p></li>
+<li><p><strong>R</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The resistance of the cell. By default in Ω.</p></li>
+<li><p><strong>I</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The applied current. By default in A.</p></li>
+<li><p><strong>Eref</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The potential of the reference electrode with respect to RHE.
+By default in V.</p></li>
+<li><p><strong>T</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Temperature of the working electrode, used in the Nernst equation.
+By default 298.15 K.</p></li>
+<li><p><strong>n</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Number of electrons transferred in the process described by the Nernst
+equation. Must be specified along <code class="docutils literal notranslate"><span class="pre">Q</span></code>, cannot be specified with <code class="docutils literal notranslate"><span class="pre">pH</span></code>.</p></li>
+<li><p><strong>Q</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – The reaction quotient of the components of the process described by the
+Nernst equation. Must be specified along <code class="docutils literal notranslate"><span class="pre">n</span></code>, cannot be specified with
+<code class="docutils literal notranslate"><span class="pre">pH</span></code>.</p></li>
+<li><p><strong>pH</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – The pH of the solution. This assumes the modelled process is the reduction
+of <span class="math notranslate nohighlight">\(\text{H}^+ \rightarrow \text{H}\)</span>, i.e. <span class="math notranslate nohighlight">\(n = 1\)</span> and
+<span class="math notranslate nohighlight">\(\text{ln}(Q) = -\text{ln}(10)\text{pH}\)</span></p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the output variable. Defaults to <code class="docutils literal notranslate"><span class="pre">Eapp</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict(output, E)</strong> – Returns the calculated applied current in V.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.electrochemistry.fe">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">fe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.fe" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the Faradaic efficiency <span class="math notranslate nohighlight">\(\eta_F\)</span> from a set of molar rates
+<span class="math notranslate nohighlight">\(\dot{n}\)</span> corresponding to a single mixture, and the applied current
+<span class="math notranslate nohighlight">\(I\)</span> required to produce that mixture from a source mixture. A set of
+formal atomic charges corresponding to those in the species comprising the
+source mixture has to be supplied.</p>
+<p>This function implements the following equation to calculate <span class="math notranslate nohighlight">\(\eta_F\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\eta_F(x) = \frac{n_\text{el}(x)\dot{n}(x)}{I}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x\)</span> is a species in the mixture, <span class="math notranslate nohighlight">\(n_\text{el}(x)\)</span> is the number
+of electrons required to produce <span class="math notranslate nohighlight">\(x\)</span> from the ions specified in the source
+mixture, and <span class="math notranslate nohighlight">\(\dot{n}(x)\)</span> is the molar rate (production or flow) of species
+<span class="math notranslate nohighlight">\(x\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of molar flow or production rates of species in a mixture.
+By default in mol/l.</p></li>
+<li><p><strong>I</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The applied current. By default in A.</p></li>
+<li><p><strong>charges</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of formal atomic/ionic charges of atoms in the source
+mixture.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Name of the prefix for the species in the output variable. Defaults to <code class="docutils literal notranslate"><span class="pre">fe</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict(output, E)</strong> – Returns the calculated Faradaic efficiencies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.electrochemistry.charge">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">charge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Q'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.charge" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the total charge <span class="math notranslate nohighlight">\(Q\)</span> as a time-integral of the electric current:</p>
+<div class="math notranslate nohighlight">
+\[Q_n = \int_{t_0}^{t_n} I(t) dt = \sum_0^n I_n (t_n - t_{n-1})\]</div>
+<p>where <span class="math notranslate nohighlight">\(I_n\)</span> is the instantaneous current and <span class="math notranslate nohighlight">\(t_n\)</span> is the time at the
+<span class="math notranslate nohighlight">\(n\)</span>-th datapoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the instantaneous current was measured.
+Defaults to the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> of the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p></li>
+<li><p><strong>I</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Values of the instantaneous current.</p></li>
+<li><p><strong>t0</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – An optional timestamp representing the time at which charge was zero. If not
+supplied, the first value in the <code class="docutils literal notranslate"><span class="pre">time</span></code> array will be used, with the charge
+at that timestamp set to zero.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns where the calculated rate will be stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict(output, Q)</strong> – Returns the integrated electrical charge.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.electrochemistry.average_current">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">average_current</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;I&gt;'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.average_current" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the average current <span class="math notranslate nohighlight">\(&lt;I&gt;\)</span> from a set of timestamped values of
+electical charge,</p>
+<div class="math notranslate nohighlight">
+\[&lt;I&gt; = \frac{dQ}{dt} = \frac{Q_n - Q_{n-1}}{t_n - t_{n-1}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(Q_n\)</span> is the charge and <span class="math notranslate nohighlight">\(t_n\)</span> is the time at the <span class="math notranslate nohighlight">\(n\)</span>-th
+datapoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the instantaneous current was measured.
+Defaults to the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> of the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p></li>
+<li><p><strong>Q</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Values of the overall charge.</p></li>
+<li><p><strong>t0</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – An optional timestamp representing the time at which charge was zero. If not
+supplied, the first value in the <code class="docutils literal notranslate"><span class="pre">time</span></code> array will be used, with the charge
+at that timestamp set to zero.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns where the calculated rate will be stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict(output, I)</strong> – Returns the average electrical current.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.transform.catalysis.html" class="btn btn-neutral float-left" title="catalysis: common calculations in catalytic testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.transform.impedance.html" class="btn btn-neutral float-right" title="impedance: fitting electrochemical impedance spectra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

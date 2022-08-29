@@ -1,0 +1,4 @@
+.. automodule:: dgpost.transform.electrochemistry
+   :members:
+   :undoc-members:
+   :show-inheritance:

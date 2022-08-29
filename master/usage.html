@@ -53,16 +53,24 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong> autodocs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.html">dgpost package</a></li>
 </ul>
 
         </div>
@@ -103,25 +111,25 @@
 <cite>recipe</cite>, written in <code class="docutils literal notranslate"><span class="pre">yaml</span></code>, which includes a prescription of the steps to be
 performed by dgpost. Currently supported steps are:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a>: load a <cite>datagram</cite> or a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></li>
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.extract" title="dgpost.utils.extract"><code class="xref py py-mod docutils literal notranslate"><span class="pre">extract</span></code></a>: extract and interpolate data from the loaded files
+<li><p><a class="reference internal" href="apidoc/dgpost.utils.load.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a>: load a <cite>datagram</cite> or a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></li>
+<li><p><a class="reference internal" href="apidoc/dgpost.utils.extract.html#module-dgpost.utils.extract" title="dgpost.utils.extract"><code class="xref py py-mod docutils literal notranslate"><span class="pre">extract</span></code></a>: extract and interpolate data from the loaded files
 into a table</p></li>
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.transform" title="dgpost.utils.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">transform</span></code></a>: use a function from the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a>
+<li><p><a class="reference internal" href="apidoc/dgpost.utils.transform.html#module-dgpost.utils.transform" title="dgpost.utils.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">transform</span></code></a>: use a function from the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a>
 library to process the data in the table, creating new columns</p></li>
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.plot" title="dgpost.utils.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code></a>: plot parts of the table using our custom wrapper
+<li><p><a class="reference internal" href="apidoc/dgpost.utils.plot.html#module-dgpost.utils.plot" title="dgpost.utils.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code></a>: plot parts of the table using our custom wrapper
 around <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">save</span></code></a>: export the created table for further use</p></li>
+<li><p><a class="reference internal" href="apidoc/dgpost.utils.save.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">save</span></code></a>: export the created table for further use</p></li>
 </ul>
 <p>Each of the above keywords can be only specified once in the <cite>recipe</cite>, however more
 than one command can be specified for each of the keywords (i.e. it’s possible to
-<a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a> multiple files, apply several <code class="docutils literal notranslate"><span class="pre">transform</span></code> functions, etc.).
+<a class="reference internal" href="apidoc/dgpost.utils.load.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a> multiple files, apply several <code class="docutils literal notranslate"><span class="pre">transform</span></code> functions, etc.).
 Detailed syntax of each of the above steps is further described in the documentation of
-each of the keywords within the <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils" title="dgpost.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils</span></code></a> module.</p>
+each of the keywords within the <a class="reference internal" href="apidoc/dgpost.utils.html#module-dgpost.utils" title="dgpost.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils</span></code></a> module.</p>
 <p>dgpost can be used to process multiple datasets, in a batch-like mode, using the
 <code class="docutils literal notranslate"><span class="pre">--patch</span></code> argument. For this, the <cite>recipe</cite> should contain either <code class="docutils literal notranslate"><span class="pre">$patch</span></code> or
-<code class="docutils literal notranslate"><span class="pre">$PATCH</span></code> in the <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> defining the <code class="docutils literal notranslate"><span class="pre">path</span></code> in the <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a>
-step. The same string can be included in the <code class="docutils literal notranslate"><span class="pre">as</span></code> argument of the <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">save</span></code></a>
-and/or the <code class="docutils literal notranslate"><span class="pre">save-&gt;as</span></code> argument of the <a class="reference internal" href="dgpost.utils.html#module-dgpost.utils.plot" title="dgpost.utils.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code></a> steps. Then, dgpost
+<code class="docutils literal notranslate"><span class="pre">$PATCH</span></code> in the <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> defining the <code class="docutils literal notranslate"><span class="pre">path</span></code> in the <a class="reference internal" href="apidoc/dgpost.utils.load.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a>
+step. The same string can be included in the <code class="docutils literal notranslate"><span class="pre">as</span></code> argument of the <a class="reference internal" href="apidoc/dgpost.utils.save.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">save</span></code></a>
+and/or the <code class="docutils literal notranslate"><span class="pre">save-&gt;as</span></code> argument of the <a class="reference internal" href="apidoc/dgpost.utils.plot.html#module-dgpost.utils.plot" title="dgpost.utils.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code></a> steps. Then, dgpost
 can be executed using</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dgpost</span> <span class="o">--</span><span class="n">patch</span> <span class="o">&lt;</span><span class="n">patchname</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">yamlfile</span><span class="o">&gt;</span>
 </pre></div>
@@ -135,9 +143,9 @@ using <code class="docutils literal notranslate"><span class="pre">patchname</sp
 standard python library with <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">dgpost</span></code>. The functions within dgpost are
 split into two key modules:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="dgpost.utils.html#module-dgpost.utils" title="dgpost.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils</span></code></a> module, containing the ancilliary data management functions
+<li><p><a class="reference internal" href="apidoc/dgpost.utils.html#module-dgpost.utils" title="dgpost.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils</span></code></a> module, containing the ancilliary data management functions
 of dgpost, and</p></li>
-<li><p><a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module, containing all “scientific” data transformation
+<li><p><a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module, containing all “scientific” data transformation
 functions.</p></li>
 </ul>
 <p>See the documentation of the two respective modules for details. The functionality

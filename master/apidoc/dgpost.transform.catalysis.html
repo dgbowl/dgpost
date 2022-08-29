@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>catalysis: common calculations in catalytic testing &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="electrochemistry: calculations relevant in electrochemistry" href="dgpost.transform.electrochemistry.html" />
+    <link rel="prev" title="dgpost-v1.0" href="../version.v1.0.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> dgpost
+            <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html">dgpost package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><strong>catalysis</strong>: common calculations in catalytic testing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.transform.catalysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="module-dgpost.transform.catalysis"></span><section id="catalysis-common-calculations-in-catalytic-testing">
+<h1><strong>catalysis</strong>: common calculations in catalytic testing<a class="headerlink" href="#catalysis-common-calculations-in-catalytic-testing" title="Permalink to this headline"></a></h1>
+<p><em>Code author: Peter Kraus</em></p>
+<p>Includes functions to calculate the reactant- and product-based
+<a class="reference internal" href="#dgpost.transform.catalysis.conversion" title="dgpost.transform.catalysis.conversion"><code class="xref py py-func docutils literal notranslate"><span class="pre">conversion()</span></code></a>, atom-based
+<a class="reference internal" href="#dgpost.transform.catalysis.selectivity" title="dgpost.transform.catalysis.selectivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">selectivity()</span></code></a>,
+<a class="reference internal" href="#dgpost.transform.catalysis.catalytic_yield" title="dgpost.transform.catalysis.catalytic_yield"><code class="xref py py-func docutils literal notranslate"><span class="pre">catalytic_yield()</span></code></a>, and
+<a class="reference internal" href="#dgpost.transform.catalysis.atom_balance" title="dgpost.transform.catalysis.atom_balance"><code class="xref py py-func docutils literal notranslate"><span class="pre">atom_balance()</span></code></a>.</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.catalysis.atom_balance" title="dgpost.transform.catalysis.atom_balance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_balance</span></code></a>([xin, xout, rin, rout, ...])</p></td>
+<td><p>Calculates the atom balance of an <code class="docutils literal notranslate"><span class="pre">element</span></code> <span class="math notranslate nohighlight">\(\text{el}\)</span> between the inlet and outlet mixtures.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.catalysis.catalytic_yield" title="dgpost.transform.catalysis.catalytic_yield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">catalytic_yield</span></code></a>(feedstock[, xin, xout, rin, ...])</p></td>
+<td><p>Calculates the catalytic yield <span class="math notranslate nohighlight">\(Y_p\)</span>, defined as the product of conversion and selectivity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.catalysis.conversion" title="dgpost.transform.catalysis.conversion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conversion</span></code></a>(feedstock[, xin, xout, rin, ...])</p></td>
+<td><p>Calculates the conversion of <code class="docutils literal notranslate"><span class="pre">feedstock</span></code> <span class="math notranslate nohighlight">\(f\)</span> into other products <span class="math notranslate nohighlight">\(p\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.catalysis.selectivity" title="dgpost.transform.catalysis.selectivity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">selectivity</span></code></a>(feedstock[, xout, rout, ...])</p></td>
+<td><p>Calculates product-based atomic selectivities of all species <span class="math notranslate nohighlight">\(s\)</span>, excluding the <code class="docutils literal notranslate"><span class="pre">feedstock</span></code> <span class="math notranslate nohighlight">\(f\)</span>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Names of compounds within the specified mixtures are parsed to SMILES, and the
+cross-matching of the <code class="docutils literal notranslate"><span class="pre">feestock</span></code>, internal <code class="docutils literal notranslate"><span class="pre">standard</span></code>, and the components of
+<code class="docutils literal notranslate"><span class="pre">xin</span></code> and <code class="docutils literal notranslate"><span class="pre">xout</span></code> (or <code class="docutils literal notranslate"><span class="pre">rin</span></code> and <code class="docutils literal notranslate"><span class="pre">rout</span></code>) is performed using these SMILES.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module assumes that the provided inlet and outlet compositions, whether
+mole fractions or molar rates, contain all species. This implies that the
+atomic balance of the inlet and outlet is near unity. If multiple inlet/outlet
+streams are present in the experiment, they need to be appropriately combined
+into a single namespace, e.g. using functions in the <a class="reference internal" href="dgpost.transform.rates.html#module-dgpost.transform.rates" title="dgpost.transform.rates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform.rates</span></code></a>
+before using the functions in this module.</p>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.catalysis.conversion">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">conversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedstock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'product'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.conversion" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the conversion of <code class="docutils literal notranslate"><span class="pre">feedstock</span></code> <span class="math notranslate nohighlight">\(f\)</span> into other products
+<span class="math notranslate nohighlight">\(p\)</span>. The feedstock must be a species present in the inlet. By default,
+a product-based carbon conversion (<span class="math notranslate nohighlight">\(\text{el} = \text{C}\)</span>), using
+data from the outlet, is computed.</p>
+<p>The product-based conversion <span class="math notranslate nohighlight">\(X_p\)</span> is calculated using the outlet mole
+fractions <span class="math notranslate nohighlight">\(x_\text{out}(s)\)</span> of species <span class="math notranslate nohighlight">\(s\)</span>, or the outlet molar
+rates <span class="math notranslate nohighlight">\(\dot{n}_\text{out}(s)\)</span>. It is calculated on an elemental basis
+by considering the number of atoms of a certain element, <span class="math notranslate nohighlight">\(n_\text{el}\)</span>,
+as:</p>
+<div class="math notranslate nohighlight">
+\[X_{p, \text{el}} =
+\frac{\sum_{s} n_\text{el}(s) x_\text{out}(s) - n_\text{el}(f) x_\text{out}(f)}
+{\sum_{s} n_\text{el}(s) x_\text{out}(s)} =
+\frac{\sum_{s} n_\text{el}(s) \dot{n}_\text{out}(s) - n_\text{el}(f) \dot{n}_\text{out}(f)}
+{\sum_{s} n_\text{el}(s) \dot{n}_\text{out}(s)}\]</div>
+<p>Which requires the feedstock <span class="math notranslate nohighlight">\(f\)</span> to be quantified in the outlet composition.</p>
+<p>If the outlet composition of <span class="math notranslate nohighlight">\(f\)</span> is not defined or not suitable, the user
+should request a “mixed” conversion <span class="math notranslate nohighlight">\(X_m\)</span>, which is calculated using:</p>
+<div class="math notranslate nohighlight">
+\[X_{m, \text{el}} =
+\frac{\sum_{p}^{p\ne f} n_\text{el}(p) x_\text{out}(p) f_e}
+{n_\text{el}(f) x_\text{in}(f)} =
+\frac{\sum_{p}^{p\ne f} n_\text{el}(p) \dot{n}_\text{out}(s)}
+{n_\text{el}(f) \dot{n}_\text{in}(f)}\]</div>
+<p>Here, the expansion factor <span class="math notranslate nohighlight">\(f_e\)</span> is introduced, which is defined as the
+expansion ratio of the internal <code class="docutils literal notranslate"><span class="pre">standard</span></code> in the mixture:
+<span class="math notranslate nohighlight">\(f_e = x_\text{out}(\text{i.s.}) / x_\text{in}(\text{i.s.})\)</span>. The
+internal standard is set to N2 by default. When molar rates <span class="math notranslate nohighlight">\(\dot{n}\)</span>
+are used, accounting for expansion in this way is not necessary.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Calculating mixed conversion <span class="math notranslate nohighlight">\(X_m\)</span> using inlet mole fraction
+of feedstock is not ideal and should be avoided, as the value is strongly
+convoluted with the <a class="reference internal" href="#dgpost.transform.catalysis.atom_balance" title="dgpost.transform.catalysis.atom_balance"><code class="xref py py-func docutils literal notranslate"><span class="pre">atom_balance()</span></code></a> of the mixtures.</p>
+</div>
+<p>Finally, the calculation of reactant-based (or feedstock-based) conversion,
+<span class="math notranslate nohighlight">\(X_r\)</span>, proceeds as follows:</p>
+<div class="math notranslate nohighlight">
+\[X_{r} = \frac{x_\text{in}(f) -  x_\text{out}(f) f_e}{x_\text{in}(f)} =
+\frac{\dot{n}_\text{in}(f) - \dot{n}_\text{out}(f)}{\dot{n}_\text{in}(f)}\]</div>
+<p>The selection of the element <span class="math notranslate nohighlight">\(\text{el}\)</span> is meaningless for the reactant
+-based conversion.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note that the calculated values of <span class="math notranslate nohighlight">\(X_p\)</span>, <span class="math notranslate nohighlight">\(X_m\)</span>, and <span class="math notranslate nohighlight">\(X_r\)</span>
+will differ from one another in cases where the atomic balances of the inlet
+and outlet mixtures are different from unity!</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feedstock</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the feedstock. Parsed into SMILES and matched against <code class="docutils literal notranslate"><span class="pre">xin</span></code> and
+<code class="docutils literal notranslate"><span class="pre">xout</span></code>.</p></li>
+<li><p><strong>xin</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – A dictionary containing the composition of the inlet mixture with the names
+of the chemicals as <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> keys. Has to be supplied with <code class="docutils literal notranslate"><span class="pre">xout</span></code>.
+Cannot be supplied with <code class="docutils literal notranslate"><span class="pre">rin</span></code> or <code class="docutils literal notranslate"><span class="pre">rout</span></code>.</p></li>
+<li><p><strong>xout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – A dictionary containing the composition of the outlet mixture with the names
+of the chemicals as <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> keys. Has to be supplied with <code class="docutils literal notranslate"><span class="pre">xin</span></code>.
+Cannot be supplied with <code class="docutils literal notranslate"><span class="pre">rin</span></code> or <code class="docutils literal notranslate"><span class="pre">rout</span></code>.</p></li>
+<li><p><strong>rin</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – A dictionary containing the molar rates of species in the inlet mixture
+with the names of the chemicals as <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> keys. Has to be supplied
+with <code class="docutils literal notranslate"><span class="pre">rout</span></code>. Cannot be supplied with <code class="docutils literal notranslate"><span class="pre">xin</span></code> or <code class="docutils literal notranslate"><span class="pre">xout</span></code>.</p></li>
+<li><p><strong>rout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – A dictionary containing the molar rates of species in the outlet mixture
+with the names of the chemicals as <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> keys. Has to be supplied
+with <code class="docutils literal notranslate"><span class="pre">rin</span></code>. Cannot be supplied with <code class="docutils literal notranslate"><span class="pre">xin</span></code> or <code class="docutils literal notranslate"><span class="pre">xout</span></code>.</p></li>
+<li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Name of the element for determining conversion. If not specified, set to the
+highest-priority (C &gt; H &gt; O) element in <code class="docutils literal notranslate"><span class="pre">feedstock</span></code>.</p></li>
+<li><p><strong>type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Conversion type. Can be one of <code class="docutils literal notranslate"><span class="pre">{&quot;reactant&quot;,</span> <span class="pre">&quot;product&quot;,</span> <span class="pre">&quot;mixed&quot;}</span></code>, selecting
+the conversion calculation algorithm.</p></li>
+<li><p><strong>product</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – <strong>Deprecated.</strong> Switches between reactant and product-based conversion.</p></li>
+<li><p><strong>standard</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Internal standard for normalizing the compositions. By default set to “N2”.
+Only used when <code class="docutils literal notranslate"><span class="pre">xin</span></code> and <code class="docutils literal notranslate"><span class="pre">xout</span></code> are supplied.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> name of the output variable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calculated conversion with <code class="docutils literal notranslate"><span class="pre">output</span></code> as its key.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.catalysis.selectivity">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">selectivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedstock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.selectivity" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates product-based atomic selectivities of all species <span class="math notranslate nohighlight">\(s\)</span>,
+excluding the <code class="docutils literal notranslate"><span class="pre">feedstock</span></code> <span class="math notranslate nohighlight">\(f\)</span>. The sum of selectivities is normalised
+to unity. Works with both mole fractions <span class="math notranslate nohighlight">\(x\)</span> as well as molar production
+rates <span class="math notranslate nohighlight">\(\dot{n}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[S_\text{el}(p) =
+\frac{\sum_{p}^{p \ne f} n_\text{el}(p) x_\text{out}(p)}
+{\sum_{s} n_\text{el}(s) x_\text{out}(s)} =
+\frac{\sum_{p}^{p \ne f} n_\text{el}(p) \dot{n}_\text{out}(p)}
+{\sum_{s} n_\text{el}(s) \dot{n}_\text{out}(s)}\]</div>
+<p>Only the outlet fractions/rates are considered. The sum on in the numerator runs
+over all products <span class="math notranslate nohighlight">\(p\)</span> (i.e. <span class="math notranslate nohighlight">\(p \ne f\)</span>), while the sum in the
+denominator runs over all species <span class="math notranslate nohighlight">\(s\)</span>. The value <span class="math notranslate nohighlight">\(n_\text{el}(s)\)</span>
+is the number of atoms of element <span class="math notranslate nohighlight">\(\text{el}\)</span> in species <span class="math notranslate nohighlight">\(s\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The selectivity calculation assumes that all products have been determined;
+it provides no information about the mass or atomic balance.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When molar rates <span class="math notranslate nohighlight">\(\dot{n}\)</span> are used, only creation rates (i.e.
+where <span class="math notranslate nohighlight">\(\dot{n}(p) &gt; 0\)</span>) are used for calculation of selectivity.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feedstock</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the feedstock. Parsed into SMILES and matched against the specified
+inlet and outlet species</p></li>
+<li><p><strong>xout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – Prefix of the columns determining the outlet composition.</p></li>
+<li><p><strong>rout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – Prefix of the columns determining the outlet molar rates.</p></li>
+<li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – The element for determining conversion. If not specified, set from <code class="docutils literal notranslate"><span class="pre">feedstock</span></code>
+using <code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.transform.chemhelpers.default_element()</span></code>.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output variables.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calculated selectivities using <code class="docutils literal notranslate"><span class="pre">output</span></code> as
+the prefix for each key.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.catalysis.catalytic_yield">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">catalytic_yield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedstock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'product'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.catalytic_yield" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the catalytic yield <span class="math notranslate nohighlight">\(Y_p\)</span>, defined as the product of conversion
+and selectivity. By default, uses product-based conversion of feedstock for an
+internal consistency with selectivity. The sum of all yields is equal to the
+conversion. Implicitly runs <a class="reference internal" href="#dgpost.transform.catalysis.conversion" title="dgpost.transform.catalysis.conversion"><code class="xref py py-func docutils literal notranslate"><span class="pre">conversion()</span></code></a> and <a class="reference internal" href="#dgpost.transform.catalysis.selectivity" title="dgpost.transform.catalysis.selectivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">selectivity()</span></code></a> on the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[Y_{p, \text{el}}(s) = X_{p, \text{el}}(s) \times S_{p, \text{el}}(s)\]</div>
+<p>Where <span class="math notranslate nohighlight">\(s\)</span> is the product species, and the subscript <span class="math notranslate nohighlight">\(p\)</span> denotes it
+is a product-based quantity, with respect to element <span class="math notranslate nohighlight">\(\text{el}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xin</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – Prefix of the columns determining the inlet composition.</p></li>
+<li><p><strong>xout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – Prefix of the columns determining the outlet composition.</p></li>
+<li><p><strong>feedstock</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the feedstock. Parsed into SMILES and matched against <code class="docutils literal notranslate"><span class="pre">xin</span></code> and
+<code class="docutils literal notranslate"><span class="pre">xout</span></code>.</p></li>
+<li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – The element for determining conversion. If not specified, set from <code class="docutils literal notranslate"><span class="pre">feedstock</span></code>
+using <code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.transform.chemhelpers.default_element()</span></code>.</p></li>
+<li><p><strong>standard</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Internal standard for normalizing the compositions. By default set to “N2”.</p></li>
+<li><p><strong>type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Select conversion calculation algorithm, see
+<a class="reference internal" href="#dgpost.transform.catalysis.conversion" title="dgpost.transform.catalysis.conversion"><code class="xref py py-func docutils literal notranslate"><span class="pre">conversion()</span></code></a>.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output variables.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calculated yields using <code class="docutils literal notranslate"><span class="pre">output</span></code> as
+the prefix for each key.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.catalysis.atom_balance">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.catalysis.</span></span><span class="sig-name descname"><span class="pre">atom_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.catalysis.atom_balance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the atom balance of an <code class="docutils literal notranslate"><span class="pre">element</span></code> <span class="math notranslate nohighlight">\(\text{el}\)</span> between the
+inlet and outlet mixtures. The total number of atoms of the specified element
+is compared between between the inlet and outlet, normalized by an internal
+<code class="docutils literal notranslate"><span class="pre">standard</span></code> if necessary:</p>
+<div class="math notranslate nohighlight">
+\[\text{atbal}_\text{el} =
+\frac{\sum_s n_\text{el}(s) x_\text{out}(s) f_e}
+{\sum_s n_\text{el}(s) x_\text{in}(s)} =
+\frac{\sum_s n_\text{el}(s) \dot{n}_\text{out}(s)}
+{\sum_s n_\text{el}(s) \dot{n}_\text{in}(s)}\]</div>
+<p>Here the sum runs over all species <span class="math notranslate nohighlight">\(s\)</span>, <span class="math notranslate nohighlight">\(n_\text{el}(s)\)</span> is the
+number of atoms of element <span class="math notranslate nohighlight">\(\text{el}\)</span> in <span class="math notranslate nohighlight">\(s\)</span>,  and <span class="math notranslate nohighlight">\(f_e\)</span>
+is the expansion factor calculated using the internal <code class="docutils literal notranslate"><span class="pre">standard</span></code> as
+<span class="math notranslate nohighlight">\(f_e = x_\text{out}(\text{i.s.}) / x_\text{in}(\text{i.s.})\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xin</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – Prefix of the columns determining the inlet composition as a mole fraction.</p></li>
+<li><p><strong>xout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – Prefix of the columns determining the outlet composition as a mole fraction.</p></li>
+<li><p><strong>rin</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – Prefix of the columns determining the inlet composition as a molar rate.</p></li>
+<li><p><strong>rout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – Prefix of the columns determining the outlet composition as a molar rate.</p></li>
+<li><p><strong>element</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The element for determining conversion. If not specified, set to <code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code>.</p></li>
+<li><p><strong>standard</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Internal standard for normalizing flows. By default set to <code class="docutils literal notranslate"><span class="pre">&quot;N2&quot;</span></code>.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output variables.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calculated atomic balance using <code class="docutils literal notranslate"><span class="pre">output</span></code> as
+the key.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../version.v1.0.html" class="btn btn-neutral float-left" title="dgpost-v1.0" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.transform.electrochemistry.html" class="btn btn-neutral float-right" title="electrochemistry: calculations relevant in electrochemistry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

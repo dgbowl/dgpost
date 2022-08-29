@@ -1,0 +1,27 @@
+dgpost.transform package
+========================
+
+.. automodule:: dgpost.transform
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dgpost.transform.circuit_utils
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dgpost.transform.catalysis
+   dgpost.transform.electrochemistry
+   dgpost.transform.impedance
+   dgpost.transform.rates
+   dgpost.transform.table

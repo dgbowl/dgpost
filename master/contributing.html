@@ -20,8 +20,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="dgpost autodocs" href="dgpost.html" />
-    <link rel="prev" title="table: utilities for operations with tables" href="stubs/dgpost.transform.table.html" /> 
+    <link rel="next" title="dgpost package" href="apidoc/dgpost.html" />
+    <link rel="prev" title="save: Save a table into a file." href="apidoc/dgpost.utils.save.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,11 +49,19 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stubs/dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul class="current">
@@ -63,7 +71,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong> autodocs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.html">dgpost package</a></li>
 </ul>
 
         </div>
@@ -93,7 +101,7 @@
   <section id="contributing-to-dgpost">
 <h1>contributing to <strong>dgpost</strong><a class="headerlink" href="#contributing-to-dgpost" title="Permalink to this headline"></a></h1>
 <p>Contributions are welcome! If you have a function or a module that you’d like to
-include in the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> library, or a design suggestion for dgpost,
+include in the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> library, or a design suggestion for dgpost,
 please make a pull-request or an issue on <a class="reference external" href="https://github.com/dgbowl/dgpost">GitHub</a>.</p>
 <section id="developer-documentation">
 <h2>Developer documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this headline"></a></h2>
@@ -116,10 +124,10 @@ information.</p>
 </section>
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h2>
-<p>Each module within the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> package should have a top-level
+<p>Each module within the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> package should have a top-level
 docstring, including a short description of the functions in the module, and code
 author names.</p>
-<p>Each function within the modules of the <a class="reference internal" href="dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> library should be
+<p>Each function within the modules of the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> library should be
 documented using a docstring within the function itself. Please document any non-
 obvious maths as equations within the docstring.</p>
 </section>
@@ -129,8 +137,8 @@ obvious maths as equations within the docstring.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="stubs/dgpost.transform.table.html" class="btn btn-neutral float-left" title="table: utilities for operations with tables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="dgpost.html" class="btn btn-neutral float-right" title="dgpost autodocs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="apidoc/dgpost.utils.save.html" class="btn btn-neutral float-left" title="save: Save a table into a file." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="apidoc/dgpost.html" class="btn btn-neutral float-right" title="dgpost package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
