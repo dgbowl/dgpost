@@ -25,8 +25,8 @@ from .utils import compare_dfs
         "flowcx.units.float.df.pkl",
         # ts3 - dataframe with ufloat values and units
         "flowcx.units.ufloat.df.pkl",
-        # ts2 - real-world dataframe
-        #"fe_gc.ufloat.df.pkl"
+        # ts4 - real-world dataframe
+        "fe_gc.ufloat.df.pkl"
     ],
 )
 def test_save_vs_pkl(table, filetype, datadir):
@@ -36,7 +36,7 @@ def test_save_vs_pkl(table, filetype, datadir):
     dgpost.utils.save(table=pd.read_pickle(table), path=path, type=filetype)
     df = dgpost.utils.load(**{"path": path, "type": "table"})
     ref = dgpost.utils.load(**{"path": refp, "type": "table"})
-    compare_dfs(ref, df)
+    compare_dfs(ref, df, rtol=1e-5 if filetype == "pkl" else 2e-1)
 
 
 @pytest.mark.parametrize(
