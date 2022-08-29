@@ -26,7 +26,7 @@ from .utils import compare_dfs
         # ts3 - dataframe with ufloat values and units
         "flowcx.units.ufloat.df.pkl",
         # ts4 - real-world dataframe
-        "fe_gc.ufloat.df.pkl"
+        "fe_gc.ufloat.df.pkl",
     ],
 )
 def test_save_vs_pkl(table, filetype, datadir):
@@ -56,7 +56,7 @@ def test_save_vs_pkl(table, filetype, datadir):
         # ts1 - dataframe with ufloat values
         "flowcx.ufloat.df.pkl",
         # ts2 - real-world dataframe
-        "fe_gc.ufloat.df.pkl"
+        "fe_gc.ufloat.df.pkl",
     ],
 )
 def test_save_vs_csv(table, filetype, datadir):
