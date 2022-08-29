@@ -22,7 +22,6 @@ import json
 import pandas as pd
 from yadg.core import validate_datagram
 from uncertainties import ufloat_fromstr, UFloat
-import re
 from typing import Union, Any
 import logging
 from dgpost.utils.helpers import arrow_to_multiindex
@@ -31,8 +30,11 @@ logger = logging.getLogger(__name__)
 
 
 def _parse_ufloat(v: Union[str, Any]) -> Union[UFloat, Any]:
-    if isinstance(v, str) and re.match(r"[0-9\.]+\+/-[0-9\.]+", v):
-        return ufloat_fromstr(v)
+    if isinstance(v, str):
+        try:
+            return ufloat_fromstr(v)
+        except ValueError:
+            return v
     else:
         return v
 

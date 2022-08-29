@@ -93,6 +93,7 @@ def save(
         savedf.columns = pd.Index(names)
     else:
         savedf.columns = pd.MultiIndex.from_tuples(names)
+    savedf = savedf.sort_index(axis="columns")
     if type == "csv":
         logger.debug("Writing csv into '%s'." % path)
         savedf.to_csv(path)
