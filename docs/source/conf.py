@@ -32,6 +32,7 @@ extensions = [
     "sphinx.ext.autodoc",
     # "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.autosummary",
     "sphinx_autodoc_typehints",
     "sphinx_rtd_theme",
@@ -68,7 +69,7 @@ html_favicon = "./images/dgpost_ico.png"
 
 # -- Extension configuration -------------------------------------------------
 show_authors = True
-autosummary_generate = True
+autosummary_generate = False
 autodoc_default_flags = ["members", "undoc-members", "show-inheritance"]
 autodoc_member_order = "bysource"
 autodoc_pydantic_model_show_field_summary = False

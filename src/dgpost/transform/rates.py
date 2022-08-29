@@ -11,6 +11,13 @@ is useful for converting gas-phase or liquid flows, while
 :func:`~dgpost.transform.rates.batch_to_molar` can be used to determine formation 
 rates from the concentration profile of a batch mixture.
 
+.. rubric:: Functions
+
+.. autosummary::
+  
+    batch_to_molar
+    flow_to_molar
+
 """
 import pint
 from yadg.dgutils import ureg

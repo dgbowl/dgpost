@@ -6,3 +6,4 @@ dist/
 *.egg
 build/
 public/
+docs/source/apidoc/

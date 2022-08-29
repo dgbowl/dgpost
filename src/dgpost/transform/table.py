@@ -1,6 +1,8 @@
 """
 **table**: utilities for operations with tables
 -----------------------------------------------
+.. codeauthor:: 
+    Peter Kraus
 
 Provides convenience functions for operating with tables, including
 :func:`~dgpost.transform.table.combine_namespaces` for combining ``->``-separated
@@ -8,8 +10,13 @@ namespaces of values or chemicals into a single namespace; and
 :func:`~dgpost.transform.table.combine_columns` for combining individual columns
 into a single column.
 
-.. codeauthor:: 
-    Peter Kraus
+.. rubric:: Functions
+
+.. autosummary::
+   
+    combine_namespaces
+    combine_columns
+
 
 """
 import pint

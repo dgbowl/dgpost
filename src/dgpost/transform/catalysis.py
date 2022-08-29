@@ -10,6 +10,15 @@ Includes functions to calculate the reactant- and product-based
 :func:`~dgpost.transform.catalysis.catalytic_yield`, and 
 :func:`~dgpost.transform.catalysis.atom_balance`.
 
+.. rubric:: Functions
+
+.. autosummary::
+
+    atom_balance
+    catalytic_yield
+    conversion
+    selectivity
+
 Names of compounds within the specified mixtures are parsed to SMILES, and the
 cross-matching of the ``feestock``, internal ``standard``, and the components of 
 ``xin`` and ``xout`` (or ``rin`` and ``rout``) is performed using these SMILES.
