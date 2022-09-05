@@ -177,7 +177,7 @@ def prune_gradient(
 
     Returns
     -------
-    retvals: dict[str, pint.Quantity]
+    ret: dict[str, pint.Quantity]
         A dictionary containing the pruned values of ``real``, ``imag`` and ``freq``
         data stored in namespaced :class:`pint.Quantities`.
 
@@ -232,19 +232,30 @@ def qf_kajfez(
 
     Parameters
     ----------
-    fvals
-        Nominal values of the frequencies
-    fsigs
-        Error values of the frequencies
-    gvals
-        Complex reflection coefficient values, :math:`\\Gamma(f)`.
-    absgvals
-        Absolute values of the reflection coefficient, :math:`|\\Gamma(f)|`
+    real
+        A :class:`pint.Quantity` object containing the real part of the reflection
+        coefficient data, :math:`\\text{Re}(\\Gamma)`. Unitless.
+
+    imag
+        A :class:`pint.Quantity` object containing the imaginary part of the reflection
+        coefficient data, :math:`\\text{Im}(\\Gamma)`. Unitless.
+
+    freq
+        A :class:`pint.Quantity` object containing the frequencies :math:`f`
+        corresponding to the reflection coefficient data. Defaults to ``Hz``.
+    
+    iterations
+        A number of iterations for circle-fitting refinement. Default is ``5``.
+
+    output
+        Name for the output namespace. Defaults to no namespace.
 
     Returns
     -------
-    (Q0, f0): tuple[uc.ufloat, uc.ufloat]
-        Fitted quality factor and central frequency of the data.
+    ret: dict[str, pint.Quantity]
+        An optionally namespaced dictionary containing the fitted values of 
+        :math:`Q_0` and :math:`f_0` as :class:`pint.Quantities`.
+
     """
     fren, fres, freu = separate_data(freq)
     im, _, _ = separate_data(imag)
@@ -349,36 +360,43 @@ def qf_naive(
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
-    Kajfez's circle-fitting algorithm.
+    Naive quality factor fitting algorithm.
 
-    Adapted with permission from Q0REFL.m, which is a part of [Kajfez1994]_. This 
-    fitting process attempts to fit a circle to a near-circular section of points 
-    on a Smith's chart. It's robust, quick, and reliable, and produces reasonable 
-    error estimates.
+    This fit finds the central frequency :math:`f_0`, determines the full-width at
+    the half-maximum :math:`\\Delta f_{HM}` by linear interpolation, and calculates
+    the quality factor using :math:`Q_0 = f_0 / \\Delta f_{HM}`.
 
-    Parameters
-    ----------
-    fvals
-        Nominal values of the frequencies
-    fsigs
-        Error values of the frequencies
-    gvals
-        Complex reflection coefficient values, :math:`\\Gamma(f)`.
-    absgvals
-        Absolute values of the reflection coefficient, :math:`|\\Gamma(f)|`
+    .. note::
+
+        This quality factor fitting algorithm is unreliable and has been implemented
+        only for testing purposes. Use :func:`qf_kajfez` for any production runs!
+
+    real
+        A :class:`pint.Quantity` object containing the real part of the reflection
+        coefficient data, :math:`\\text{Re}(\\Gamma)`. Unitless.
+
+    imag
+        A :class:`pint.Quantity` object containing the imaginary part of the reflection
+        coefficient data, :math:`\\text{Im}(\\Gamma)`. Unitless.
+
+    freq
+        A :class:`pint.Quantity` object containing the frequencies :math:`f`
+        corresponding to the reflection coefficient data. Defaults to ``Hz``.
+
+    output
+        Name for the output namespace. Defaults to no namespace.
 
     Returns
     -------
-    (Q0, f0): tuple[uc.ufloat, uc.ufloat]
-        Fitted quality factor and central frequency of the data.
+    ret: dict[str, pint.Quantity]
+        An optionally namespaced dictionary containing the fitted values of 
+        :math:`Q_0` and :math:`f_0` as :class:`pint.Quantities`.
     """
 
     re, _, _ = separate_data(real)
     im, _, _ = separate_data(imag)
     fr, fs, fu = separate_data(freq)
-
     absgamma = np.abs(re + 1j * im)
-
     maxg = absgamma.max()
     ming = absgamma.min()
     absgamma = (absgamma - maxg) / (ming - maxg)
