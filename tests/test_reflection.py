@@ -7,6 +7,7 @@ import numpy as np
 from dgpost.utils import transform
 from .utils import compare_dfs
 
+
 @pytest.mark.parametrize(
     "func, spec",
     [
@@ -121,7 +122,6 @@ def test_reflection_qf_kajfez_df(infile, spec, outfile, datadir):
     print(f"{ref.head()=}")
     df.to_pickle(outfile)
     compare_dfs(ref, df)
-
 
 
 @pytest.mark.parametrize(

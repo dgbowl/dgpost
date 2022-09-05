@@ -42,7 +42,7 @@ def _find_peak(near, absgamma, freq) -> int:
         logmag = -10 * np.log10(absgamma)
         return np.argmax(logmag)
     else:
-        dp = len(freq)//10
+        dp = len(freq) // 10
         idx = np.argmax(freq > near)
         s = max(0, idx - dp)
         e = min(len(freq), idx + dp)
@@ -68,9 +68,9 @@ def prune_cutoff(
     Cutoff-based reflection coefficient trace prune.
 
     Prunes the reflection trace around a single peak position in :math:`|\\Gamma|`.
-    The pruning is performed using a cutoff value in the :math:`|\\Gamma|`. Should 
+    The pruning is performed using a cutoff value in the :math:`|\\Gamma|`. Should
     be used with :func:`qf_kajfez`. Unless a frequency value using ``near`` is
-    specified, the pruning is performed around the global maximum in 
+    specified, the pruning is performed around the global maximum in
     :math:`\\log(|\\Gamma|)`.
 
     Parameters
@@ -88,7 +88,7 @@ def prune_cutoff(
         corresponding to the reflection coefficient data. Defaults to ``Hz``.
 
     near
-        A frequency used to select around which peak to prune. By default, pruning 
+        A frequency used to select around which peak to prune. By default, pruning
         is performed around the highest peak in :math:`\\text{log}|\\Gamma|`.
 
     cutoff
@@ -133,10 +133,7 @@ def prune_cutoff(
 
 
 @load_data(
-    ("real", None, list),
-    ("imag", None, list),
-    ("freq", "Hz", list),
-    ("near", "Hz")
+    ("real", None, list), ("imag", None, list), ("freq", "Hz", list), ("near", "Hz")
 )
 def prune_gradient(
     real: pint.Quantity,
@@ -150,7 +147,7 @@ def prune_gradient(
     Gradient-based reflection coefficient trace prune.
 
     Prunes the reflection trace around a single peak position in :math:`|\\Gamma|`.
-    The pruning is performed using the a threshold value in the gradient of 
+    The pruning is performed using the a threshold value in the gradient of
     :math:`|\\Gamma|`. Unless a frequency value using ``near`` is specified, the
     pruning is performed around the global maximum in :math:`\\log(|\\Gamma|)`.
 
@@ -169,7 +166,7 @@ def prune_gradient(
         corresponding to the reflection coefficient data. Defaults to ``Hz``.
 
     near
-        A frequency used to select around which peak to prune. By default, pruning 
+        A frequency used to select around which peak to prune. By default, pruning
         is performed around the highest peak in :math:`\\text{log}|\\Gamma|`.
 
     threshold
@@ -191,9 +188,9 @@ def prune_gradient(
     im, _, _ = separate_data(imag)
     absgamma = np.abs(re + 1j * im)
     grad = np.gradient(absgamma)
-    
+
     pi = _find_peak(near, absgamma, freq)
-    
+
     for l in range(pi - 1):
         li = pi - l
         if abs(grad[li]) > threshold or l < 100:
@@ -229,9 +226,9 @@ def qf_kajfez(
     """
     Kajfez's circle-fitting algorithm.
 
-    Adapted with permission from Q0REFL.m, which is a part of [Kajfez1994]_. This 
-    fitting process attempts to fit a circle to a near-circular section of points 
-    on a Smith's chart. It's robust, quick, and reliable, and produces reasonable 
+    Adapted with permission from Q0REFL.m, which is a part of [Kajfez1994]_. This
+    fitting process attempts to fit a circle to a near-circular section of points
+    on a Smith's chart. It's robust, quick, and reliable, and produces reasonable
     error estimates.
 
     Parameters
@@ -247,7 +244,7 @@ def qf_kajfez(
     freq
         A :class:`pint.Quantity` object containing the frequencies :math:`f`
         corresponding to the reflection coefficient data. Defaults to ``Hz``.
-    
+
     iterations
         A number of iterations for circle-fitting refinement. Default is ``5``.
 
@@ -257,7 +254,7 @@ def qf_kajfez(
     Returns
     -------
     ret: dict[str, pint.Quantity]
-        An optionally namespaced dictionary containing the fitted values of 
+        An optionally namespaced dictionary containing the fitted values of
         :math:`Q_0` and :math:`f_0` as :class:`pint.Quantities`.
 
     """
@@ -393,7 +390,7 @@ def qf_naive(
     Returns
     -------
     ret: dict[str, pint.Quantity]
-        An optionally namespaced dictionary containing the fitted values of 
+        An optionally namespaced dictionary containing the fitted values of
         :math:`Q_0` and :math:`f_0` as :class:`pint.Quantities`.
 
     """
@@ -412,7 +409,6 @@ def qf_naive(
     qname = "Q0" if output is None else f"{output}->Q0"
     fname = "f0" if output is None else f"{output}->f0"
     return {qname: Q0, fname: f0}
-
 
 
 @load_data(
@@ -457,10 +453,11 @@ def qf_lorentz(
     Returns
     -------
     ret: dict[str, pint.Quantity]
-        An optionally namespaced dictionary containing the fitted values of 
+        An optionally namespaced dictionary containing the fitted values of
         :math:`Q_0` and :math:`f_0` as :class:`pint.Quantities`.
 
     """
+
     def lorentzian(x, a, x0, gam, c):
         return a * (gam**2 / ((x - x0) ** 2 + gam**2)) + c
 
