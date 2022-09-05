@@ -29,6 +29,7 @@ factors to the reflection trace data. The use of the peak-height based pruning v
 """
 from dgpost.utils.helpers import separate_data, load_data
 import pint
+from yadg.dgutils import ureg
 import numpy as np
 import uncertainties as uc
 
@@ -64,7 +65,9 @@ def prune_cutoff(
 
     Prunes the reflection trace around a single peak position in :math:`|\\Gamma|`.
     The pruning is performed using a cutoff value in the :math:`|\\Gamma|`. Should 
-    be used with :func:`qf_kajfez`.
+    be used with :func:`qf_kajfez`. Unless a frequency value using ``near`` is
+    specified, the pruning is performed around the global maximum in 
+    :math:`\\log(|\\Gamma|)`.
 
     Parameters
     ----------
@@ -140,11 +143,12 @@ def prune_gradient(
     output: str = "pruned",
 ) -> dict[str, pint.Quantity]:
     """
-    Gradient-based prune.
+    Gradient-based reflection coefficient trace prune.
 
     Prunes the reflection trace around a single peak position in :math:`|\\Gamma|`.
     The pruning is performed using the a threshold value in the gradient of 
-    :math:`|\\Gamma|`.
+    :math:`|\\Gamma|`. Unless a frequency value using ``near`` is specified, the
+    pruning is performed around the global maximum in :math:`\\log(|\\Gamma|)`.
 
     Parameters
     ----------
@@ -330,5 +334,59 @@ def qf_kajfez(
         qname: pint.Quantity(uc.ufloat(Q01, sdQ01)),
         fname: pint.Quantity(uc.ufloat(f011, fres[idia]), freu),
     }
-    print(ret)
     return ret
+
+
+@load_data(
+    ("real", None, list),
+    ("imag", None, list),
+    ("freq", "Hz", list),
+)
+def qf_naive(
+    real: pint.Quantity,
+    imag: pint.Quantity,
+    freq: pint.Quantity,
+    output: str = None,
+) -> dict[str, pint.Quantity]:
+    """
+    Kajfez's circle-fitting algorithm.
+
+    Adapted with permission from Q0REFL.m, which is a part of [Kajfez1994]_. This 
+    fitting process attempts to fit a circle to a near-circular section of points 
+    on a Smith's chart. It's robust, quick, and reliable, and produces reasonable 
+    error estimates.
+
+    Parameters
+    ----------
+    fvals
+        Nominal values of the frequencies
+    fsigs
+        Error values of the frequencies
+    gvals
+        Complex reflection coefficient values, :math:`\\Gamma(f)`.
+    absgvals
+        Absolute values of the reflection coefficient, :math:`|\\Gamma(f)|`
+
+    Returns
+    -------
+    (Q0, f0): tuple[uc.ufloat, uc.ufloat]
+        Fitted quality factor and central frequency of the data.
+    """
+
+    re, _, _ = separate_data(real)
+    im, _, _ = separate_data(imag)
+    fr, fs, fu = separate_data(freq)
+
+    absgamma = np.abs(re + 1j * im)
+
+    maxg = absgamma.max()
+    ming = absgamma.min()
+    absgamma = (absgamma - maxg) / (ming - maxg)
+    ai = np.argmax(absgamma)
+    lf = np.interp(0.5, absgamma[:ai], fr[:ai])
+    rf = np.interp(0.5, absgamma[ai:][::-1], fr[ai:][::-1])
+    f0 = pint.Quantity(uc.ufloat(fr[ai], fs[ai]), fu)
+    Q0 = f0 / pint.Quantity(uc.ufloat(rf, fs[ai]) - uc.ufloat(lf, fs[ai]), fu)
+    qname = "Q0" if output is None else f"{output}->Q0"
+    fname = "f0" if output is None else f"{output}->f0"
+    return {qname: Q0, fname: f0}
