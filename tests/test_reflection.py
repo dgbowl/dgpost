@@ -2,8 +2,8 @@ import os
 import pytest
 import pandas as pd
 import numpy as np
+import pint
 
-from dgpost.transform import reflection
 from dgpost.utils import transform
 from .utils import compare_dfs
 
@@ -20,9 +20,18 @@ from yadg.dgutils import ureg
                     "freq": "freq",
                     "imag": "imag",
                     "real": "real",
+                    "near": 7.17e9,
                     "cutoff": 0.4,
-                    "output": "S11",
-                }
+                    "output": "S11(0)",
+                },
+                {
+                    "freq": "freq",
+                    "imag": "imag",
+                    "real": "real",
+                    "near": 7.35e9,
+                    "cutoff": 0.4,
+                    "output": "S11(1)",
+                },
             ],
         ),
         (  # ts1 - prune_gradient defaults
@@ -32,9 +41,18 @@ from yadg.dgutils import ureg
                     "freq": "freq",
                     "imag": "imag",
                     "real": "real",
+                    "near": 7.17e9,
                     "threshold": 1e-6,
-                    "output": "S11",
-                }
+                    "output": "S11(0)",
+                },
+                {
+                    "freq": "freq",
+                    "imag": "imag",
+                    "real": "real",
+                    "near": 7.35e9,
+                    "threshold": 1e-6,
+                    "output": "S11(1)",
+                },
             ],
         ),
     ],
@@ -97,7 +115,7 @@ def test_reflection_prune_df(func, spec, datadir):
         ),
     ],
 )
-def test_reflection_fit_kajfez_df(infile, spec, outfile, datadir):
+def test_reflection_qf_kajfez_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
     df = transform(df, "reflection.qf_kajfez", spec)

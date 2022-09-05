@@ -2,7 +2,8 @@
 **reflection**: utilities for processing reflection coefficient traces
 ----------------------------------------------------------------------
 .. codeauthor:: 
-    Peter Kraus
+    Peter Kraus,
+    Darko Kajfez
 
 Provides several functions for processing reflection coefficient traces. Includes
 a few trace pruning functions, as well as several algorithms for fitting of quality
@@ -28,32 +29,42 @@ factors to the reflection trace data. The use of the peak-height based pruning v
 """
 from dgpost.utils.helpers import separate_data, load_data
 import pint
-from yadg.dgutils import ureg
 import numpy as np
-from scipy.signal import find_peaks
 import uncertainties as uc
+
+def _find_peak(near, absgamma, freq) -> int:
+    if near is None:
+        logmag = -10 * np.log10(absgamma)
+        return np.argmax(logmag)
+    else:
+        dp = len(freq)//10
+        idx = np.argmax(freq > near)
+        s = max(0, idx - dp)
+        e = min(len(freq), idx + dp)
+        logmag = -10 * np.log10(absgamma[s:e])
+        return s + np.argmax(logmag)
 
 
 @load_data(
     ("real", None, list),
     ("imag", None, list),
     ("freq", "Hz", list),
+    ("near", "Hz"),
 )
 def prune_cutoff(
     real: pint.Quantity,
     imag: pint.Quantity,
     freq: pint.Quantity,
+    near: pint.Quantity = None,
     cutoff: float = 0.4,
-    height: float = 1.0,
-    distance: float = 5000.0,
     output: str = "pruned",
 ) -> dict[str, pint.Quantity]:
     """
     Cutoff-based reflection coefficient trace prune.
 
-    Finds peak positions in :math:`\\text{abs}(\\Gamma)`, and then for each identified
-    peak, prunes the trace around the peak maximum, using the cutoff as a fraction
-    of the normalized peak height.
+    Prunes the reflection trace around a single peak position in :math:`|\\Gamma|`.
+    The pruning is performed using a cutoff value in the :math:`|\\Gamma|`. Should 
+    be used with :func:`qf_kajfez`.
 
     Parameters
     ----------
@@ -69,19 +80,16 @@ def prune_cutoff(
         A :class:`pint.Quantity` object containing the frequencies :math:`f`
         corresponding to the reflection coefficient data. Defaults to ``Hz``.
 
+    near
+        A frequency used to select around which peak to prune. By default, pruning 
+        is performed around the highest peak in :math:`\\text{log}|\\Gamma|`.
+
     cutoff
-        Relative peak height below which the trace is pruned Defaults to ``0.4``.
-
-    height
-        Peak finding height parameter. Defaults to ``1.0``.
-
-    distance
-        Peak finding distance parameter. Defaults to ``5000.0``.
+        Relative peak height below which the reflection trace should be pruned.
+        Uses a fraction of normalised :math:`|\\Gamma|`. Defaults to ``0.4``.
 
     output
-        Prefix for the output namespaces. If multiple peaks are found, the namespaces
-        will be stored under  ``f"{output}({idx})"``, with ``freq``, ``imag`` and
-        ``real`` as the columns within each namespace. Defaults to ``"pruned"``.
+        Name for the output namespace. Defaults to ``"pruned"``.
 
     Returns
     -------
@@ -92,33 +100,28 @@ def prune_cutoff(
     """
     re, _, _ = separate_data(real)
     im, _, _ = separate_data(imag)
-
     absgamma = np.abs(re + 1j * im)
+    pi = _find_peak(near, absgamma, freq)
     max_v = absgamma.max()
-    peaks, _ = find_peaks(-10 * np.log10(absgamma), height=height, distance=distance)
-    limits = []
-    for pi in peaks:
-        min_v = absgamma[pi]
-        norm = absgamma - (min_v / (max_v / min_v))
-        for l in range(pi - 1):
-            li = pi - l
-            if norm[li] <= cutoff:
-                pass
-            else:
-                break
-        for r in range(len(absgamma) - pi):
-            ri = pi + r
-            if norm[ri] <= cutoff:
-                pass
-            else:
-                break
-        limits.append((li + 1, ri - 1))
+    min_v = absgamma[pi]
+    norm = absgamma - (min_v / (max_v / min_v))
+    for l in range(pi - 1):
+        li = pi - l
+        if norm[li] <= cutoff:
+            pass
+        else:
+            break
+    for r in range(len(absgamma) - pi):
+        ri = pi + r
+        if norm[ri] <= cutoff:
+            pass
+        else:
+            break
+    ll, lr = (li + 1, ri - 1)
     ret = {}
-    for pi, lim in enumerate(limits):
-        tag = f"{output}({pi})" if len(limits) > 1 else output
-        ret[f"{tag}->imag"] = imag[lim[0] : lim[1]]
-        ret[f"{tag}->real"] = real[lim[0] : lim[1]]
-        ret[f"{tag}->freq"] = freq[lim[0] : lim[1]]
+    ret[f"{output}->imag"] = imag[ll:lr]
+    ret[f"{output}->real"] = real[ll:lr]
+    ret[f"{output}->freq"] = freq[ll:lr]
     return ret
 
 
@@ -126,22 +129,22 @@ def prune_cutoff(
     ("real", None, list),
     ("imag", None, list),
     ("freq", "Hz", list),
+    ("near", "Hz")
 )
 def prune_gradient(
     real: pint.Quantity,
     imag: pint.Quantity,
     freq: pint.Quantity,
+    near: pint.Quantity = None,
     threshold: float = 1e-6,
-    height: float = 1.0,
-    distance: float = 5000.0,
     output: str = "pruned",
 ) -> dict[str, pint.Quantity]:
     """
     Gradient-based prune.
 
-    Finds peak positions in :math:`\\text{abs}(\\Gamma)`, and then for each identified
-    peak, prunes the trace around the peak maximum, using the a threshold value in the
-    gradient of :math:`\\text{abs}(\\Gamma)` as the criterium.
+    Prunes the reflection trace around a single peak position in :math:`|\\Gamma|`.
+    The pruning is performed using the a threshold value in the gradient of 
+    :math:`|\\Gamma|`.
 
     Parameters
     ----------
@@ -157,20 +160,16 @@ def prune_gradient(
         A :class:`pint.Quantity` object containing the frequencies :math:`f`
         corresponding to the reflection coefficient data. Defaults to ``Hz``.
 
+    near
+        A frequency used to select around which peak to prune. By default, pruning 
+        is performed around the highest peak in :math:`\\text{log}|\\Gamma|`.
+
     threshold
         Threshold for the gradient in the :math:`\\text{abs}(\\Gamma)` below which the
         trace is pruned. Defaults to ``1e-6``.
 
-    height
-        Peak finding height parameter. Defaults to ``1.0``.
-
-    distance
-        Peak finding distance parameter. Defaults to ``5000.0``.
-
     output
-        Prefix for the output namespaces. If multiple peaks are found, the namespaces
-        will be stored under  ``f"{output}({idx})"``, with ``freq``, ``imag`` and
-        ``real`` as the columns within each namespace. Defaults to ``"pruned"``.
+        Name for the output namespace. Defaults to ``"pruned"``.
 
     Returns
     -------
@@ -182,32 +181,28 @@ def prune_gradient(
 
     re, _, _ = separate_data(real)
     im, _, _ = separate_data(imag)
-
     absgamma = np.abs(re + 1j * im)
     grad = np.gradient(absgamma)
-    peaks, _ = find_peaks(-10 * np.log10(absgamma), height=height, distance=distance)
-    limits = []
-
-    for pi in peaks:
-        for l in range(pi - 1):
-            li = pi - l
-            if abs(grad[li]) > threshold or l < 100:
-                pass
-            else:
-                break
-        for r in range(absgamma.size - pi):
-            ri = pi + r
-            if abs(grad[ri]) > threshold or r < 100:
-                pass
-            else:
-                break
-        limits.append((li + 1, ri - 1))
+    
+    pi = _find_peak(near, absgamma, freq)
+    
+    for l in range(pi - 1):
+        li = pi - l
+        if abs(grad[li]) > threshold or l < 100:
+            pass
+        else:
+            break
+    for r in range(absgamma.size - pi):
+        ri = pi + r
+        if abs(grad[ri]) > threshold or r < 100:
+            pass
+        else:
+            break
+    ll, lr = (li + 1, ri - 1)
     ret = {}
-    for pi, lim in enumerate(limits):
-        tag = f"{output}({pi})" if len(limits) > 1 else output
-        ret[f"{tag}->imag"] = imag[lim[0] : lim[1]]
-        ret[f"{tag}->real"] = real[lim[0] : lim[1]]
-        ret[f"{tag}->freq"] = freq[lim[0] : lim[1]]
+    ret[f"{output}->imag"] = imag[ll:lr]
+    ret[f"{output}->real"] = real[ll:lr]
+    ret[f"{output}->freq"] = freq[ll:lr]
     return ret
 
 
@@ -224,15 +219,12 @@ def qf_kajfez(
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
-    Kajfez's circle-fitting program.
+    Kajfez's circle-fitting algorithm.
 
-    Adapted from Q0REFL.m, which is a part of Kajfez, D.: "Linear fractional curve
-    fitting for measurement of high Q factors", IEEE Trans. Microwave Theory Techn.
-    42 (1994) 1149-1153.
-
-    This fitting process attempts to fit a circle to a near-circular section of
-    points on a Smith's chart. It's robust, quick, and reliable, and produces
-    reasonable error estimates.
+    Adapted with permission from Q0REFL.m, which is a part of [Kajfez1994]_. This 
+    fitting process attempts to fit a circle to a near-circular section of points 
+    on a Smith's chart. It's robust, quick, and reliable, and produces reasonable 
+    error estimates.
 
     Parameters
     ----------

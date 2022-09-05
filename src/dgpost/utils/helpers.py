@@ -315,8 +315,25 @@ def load_data(*cols: tuple[str, str, type]):
                 units = {}
                 # if a "list" is specified as type, we need to transpose the input:
                 if list in {col[2] for col in fcols}:
-                    row_k = data_kwargs.keys()
-                    row_v = data_kwargs.values()
+                    if all([col[2] is list for col in fcols]):
+                        row_k = data_kwargs.keys()
+                        row_v = data_kwargs.values()
+                    else:
+                        row_k = []
+                        row_v = []
+                        to_pad = []
+                        for k, v in data_kwargs.items():
+                            for col in fcols:
+                                if k == col[0] and col[2] is list:
+                                    row_k.append(k)
+                                    row_v.append(v)
+                                elif k == col[0] and col[2] is None:
+                                    row_k.append(k)
+                                    row_v.append([v])
+                                    to_pad.append(len(row_k) - 1)
+                        l = max([len(i) for i in row_v])
+                        for i in to_pad:
+                            row_v[i] = row_v[i] * l
                     ret_data = {}
                     for r in zip(*row_v):
                         row_data = {k: v for k, v in zip(row_k, r)}
