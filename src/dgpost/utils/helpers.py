@@ -145,6 +145,8 @@ def pQ(
     """
     if df.columns.nlevels == 1:
         vals = df[col].array
+    elif isinstance(col, tuple) and len(col) == df.columns.nlevels:
+        vals = df[col].array
     else:
         vals = df[col].squeeze().array
     if unit is not None:
