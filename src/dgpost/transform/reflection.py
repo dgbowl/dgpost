@@ -18,6 +18,8 @@ factors to the reflection trace data. The use of the peak-height based pruning v
     prune_cutoff
     prune_gradient
     qf_kajfez
+    qf_naive
+    qf_lorentz
 
 
 .. [Kajfez1994] Kajfez, D.
@@ -27,11 +29,13 @@ factors to the reflection trace data. The use of the peak-height based pruning v
 
 
 """
-from dgpost.utils.helpers import separate_data, load_data
 import pint
-from yadg.dgutils import ureg
 import numpy as np
 import uncertainties as uc
+from scipy.optimize import curve_fit
+
+from dgpost.utils.helpers import separate_data, load_data
+
 
 def _find_peak(near, absgamma, freq) -> int:
     if near is None:
@@ -360,7 +364,7 @@ def qf_naive(
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
-    Naive quality factor fitting algorithm.
+    Naive quality factor fitting algorithm using FWHM.
 
     This fit finds the central frequency :math:`f_0`, determines the full-width at
     the half-maximum :math:`\\Delta f_{HM}` by linear interpolation, and calculates
@@ -391,8 +395,8 @@ def qf_naive(
     ret: dict[str, pint.Quantity]
         An optionally namespaced dictionary containing the fitted values of 
         :math:`Q_0` and :math:`f_0` as :class:`pint.Quantities`.
-    """
 
+    """
     re, _, _ = separate_data(real)
     im, _, _ = separate_data(imag)
     fr, fs, fu = separate_data(freq)
@@ -405,6 +409,78 @@ def qf_naive(
     rf = np.interp(0.5, absgamma[ai:][::-1], fr[ai:][::-1])
     f0 = pint.Quantity(uc.ufloat(fr[ai], fs[ai]), fu)
     Q0 = f0 / pint.Quantity(uc.ufloat(rf, fs[ai]) - uc.ufloat(lf, fs[ai]), fu)
+    qname = "Q0" if output is None else f"{output}->Q0"
+    fname = "f0" if output is None else f"{output}->f0"
+    return {qname: Q0, fname: f0}
+
+
+
+@load_data(
+    ("real", None, list),
+    ("imag", None, list),
+    ("freq", "Hz", list),
+)
+def qf_lorentz(
+    real: pint.Quantity,
+    imag: pint.Quantity,
+    freq: pint.Quantity,
+    output: str = None,
+) -> dict[str, pint.Quantity]:
+    """
+    Quality factor fitting algorithm using Lorentzian approximation.
+
+    This fit fits a Lorentzian to the (pruned) data. The :math:`f_0 = x_0`, and the
+    :math:`Q_0` is calculated from :math:`x_0 / \\Delta x = x_0 / (2\\gamma)`.
+    Uncertainties of :math:`f_0` and :math:`Q_0` are calculated using the
+    covariance matrix of the fit of :math:`L(x)` to :math:`|\\Gamma(f)|`.
+
+    .. note::
+
+        This quality factor fitting algorithm is unreliable and has been implemented
+        only for testing purposes. Use :func:`qf_kajfez` for any production runs!
+
+    real
+        A :class:`pint.Quantity` object containing the real part of the reflection
+        coefficient data, :math:`\\text{Re}(\\Gamma)`. Unitless.
+
+    imag
+        A :class:`pint.Quantity` object containing the imaginary part of the reflection
+        coefficient data, :math:`\\text{Im}(\\Gamma)`. Unitless.
+
+    freq
+        A :class:`pint.Quantity` object containing the frequencies :math:`f`
+        corresponding to the reflection coefficient data. Defaults to ``Hz``.
+
+    output
+        Name for the output namespace. Defaults to no namespace.
+
+    Returns
+    -------
+    ret: dict[str, pint.Quantity]
+        An optionally namespaced dictionary containing the fitted values of 
+        :math:`Q_0` and :math:`f_0` as :class:`pint.Quantities`.
+
+    """
+    def lorentzian(x, a, x0, gam, c):
+        return a * (gam**2 / ((x - x0) ** 2 + gam**2)) + c
+
+    re, _, _ = separate_data(real)
+    im, _, _ = separate_data(imag)
+    fr, _, fu = separate_data(freq)
+    absgamma = np.abs(re + 1j * im)
+    popt, pcov = curve_fit(
+        lorentzian,
+        fr,
+        absgamma,
+        sigma=absgamma,
+        absolute_sigma=True,
+        p0=[-0.5, fr[np.argmin(absgamma)], 1e5, 1],
+    )
+    perr = np.sqrt(np.diag(pcov))
+    x0 = uc.ufloat(popt[1], perr[1])
+    gam = uc.ufloat(popt[2], perr[2])
+    f0 = pint.Quantity(x0, fu)
+    Q0 = pint.Quantity(x0 / (2 * gam))
     qname = "Q0" if output is None else f"{output}->Q0"
     fname = "f0" if output is None else f"{output}->f0"
     return {qname: Q0, fname: f0}

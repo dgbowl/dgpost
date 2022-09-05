@@ -156,3 +156,37 @@ def test_reflection_qf_naive_df(infile, spec, outfile, datadir):
     print(f"{ref.head()=}")
     df.to_pickle(outfile)
     compare_dfs(ref, df)
+
+
+@pytest.mark.parametrize(
+    "infile, spec, outfile",
+    [
+        (  # ts0 - fit_kajfez first peak
+            "ref.prune_gradient.pkl",
+            [
+                {
+                    "freq": "S11(0)->freq",
+                    "imag": "S11(0)->imag",
+                    "real": "S11(0)->real",
+                    "output": "S11(0)",
+                },
+                {
+                    "freq": "S11(1)->freq",
+                    "imag": "S11(1)->imag",
+                    "real": "S11(1)->real",
+                    "output": "S11(1)",
+                },
+            ],
+            "ref.fit_lorentz.pkl",
+        )
+    ],
+)
+def test_reflection_qf_lorentz_df(infile, spec, outfile, datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle(infile)
+    df = transform(df, "reflection.qf_lorentz", spec)
+    print(f"{df.head()=}")
+    ref = pd.read_pickle(outfile)
+    print(f"{ref.head()=}")
+    df.to_pickle(outfile)
+    compare_dfs(ref, df)
