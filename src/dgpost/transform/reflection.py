@@ -22,6 +22,7 @@ import numpy as np
 from scipy.signal import find_peaks
 import uncertainties as uc
 
+
 @load_data(
     ("real", None, list),
     ("imag", None, list),
@@ -39,7 +40,7 @@ def prune_cutoff(
     """
     Cutoff-based reflection coefficient trace prune.
 
-    Finds peak positions in :math:`\\text{abs}(\\Gamma)`, and then for each identified 
+    Finds peak positions in :math:`\\text{abs}(\\Gamma)`, and then for each identified
     peak, prunes the trace around the peak maximum, using the cutoff as a fraction
     of the normalized peak height.
 
@@ -54,12 +55,12 @@ def prune_cutoff(
         coefficient data, :math:`\\text{Im}(\\Gamma)`. Unitless.
 
     freq
-        A :class:`pint.Quantity` object containing the frequencies :math:`f` 
+        A :class:`pint.Quantity` object containing the frequencies :math:`f`
         corresponding to the reflection coefficient data. Defaults to ``Hz``.
 
     cutoff
         Relative peak height below which the trace is pruned Defaults to ``0.4``.
-    
+
     height
         Peak finding height parameter. Defaults to ``1.0``.
 
@@ -81,7 +82,7 @@ def prune_cutoff(
     re, _, _ = separate_data(real)
     im, _, _ = separate_data(imag)
 
-    absgamma = np.abs(re + 1j*im)
+    absgamma = np.abs(re + 1j * im)
     max_v = absgamma.max()
     peaks, _ = find_peaks(-10 * np.log10(absgamma), height=height, distance=distance)
     limits = []
@@ -104,9 +105,9 @@ def prune_cutoff(
     ret = {}
     for pi, lim in enumerate(limits):
         tag = f"{output}({pi})" if len(limits) > 1 else output
-        ret[f"{tag}->imag"] = imag[lim[0]:lim[1]]
-        ret[f"{tag}->real"] = real[lim[0]:lim[1]]
-        ret[f"{tag}->freq"] = freq[lim[0]:lim[1]]
+        ret[f"{tag}->imag"] = imag[lim[0] : lim[1]]
+        ret[f"{tag}->real"] = real[lim[0] : lim[1]]
+        ret[f"{tag}->freq"] = freq[lim[0] : lim[1]]
     return ret
 
 
@@ -116,19 +117,19 @@ def prune_cutoff(
     ("freq", "Hz", list),
 )
 def prune_gradient(
-    real: pint.Quantity, 
-    imag: pint.Quantity, 
+    real: pint.Quantity,
+    imag: pint.Quantity,
     freq: pint.Quantity,
     threshold: float = 1e-6,
     height: float = 1.0,
     distance: float = 5000.0,
-    output: str = "pruned"
+    output: str = "pruned",
 ) -> dict[str, pint.Quantity]:
     """
     Gradient-based prune.
 
-    Finds peak positions in :math:`\\text{abs}(\\Gamma)`, and then for each identified 
-    peak, prunes the trace around the peak maximum, using the a threshold value in the 
+    Finds peak positions in :math:`\\text{abs}(\\Gamma)`, and then for each identified
+    peak, prunes the trace around the peak maximum, using the a threshold value in the
     gradient of :math:`\\text{abs}(\\Gamma)` as the criterium.
 
     Parameters
@@ -142,13 +143,13 @@ def prune_gradient(
         coefficient data, :math:`\\text{Im}(\\Gamma)`. Unitless.
 
     freq
-        A :class:`pint.Quantity` object containing the frequencies :math:`f` 
+        A :class:`pint.Quantity` object containing the frequencies :math:`f`
         corresponding to the reflection coefficient data. Defaults to ``Hz``.
 
     threshold
         Threshold for the gradient in the :math:`\\text{abs}(\\Gamma)` below which the
         trace is pruned. Defaults to ``1e-6``.
-    
+
     height
         Peak finding height parameter. Defaults to ``1.0``.
 
@@ -171,11 +172,11 @@ def prune_gradient(
     re, _, _ = separate_data(real)
     im, _, _ = separate_data(imag)
 
-    absgamma = np.abs(re + 1j*im)
+    absgamma = np.abs(re + 1j * im)
     grad = np.gradient(absgamma)
     peaks, _ = find_peaks(-10 * np.log10(absgamma), height=height, distance=distance)
     limits = []
-    
+
     for pi in peaks:
         for l in range(pi - 1):
             li = pi - l
@@ -193,9 +194,9 @@ def prune_gradient(
     ret = {}
     for pi, lim in enumerate(limits):
         tag = f"{output}({pi})" if len(limits) > 1 else output
-        ret[f"{tag}->imag"] = imag[lim[0]:lim[1]]
-        ret[f"{tag}->real"] = real[lim[0]:lim[1]]
-        ret[f"{tag}->freq"] = freq[lim[0]:lim[1]]
+        ret[f"{tag}->imag"] = imag[lim[0] : lim[1]]
+        ret[f"{tag}->real"] = real[lim[0] : lim[1]]
+        ret[f"{tag}->freq"] = freq[lim[0] : lim[1]]
     return ret
 
 
@@ -242,7 +243,7 @@ def fit_kajfez(
     im, _, _ = separate_data(imag)
     re, _, _ = separate_data(real)
     n = fren.size
-    gam1 = re + 1j*im
+    gam1 = re + 1j * im
     agam1 = np.abs(gam1)
     # dia = agam1.min()
     idia = np.argmax(agam1)
@@ -324,7 +325,7 @@ def fit_kajfez(
     fname = "f0" if output is None else f"{output}->f0"
     ret = {
         qname: pint.Quantity(uc.ufloat(Q01, sdQ01)),
-        fname: pint.Quantity(uc.ufloat(f011, fres[idia]), freu)
+        fname: pint.Quantity(uc.ufloat(f011, fres[idia]), freu),
     }
     print(ret)
     return ret

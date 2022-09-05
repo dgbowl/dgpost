@@ -9,10 +9,11 @@ from .utils import compare_dfs
 
 from yadg.dgutils import ureg
 
+
 @pytest.mark.parametrize(
     "func, spec",
     [
-        (   #ts0 - prune_cutoff defaults
+        (  # ts0 - prune_cutoff defaults
             "prune_cutoff",
             [
                 {
@@ -20,11 +21,11 @@ from yadg.dgutils import ureg
                     "imag": "imag",
                     "real": "real",
                     "cutoff": 0.4,
-                    "output": "S11"
+                    "output": "S11",
                 }
-            ]
+            ],
         ),
-        (   #ts1 - prune_gradient defaults
+        (  # ts1 - prune_gradient defaults
             "prune_gradient",
             [
                 {
@@ -32,12 +33,11 @@ from yadg.dgutils import ureg
                     "imag": "imag",
                     "real": "real",
                     "threshold": 1e-6,
-                    "output": "S11"
+                    "output": "S11",
                 }
-            ]
+            ],
         ),
-        
-    ]
+    ],
 )
 def test_reflection_prune_df(func, spec, datadir):
     infile = "qftrace.pkl"
@@ -55,7 +55,7 @@ def test_reflection_prune_df(func, spec, datadir):
 @pytest.mark.parametrize(
     "infile, spec, outfile",
     [
-        (   #ts0 - fit_kajfez first peak
+        (  # ts0 - fit_kajfez first peak
             "ref.prune_cutoff.pkl",
             [
                 {
@@ -64,9 +64,9 @@ def test_reflection_prune_df(func, spec, datadir):
                     "real": "S11(0)->real",
                 },
             ],
-            "ref.fit_kajfez_0.pkl"
+            "ref.fit_kajfez_0.pkl",
         ),
-        (   #ts1 - fit_kajfez second peak
+        (  # ts1 - fit_kajfez second peak
             "ref.prune_cutoff.pkl",
             [
                 {
@@ -75,28 +75,27 @@ def test_reflection_prune_df(func, spec, datadir):
                     "real": "S11(1)->real",
                 },
             ],
-            "ref.fit_kajfez_1.pkl"
+            "ref.fit_kajfez_1.pkl",
         ),
-        (   #ts2 - prune and fit fit
+        (  # ts2 - prune and fit fit
             "pruned.2.pkl",
             [
                 {
                     "freq": "pruned(0)->freq",
                     "imag": "pruned(0)->imag",
                     "real": "pruned(0)->real",
-                    "output": "S11(0)"
+                    "output": "S11(0)",
                 },
                 {
                     "freq": "pruned(1)->freq",
                     "imag": "pruned(1)->imag",
                     "real": "pruned(1)->real",
-                    "output": "S11(1)"
+                    "output": "S11(1)",
                 },
             ],
-            "ref.fit_kajfez_2.pkl"
+            "ref.fit_kajfez_2.pkl",
         ),
-        
-    ]
+    ],
 )
 def test_reflection_fit_kajfez_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
