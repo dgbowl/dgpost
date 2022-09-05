@@ -4,7 +4,11 @@
 .. codeauthor:: 
     Peter Kraus
 
-Provides several functions for processing reflection coefficient traces. 
+Provides several functions for processing reflection coefficient traces. Includes
+a few trace pruning functions, as well as several algorithms for fitting of quality
+factors to the reflection trace data. The use of the peak-height based pruning via
+:func:`prune_cutoff` and Kajfez's circle fitting algorithm [Kajfez1994]_ via
+:func:`qf_kajfez` is recommended.
 
 .. rubric:: Functions
 
@@ -12,6 +16,13 @@ Provides several functions for processing reflection coefficient traces.
    
     prune_cutoff
     prune_gradient
+    qf_kajfez
+
+
+.. [Kajfez1994] Kajfez, D.
+   *Linear fractional curve fitting for measurement of high Q factors*, IEEE 
+   Transactions on Microwave Theory and Techniques **1994**, *42*, 1149 - 1153,
+   DOI: https://doi.org/10.1109/22.299749
 
 
 """
@@ -205,7 +216,7 @@ def prune_gradient(
     ("imag", None, list),
     ("freq", "Hz", list),
 )
-def fit_kajfez(
+def qf_kajfez(
     real: pint.Quantity,
     imag: pint.Quantity,
     freq: pint.Quantity,

@@ -100,10 +100,9 @@ def test_reflection_prune_df(func, spec, datadir):
 def test_reflection_fit_kajfez_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
-    df = transform(df, "reflection.fit_kajfez", spec)
+    df = transform(df, "reflection.qf_kajfez", spec)
     print(f"{df.head()=}")
     ref = pd.read_pickle(outfile)
     print(f"{ref.head()=}")
     df.to_pickle(outfile)
     compare_dfs(ref, df)
-    assert False
