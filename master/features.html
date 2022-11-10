@@ -88,8 +88,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><strong>dgpost</strong> features</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><strong>dgpost</strong> features</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/features.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -160,13 +160,17 @@ arrays, uncertainty handling is generally transparent to both user and developer
 The notable exceptions here are transformations using fitting functions from the
 <a class="reference external" href="https://docs.scipy.org/doc/">scipy</a> library, where arrays containing
 <code class="xref py py-class docutils literal notranslate"><span class="pre">floats</span></code> are expected - this has to be handled explicitly by the developer.</p>
+<p>Uncertainty management, including stripping or setting uncertainties to user-provided
+values, can be done on a per-column or per-namespace basis using the
+<a class="reference internal" href="apidoc/dgpost.transform.table.html#dgpost.transform.table.set_uncertainty" title="dgpost.transform.table.set_uncertainty"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_uncertainty()</span></code></a> function from the <a class="reference internal" href="apidoc/dgpost.transform.table.html#module-dgpost.transform.table" title="dgpost.transform.table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform.table</span></code></a>
+module. Both absolute and relative errors can be supplied. The parser is fully
+unit-aware.</p>
 <p>When saving tables created in dgpost, the units are appended to the column names
 (<code class="docutils literal notranslate"><span class="pre">csv/xlsx</span></code>) or stored in the table (<code class="docutils literal notranslate"><span class="pre">pkl/json</span></code>). When exporting a
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndexed</span></code> table to <code class="docutils literal notranslate"><span class="pre">csv/xlsx</span></code>, units will be appended to the top-level
-index.</p>
-<p>The uncertainties may be optionally dropped from the exported table; see
-<a class="reference internal" href="apidoc/dgpost.utils.save.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.save</span></code></a>. This is especially handy for post-processing of tables in
-spreadsheets.</p>
+index. The uncertainties may be optionally dropped completely from the exported table;
+see the <a class="reference internal" href="apidoc/dgpost.utils.save.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils.save</span></code></a> module. This is especially handy for post-processing of
+tables in spreadsheets.</p>
 </section>
 <section id="provenance">
 <h2>Provenance<a class="headerlink" href="#provenance" title="Permalink to this headline"></a></h2>

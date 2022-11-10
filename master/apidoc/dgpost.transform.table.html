@@ -83,8 +83,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><strong>table</strong>: utilities for operations with tables</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><strong>table</strong>: utilities for operations with tables</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/apidoc/dgpost.transform.table.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -99,9 +99,10 @@
 <p><em>Code author: Peter Kraus</em></p>
 <p>Provides convenience functions for operating with tables, including
 <a class="reference internal" href="#dgpost.transform.table.combine_namespaces" title="dgpost.transform.table.combine_namespaces"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_namespaces()</span></code></a> for combining <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>-separated
-namespaces of values or chemicals into a single namespace; and
+namespaces of values or chemicals into a single namespace;
 <a class="reference internal" href="#dgpost.transform.table.combine_columns" title="dgpost.transform.table.combine_columns"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_columns()</span></code></a> for combining individual columns
-into a single column.</p>
+into a single column; and <a class="reference internal" href="#dgpost.transform.table.set_uncertainty" title="dgpost.transform.table.set_uncertainty"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_uncertainty()</span></code></a> for
+stripping or replacing uncertainties from data.</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <colgroup>
@@ -112,17 +113,20 @@ into a single column.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.table.combine_namespaces" title="dgpost.transform.table.combine_namespaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_namespaces</span></code></a>(a, b[, conflicts, ...])</p></td>
 <td><p>Combines two namespaces into one.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.table.combine_columns" title="dgpost.transform.table.combine_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_columns</span></code></a>(a, b[, fillnan, output])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.table.combine_columns" title="dgpost.transform.table.combine_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_columns</span></code></a>(a, b[, fillnan, output, _inp])</p></td>
 <td><p>Combines two columns into one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.table.set_uncertainty" title="dgpost.transform.table.set_uncertainty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_uncertainty</span></code></a>([namespace, column, abs, ...])</p></td>
+<td><p>Allows for stripping or replacing uncertainties using absolute and relative values.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.table.combine_namespaces">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">combine_namespaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conflicts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'c'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillnan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chemicals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.table.combine_namespaces" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">combine_namespaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conflicts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillnan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chemicals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.table.combine_namespaces" title="Permalink to this definition"></a></dt>
 <dd><p>Combines two namespaces into one. Unit checks are performed, with the resulting
 units corresponding to the units in namespace <code class="docutils literal notranslate"><span class="pre">a</span></code>. By default, the output
-namespace is called <code class="docutils literal notranslate"><span class="pre">&quot;c&quot;</span></code>. Optionally, the keys in each namespace can be treated
+namespace is set to <code class="docutils literal notranslate"><span class="pre">a</span></code>. Optionally, the keys in each namespace can be treated
 as chemicals.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -135,7 +139,7 @@ or <code class="docutils literal notranslate"><span class="pre">&quot;replace&qu
 zeroes or as <code class="docutils literal notranslate"><span class="pre">NaN</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><strong>chemicals</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Treat keys within <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> as chemicals, and combine them accordingly.
 Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Namespace of the returned dictionary. By default <code class="docutils literal notranslate"><span class="pre">&quot;c&quot;</span></code>.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Namespace of the returned dictionary. Defaults to the namespace of <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -146,10 +150,10 @@ Default is <code class="docutils literal notranslate"><span class="pre">False</s
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.table.combine_columns">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">combine_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillnan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'c'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.table.combine_columns" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">combine_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillnan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.table.combine_columns" title="Permalink to this definition"></a></dt>
 <dd><p>Combines two columns into one. Unit checks are performed, with the resulting
 units corresponding to the units in column <code class="docutils literal notranslate"><span class="pre">a</span></code>. By default, the output
-namespace is called <code class="docutils literal notranslate"><span class="pre">&quot;c&quot;</span></code>.</p>
+column is set to <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -157,7 +161,34 @@ namespace is called <code class="docutils literal notranslate"><span class="pre"
 <li><p><strong>b</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Column <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
 <li><p><strong>fillnan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Toggle whether <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values within the columns ought to be treated as
 zeroes or as <code class="docutils literal notranslate"><span class="pre">NaN</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Namespace of the returned dictionary. By default <code class="docutils literal notranslate"><span class="pre">&quot;c&quot;</span></code>.</p></li>
+<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Namespace of the returned dictionary. By defaults to the name of column <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.table.set_uncertainty">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">set_uncertainty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.table.set_uncertainty" title="Permalink to this definition"></a></dt>
+<dd><p>Allows for stripping or replacing uncertainties using absolute and relative
+values. Can target either namespaces, or individual columns. If both <code class="docutils literal notranslate"><span class="pre">abs</span></code>
+and <code class="docutils literal notranslate"><span class="pre">rel</span></code> uncertainty is provided, the higher of the two values is set.
+If neither <code class="docutils literal notranslate"><span class="pre">abs</span></code> nor <code class="docutils literal notranslate"><span class="pre">rel</span></code> are provided, the uncertainties are stripped.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>namespace</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – The prefix of the namespace for which uncertainties are to be replaced or
+stripped. Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">column</span></code>.</p></li>
+<li><p><strong>column</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – The name of the column for which uncertainties are to be replaced or stripped.
+Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">namespace</span></code></p></li>
+<li><p><strong>abs</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – The absolute value of the uncertainty. If units are not supplied, the units of
+the column/namespace will be used. If both <code class="docutils literal notranslate"><span class="pre">abs</span></code> and <code class="docutils literal notranslate"><span class="pre">rel</span></code> are <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+the existing uncertainties will be stripped.</p></li>
+<li><p><strong>rel</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – The relative value of the uncertainty, should be in dimensionless units. If
+both <code class="docutils literal notranslate"><span class="pre">abs</span></code> and <code class="docutils literal notranslate"><span class="pre">rel</span></code> are <code class="docutils literal notranslate"><span class="pre">None</span></code>, the existing uncertainties will be stripped.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
