@@ -13,6 +13,7 @@ import pandas as pd
 import numpy as np
 from uncertainties import unumpy as unp
 from rdkit import Chem
+from inspect import signature
 
 from collections import defaultdict
 from typing import Any, Union, Sequence
@@ -263,9 +264,11 @@ def load_data(*cols: tuple[str, str, type]):
                 else:
                     uconv = True
 
+                orig_kwargs = {}
                 data_kwargs = {}
                 for cname, cunit, ctype in fcols:
                     cval = kwargs.pop(cname, None)
+                    orig_kwargs[cname] = cval
                     if ctype is pd.Index and cval is None:
                         # if ctype is pd.Index, it can still be overriden by cval
                         # otherwise send the df.index wrapped in cunit
@@ -311,6 +314,9 @@ def load_data(*cols: tuple[str, str, type]):
                             else:
                                 temp[c] = pQ(df, key)
                         data_kwargs[cname] = temp
+
+                if "_inp" in signature(func).parameters:
+                    kwargs["_inp"] = orig_kwargs
 
                 units = {}
                 # if a "list" is specified as type, we need to transpose the input:

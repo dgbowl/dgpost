@@ -16,15 +16,19 @@ into a single column.
    
     combine_namespaces
     combine_columns
+    set_uncertainty
 
 
 """
 import pint
 import pandas as pd
-from dgpost.utils.helpers import load_data, columns_to_smiles
+import numpy as np
+from dgpost.utils.helpers import load_data, separate_data, columns_to_smiles
 from collections import defaultdict
-from typing import Iterable
+from typing import Iterable, Union
 from yadg.dgutils import ureg
+import uncertainties as uc
+from uncertainties import unumpy as unp
 
 
 @load_data(
@@ -35,9 +39,10 @@ def combine_namespaces(
     a: dict[str, pint.Quantity],
     b: dict[str, pint.Quantity],
     conflicts: str = "sum",
-    output: str = "c",
+    output: str = None,
     fillnan: bool = True,
     chemicals: bool = False,
+    _inp: dict = None,
 ) -> dict[str, pint.Quantity]:
     """
     Combines two namespaces into one. Unit checks are performed, with the resulting
@@ -66,7 +71,7 @@ def combine_namespaces(
         Default is ``False``.
 
     output
-        Namespace of the returned dictionary. By default ``"c"``.
+        Namespace of the returned dictionary. Defaults to the namespace of ``a``.
 
     """
     ret = {}
@@ -104,10 +109,12 @@ def combine_namespaces(
         elif "b" in v:
             ret[v["b"]] = b[v["b"]].to(u)
 
+    if output is None:
+        output = _inp.get("a", "c")
+
     out = {}
     for k, v in ret.items():
         out[f"{output}->{k}"] = v
-
     return out
 
 
@@ -119,7 +126,8 @@ def combine_columns(
     a: pint.Quantity,
     b: pint.Quantity,
     fillnan: bool = True,
-    output: str = "c",
+    output: str = None,
+    _inp: dict = None,
 ) -> dict[str, pint.Quantity]:
     """
     Combines two columns into one. Unit checks are performed, with the resulting
@@ -139,7 +147,7 @@ def combine_columns(
         zeroes or as ``NaN``. Default is ``True``.
 
     output
-        Namespace of the returned dictionary. By default ``"c"``.
+        Namespace of the returned dictionary. By defaults to the name of column ``a``.
 
     """
     if fillnan:
@@ -150,4 +158,61 @@ def combine_columns(
             a = ureg.Quantity(0, a.u) if pd.isna(a.m) else a
             b = ureg.Quantity(0, b.u) if pd.isna(b.m) else b
     ret = a + b
+
+    if output is None:
+        output = _inp.get("a", "c")
     return {output: ret}
+
+
+@load_data(
+    ("namespace", None, dict),
+    ("column", None),
+)
+def set_uncertainty(
+    namespace: dict[str, pint.Quantity] = None,
+    column: pint.Quantity = None,
+    abs: Union[pint.Quantity, float] = None,
+    rel: Union[pint.Quantity, float] = None,
+    _inp: dict = {},
+) -> dict[str, pint.Quantity]:
+    """
+    """
+    assert (namespace is not None and column is None) or (namespace is None and column is not None)
+
+    outk = []
+    outv = []
+    outs = []
+    outu = []
+
+    if column is not None:
+        v, s, u = separate_data(column)
+        outk.append(_inp.get("column", "output"))
+        outv.append(v)
+        outs.append(s)
+        outu.append(u)
+    elif namespace is not None:
+        for key, vals in namespace.items():
+            v, s, u = separate_data(vals)
+            outk.append(_inp.get("namespace", "output") + f"->{key}")
+            outv.append(v)
+            outs.append(s)
+            outu.append(u)
+    ret = {}
+    for k, v, s, u in zip(outk, outv, outs, outu):
+        if abs is None and rel is None:
+            ret[k] = ureg.Quantity(v, u)
+        else:
+            if isinstance(abs, float):
+                abs = ureg.Quantity(abs, u)
+            if isinstance(rel, float):
+                rel = ureg.Quantity(rel, "dimensionless")
+            if rel is None:
+                s = abs.to(u).m
+            elif abs is None:
+                s = v * rel.to("dimensionless").m
+            else:
+                s = np.maximum(abs.to(u).m, v * rel.to("dimensionless").m)
+            ret[k] = ureg.Quantity(unp.uarray(v, s), u)
+    return ret
+
+

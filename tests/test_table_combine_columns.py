@@ -21,9 +21,7 @@ from yadg.dgutils import ureg
         (  # ts1 - sum with nan
             ureg.Quantity(float("NaN"), "ml/min"),
             ureg.Quantity(0.6, "l/h"),
-            {
-                "c": ureg.Quantity(10.0, "ml/min"),
-            },
+            {"c": ureg.Quantity(10.0, "ml/min")},
         ),
     ],
 )
@@ -36,11 +34,11 @@ def test_table_combine_columns_direct(a, b, output):
 @pytest.mark.parametrize(
     "inpath, spec, outpath",
     [
-        (  # ts0 - sum
+        (  # ts0 - explicit as well as default output
             "test.electro.pkl",
             [
-                {"a": "I", "b": "<I>"},
-                {"a": "Ewe", "b": "<Ewe>", "output": "Ewe"},
+                {"a": "I", "b": "<I>", "output": "c"},
+                {"a": "Ewe", "b": "<Ewe>"}, # should default to Ewe
             ],
             "ref.electro.pkl",
         ),
