@@ -47,7 +47,7 @@ def combine_namespaces(
     """
     Combines two namespaces into one. Unit checks are performed, with the resulting
     units corresponding to the units in namespace ``a``. By default, the output
-    namespace is called ``"c"``. Optionally, the keys in each namespace can be treated
+    namespace is set to ``a``. Optionally, the keys in each namespace can be treated
     as chemicals.
 
     Parameters
@@ -132,7 +132,7 @@ def combine_columns(
     """
     Combines two columns into one. Unit checks are performed, with the resulting
     units corresponding to the units in column ``a``. By default, the output
-    namespace is called ``"c"``.
+    column is set to ``a``.
 
     Parameters
     ----------
@@ -179,6 +179,7 @@ def set_uncertainty(
     Allows for stripping or replacing uncertainties using absolute and relative
     values. Can target either namespaces, or individual columns. If both ``abs``
     and ``rel`` uncertainty is provided, the higher of the two values is set.
+    If neither ``abs`` nor ``rel`` are provided, the uncertainties are stripped.
 
     Parameters
     ----------
