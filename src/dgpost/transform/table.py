@@ -176,8 +176,33 @@ def set_uncertainty(
     _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
     """
+    Allows for stripping or replacing uncertainties using absolute and relative
+    values. Can target either namespaces, or individual columns. If both ``abs``
+    and ``rel`` uncertainty is provided, the higher of the two values is set.
+
+    Parameters
+    ----------
+    namespace
+        The prefix of the namespace for which uncertainties are to be replaced or
+        stripped. Cannot be supplied along with ``column``.
+
+    column
+        The name of the column for which uncertainties are to be replaced or stripped.
+        Cannot be supplied along with ``namespace``
+
+    abs
+        The absolute value of the uncertainty. If units are not supplied, the units of
+        the column/namespace will be used. If both ``abs`` and ``rel`` are ``None``,
+        the existing uncertainties will be stripped.
+
+    rel
+        The relative value of the uncertainty, should be in dimensionless units. If
+        both ``abs`` and ``rel`` are ``None``, the existing uncertainties will be stripped.
+
     """
-    assert (namespace is not None and column is None) or (namespace is None and column is not None)
+    assert (namespace is not None and column is None) or (
+        namespace is None and column is not None
+    )
 
     outk = []
     outv = []
@@ -209,10 +234,8 @@ def set_uncertainty(
             if rel is None:
                 s = abs.to(u).m
             elif abs is None:
-                s = v * rel.to("dimensionless").m
+                s = np.abs(v) * rel.to("dimensionless").m
             else:
-                s = np.maximum(abs.to(u).m, v * rel.to("dimensionless").m)
+                s = np.maximum(abs.to(u).m, np.abs(v) * rel.to("dimensionless").m)
             ret[k] = ureg.Quantity(unp.uarray(v, s), u)
     return ret
-
-

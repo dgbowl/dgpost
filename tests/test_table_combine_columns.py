@@ -38,7 +38,7 @@ def test_table_combine_columns_direct(a, b, output):
             "test.electro.pkl",
             [
                 {"a": "I", "b": "<I>", "output": "c"},
-                {"a": "Ewe", "b": "<Ewe>"}, # should default to Ewe
+                {"a": "Ewe", "b": "<Ewe>"},  # should default to Ewe
             ],
             "ref.electro.pkl",
         ),

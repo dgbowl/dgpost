@@ -37,31 +37,35 @@ from yadg.dgutils import ureg
             ureg.Quantity(6.0, "l/h"),
             None,
             0.1,
-           {"output": ureg.Quantity(ufloat(6.0, 0.6), "l/h")},
+            {"output": ureg.Quantity(ufloat(6.0, 0.6), "l/h")},
         ),
         (  # ts4 - relative uncertainty with units
             ureg.Quantity(6.0, "l/h"),
             None,
             ureg.Quantity(10, "%"),
-           {"output": ureg.Quantity(ufloat(6.0, 0.6), "l/h")},
-        ),    
+            {"output": ureg.Quantity(ufloat(6.0, 0.6), "l/h")},
+        ),
         (  # ts5 - both replace 1
             ureg.Quantity(ufloat(100.0, 0.1), "ml/s"),
             ureg.Quantity(8, "ml/s"),
             ureg.Quantity(10, "%"),
-           {"output": ureg.Quantity(ufloat(100.0, 10.0), "ml/s")},
+            {"output": ureg.Quantity(ufloat(100.0, 10.0), "ml/s")},
         ),
         (  # ts6 - both replace 2
             ureg.Quantity(ufloat(100.0, 0.1), "ml/s"),
             ureg.Quantity(8, "ml/s"),
             ureg.Quantity(5, "%"),
-           {"output": ureg.Quantity(ufloat(100.0, 8.0), "ml/s")},
+            {"output": ureg.Quantity(ufloat(100.0, 8.0), "ml/s")},
         ),
         (  # ts7 - with arrays
             ureg.Quantity(unp.uarray([100, 90, 80, 70], [0.1, 0.1, 0.1, 0.1]), "ml/s"),
             ureg.Quantity(8, "ml/s"),
             ureg.Quantity(10, "%"),
-           {"output": ureg.Quantity(unp.uarray([100, 90, 80, 70], [10, 9, 8, 8]), "ml/s")},
+            {
+                "output": ureg.Quantity(
+                    unp.uarray([100, 90, 80, 70], [10, 9, 8, 8]), "ml/s"
+                )
+            },
         ),
     ],
 )
@@ -78,22 +82,28 @@ def test_table_set_uncertainty_column_direct(column, abs, rel, output):
         (  # ts0 - uncertainty with units
             "flowcx.units.ufloat.df.pkl",
             [{"column": "cin->C3H8", "abs": ureg.Quantity(1, "mmol/l"), "rel": None}],
-            "ts0.flowcx.units.ufloat.df.pkl"
+            "ts0.flowcx.units.ufloat.df.pkl",
         ),
         (  # ts1 - uncertainty without units
             "flowcx.units.ufloat.df.pkl",
             [{"column": "cin->C3H8", "abs": 0.001, "rel": None}],
-            "ts0.flowcx.units.ufloat.df.pkl"
+            "ts0.flowcx.units.ufloat.df.pkl",
         ),
         (  # ts2 - strip namespace uncertainty
             "flowcx.units.ufloat.df.pkl",
             [{"namespace": "cin", "abs": None, "rel": None}],
-            "ts2.flowcx.units.ufloat.df.pkl"
+            "ts2.flowcx.units.ufloat.df.pkl",
         ),
         (  # ts3 - correct uncertainty resolution
             "flowcx.units.ufloat.df.pkl",
-            [{"namespace": "xout", "abs": ureg.Quantity(100, "ppm"), "rel": ureg.Quantity(1, "%")}],
-            "ts3.flowcx.units.ufloat.df.pkl"
+            [
+                {
+                    "namespace": "xout",
+                    "abs": ureg.Quantity(100, "ppm"),
+                    "rel": ureg.Quantity(1, "%"),
+                }
+            ],
+            "ts3.flowcx.units.ufloat.df.pkl",
         ),
     ],
 )
@@ -107,4 +117,3 @@ def test_table_set_uncertainty_df(infile, spec, outfile, datadir):
     print(f"{ref.head()=}")
     df.to_pickle(outfile)
     compare_dfs(ref, df)
-
