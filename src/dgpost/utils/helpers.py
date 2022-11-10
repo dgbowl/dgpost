@@ -264,6 +264,7 @@ def load_data(*cols: tuple[str, str, type]):
                 else:
                     uconv = True
 
+                # keep original kwargs cname-cval keypairs in orig_kwargs
                 orig_kwargs = {}
                 data_kwargs = {}
                 for cname, cunit, ctype in fcols:
@@ -315,6 +316,8 @@ def load_data(*cols: tuple[str, str, type]):
                                 temp[c] = pQ(df, key)
                         data_kwargs[cname] = temp
 
+                # if the called function requires the names of columns,
+                # it can ask for them by having _inp in its signature
                 if "_inp" in signature(func).parameters:
                     kwargs["_inp"] = orig_kwargs
 

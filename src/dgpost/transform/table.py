@@ -28,7 +28,6 @@ from dgpost.utils.helpers import load_data, separate_data, columns_to_smiles
 from collections import defaultdict
 from typing import Iterable, Union
 from yadg.dgutils import ureg
-import uncertainties as uc
 from uncertainties import unumpy as unp
 
 
@@ -43,7 +42,7 @@ def combine_namespaces(
     output: str = None,
     fillnan: bool = True,
     chemicals: bool = False,
-    _inp: dict = None,
+    _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
     """
     Combines two namespaces into one. Unit checks are performed, with the resulting
@@ -128,7 +127,7 @@ def combine_columns(
     b: pint.Quantity,
     fillnan: bool = True,
     output: str = None,
-    _inp: dict = None,
+    _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
     """
     Combines two columns into one. Unit checks are performed, with the resulting
