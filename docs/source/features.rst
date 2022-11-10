@@ -65,14 +65,18 @@ The notable exceptions here are transformations using fitting functions from the
 `scipy <https://docs.scipy.org/doc/>`_ library, where arrays containing 
 :class:`floats` are expected - this has to be handled explicitly by the developer.
 
+Uncertainty management, including stripping or setting uncertainties to user-provided
+values, can be done on a per-column or per-namespace basis using the 
+:func:`~dgpost.transform.table.set_uncertainty` function from the :mod:`dgpost.transform.table`
+module. Both absolute and relative errors can be supplied. The parser is fully 
+unit-aware.
+
 When saving tables created in dgpost, the units are appended to the column names 
 (``csv/xlsx``) or stored in the table (``pkl/json``). When exporting a 
 :class:`pd.MultiIndexed` table to ``csv/xlsx``, units will be appended to the top-level 
-index. 
-
-The uncertainties may be optionally dropped from the exported table; see 
-:mod:`dgpost.utils.save`. This is especially handy for post-processing of tables in
-spreadsheets.
+index. The uncertainties may be optionally dropped completely from the exported table; 
+see the :mod:`dgpost.utils.save` module. This is especially handy for post-processing of 
+tables in spreadsheets.
 
 Provenance
 ``````````

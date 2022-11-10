@@ -6,9 +6,10 @@
 
 Provides convenience functions for operating with tables, including
 :func:`~dgpost.transform.table.combine_namespaces` for combining ``->``-separated
-namespaces of values or chemicals into a single namespace; and
+namespaces of values or chemicals into a single namespace;
 :func:`~dgpost.transform.table.combine_columns` for combining individual columns
-into a single column.
+into a single column; and :func:`~dgpost.transform.table.set_uncertainty` for 
+stripping or replacing uncertainties from data.
 
 .. rubric:: Functions
 
@@ -16,15 +17,18 @@ into a single column.
    
     combine_namespaces
     combine_columns
+    set_uncertainty
 
 
 """
 import pint
 import pandas as pd
-from dgpost.utils.helpers import load_data, columns_to_smiles
+import numpy as np
+from dgpost.utils.helpers import load_data, separate_data, columns_to_smiles
 from collections import defaultdict
-from typing import Iterable
+from typing import Iterable, Union
 from yadg.dgutils import ureg
+from uncertainties import unumpy as unp
 
 
 @load_data(
@@ -35,14 +39,15 @@ def combine_namespaces(
     a: dict[str, pint.Quantity],
     b: dict[str, pint.Quantity],
     conflicts: str = "sum",
-    output: str = "c",
+    output: str = None,
     fillnan: bool = True,
     chemicals: bool = False,
+    _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
     """
     Combines two namespaces into one. Unit checks are performed, with the resulting
     units corresponding to the units in namespace ``a``. By default, the output
-    namespace is called ``"c"``. Optionally, the keys in each namespace can be treated
+    namespace is set to ``a``. Optionally, the keys in each namespace can be treated
     as chemicals.
 
     Parameters
@@ -66,7 +71,7 @@ def combine_namespaces(
         Default is ``False``.
 
     output
-        Namespace of the returned dictionary. By default ``"c"``.
+        Namespace of the returned dictionary. Defaults to the namespace of ``a``.
 
     """
     ret = {}
@@ -104,10 +109,12 @@ def combine_namespaces(
         elif "b" in v:
             ret[v["b"]] = b[v["b"]].to(u)
 
+    if output is None:
+        output = _inp.get("a", "c")
+
     out = {}
     for k, v in ret.items():
         out[f"{output}->{k}"] = v
-
     return out
 
 
@@ -119,12 +126,13 @@ def combine_columns(
     a: pint.Quantity,
     b: pint.Quantity,
     fillnan: bool = True,
-    output: str = "c",
+    output: str = None,
+    _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
     """
     Combines two columns into one. Unit checks are performed, with the resulting
     units corresponding to the units in column ``a``. By default, the output
-    namespace is called ``"c"``.
+    column is set to ``a``.
 
     Parameters
     ----------
@@ -139,7 +147,7 @@ def combine_columns(
         zeroes or as ``NaN``. Default is ``True``.
 
     output
-        Namespace of the returned dictionary. By default ``"c"``.
+        Namespace of the returned dictionary. By defaults to the name of column ``a``.
 
     """
     if fillnan:
@@ -150,4 +158,85 @@ def combine_columns(
             a = ureg.Quantity(0, a.u) if pd.isna(a.m) else a
             b = ureg.Quantity(0, b.u) if pd.isna(b.m) else b
     ret = a + b
+
+    if output is None:
+        output = _inp.get("a", "c")
     return {output: ret}
+
+
+@load_data(
+    ("namespace", None, dict),
+    ("column", None),
+)
+def set_uncertainty(
+    namespace: dict[str, pint.Quantity] = None,
+    column: pint.Quantity = None,
+    abs: Union[pint.Quantity, float] = None,
+    rel: Union[pint.Quantity, float] = None,
+    _inp: dict = {},
+) -> dict[str, pint.Quantity]:
+    """
+    Allows for stripping or replacing uncertainties using absolute and relative
+    values. Can target either namespaces, or individual columns. If both ``abs``
+    and ``rel`` uncertainty is provided, the higher of the two values is set.
+    If neither ``abs`` nor ``rel`` are provided, the uncertainties are stripped.
+
+    Parameters
+    ----------
+    namespace
+        The prefix of the namespace for which uncertainties are to be replaced or
+        stripped. Cannot be supplied along with ``column``.
+
+    column
+        The name of the column for which uncertainties are to be replaced or stripped.
+        Cannot be supplied along with ``namespace``
+
+    abs
+        The absolute value of the uncertainty. If units are not supplied, the units of
+        the column/namespace will be used. If both ``abs`` and ``rel`` are ``None``,
+        the existing uncertainties will be stripped.
+
+    rel
+        The relative value of the uncertainty, should be in dimensionless units. If
+        both ``abs`` and ``rel`` are ``None``, the existing uncertainties will be stripped.
+
+    """
+    assert (namespace is not None and column is None) or (
+        namespace is None and column is not None
+    )
+
+    outk = []
+    outv = []
+    outs = []
+    outu = []
+
+    if column is not None:
+        v, s, u = separate_data(column)
+        outk.append(_inp.get("column", "output"))
+        outv.append(v)
+        outs.append(s)
+        outu.append(u)
+    elif namespace is not None:
+        for key, vals in namespace.items():
+            v, s, u = separate_data(vals)
+            outk.append(_inp.get("namespace", "output") + f"->{key}")
+            outv.append(v)
+            outs.append(s)
+            outu.append(u)
+    ret = {}
+    for k, v, s, u in zip(outk, outv, outs, outu):
+        if abs is None and rel is None:
+            ret[k] = ureg.Quantity(v, u)
+        else:
+            if isinstance(abs, float):
+                abs = ureg.Quantity(abs, u)
+            if isinstance(rel, float):
+                rel = ureg.Quantity(rel, "dimensionless")
+            if rel is None:
+                s = abs.to(u).m
+            elif abs is None:
+                s = np.abs(v) * rel.to("dimensionless").m
+            else:
+                s = np.maximum(abs.to(u).m, np.abs(v) * rel.to("dimensionless").m)
+            ret[k] = ureg.Quantity(unp.uarray(v, s), u)
+    return ret

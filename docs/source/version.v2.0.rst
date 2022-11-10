@@ -9,7 +9,8 @@
   ``dgpost-2.0`` is not yet released.
 
 
-Developed in the Materials for Energy Conversion lab at Empa, in Dübendorf.
+Developed in the Materials for Energy Conversion lab at Empa, in Dübendorf, and
+in the Centre for Advanced Ceramic Materials at the Technische Universität Berlin.
 
 Second major release. Including all bug-fixes from the ``dgpost-1.x`` series, and
 the following new features:
