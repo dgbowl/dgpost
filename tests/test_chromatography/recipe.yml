@@ -1,0 +1,18 @@
+version: v1.0
+load:
+  - as: datasc
+    path: datasc.dg.json
+    type: datagram
+extract:
+  - into: df
+    from: datasc
+    at:
+      index: 0
+    columns:
+      - key: raw->traces->0->t
+        as: time
+      - key: raw->traces->0->y
+        as: signal
+save:
+  - table: df
+    as: datasc.df.pkl
