@@ -10,6 +10,7 @@ Includes functions to integrate a chromatographic trace.
 
 .. autosummary::
 
+    integrate_trace
 
 
 """
@@ -43,6 +44,78 @@ def integrate_trace(
     threshold: float = 1.0,
     output: str = "trace",
 ) -> dict[str, float]:
+    """
+    Chromatographic trace integration.
+
+    Function which integrates peaks found in the chromatographic trace, which is
+    itself defined as a set of ``time, signal`` arrays. The procedure is as 
+    follows:
+    
+      #) The ``signal`` is smoothed the Savigny-Golay filter, via the 
+         :func:`scipy.signal.savgol_filter`. For this, the arguments ``polyorder``
+         and ``window`` are used.
+      #) Peak maxima are found using :func:`scipy.signal.find_peaks`. For this,
+         the argument ``prominence`` is used, scaled by ``max(abs(signal))``.
+      #) Peak edges of every found peak are determined. The peak ends are either
+         determined from the nearest minima, or from the nearest inflection point
+         at which the gradient is below the ``threshold``.
+      #) Peak maxima are matched against known peaks, provided in the ``species``
+         argument. The peak is considered matching a species when its maximum is 
+         between the left and right limits defined in ``species``.
+      #) A baseline is constructed by interpolating by copying the ``signal`` data
+         and interpolating between the ends of all matched peaks. If consecutive
+         peaks are found, the interpolation spans the whole domain.
+      #) The baseline is subtracted from the signal and the peak areas are 
+         integrated using the :func:`numpy.trapz` function.
+      #) The peak height is taken from the original ``signal`` data.
+    
+
+    Parameters
+    ----------
+    time
+        A :class:`pint.Quantity` array object determining the X-axis of the trace.
+        By default in seconds.
+
+    signal
+        A :class:`pint.Quantity` array object containing the Y-axis of the trace.
+        By default dimensionless.
+
+    species
+        A :class:`dict[str, dict]`, where the keys are species names and the
+        values are :class:`dict` containing the left (``"l"``) and right (``"r"``)
+        boundaries for matching the peak maximum. The boundaries can be either
+        :class:`pint.Quantity` or :class:`str` with the same dimensionality as
+        ``time``, or a :class:`float` in which case the units of ``time`` are
+        assumed.
+
+    polyorder
+        An :class:`int` defining the order of the polynomial for the Savigny-Golay
+        filter. Defaults to 3. The ``polyorder`` must be less than ``window``.
+    
+    window
+        An :class:`int` defining the smoothing window for the Savigny-Golay filter.
+        Defaults to 7. Must be odd. The ``polyorder`` must be less than ``window``.
+    
+    prominence
+        A :class:`float` used to calculate the prominence of the peaks in ``signal`` 
+        by scaling the ``max(abs(signal))``. Used in the peak picking process.
+        Defaults to 0.0001.
+    
+    threshold
+        A :class:`float` used to find ends of peaks by comparing to the gradient
+        of ``signal`` at the nearest inflection points.
+    
+    output
+        A :class:`str` prefix for the output namespace. The results are collated in
+        the ``f"{output}->area`` namespace for peak areas and ``f"{output}->height``
+        namespace for peak height.
+
+    Returns
+    -------
+    retvals: dict[str, dict[str, pint.Quantity]
+        A dictionary containing the peak areas and peak heights of matched peaks
+        stored in namespaced :class:`pint.Quantities`.
+    """
     
     yvals, ysigs, yunit = separate_data(signal)
 
@@ -83,7 +156,7 @@ def integrate_trace(
         rthr = False
         for xi in range(hesszero[hi], yvals.size):
             # find first minimum/maximum after pmax
-            if xi in gradzero and not rmin:
+            if xi in gradzero[:] and not rmin:
                 rmin = xi
             # find first inflection point with gradient below threshold 
             if xi in hesszero[hi:] and not rthr:
@@ -99,7 +172,7 @@ def integrate_trace(
         lmin = False
         lthr = False
         for xi in range(0, hesszero[hi - 1])[::-1]:
-            if xi in gradzero and not lmin:
+            if xi in gradzero[:] and not lmin:
                 lmin = xi
             if xi in hesszero[: hi - 1] and not lthr:
                 if abs(grad[xi]) < threshold:
