@@ -16,7 +16,11 @@ Second major release. Including all bug-fixes from the ``dgpost-1.x`` series, an
 the following new features:
 
 - support for :class:`pd.MultiIndex` in :class:`pd.DataFrames`;
-- the :mod:`~dgpost.transform.table` module of functions for basic operations on tables.
+- the :mod:`~dgpost.transform.table` module of functions for basic operations on tables;
+- the :mod:`~dgpost.transform.chromatography` module, including functions for post-processing
+  chromatographic traces;
+- the :mod:`~dgpost.transform.reflection` module, containing utilities for post-processing
+  reflection traces, including pruning and fitting functions.
 
 .. codeauthor::
     Ueli Sauter,
