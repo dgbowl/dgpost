@@ -344,12 +344,12 @@ def load_data(*cols: tuple[str, str, type]):
                         for i in to_pad:
                             row_v[i] = row_v[i] * l
                     ret_data = {}
-                    for r in zip(*row_v):
+                    for ri, r in enumerate(zip(*row_v)):
                         row_data = {k: v for k, v in zip(row_k, r)}
                         retvals = func(**row_data, **kwargs)
                         for name, qty in retvals.items():
                             if name not in ret_data:
-                                ret_data[name] = []
+                                ret_data[name] = [None] * ri
                             if isinstance(qty, pint.Quantity):
                                 qty.ito_reduced_units()
                                 ret_data[name].append(qty.m)
@@ -357,6 +357,10 @@ def load_data(*cols: tuple[str, str, type]):
                                     units[name] = f"{qty.u:~P}"
                             else:
                                 ret_data[name].append(qty)
+                        for name in ret_data.keys():
+                            if name not in retvals:
+                                ret_data[name].append(None)
+                    print(f"{ret_data}=")
                 else:
                     retvals = func(**data_kwargs, **kwargs)
                     ret_data = {}
