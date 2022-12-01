@@ -4,13 +4,15 @@
 .. codeauthor:: 
     Peter Kraus
 
-Includes functions to integrate a chromatographic trace.
+Includes functions to integrate a chromatographic trace, and post-process an integrated
+trace using calibration.
 
 .. rubric:: Functions
 
 .. autosummary::
 
     integrate_trace
+    apply_calibration
 
 
 """
@@ -252,7 +254,44 @@ def apply_calibration(
     calibration: dict[str, dict],
     output: str = "x",
 ) -> dict[str, float]:
-    """ """
+    """
+    Apply calibration to an integrated chromatographic trace.
+
+    Function which applies calibration information, provided in a :class:`dict`, to
+    an integrated chromatographic trace. Elements in the calibration :class:`dict` are
+    treated as chemicals, matched against the chromatographic data using SMILES.
+
+    The format of the ``calibration`` is as follows:
+
+    .. code-block:: yaml
+
+        "{{ species_name }}" :
+            function: Literal["inverse", "linear"]
+            m:  float
+            c:  Optional[float]
+
+    Two calibration functions are provided. Either the output value ``x`` is calculated
+    as $x = (A - c) / m$, i.e. an "inverse" relationship, or using $x = m \\times A + c$,
+    a "linear" relationship. The offset $c$ is optional. Both $m$ and $c$ are internally
+    converted to :class:`pint.Quantity`, therefore they can be specified with uncertainty,
+    but have to be annotated by appropriate units to convert the units of the peak areas
+    to the desired output.
+
+
+    Parameters
+    ----------
+    areas
+        A :class:`dict` containing a namespace of :class:`pint.Quantity` containing the
+        integrated peak areas $A$, with their keys corresponding to chemicals.
+
+    calibration
+        A :class:`dict` containing the calibration information for processing the above
+        peak ``areas`` into the resulting :class:`pint.Quantity`.
+
+    output
+        The :class:`str` prefix for the output namespace.
+
+    """
     ret = {}
     smiles = columns_to_smiles(areas=areas, cal=calibration)
     for k, v in smiles.items():
@@ -261,16 +300,8 @@ def apply_calibration(
             cal = calibration[v["cal"]]
             A = areas[v["areas"]]
             if cal.get("function", "inverse") == "inverse":
-                y = _inverse(
-                    A, 
-                    m = cal.get("m", 1.0),
-                    c = cal.get("c", None)
-                )
+                y = _inverse(A, m=cal.get("m", 1.0), c=cal.get("c", None))
             elif cal["function"] == "linear":
-                y = _linear(
-                    A,
-                    m = cal.get("m", 1.0),
-                    c = cal.get("c", None)
-                )
+                y = _linear(A, m=cal.get("m", 1.0), c=cal.get("c", None))
             ret[tag] = y
     return ret

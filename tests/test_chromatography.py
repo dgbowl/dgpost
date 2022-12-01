@@ -133,14 +133,14 @@ def test_chromatography_integrate_trace(infile, spec, outfile, datadir):
             {
                 "areas": "FID->area",
                 "calibration": {
-                    "CO":        {"function": "inverse", "m": "1873.56 pA·s/%"},
-                    "methane":   {"function": "inverse", "m": "1795.41 pA·s/%"},
-                    "CO2":       {"function": "inverse", "m": "1841.64 pA·s/%"},
-                    "ethylene":  {"function": "inverse", "m": "3565.07 pA·s/%"},
-                    "ethane":    {"function": "inverse", "m": "3570.01 pA·s/%"},
+                    "CO": {"function": "inverse", "m": "1873.56 pA·s/%"},
+                    "methane": {"function": "inverse", "m": "1795.41 pA·s/%"},
+                    "CO2": {"function": "inverse", "m": "1841.64 pA·s/%"},
+                    "ethylene": {"function": "inverse", "m": "3565.07 pA·s/%"},
+                    "ethane": {"function": "inverse", "m": "3570.01 pA·s/%"},
                     "propylene": {"function": "inverse", "m": "5306.26 pA·s/%"},
-                    "propane":   {"function": "inverse", "m": "5326.11 pA·s/%"},
-                    "butane":    {"function": "inverse", "m": "7121.53 pA·s/%"},
+                    "propane": {"function": "inverse", "m": "5326.11 pA·s/%"},
+                    "butane": {"function": "inverse", "m": "7121.53 pA·s/%"},
                 },
                 "output": "x",
             },
@@ -151,11 +151,23 @@ def test_chromatography_integrate_trace(infile, spec, outfile, datadir):
             {
                 "areas": "LC->area",
                 "calibration": {
-                    "formic acid":   {"function": "inverse", "m": "8314 (nRIU·s)/(mmol/l)"},
-                    "acetic acid":   {"function": "inverse", "m": "15490 (nRIU·s)/(mmol/l)"},
-                    "ethanol":       {"function": "inverse", "m": "10787 (nRIU·s)/(mmol/l)"},
-                    "allyl alcohol": {"function": "inverse", "m": "25387 (nRIU·s)/(mmol/l)"},
-                    "1-propanol":    {"function": "inverse", "m": "20628 (nRIU·s)/(mmol/l)"},
+                    "formic acid": {
+                        "function": "inverse",
+                        "m": "8314 (nRIU·s)/(mmol/l)",
+                    },
+                    "acetic acid": {
+                        "function": "inverse",
+                        "m": "15490 (nRIU·s)/(mmol/l)",
+                    },
+                    "ethanol": {"function": "inverse", "m": "10787 (nRIU·s)/(mmol/l)"},
+                    "allyl alcohol": {
+                        "function": "inverse",
+                        "m": "25387 (nRIU·s)/(mmol/l)",
+                    },
+                    "1-propanol": {
+                        "function": "inverse",
+                        "m": "20628 (nRIU·s)/(mmol/l)",
+                    },
                 },
                 "output": "c",
             },
