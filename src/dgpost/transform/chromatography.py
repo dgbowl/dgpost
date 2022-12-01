@@ -21,13 +21,9 @@ import numpy as np
 from uncertainties import unumpy as unp
 from yadg.dgutils import ureg
 from scipy.signal import savgol_filter, find_peaks
-from dgpost.utils.helpers import separate_data, load_data
+from dgpost.utils.helpers import separate_data, load_data, columns_to_smiles
 
 logger = logging.getLogger(__name__)
-
-
-
-
 
 
 @load_data(
@@ -37,7 +33,7 @@ logger = logging.getLogger(__name__)
 def integrate_trace(
     time: pint.Quantity,
     signal: pint.Quantity,
-    species: dict[str, dict], 
+    species: dict[str, dict],
     polyorder: int = 3,
     window: int = 7,
     prominence: float = 1e-4,
@@ -48,10 +44,10 @@ def integrate_trace(
     Chromatographic trace integration.
 
     Function which integrates peaks found in the chromatographic trace, which is
-    itself defined as a set of ``time, signal`` arrays. The procedure is as 
+    itself defined as a set of ``time, signal`` arrays. The procedure is as
     follows:
-    
-      #) The ``signal`` is smoothed the Savigny-Golay filter, via the 
+
+      #) The ``signal`` is smoothed the Savigny-Golay filter, via the
          :func:`scipy.signal.savgol_filter`. For this, the arguments ``polyorder``
          and ``window`` are used.
       #) Peak maxima are found using :func:`scipy.signal.find_peaks`. For this,
@@ -60,15 +56,15 @@ def integrate_trace(
          determined from the nearest minima, or from the nearest inflection point
          at which the gradient is below the ``threshold``.
       #) Peak maxima are matched against known peaks, provided in the ``species``
-         argument. The peak is considered matching a species when its maximum is 
+         argument. The peak is considered matching a species when its maximum is
          between the left and right limits defined in ``species``.
       #) A baseline is constructed by interpolating by copying the ``signal`` data
          and interpolating between the ends of all matched peaks. If consecutive
          peaks are found, the interpolation spans the whole domain.
-      #) The baseline is subtracted from the signal and the peak areas are 
+      #) The baseline is subtracted from the signal and the peak areas are
          integrated using the :func:`numpy.trapz` function.
       #) The peak height is taken from the original ``signal`` data.
-    
+
 
     Parameters
     ----------
@@ -91,20 +87,20 @@ def integrate_trace(
     polyorder
         An :class:`int` defining the order of the polynomial for the Savigny-Golay
         filter. Defaults to 3. The ``polyorder`` must be less than ``window``.
-    
+
     window
         An :class:`int` defining the smoothing window for the Savigny-Golay filter.
         Defaults to 7. Must be odd. The ``polyorder`` must be less than ``window``.
-    
+
     prominence
-        A :class:`float` used to calculate the prominence of the peaks in ``signal`` 
+        A :class:`float` used to calculate the prominence of the peaks in ``signal``
         by scaling the ``max(abs(signal))``. Used in the peak picking process.
         Defaults to 0.0001.
-    
+
     threshold
         A :class:`float` used to find ends of peaks by comparing to the gradient
         of ``signal`` at the nearest inflection points.
-    
+
     output
         A :class:`str` prefix for the output namespace. The results are collated in
         the ``f"{output}->area`` namespace for peak areas and ``f"{output}->height``
@@ -116,7 +112,7 @@ def integrate_trace(
         A dictionary containing the peak areas and peak heights of matched peaks
         stored in namespaced :class:`pint.Quantities`.
     """
-    
+
     yvals, ysigs, yunit = separate_data(signal)
 
     # Smooth values first
@@ -130,10 +126,10 @@ def integrate_trace(
                 f"smoothing window '{window}."
             )
         ysmooth = savgol_filter(yvals, window, polyorder)
-    
+
     # Pick peaks
     peakmax, _ = find_peaks(ysmooth, prominence=prominence * yvals.max())
-    #peakmin, _ = find_peaks(ysmooth * -1, prominence=prominence * yvals.max()) 
+    # peakmin, _ = find_peaks(ysmooth * -1, prominence=prominence * yvals.max())
     # gradient: find peaks and inflection points
     grad = np.gradient(yvals)
     gm = 1 * abs(grad) > 1e-10
@@ -142,7 +138,7 @@ def integrate_trace(
     hess = np.gradient(grad)
     hm = 1 * abs(hess) > 1e-10
     hesszero = np.nonzero(np.diff(np.sign(hess * hm)))[0] + 1
-    
+
     # Find peak edges
     allpeaks = []
     for pmax in peakmax:
@@ -158,7 +154,7 @@ def integrate_trace(
             # find first minimum/maximum after pmax
             if xi in gradzero[:] and not rmin:
                 rmin = xi
-            # find first inflection point with gradient below threshold 
+            # find first inflection point with gradient below threshold
             if xi in hesszero[hi:] and not rthr:
                 if abs(grad[xi]) < threshold:
                     rthr = xi
@@ -183,7 +179,6 @@ def integrate_trace(
         if llim == 0:
             logger.warning("Possible mismatch of peak start.")
         allpeaks.append({"llim": llim, "rlim": rlim, "max": pmax})
-    
 
     truepeaks = {}
     for name, limits in species.items():
@@ -194,12 +189,11 @@ def integrate_trace(
                 lim[k] = ureg.Quantity(lim[k], time.u)
             elif isinstance(lim[k], str):
                 lim[k] = ureg.Quantity(lim[k])
-        print(f"{lim=}")
         for p in allpeaks:
             if time[p["max"]] > lim["l"] and time[p["max"]] < lim["r"]:
                 truepeaks[name] = p
                 break
-    
+
     interpolants = []
     for p in allpeaks:
         if len(interpolants) == 0:
@@ -216,7 +210,7 @@ def integrate_trace(
         interp = np.interp(range(n), [0, n], [bn[pair[0]], bn[pair[1]]])
         bn[pair[0] : pair[1]] = interp
         bs[pair[0] : pair[1]] = np.zeros(n)
-    
+
     baseline = ureg.Quantity(unp.uarray(bn, bs), yunit)
 
     retval = {}
@@ -230,3 +224,53 @@ def integrate_trace(
         retval[f"{output}->height->{k}"] = py[v["max"] - s]
 
     return retval
+
+
+def _inverse(y, m=1.0, c=None):
+    m = ureg.Quantity(m)
+    if c is None:
+        return y / m
+    else:
+        c = ureg.Quantity(c)
+        return (y - c) / m
+
+
+def _linear(x, m=1.0, c=None):
+    m = ureg.Quantity(m)
+    if c is None:
+        return m * x
+    else:
+        c = ureg.Quantity(c)
+        return m * x + c
+
+
+@load_data(
+    ("areas", None, dict),
+)
+def apply_calibration(
+    areas: pint.Quantity,
+    calibration: dict[str, dict],
+    output: str = "x",
+) -> dict[str, float]:
+    """ """
+    ret = {}
+    smiles = columns_to_smiles(areas=areas, cal=calibration)
+    for k, v in smiles.items():
+        if len({"areas", "cal"}.intersection(v)) == 2:
+            tag = f"{output}->{v['cal']}"
+            cal = calibration[v["cal"]]
+            A = areas[v["areas"]]
+            if cal.get("function", "inverse") == "inverse":
+                y = _inverse(
+                    A, 
+                    m = cal.get("m", 1.0),
+                    c = cal.get("c", None)
+                )
+            elif cal["function"] == "linear":
+                y = _linear(
+                    A,
+                    m = cal.get("m", 1.0),
+                    c = cal.get("c", None)
+                )
+            ret[tag] = y
+    return ret

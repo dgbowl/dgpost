@@ -72,7 +72,7 @@ from .utils import compare_dfs
                     "ethylene": {"l": 541.8, "r": 550.2},
                     "ethane": {"l": 552.6, "r": 558.0},
                     "propylene": {"l": 595.2, "r": 602.0},
-                    "propane": {"l": 602.0,"r": 606.0},
+                    "propane": {"l": 602.0, "r": 606.0},
                 },
                 "output": "FID",
             },
@@ -90,11 +90,27 @@ from .utils import compare_dfs
                     "ethylene": {"l": "9.03 min", "r": "9.17 min"},
                     "ethane": {"l": "9.21 min", "r": "9.30 min"},
                     "propylene": {"l": "9.92 min", "r": "10.03 min"},
-                    "propane": {"l": "10.03 min","r": "10.10 min"},
+                    "propane": {"l": "10.03 min", "r": "10.10 min"},
                 },
                 "output": "FID",
             },
             "FID.df.pkl",
+        ),
+        (  # ts3 - LC data
+            "agilent.df.pkl",
+            {
+                "time": "LC->t",
+                "signal": "LC->y",
+                "species": {
+                    "formic acid": {"l": "14.5 min", "r": "15.5 min"},
+                    "acetic acid": {"l": "15.5 min", "r": "16.5 min"},
+                    "ethanol": {"l": "21.2 min", "r": "22.0 min"},
+                    "allyl alcohol": {"l": "22.0 min", "r": "22.8 min"},
+                    "1-propanol": {"l": "27.7 min", "r": "28.7 min"},
+                },
+                "output": "LC",
+            },
+            "LC.df.pkl",
         ),
     ],
 )
@@ -102,6 +118,55 @@ def test_chromatography_integrate_trace(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
     df = chromatography.integrate_trace(df, **spec)
+    print(f"{df.head()=}")
+    ref = pd.read_pickle(outfile)
+    print(f"{ref.head()=}")
+    df.to_pickle(outfile)
+    compare_dfs(ref, df)
+
+
+@pytest.mark.parametrize(
+    "infile, spec, outfile",
+    [
+        (  # ts0 - explicit units
+            "FID.df.pkl",
+            {
+                "areas": "FID->area",
+                "calibration": {
+                    "CO":        {"function": "inverse", "m": "1873.56 pA·s/%"},
+                    "methane":   {"function": "inverse", "m": "1795.41 pA·s/%"},
+                    "CO2":       {"function": "inverse", "m": "1841.64 pA·s/%"},
+                    "ethylene":  {"function": "inverse", "m": "3565.07 pA·s/%"},
+                    "ethane":    {"function": "inverse", "m": "3570.01 pA·s/%"},
+                    "propylene": {"function": "inverse", "m": "5306.26 pA·s/%"},
+                    "propane":   {"function": "inverse", "m": "5326.11 pA·s/%"},
+                    "butane":    {"function": "inverse", "m": "7121.53 pA·s/%"},
+                },
+                "output": "x",
+            },
+            "ts0.df.pkl",
+        ),
+        (  # ts1 - LC data
+            "LC.df.pkl",
+            {
+                "areas": "LC->area",
+                "calibration": {
+                    "formic acid":   {"function": "inverse", "m": "8314 (nRIU·s)/(mmol/l)"},
+                    "acetic acid":   {"function": "inverse", "m": "15490 (nRIU·s)/(mmol/l)"},
+                    "ethanol":       {"function": "inverse", "m": "10787 (nRIU·s)/(mmol/l)"},
+                    "allyl alcohol": {"function": "inverse", "m": "25387 (nRIU·s)/(mmol/l)"},
+                    "1-propanol":    {"function": "inverse", "m": "20628 (nRIU·s)/(mmol/l)"},
+                },
+                "output": "c",
+            },
+            "ts1.df.pkl",
+        ),
+    ],
+)
+def test_chromatography_apply_calibration(infile, spec, outfile, datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle(infile)
+    df = chromatography.apply_calibration(df, **spec)
     print(f"{df.head()=}")
     ref = pd.read_pickle(outfile)
     print(f"{ref.head()=}")
