@@ -21,6 +21,7 @@ Submodules
    :maxdepth: 4
 
    dgpost.transform.catalysis
+   dgpost.transform.chromatography
    dgpost.transform.electrochemistry
    dgpost.transform.impedance
    dgpost.transform.rates
