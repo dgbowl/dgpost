@@ -4,7 +4,6 @@
 [![PyPi version](https://badgen.net/pypi/v/dgpost/?icon=pypi)](https://pypi.org/project/dgpost)
 ![Github link](https://badgen.net/github/tag/dgbowl/dgpost/?icon=github)
 ![Github status](https://badgen.net/github/checks/dgbowl/dgpost/?icon=github)
-[![LGTM analysis](https://badgen.net/lgtm/grade/g/dgbowl/dgpost/python/?logo=lgtm)](https://lgtm.com/projects/g/dgbowl/dgpost/context:python)
 
 Set of tools to post-process raw instrument data in yadg's `datagram` format, and
 tabulated data imported into `pd.DataFrames`.
