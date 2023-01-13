@@ -1,0 +1,4 @@
+.. automodule:: dgpost.transform.rates
+   :members:
+   :undoc-members:
+   :show-inheritance:

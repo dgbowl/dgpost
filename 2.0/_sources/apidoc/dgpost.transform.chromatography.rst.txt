@@ -1,0 +1,4 @@
+.. automodule:: dgpost.transform.chromatography
+   :members:
+   :undoc-members:
+   :show-inheritance:
