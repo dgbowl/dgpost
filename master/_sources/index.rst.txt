@@ -6,8 +6,6 @@
    :target: https://pypi.org/project/dgpost
 .. image:: https://badgen.net/github/tag/dgbowl/dgpost/?icon=github
    :target: https://github.com/dgbowl/dgpost
-.. image:: https://badgen.net/lgtm/grade/g/dgbowl/dgpost/python/?logo=lgtm
-   :target: https://lgtm.com/projects/g/dgbowl/dgpost/context:python
 
 A set of datagram postprocessing tools, functions, visualisations and export scripts.
 

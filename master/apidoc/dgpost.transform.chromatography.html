@@ -144,9 +144,9 @@ integrated using the <code class="xref py py-func docutils literal notranslate">
 </ol>
 </div></blockquote>
 <p>The format of the <code class="docutils literal notranslate"><span class="pre">species</span></code> specification, used for peak matching, is as follows:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">species_name</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"> </span><span class="p p-Indicator">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">l</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">pint.Quantity</span><span class="w"></span>
-<span class="w">    </span><span class="nt">r</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">pint.Quantity</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">species_name</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"> </span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">l</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">pint.Quantity</span>
+<span class="w">    </span><span class="nt">r</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">pint.Quantity</span>
 </pre></div>
 </div>
 <p>with the keys <code class="docutils literal notranslate"><span class="pre">&quot;l&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;r&quot;</span></code> corresponding to the left and right limit for the
@@ -194,10 +194,10 @@ stored in namespaced <code class="xref py py-class docutils literal notranslate"
 an integrated chromatographic trace. Elements in the calibration <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> are
 treated as chemicals, matched against the chromatographic data using SMILES.</p>
 <p>The format of the <code class="docutils literal notranslate"><span class="pre">calibration</span></code> is as follows:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">species_name</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"> </span><span class="p p-Indicator">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Literal[&quot;inverse&quot;, &quot;linear&quot;]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">m</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">float</span><span class="w"></span>
-<span class="w">    </span><span class="nt">c</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">Optional[float]</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">species_name</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"> </span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Literal[&quot;inverse&quot;, &quot;linear&quot;]</span>
+<span class="w">    </span><span class="nt">m</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">float</span>
+<span class="w">    </span><span class="nt">c</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">Optional[float]</span>
 </pre></div>
 </div>
 <p>Two calibration functions are provided. Either the output value <code class="docutils literal notranslate"><span class="pre">x</span></code> is calculated
@@ -235,7 +235,7 @@ peak <code class="docutils literal notranslate"><span class="pre">areas</span></
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022, dgpost authors.</p>
+    <p>&#169; Copyright 2021-2023, dgpost authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
