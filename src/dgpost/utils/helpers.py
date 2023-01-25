@@ -291,11 +291,17 @@ def load_data(*cols: tuple[str, str, type]):
                                 f"multiple columns in DataFrame matched with '{cval=}':"
                                 f"{keys=}"
                             )
-                        key = keys.pop()
-                        if uconv:
-                            data_kwargs[cname] = pQ(df, key, unit=cunit)
+                        elif len(keys) == 0:
+                            q = ureg.Quantity(cval)
+                            if q.dimensionless:
+                                q = q * ureg(cunit)
+                            data_kwargs[cname] = q
                         else:
-                            data_kwargs[cname] = pQ(df, key)
+                            key = keys.pop()
+                            if uconv:
+                                data_kwargs[cname] = pQ(df, key, unit=cunit)
+                            else:
+                                data_kwargs[cname] = pQ(df, key)
                     else:
                         # cval is a string, but the row walues (ctype) are dict
                         # so we need to match all columns in pd.DataFrame
@@ -360,7 +366,6 @@ def load_data(*cols: tuple[str, str, type]):
                         for name in ret_data.keys():
                             if name not in retvals:
                                 ret_data[name].append(None)
-                    print(f"{ret_data}=")
                 else:
                     retvals = func(**data_kwargs, **kwargs)
                     ret_data = {}
