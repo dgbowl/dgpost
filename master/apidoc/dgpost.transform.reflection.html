@@ -155,8 +155,13 @@ coefficient data, <span class="math notranslate nohighlight">\(\text{Re}(\Gamma)
 coefficient data, <span class="math notranslate nohighlight">\(\text{Im}(\Gamma)\)</span>. Unitless.</p></li>
 <li><p><strong>freq</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the frequencies <span class="math notranslate nohighlight">\(f\)</span>
 corresponding to the reflection coefficient data. Defaults to <code class="docutils literal notranslate"><span class="pre">Hz</span></code>.</p></li>
-<li><p><strong>near</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A frequency used to select around which peak to prune. By default, pruning
-is performed around the highest peak in <span class="math notranslate nohighlight">\(\text{log}|\Gamma|\)</span>.</p></li>
+<li><p><strong>near</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A frequency used to select the point around which to prune. By default, pruning
+is performed around the highest peak in <span class="math notranslate nohighlight">\(\text{log}|\Gamma|\)</span>. When set,
+pruning will be perfomed around any maximum in <span class="math notranslate nohighlight">\(\text{log}|\Gamma|\)</span> that
+exists within 10% of the trace size on either side of the selected point. This
+means that for a trace size of 20001 points, 2000 points below and 2000 points
+above the point corresponding to the selected frequency will be used to find a
+local maximum.</p></li>
 <li><p><strong>cutoff</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Relative peak height below which the reflection trace should be pruned.
 Uses a fraction of normalised <span class="math notranslate nohighlight">\(|\Gamma|\)</span>. Defaults to <code class="docutils literal notranslate"><span class="pre">0.4</span></code>.</p></li>
 <li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name for the output namespace. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;pruned&quot;</span></code>.</p></li>
@@ -190,7 +195,12 @@ coefficient data, <span class="math notranslate nohighlight">\(\text{Im}(\Gamma)
 <li><p><strong>freq</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the frequencies <span class="math notranslate nohighlight">\(f\)</span>
 corresponding to the reflection coefficient data. Defaults to <code class="docutils literal notranslate"><span class="pre">Hz</span></code>.</p></li>
 <li><p><strong>near</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A frequency used to select around which peak to prune. By default, pruning
-is performed around the highest peak in <span class="math notranslate nohighlight">\(\text{log}|\Gamma|\)</span>.</p></li>
+is performed around the highest peak in <span class="math notranslate nohighlight">\(\text{log}|\Gamma|\)</span>. When set,
+pruning will be perfomed around any maximum in <span class="math notranslate nohighlight">\(\text{log}|\Gamma|\)</span> that
+exists within 10% of the trace size on either side of the selected point. This
+means that for a trace size of 20001 points, 2000 points below and 2000 points
+above the point corresponding to the selected frequency will be used to find a
+local maximum.</p></li>
 <li><p><strong>threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Threshold for the gradient in the <span class="math notranslate nohighlight">\(\text{abs}(\Gamma)\)</span> below which the
 trace is pruned. Defaults to <code class="docutils literal notranslate"><span class="pre">1e-6</span></code>.</p></li>
 <li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name for the output namespace. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;pruned&quot;</span></code>.</p></li>
