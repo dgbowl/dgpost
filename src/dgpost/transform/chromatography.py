@@ -74,9 +74,9 @@ def integrate_trace(
         "{{ species_name }}" :
             l:  pint.Quantity
             r:  pint.Quantity
-    
+
     with the keys ``"l"`` and ``"r"`` corresponding to the left and right limit for the
-    maximum of the peak. The limits can be either :class:`pint.Quantity`, or :class:`str` 
+    maximum of the peak. The limits can be either :class:`pint.Quantity`, or :class:`str`
     with the same dimensionality as ``time``, or a :class:`float` in which case the units
     of ``time`` are assumed.
 
@@ -93,7 +93,7 @@ def integrate_trace(
 
     species
         A :class:`dict[str, dict]`, where the keys are species names and the
-        values define the left and right limits for matching the peak maximum. 
+        values define the left and right limits for matching the peak maximum.
 
     polyorder
         An :class:`int` defining the order of the polynomial for the Savigny-Golay

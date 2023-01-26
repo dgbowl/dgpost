@@ -21,7 +21,7 @@ setuptools.setup(
     url="https://github.com/dgbowl/dgpost",
     project_urls={
         "Bug Tracker": "https://github.com/dgbowl/dgpost/issues",
-        "Documentation": "https://dgbowl.github.io/dgpost/"
+        "Documentation": "https://dgbowl.github.io/dgpost/",
     },
     classifiers=[
         "Programming Language :: Python :: 3.9",
@@ -47,16 +47,13 @@ setuptools.setup(
         "requests",
     ],
     extras_require={
-        "testing": [
-            "pytest",
-            "Pillow"
-        ],
+        "testing": ["pytest", "Pillow"],
         "docs": [
             "sphinx==4.5.0",
             "sphinx-rtd-theme",
             "sphinx-autodoc-typehints",
-            "autodoc-pydantic"
-        ]
+            "autodoc-pydantic",
+        ],
     },
     entry_points={"console_scripts": ["dgpost=dgpost:run_with_arguments"]},
 )
