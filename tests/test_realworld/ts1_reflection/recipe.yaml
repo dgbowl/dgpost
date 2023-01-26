@@ -1,0 +1,46 @@
+version: "1.0"
+load:
+  - as: dg
+    path: datagram.json
+extract:
+  - into: table
+    from: dg
+    at:
+        index: 0
+    columns:
+      - key: raw->traces->S11->f
+        as: freq
+      - key: raw->traces->S11->Re(G)
+        as: real
+      - key: raw->traces->S11->Im(G)
+        as: imag
+transform:
+  - table: table
+    with: reflection.prune_cutoff
+    using:
+      - real: real
+        imag: imag
+        freq: freq
+        near: 7150000000 Hz
+        cutoff: 0.4
+        output: TM210
+      - real: real
+        imag: imag
+        freq: freq
+        near: 7.35e9
+        cutoff: 0.4
+        output: TM020
+  - table: table
+    with: reflection.qf_kajfez
+    using:
+      - real: TM020->real
+        imag: TM020->imag
+        freq: TM020->freq
+        output: TM020
+      - real: TM210->real
+        imag: TM210->imag
+        freq: TM210->freq
+        output: TM210
+save:
+  - table: table
+    as: table.pkl

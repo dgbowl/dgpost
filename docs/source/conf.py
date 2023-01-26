@@ -36,11 +36,11 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx_autodoc_typehints",
     "sphinx_rtd_theme",
-    "sphinxcontrib.autodoc_pydantic"
+    "sphinxcontrib.autodoc_pydantic",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -76,5 +76,5 @@ autodoc_pydantic_model_show_field_summary = False
 autodoc_pydantic_model_member_order = "bysource"
 
 intersphinx_mapping = {
-    'dgbowl_schemas': ("https://dgbowl.github.io/dgbowl-schemas/master", None)
+    "dgbowl_schemas": ("https://dgbowl.github.io/dgbowl-schemas/master", None)
 }
