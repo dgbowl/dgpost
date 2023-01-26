@@ -10,8 +10,12 @@ from .utils import compare_dfs, compare_images
     "inpath, reflist",
     [
         (  # ts0 - load 1 dg, extract 2 keys directly
-            "ts0",
+            "ts0_empa",
             ["peis.pkl", "data.pkl", "transform.pkl", "plot.png"],
+        ),
+        (  # ts1 - load qftrace datagram, reflection prune, reflection qf
+            "ts1_reflection",
+            ["table.pkl"],
         ),
     ],
 )
@@ -24,6 +28,7 @@ def test_realworld(inpath, reflist, datadir):
         dgpost.run(flist[i])
         if reffn.endswith("pkl"):
             ret = pd.read_pickle(reffn)
+            print(f"{ret.columns=}")
             print(f"{ret.head()=}")
             ref = pd.read_pickle(f"ref.{reffn}")
             print(f"{ref.head()=}")
