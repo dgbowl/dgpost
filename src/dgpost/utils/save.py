@@ -53,7 +53,12 @@ def save(
     if not sigma:
         logger.warning(f"Stripping uncertainties from table.")
         for col in table.columns:
-            table[col] = unp.nominal_values(table[col].array)
+            try:
+                table[col] = unp.nominal_values(table[col].array)
+            except ValueError:
+                logger.warning(
+                    f"Cannot strip uncertainties from array quantity '{col}'."
+                )
 
     # find type of file in path or use default 'pkl'
     if type is None:
