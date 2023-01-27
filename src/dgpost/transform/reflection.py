@@ -91,7 +91,7 @@ def prune_cutoff(
         A frequency used to select the point around which to prune. By default, pruning
         is performed around the highest peak in :math:`\\text{log}|\\Gamma|`. When set,
         pruning will be perfomed around any maximum in :math:`\\text{log}|\\Gamma|` that
-        exists within 10\% of the trace size on either side of the selected point. This
+        exists within 10% of the trace size on either side of the selected point. This
         means that for a trace size of 20001 points, 2000 points below and 2000 points
         above the point corresponding to the selected frequency will be used to find a
         local maximum.
@@ -174,7 +174,7 @@ def prune_gradient(
         A frequency used to select around which peak to prune. By default, pruning
         is performed around the highest peak in :math:`\\text{log}|\\Gamma|`. When set,
         pruning will be perfomed around any maximum in :math:`\\text{log}|\\Gamma|` that
-        exists within 10\% of the trace size on either side of the selected point. This
+        exists within 10% of the trace size on either side of the selected point. This
         means that for a trace size of 20001 points, 2000 points below and 2000 points
         above the point corresponding to the selected frequency will be used to find a
         local maximum.

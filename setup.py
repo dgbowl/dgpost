@@ -42,7 +42,7 @@ setuptools.setup(
         "chemicals>=1.0.0",
         "rdkit>=2022.3",
         "yadg>=4.1",
-        "dgbowl-schemas>=106",
+        "dgbowl-schemas>=106<=111",
         "matplotlib>=3.5.0",
         "requests",
     ],
