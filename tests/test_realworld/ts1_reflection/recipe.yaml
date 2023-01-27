@@ -44,3 +44,4 @@ transform:
 save:
   - table: table
     as: table.pkl
+    sigma: false
