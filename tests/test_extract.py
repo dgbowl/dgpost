@@ -1,5 +1,4 @@
 import pytest
-import yadg.core
 import json
 import os
 import pandas as pd
@@ -7,13 +6,6 @@ import pandas as pd
 from dgpost.utils.helpers import combine_tables
 import dgpost.utils
 from .utils import compare_dfs
-
-
-def test_valid_datagram(datadir):
-    os.chdir(datadir)
-    with open("normalized.dg.json", "r") as infile:
-        dg = json.load(infile)
-    assert yadg.core.validators.validate_datagram(dg)
 
 
 @pytest.mark.parametrize(

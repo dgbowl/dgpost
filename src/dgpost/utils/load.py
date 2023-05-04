@@ -1,10 +1,10 @@
 """
 **load**: Datagram and table loading routine
 --------------------------------------------
-.. codeauthor:: 
-    Ueli Sauter, 
+.. codeauthor::
+    Ueli Sauter,
     Peter Kraus
-    
+
 The function :func:`dgpost.utils.load.load` processes the below specification
 in order to load the datagram json file:
 
@@ -13,14 +13,13 @@ in order to load the datagram json file:
 
 .. note::
 
-    The key ``as`` is not processed by :func:`load`, it should be used by its caller 
+    The key ``as`` is not processed by :func:`load`, it should be used by its caller
     to store the returned `datagram` or :class:`pd.DataFrame` into the correct variable.
 
 """
 import os
 import json
 import pandas as pd
-from yadg.core import validate_datagram
 from uncertainties import ufloat_fromstr, UFloat
 from typing import Union, Any
 import logging
@@ -41,7 +40,7 @@ def _parse_ufloat(v: Union[str, Any]) -> Union[UFloat, Any]:
 
 def load(
     path: str,
-    check: bool = True,
+    check: bool = None,
     type: str = "datagram",
 ) -> Union[dict, pd.DataFrame]:
     """"""
@@ -52,8 +51,11 @@ def load(
         logger.debug("loading datagram from '%s'" % path)
         with open(path, "r") as infile:
             dg = json.load(infile)
-        if check:
-            validate_datagram(dg)
+        if check is not None:
+            logger.warning(
+                "The 'check' argument has been deprecated and will "
+                "stop working in dgpost-3.0."
+            )
         return dg
     else:
         logger.debug("loading table from '%s'" % path)
