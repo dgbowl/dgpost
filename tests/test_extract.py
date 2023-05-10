@@ -2,6 +2,7 @@ import pytest
 import json
 import os
 import pandas as pd
+import datatree
 
 from dgpost.utils.helpers import combine_tables
 import dgpost.utils
@@ -144,13 +145,100 @@ from .utils import compare_dfs
             },
             "ref.sparse.xin.pkl",
         ),
+        (  # ts13 - extract single column
+            "ndot.units.ufloat.df.pkl",
+            {
+                "columns": [{"key": "nin->C3H8", "as": "C3H8"}],
+            },
+            "table.direct.named.pkl",
+        ),
+        (  # ts14 - extract starred columns
+            "ndot.units.ufloat.df.pkl",
+            {
+                "columns": [{"key": "nin->*", "as": "in"}],
+            },
+            "table.direct.starred.pkl",
+        ),
+        (  # ts15 - extract & interpolate on explicit timesteps
+            "ndot.units.ufloat.df.pkl",
+            {
+                "at": {"timestamps": [0.9, 1.1]},
+                "columns": [{"key": "nin->C3H8", "as": "C3H8"}],
+            },
+            "table.interpolated.named.pkl",
+        ),
+        (  # ts16 - extract & interpolate on explicit timesteps OOB
+            "ndot.units.ufloat.df.pkl",
+            {
+                "at": {"timestamps": [2, 2.5, 3.0]},
+                "columns": [{"key": "nin->*", "as": "in"}],
+            },
+            "table.interpolated.starred.pkl",
+        ),
+        (  # ts17 - extract 1D from NetCDF with at-step
+            "meas+qf+gc.nc",
+            {
+                "at": {"step": "00-measurement.json"},
+                "columns": [
+                    {"key": "T_f", "as": "T"},
+                ],
+            },
+            "ref.meas.pkl",
+        ),
+        (  # ts18 - extract 1D from NetCDF without at
+            "meas+qf+gc.nc",
+            {
+                "columns": [
+                    {"key": "00-measurement.json->T_f", "as": "T"},
+                ],
+            },
+            "ref.meas.pkl",
+        ),
+        (  # ts19 - extract 1D from NetCDF with string coords
+            "chromdata.nc",
+            {
+                "columns": [
+                    {"key": "0->xout", "as": "xout"},
+                    {"key": "0->concentration", "as": "c"},
+                ],
+            },
+            "ref.chromdata.pkl",
+        ),
+        (  # ts20 - extract 1D from NetCDF with star
+            "chromdata.nc",
+            {
+                "at": {"step": "0"},
+                "columns": [
+                    {"key": "xout->*", "as": "xout"},
+                    {"key": "concentration->*", "as": "c"},
+                ],
+            },
+            "ref.chromdata.pkl",
+        ),
+        (  # ts21 - extract 2D from NetCDF
+            "qf+chrom.nc",
+            {
+                "at": {"step": "0/S11"},
+                "columns": [
+                    {"key": "freq", "as": "f"},
+                    {"key": "Re(G)", "as": "real"},
+                    {"key": "Im(G)", "as": "imag"},
+                ],
+            },
+            "ref.qf.pkl",
+        ),
     ],
 )
 def test_extract_single(inpath, spec, outpath, datadir):
     os.chdir(datadir)
-    with open(inpath, "r") as infile:
-        dg = json.load(infile)
-    ret = dgpost.utils.extract(dg, spec)
+    if inpath.endswith("json"):
+        with open(inpath, "r") as inf:
+            data = json.load(inf)
+    elif inpath.endswith("pkl"):
+        data = pd.read_pickle(inpath)
+    elif inpath.endswith("nc"):
+        data = datatree.open_datatree(inpath)
+    ret = dgpost.utils.extract(data, spec)
     print(f"{ret.head()=}")
     ref = pd.read_pickle(outpath)
     print(f"{ref.head()=}")
@@ -217,70 +305,41 @@ def test_extract_single(inpath, spec, outpath, datadir):
             ],
             "interpolated.timestamps.pkl",
         ),
+        (  # ts3 - constant with float, str(ufloat) values
+            "meas+qf+gc.nc",
+            [
+                {
+                    "at": {"step": "01-inert.json/S11"},
+                    "columns": [{"key": "freq"}, {"key": "Re(G)"}, {"key": "Re(G)"}],
+                },
+                {
+                    "at": {"step": "00-measurement.json"},
+                    "columns": [{"key": "T_f", "as": "temp"}],
+                },
+            ],
+            "ref.qf+temp.pkl",
+        ),
     ],
 )
 def test_extract_multiple(inpath, spec, outpath, datadir):
     os.chdir(datadir)
-    with open(inpath, "r") as infile:
-        dg = json.load(infile)
-    for si in range(len(spec)):
+    if inpath.endswith("json"):
+        with open(inpath, "r") as inf:
+            data = json.load(inf)
+    elif inpath.endswith("pkl"):
+        data = pd.read_pickle(inpath)
+    elif inpath.endswith("nc"):
+        data = datatree.open_datatree(inpath)
+    for si, sp in enumerate(spec):
         if si == 0:
-            ret = dgpost.utils.extract(dg, spec[si])
-            df = ret
+            df = dgpost.utils.extract(data, sp)
         else:
-            ret = dgpost.utils.extract(dg, spec[si], ret.index)
+            ret = dgpost.utils.extract(data, sp, df.index)
             df = combine_tables(df, ret)
     print(f"{df.head()=}")
     ref = pd.read_pickle(outpath)
     print(f"{ref.head()=}")
     df.to_pickle(outpath)
-    pd.testing.assert_frame_equal(ref, df, check_like=True)
-    assert ref.attrs == df.attrs
-
-
-@pytest.mark.parametrize(
-    "infile, spec, outfile",
-    [
-        (  # ts0 - extract single column
-            "ndot.units.ufloat.df.pkl",
-            {
-                "columns": [{"key": "nin->C3H8", "as": "C3H8"}],
-            },
-            "table.direct.named.pkl",
-        ),
-        (  # ts1 - extract starred columns
-            "ndot.units.ufloat.df.pkl",
-            {
-                "columns": [{"key": "nin->*", "as": "in"}],
-            },
-            "table.direct.starred.pkl",
-        ),
-        (  # ts2 - extract & interpolate on explicit timesteps
-            "ndot.units.ufloat.df.pkl",
-            {
-                "at": {"timestamps": [0.9, 1.1]},
-                "columns": [{"key": "nin->C3H8", "as": "C3H8"}],
-            },
-            "table.interpolated.named.pkl",
-        ),
-        (  # ts3 - extract & interpolate on explicit timesteps OOB
-            "ndot.units.ufloat.df.pkl",
-            {
-                "at": {"timestamps": [2, 2.5, 3.0]},
-                "columns": [{"key": "nin->*", "as": "in"}],
-            },
-            "table.interpolated.starred.pkl",
-        ),
-    ],
-)
-def test_extract_df(infile, spec, outfile, datadir):
-    os.chdir(datadir)
-    df = pd.read_pickle(infile)
-    df = dgpost.utils.extract(df, spec)
-    print(f"{df.head()=}")
-    ref = pd.read_pickle(outfile)
-    print(f"{ref.head()=}")
-    df.to_pickle(outfile)
     compare_dfs(ref, df)
 
 

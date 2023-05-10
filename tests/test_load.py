@@ -2,9 +2,10 @@ import pytest
 import json
 import os
 import pandas as pd
+import datatree
 
 import dgpost.utils
-from .utils import compare_dfs
+from .utils import compare_dfs, compare_datatrees
 
 
 @pytest.mark.parametrize(
@@ -25,7 +26,7 @@ from .utils import compare_dfs
 )
 def test_load_datagram(input, datadir):
     os.chdir(datadir)
-    ret = dgpost.utils.load(**input)
+    ret = dgpost.utils.load(**input, type="datagram")
     with open(input["path"], "r") as infile:
         ref = json.load(infile)
     assert ret == ref
@@ -65,3 +66,18 @@ def test_load_table(spec, outfile, datadir):
     print(f"{ref.head()=}")
     df.to_pickle(outfile)
     compare_dfs(ref, df)
+
+
+@pytest.mark.parametrize(
+    "input",
+    [
+        {  # ts0
+            "path": "qf+chrom.nc",
+        },
+    ],
+)
+def test_load_datatree(input, datadir):
+    os.chdir(datadir)
+    ret = dgpost.utils.load(**input)
+    ref = datatree.open_datatree(input["path"])
+    compare_datatrees(ret, ref)

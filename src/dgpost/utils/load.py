@@ -24,6 +24,7 @@ from uncertainties import ufloat_fromstr, UFloat
 from typing import Union, Any
 import logging
 from dgpost.utils.helpers import arrow_to_multiindex
+import datatree
 
 logger = logging.getLogger(__name__)
 
@@ -41,13 +42,16 @@ def _parse_ufloat(v: Union[str, Any]) -> Union[UFloat, Any]:
 def load(
     path: str,
     check: bool = None,
-    type: str = "datagram",
+    type: str = "NetCDF",
 ) -> Union[dict, pd.DataFrame]:
     """"""
     assert os.path.exists(path), f"Provided 'path' '{path}' does not exist."
     assert os.path.isfile(path), f"Provided 'path' '{path}' is not a file."
 
-    if type == "datagram":
+    if type.lower() == "netcdf":
+        logger.debug("loading a NetCDF file from '%s'" % path)
+        return datatree.open_datatree(path, engine="h5netcdf")
+    elif type.lower() == "datagram":
         logger.debug("loading datagram from '%s'" % path)
         with open(path, "r") as infile:
             dg = json.load(infile)
@@ -57,7 +61,7 @@ def load(
                 "stop working in dgpost-3.0."
             )
         return dg
-    else:
+    elif type.lower() == "table":
         logger.debug("loading table from '%s'" % path)
         if path.endswith("pkl"):
             df = pd.read_pickle(path)
