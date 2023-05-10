@@ -2,9 +2,9 @@
 **parse**: YAML and JSON input handler
 --------------------------------------
 
-.. codeauthor:: 
+.. codeauthor::
     Peter Kraus
-    
+
 """
 import os
 import yaml
@@ -21,7 +21,7 @@ def parse(fn: str) -> dict[str, Any]:
     Input file parsing function.
 
     Supports loading ``yaml`` and ``json`` files using the `recipe`-parsing
-    function and schema provided in the :mod:`dgbowl_schemas.dgpost..recipe_1_1`
+    function and schema provided in the :mod:`dgbowl_schemas.dgpost.recipe_1_0`
     module.
 
     Parameters

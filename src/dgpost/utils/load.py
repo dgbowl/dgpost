@@ -9,7 +9,7 @@ The function :func:`dgpost.utils.load.load` processes the below specification
 in order to load the datagram json file:
 
 .. _dgpost.recipe load:
-.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_1_1.load.Load
+.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_1_0.load.Load
 
 .. note::
 
