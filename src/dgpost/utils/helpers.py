@@ -1,7 +1,7 @@
 """
 **helpers**: helper functions for the :mod:`~dgpost.transform` package
 ----------------------------------------------------------------------
-.. codeauthor:: 
+.. codeauthor::
     Peter Kraus,
     Ueli Sauter
 
@@ -515,7 +515,8 @@ def arrow_to_multiindex(df: pd.DataFrame, warn: bool = True) -> pd.DataFrame:
         set_units(col, unit, units)
     if "units" in df.attrs:
         df.attrs["units"] = units
-    df.columns = pd.MultiIndex.from_tuples(cols)
+    if len(cols) > 0:
+        df.columns = pd.MultiIndex.from_tuples(cols)
     return df.sort_index()
 
 

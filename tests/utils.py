@@ -6,7 +6,8 @@ import pandas as pd
 import numpy as np
 import uncertainties.unumpy as unp
 from PIL import Image, ImageChops
-from typing import Sequence
+import datatree
+import xarray as xr
 
 
 def datagram_from_input(input, parser, datadir):
@@ -114,3 +115,18 @@ def compare_images(path_one, path_two):
     equal_content = not difference.getbbox()
 
     assert equal_content
+
+
+def compare_datatrees(ret: datatree.DataTree, ref: datatree.DataTree):
+    for k in ret:
+        assert k in ref, f"Entry {k} not present in reference DataTree."
+    for k in ref:
+        assert k in ret, f"Entry {k} not present in result DataTree."
+
+    for k in ret:
+        if isinstance(ret[k], datatree.DataTree):
+            compare_datatrees(ret[k], ref[k])
+        elif isinstance(ret[k], (xr.Dataset, xr.DataArray)):
+            assert ret[k].to_dict() == ref[k].to_dict()
+        else:
+            raise RuntimeError(f"Unknown entry '{k}' of type '{type(k)}'.")

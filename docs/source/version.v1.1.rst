@@ -17,7 +17,7 @@ This is a bugfix release, including:
 
 - ``--patch`` functionality, allowing the user to specify a file prefix on a command
   line when **dgpost** is executed;
-- additional :mod:`~dgpost.transform.catalysis` functionality for calculating 
+- additional :mod:`~dgpost.transform.catalysis` functionality for calculating
   conversion using rates;
 - fixes to index-based x-axes in single-column figures in the :mod:`~dgpost.utils.plot`
   module,

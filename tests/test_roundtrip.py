@@ -15,15 +15,15 @@ from .utils import compare_dfs
     "input",
     [
         (  # ts0 - load dg, with check, simple extract
-            {"path": "sparse.dg.json"},
+            {"path": "sparse.dg.json", "type": "datagram"},
             {"at": {"step": "a"}, "columns": [{"key": "raw->T_f", "as": "T"}]},
         ),
         (  # ts1 - load dg, with check, starred extract
-            {"path": "normalized.dg.json"},
+            {"path": "normalized.dg.json", "type": "datagram"},
             {"at": {"step": "a"}, "columns": [{"key": "derived->xin->*", "as": "xin"}]},
         ),
         (  # ts2 - load dg, with check, multiple extracts, implicit starred
-            {"path": "normalized.dg.json"},
+            {"path": "normalized.dg.json", "type": "datagram"},
             {
                 "at": {"step": "a"},
                 "columns": [
