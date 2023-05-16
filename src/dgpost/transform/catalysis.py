@@ -338,7 +338,9 @@ def selectivity(
         if k != fsmi and "out" in v:
             formula = v["chem"].formula
             dnat = out[v["out"]] * element_from_formula(formula, element)
-            dnat = dnat * (dnat > 0)
+            if isinstance(dnat, Iterable):
+                dnatn, _, _ = separate_data(dnat)
+                dnat.m[np.isnan(dnatn)] = 0
             if nat_out is None:
                 nat_out = dnat
             else:

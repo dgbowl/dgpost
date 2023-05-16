@@ -78,7 +78,7 @@ from .utils import compare_dfs
             "XpXr.units.ufloat.pkl",
         ),
         (  # ts4 - dataframe with nans
-            "conversion.nan.pkl",
+            "catalysis.nan.pkl",
             [
                 {"feedstock": "CO2", "rin": "nin", "rout": "nout", "type": "mixed"},
             ],
