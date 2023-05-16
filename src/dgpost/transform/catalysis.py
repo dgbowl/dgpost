@@ -1,13 +1,13 @@
 """
 **catalysis**: common calculations in catalytic testing
 -------------------------------------------------------
-.. codeauthor:: 
+.. codeauthor::
     Peter Kraus
 
-Includes functions to calculate the reactant- and product-based 
-:func:`~dgpost.transform.catalysis.conversion`, atom-based 
-:func:`~dgpost.transform.catalysis.selectivity`,  
-:func:`~dgpost.transform.catalysis.catalytic_yield`, and 
+Includes functions to calculate the reactant- and product-based
+:func:`~dgpost.transform.catalysis.conversion`, atom-based
+:func:`~dgpost.transform.catalysis.selectivity`,
+:func:`~dgpost.transform.catalysis.catalytic_yield`, and
 :func:`~dgpost.transform.catalysis.atom_balance`.
 
 .. rubric:: Functions
@@ -20,22 +20,24 @@ Includes functions to calculate the reactant- and product-based
     selectivity
 
 Names of compounds within the specified mixtures are parsed to SMILES, and the
-cross-matching of the ``feestock``, internal ``standard``, and the components of 
+cross-matching of the ``feestock``, internal ``standard``, and the components of
 ``xin`` and ``xout`` (or ``rin`` and ``rout``) is performed using these SMILES.
 
 .. note::
 
     This module assumes that the provided inlet and outlet compositions, whether
-    mole fractions or molar rates, contain all species. This implies that the 
-    atomic balance of the inlet and outlet is near unity. If multiple inlet/outlet 
-    streams are present in the experiment, they need to be appropriately combined 
-    into a single namespace, e.g. using functions in the :mod:`dgpost.transform.rates` 
+    mole fractions or molar rates, contain all species. This implies that the
+    atomic balance of the inlet and outlet is near unity. If multiple inlet/outlet
+    streams are present in the experiment, they need to be appropriately combined
+    into a single namespace, e.g. using functions in the :mod:`dgpost.transform.rates`
     before using the functions in this module.
 
 """
 
 import pint
 import logging
+import numpy as np
+from typing import Iterable
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +47,7 @@ from dgpost.utils.helpers import (
     default_element,
     element_from_formula,
     load_data,
+    separate_data,
 )
 
 
@@ -235,6 +238,9 @@ def conversion(
             if "out" in v:
                 formula = v["chem"].formula
                 dnat = out[v["out"]] * element_from_formula(formula, element)
+                if isinstance(dnat, Iterable):
+                    dnatn, _, _ = separate_data(dnat)
+                    dnat.m[np.isnan(dnatn)] = 0
                 nat_out += dnat
         if type == "product":
             logger.debug("Calculating product-based conversion using reactant outlet.")
