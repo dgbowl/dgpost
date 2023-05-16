@@ -51,6 +51,13 @@ from .utils import compare_dfs
             ],
             "Sp.units.ufloat.pkl",
         ),
+        (  # ts5 - dataframe with nans
+            "catalysis.nan.pkl",
+            [
+                {"feedstock": "CO2", "xout": "nout"},
+            ],
+            "ref.selectivity.nan.pkl",
+        ),
     ],
 )
 def test_catalysis_selectivity_df(inpath, spec, outpath, datadir):
