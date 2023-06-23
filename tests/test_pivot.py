@@ -1,3 +1,4 @@
+import pytest
 import os
 import dgpost.utils
 from .utils import compare_dfs
@@ -13,5 +14,16 @@ def test_pivot_geis(datadir):
         timestamp="first",
     )
     ref = dgpost.utils.load("geis.trans.pkl", type="table")
-    del ref.attrs["meta"]
-    compare_dfs(ref, ret)
+    compare_dfs(ref, ret, meta=False)
+
+
+@pytest.mark.parametrize(
+    "inpath",
+    [
+        "geis.transp.yml"
+    ],
+)
+def test_pivot_run_yaml(inpath, datadir):
+    os.chdir(datadir)
+    dg, tab = dgpost.run(inpath)
+    compare_dfs(tab["trans_a"], tab["trans_b"], meta=False)

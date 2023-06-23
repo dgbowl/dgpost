@@ -72,10 +72,10 @@ def compare_result_dicts(result, reference, atol=1e-6):
     assert result["u"] == reference["u"]
 
 
-def compare_dfs(ref, df, order=False, rtol=1e-5):
+def compare_dfs(ref, df, order=False, rtol=1e-5, meta=True):
     if "units" in ref.attrs or "units" in df.attrs:
         assert ref.attrs.get("units") == df.attrs.get("units")
-    if "meta" in ref.attrs or "meta" in df.attrs:
+    if meta and "meta" in ref.attrs or "meta" in df.attrs:
         assert "provenance" in df.attrs["meta"]
         rrec = ref.attrs.get("meta", {}).get("recipe")
         drec = df.attrs.get("meta", {}).get("recipe")

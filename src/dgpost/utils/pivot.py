@@ -84,7 +84,7 @@ function.
 """
 import pandas as pd
 import numpy as np
-from dgpost.utils.helpers import arrow_to_multiindex
+from dgpost.utils.helpers import arrow_to_multiindex, get_units, set_units, key_to_tuple
 
 
 def pivot(
@@ -101,7 +101,7 @@ def pivot(
     iname = table.index.name
 
     if columns is None:
-        columns = [k for k in table.columns if k not in {on, iname}]
+        columns = [k for k in table.columns if k not in {on, key_to_tuple(on), iname}]
 
     for iidx, end in enumerate(indices):
         if iidx == 0:
@@ -122,11 +122,11 @@ def pivot(
     newdf = pd.DataFrame.from_records(rows)
     newdf = newdf.set_index(iname)
 
-    units = {}
     if "units" in table.attrs:
+        units = {}
         for k in columns:
-            if k in table.attrs["units"]:
-                units[k] = table.attrs["units"][k]
-    newdf.attrs["units"] = units
+            u = get_units(k, table)
+            set_units(k, u, units)
+        newdf.attrs["units"] = units
 
     return arrow_to_multiindex(newdf)
