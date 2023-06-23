@@ -84,26 +84,36 @@ function.
 """
 import pandas as pd
 import numpy as np
+from typing import Union
 from dgpost.utils.helpers import arrow_to_multiindex, get_units, set_units, key_to_tuple
 
 
 def pivot(
     table: pd.DataFrame,
-    using: str,
+    using: Union[str, list[str]],
     columns: list[str] = None,
     timestamp: str = "first",
 ) -> pd.DataFrame:
     """
     Pivot a table using a certain column as an additional index.
     """
-    indices = np.flatnonzero(np.diff(table[using].values, axis=0, append=np.inf))
+    if isinstance(using, str):
+        using = [using]
+
+    mask = None
+    for k in using:
+        d = np.diff(np.ravel(table[k]), axis=0, append=np.inf)
+        if mask is None:
+            mask = d
+        else:
+            mask = np.logical_or(mask, d)
+    indices = np.flatnonzero(mask)
     rows = []
     iname = table.index.name
 
     if columns is None:
-        columns = [
-            k for k in table.columns if k not in {using, key_to_tuple(using), iname}
-        ]
+        skipkeys = {iname, *using, *[key_to_tuple(k) for k in using]}
+        columns = [k for k in table.columns if k not in skipkeys]
 
     for iidx, end in enumerate(indices):
         if iidx == 0:
@@ -111,14 +121,14 @@ def pivot(
         else:
             start = indices[iidx - 1] + 1
         slice = table.iloc[start : end + 1]
-        row = {k: slice[k].values.ravel() for k in columns}
+        row = {k: np.ravel(slice[k]) for k in columns}
         if timestamp == "first":
             row[iname] = slice.index[0]
         elif timestamp == "last":
             row[iname] = slice.index[-1]
         elif timestamp == "mean":
             row[iname] = np.mean(slice.index)
-        row[using] = slice[using].iloc[0]
+        row.update({k: slice.iloc[0][k] for k in using})
         rows.append(row)
 
     newdf = pd.DataFrame.from_records(rows)
