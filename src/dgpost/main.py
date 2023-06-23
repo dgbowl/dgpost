@@ -129,13 +129,14 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
 
     logger.info("Processing 'pivot'.")
     p = spec.get("pivot", [])
-    print(f"{p=}")
     for el in p:
         saveas = el.pop("as")
         tables[saveas] = pivot(
-            tables[el["table"]], el["using"], el.get("columns", None), el["timestamp"]
+            table=tables[el["table"]],
+            using=el["using"],
+            columns=el.get("columns", None),
+            timestamp=el["timestamp"],
         )
-        print(f"{tables[saveas].attrs=}")
 
     logger.info("Processing 'transform'.")
     t = spec.get("transform", [])

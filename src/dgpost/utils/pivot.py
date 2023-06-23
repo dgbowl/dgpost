@@ -89,19 +89,21 @@ from dgpost.utils.helpers import arrow_to_multiindex, get_units, set_units, key_
 
 def pivot(
     table: pd.DataFrame,
-    on: str,
+    using: str,
     columns: list[str] = None,
     timestamp: str = "first",
 ) -> pd.DataFrame:
     """
     Pivot a table using a certain column as an additional index.
     """
-    indices = np.flatnonzero(np.diff(table[on].values, axis=0, append=np.inf))
+    indices = np.flatnonzero(np.diff(table[using].values, axis=0, append=np.inf))
     rows = []
     iname = table.index.name
 
     if columns is None:
-        columns = [k for k in table.columns if k not in {on, key_to_tuple(on), iname}]
+        columns = [
+            k for k in table.columns if k not in {using, key_to_tuple(using), iname}
+        ]
 
     for iidx, end in enumerate(indices):
         if iidx == 0:
@@ -116,7 +118,7 @@ def pivot(
             row[iname] = slice.index[-1]
         elif timestamp == "mean":
             row[iname] = np.mean(slice.index)
-        row[on] = slice[on].iloc[0]
+        row[using] = slice[using].iloc[0]
         rows.append(row)
 
     newdf = pd.DataFrame.from_records(rows)
