@@ -13,7 +13,7 @@ import requests
 import json
 from packaging import version
 
-from dgpost.utils import parse, load, extract, transform, save, plot
+from dgpost.utils import parse, load, extract, transform, save, plot, pivot
 from dgpost.utils.helpers import combine_tables
 
 logger = logging.getLogger(__name__)
@@ -50,6 +50,7 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
 
     - :mod:`~dgpost.utils.load`,
     - :mod:`~dgpost.utils.extract`,
+    - :mod:`~dgpost.utils.pivot`,
     - :mod:`~dgpost.utils.transform`,
     - :mod:`~dgpost.utils.plot`,
     - :mod:`~dgpost.utils.save`.
@@ -125,6 +126,14 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
             tables[saveas] = temp
         else:
             tables[saveas] = newdf
+
+    logger.info("Processing 'pivot'.")
+    p = spec.get("pivot", [])
+    for el in p:
+        saveas = el.pop("into")
+        tables[saveas] = pivot(
+            tables[el["table"]], el["on"], el["columns"], el["timestamp"]
+        )
 
     logger.info("Processing 'transform'.")
     t = spec.get("transform", [])
