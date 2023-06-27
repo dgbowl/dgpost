@@ -42,7 +42,7 @@ setuptools.setup(
         "chemicals>=1.0.0",
         "rdkit>=2022.3",
         # "yadg>=5.0a2<6.0",
-        "dgbowl-schemas @ git+https://github.com/PeterKraus/dgbowl-schemas.git@pivot_fixes",
+        "dgbowl-schemas @ git+https://github.com/dgbowl/dgbowl-schemas.git",
         "yadg @ git+https://github.com/dgbowl/yadg.git",
         "matplotlib>=3.5.0",
         "requests",
