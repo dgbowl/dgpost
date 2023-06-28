@@ -62,6 +62,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
@@ -130,15 +131,17 @@
 </li>
       <li><a href="apidoc/dgpost.utils.helpers.html#dgpost.utils.helpers.arrow_to_multiindex">arrow_to_multiindex() (in module dgpost.utils.helpers)</a>
 </li>
-      <li><a href="apidoc/dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe_1_0.load.Load.as_">as_ (dgbowl_schemas.dgpost.recipe_1_0.load.Load attribute)</a>
+      <li><a href="apidoc/dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.as_">as_ (dgbowl_schemas.dgpost.recipe_2_1.load.Load attribute)</a>
 
       <ul>
-        <li><a href="apidoc/dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe_1_0.save.Save.as_">(dgbowl_schemas.dgpost.recipe_1_0.save.Save attribute)</a>
+        <li><a href="apidoc/dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot.as_">(dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot attribute)</a>
+</li>
+        <li><a href="apidoc/dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe_2_1.save.Save.as_">(dgbowl_schemas.dgpost.recipe_2_1.save.Save attribute)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_1_0.extract.Extract.at">at (dgbowl_schemas.dgpost.recipe_1_0.extract.Extract attribute)</a>
+      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.at">at (dgbowl_schemas.dgpost.recipe_2_1.extract.Extract attribute)</a>
 </li>
       <li><a href="apidoc/dgpost.transform.catalysis.html#dgpost.transform.catalysis.atom_balance">atom_balance() (in module dgpost.transform.catalysis)</a>
 </li>
@@ -184,14 +187,20 @@
 </li>
       <li><a href="apidoc/dgpost.transform.electrochemistry.html#dgpost.transform.electrochemistry.charge">charge() (in module dgpost.transform.electrochemistry)</a>
 </li>
+      <li><a href="apidoc/dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check">check (dgbowl_schemas.dgpost.recipe_2_1.load.Load attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="apidoc/dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe_1_0.load.Load.check">check (dgbowl_schemas.dgpost.recipe_1_0.load.Load attribute)</a>
+      <li><a href="apidoc/dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check_is_deprecated">check_is_deprecated() (dgbowl_schemas.dgpost.recipe_2_1.load.Load class method)</a>
 </li>
-      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_1_0.extract.Extract.check_one_input">check_one_input() (dgbowl_schemas.dgpost.recipe_1_0.extract.Extract class method)</a>
+      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input">check_one_input() (dgbowl_schemas.dgpost.recipe_2_1.extract.Extract class method)</a>
 </li>
-      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_1_0.extract.Extract.columns">columns (dgbowl_schemas.dgpost.recipe_1_0.extract.Extract attribute)</a>
+      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.columns">columns (dgbowl_schemas.dgpost.recipe_2_1.extract.Extract attribute)</a>
+
+      <ul>
+        <li><a href="apidoc/dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot.columns">(dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot attribute)</a>
 </li>
+      </ul></li>
       <li><a href="apidoc/dgpost.utils.helpers.html#dgpost.utils.helpers.columns_to_smiles">columns_to_smiles() (in module dgpost.utils.helpers)</a>
 </li>
       <li><a href="apidoc/dgpost.transform.table.html#dgpost.transform.table.combine_columns">combine_columns() (in module dgpost.transform.table)</a>
@@ -202,7 +211,7 @@
 </li>
       <li><a href="apidoc/dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Component">Component (class in dgpost.transform.circuit_utils.circuit_components)</a>
 </li>
-      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_1_0.extract.Extract.constants">constants (dgbowl_schemas.dgpost.recipe_1_0.extract.Extract attribute)</a>
+      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.constants">constants (dgbowl_schemas.dgpost.recipe_2_1.extract.Extract attribute)</a>
 </li>
       <li><a href="apidoc/dgpost.transform.catalysis.html#dgpost.transform.catalysis.conversion">conversion() (in module dgpost.transform.catalysis)</a>
 </li>
@@ -288,8 +297,6 @@
         <li><a href="apidoc/dgpost.transform.impedance.html#module-dgpost.transform.impedance">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     dgpost.transform.rates
 
@@ -297,6 +304,8 @@
         <li><a href="apidoc/dgpost.transform.rates.html#module-dgpost.transform.rates">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     dgpost.transform.reflection
 
@@ -344,6 +353,13 @@
 
       <ul>
         <li><a href="apidoc/dgpost.utils.parse.html#module-dgpost.utils.parse">module</a>
+</li>
+      </ul></li>
+      <li>
+    dgpost.utils.pivot
+
+      <ul>
+        <li><a href="apidoc/dgpost.utils.pivot.html#module-dgpost.utils.pivot">module</a>
 </li>
       </ul></li>
       <li>
@@ -401,7 +417,7 @@
 </li>
       <li><a href="apidoc/dgpost.transform.rates.html#dgpost.transform.rates.flow_to_molar">flow_to_molar() (in module dgpost.transform.rates)</a>
 </li>
-      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_1_0.extract.Extract.from_">from_ (dgbowl_schemas.dgpost.recipe_1_0.extract.Extract attribute)</a>
+      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.from_">from_ (dgbowl_schemas.dgpost.recipe_2_1.extract.Extract attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -459,7 +475,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_1_0.extract.Extract.into">into (dgbowl_schemas.dgpost.recipe_1_0.extract.Extract attribute)</a>
+      <li><a href="apidoc/dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.into">into (dgbowl_schemas.dgpost.recipe_2_1.extract.Extract attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -533,6 +549,8 @@
 </li>
         <li><a href="apidoc/dgpost.utils.parse.html#module-dgpost.utils.parse">dgpost.utils.parse</a>
 </li>
+        <li><a href="apidoc/dgpost.utils.pivot.html#module-dgpost.utils.pivot">dgpost.utils.pivot</a>
+</li>
         <li><a href="apidoc/dgpost.utils.plot.html#module-dgpost.utils.plot">dgpost.utils.plot</a>
 </li>
         <li><a href="apidoc/dgpost.utils.save.html#module-dgpost.utils.save">dgpost.utils.save</a>
@@ -566,12 +584,14 @@
 </li>
       <li><a href="apidoc/dgpost.transform.circuit_utils.circuit_parser.html#dgpost.transform.circuit_utils.circuit_parser.parse_circuit">parse_circuit() (in module dgpost.transform.circuit_utils.circuit_parser)</a>
 </li>
-      <li><a href="apidoc/dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe_1_0.load.Load.path">path (dgbowl_schemas.dgpost.recipe_1_0.load.Load attribute)</a>
+      <li><a href="apidoc/dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.path">path (dgbowl_schemas.dgpost.recipe_2_1.load.Load attribute)</a>
 </li>
-      <li><a href="apidoc/dgpost.utils.plot.html#dgpost.utils.plot.plot">plot() (in module dgpost.utils.plot)</a>
+      <li><a href="apidoc/dgpost.utils.pivot.html#dgpost.utils.pivot.pivot">pivot() (in module dgpost.utils.pivot)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="apidoc/dgpost.utils.plot.html#dgpost.utils.plot.plot">plot() (in module dgpost.utils.plot)</a>
+</li>
       <li><a href="apidoc/dgpost.utils.plot.html#dgpost.utils.plot.plt_axes">plt_axes() (in module dgpost.utils.plot)</a>
 </li>
       <li><a href="apidoc/dgpost.utils.helpers.html#dgpost.utils.helpers.pQ">pQ() (in module dgpost.utils.helpers)</a>
@@ -628,7 +648,7 @@
 </li>
       <li><a href="apidoc/dgpost.utils.helpers.html#dgpost.utils.helpers.set_units">set_units() (in module dgpost.utils.helpers)</a>
 </li>
-      <li><a href="apidoc/dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe_1_0.save.Save.sigma">sigma (dgbowl_schemas.dgpost.recipe_1_0.save.Save attribute)</a>
+      <li><a href="apidoc/dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe_2_1.save.Save.sigma">sigma (dgbowl_schemas.dgpost.recipe_2_1.save.Save attribute)</a>
 </li>
       <li><a href="apidoc/dgpost.utils.plot.html#dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.style">style (dgbowl_schemas.dgpost.recipe_1_0.plot.Plot attribute)</a>
 </li>
@@ -641,19 +661,25 @@
       <li><a href="apidoc/dgpost.utils.plot.html#dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.table">table (dgbowl_schemas.dgpost.recipe_1_0.plot.Plot attribute)</a>
 
       <ul>
-        <li><a href="apidoc/dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe_1_0.save.Save.table">(dgbowl_schemas.dgpost.recipe_1_0.save.Save attribute)</a>
-</li>
         <li><a href="apidoc/dgpost.utils.transform.html#dgbowl_schemas.dgpost.recipe_1_0.transform.Transform.table">(dgbowl_schemas.dgpost.recipe_1_0.transform.Transform attribute)</a>
+</li>
+        <li><a href="apidoc/dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot.table">(dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot attribute)</a>
+</li>
+        <li><a href="apidoc/dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe_2_1.save.Save.table">(dgbowl_schemas.dgpost.recipe_2_1.save.Save attribute)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="apidoc/dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot.timedelta">timedelta (dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot attribute)</a>
+</li>
+      <li><a href="apidoc/dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot.timestamp">timestamp (dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot attribute)</a>
+</li>
       <li><a href="apidoc/dgpost.utils.transform.html#dgpost.utils.transform.transform">transform() (in module dgpost.utils.transform)</a>
 </li>
-      <li><a href="apidoc/dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe_1_0.load.Load.type">type (dgbowl_schemas.dgpost.recipe_1_0.load.Load attribute)</a>
+      <li><a href="apidoc/dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.type">type (dgbowl_schemas.dgpost.recipe_2_1.load.Load attribute)</a>
 
       <ul>
-        <li><a href="apidoc/dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe_1_0.save.Save.type">(dgbowl_schemas.dgpost.recipe_1_0.save.Save attribute)</a>
+        <li><a href="apidoc/dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe_2_1.save.Save.type">(dgbowl_schemas.dgpost.recipe_2_1.save.Save attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -663,7 +689,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="apidoc/dgpost.utils.transform.html#dgbowl_schemas.dgpost.recipe_1_0.transform.Transform.using">using (dgbowl_schemas.dgpost.recipe_1_0.transform.Transform attribute)</a>
+
+      <ul>
+        <li><a href="apidoc/dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot.using">(dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 

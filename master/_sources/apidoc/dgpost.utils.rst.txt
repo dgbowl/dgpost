@@ -16,6 +16,7 @@ Submodules
    dgpost.utils.helpers
    dgpost.utils.load
    dgpost.utils.parse
+   dgpost.utils.pivot
    dgpost.utils.plot
    dgpost.utils.save
    dgpost.utils.transform
