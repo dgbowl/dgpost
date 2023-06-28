@@ -10,14 +10,3 @@ pivot:
   - table: plain
     using: cycle number
     as: trans_b
-transform:
-  - table: trans_a
-    with: impedance.lowest_real_impedance
-    using:
-      - real: real
-        imag: imag
-  - table: trans_b
-    with: impedance.lowest_real_impedance
-    using:
-      - real: real
-        imag: imag

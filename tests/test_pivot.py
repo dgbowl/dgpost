@@ -19,7 +19,10 @@ def test_pivot_geis(datadir):
 
 @pytest.mark.parametrize(
     "inpath",
-    ["geis.transp.yml"],
+    [
+        "geis.transp.yml",
+        "gcpl.transp.yml",
+    ],
 )
 def test_pivot_run_yaml(inpath, datadir):
     os.chdir(datadir)
