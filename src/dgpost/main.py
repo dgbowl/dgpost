@@ -13,7 +13,7 @@ import requests
 import json
 from packaging import version
 
-from dgpost.utils import parse, load, extract, transform, save, plot
+from dgpost.utils import parse, load, extract, transform, save, plot, pivot
 from dgpost.utils.helpers import combine_tables
 
 logger = logging.getLogger(__name__)
@@ -50,6 +50,7 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
 
     - :mod:`~dgpost.utils.load`,
     - :mod:`~dgpost.utils.extract`,
+    - :mod:`~dgpost.utils.pivot`,
     - :mod:`~dgpost.utils.transform`,
     - :mod:`~dgpost.utils.plot`,
     - :mod:`~dgpost.utils.save`.
@@ -89,9 +90,9 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
         else:
             fp = el["path"].replace("$patch", patch).replace("$PATCH", patch)
         if el["type"] == "datagram":
-            datagrams[el["as"]] = load(fp, el["check"], el["type"])
+            datagrams[el["as"]] = load(fp, el.get("check", None), el["type"])
         else:
-            tables[el["as"]] = load(fp, el["check"], el["type"])
+            tables[el["as"]] = load(fp, None, el["type"])
 
     logger.info("Processing 'extract'.")
     e = spec.get("extract", [])
@@ -125,6 +126,17 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
             tables[saveas] = temp
         else:
             tables[saveas] = newdf
+
+    logger.info("Processing 'pivot'.")
+    p = spec.get("pivot", [])
+    for el in p:
+        saveas = el.pop("as")
+        tables[saveas] = pivot(
+            table=tables[el["table"]],
+            using=el["using"],
+            columns=el.get("columns", None),
+            timestamp=el["timestamp"],
+        )
 
     logger.info("Processing 'transform'.")
     t = spec.get("transform", [])

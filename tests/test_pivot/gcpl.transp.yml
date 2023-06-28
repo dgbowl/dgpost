@@ -1,0 +1,14 @@
+version: "2.1"
+load:
+  - as: plain
+    path: gcpl.plain.pkl
+    type: table
+  - as: trans_a
+    path: gcpl.trans.pkl
+    type: table
+pivot:
+  - table: plain
+    using: [cycle number, ox/red]
+    as: trans_b
+    timestamp: first
+    timedelta: time

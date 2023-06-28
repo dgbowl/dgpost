@@ -9,7 +9,7 @@ The function :func:`dgpost.utils.load.load` processes the below specification
 in order to load the datagram json file:
 
 .. _dgpost.recipe load:
-.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_1_0.load.Load
+.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_2_1.load.Load
 
 .. note::
 
@@ -42,7 +42,7 @@ def _parse_ufloat(v: Union[str, Any]) -> Union[UFloat, Any]:
 def load(
     path: str,
     check: bool = None,
-    type: str = "NetCDF",
+    type: str = "netcdf",
 ) -> Union[dict, pd.DataFrame]:
     """"""
     assert os.path.exists(path), f"Provided 'path' '{path}' does not exist."

@@ -404,7 +404,9 @@ def load_data(*cols: tuple[str, str, type]):
                         continue
                     elif isinstance(v, pint.Quantity):
                         kwargs[cname] = v
-                    elif isinstance(v, (np.ndarray, float, int, list)):
+                    elif isinstance(v, (pd.Series, np.ndarray, float, int, list)):
+                        if isinstance(v, pd.Series):
+                            v = v.values
                         if cunit is not None:
                             kwargs[cname] = ureg.Quantity(v, cunit)
                         else:
@@ -414,7 +416,11 @@ def load_data(*cols: tuple[str, str, type]):
                         for kk, vv in v.items():
                             if isinstance(vv, pint.Quantity):
                                 temp[kk] = vv
-                            elif isinstance(vv, (np.ndarray, float, int, list)):
+                            elif isinstance(
+                                vv, (pd.Series, np.ndarray, float, int, list)
+                            ):
+                                if isinstance(vv, pd.Series):
+                                    vv = vv.values
                                 if cunit is not None:
                                     temp[kk] = ureg.Quantity(vv, cunit)
                                 else:

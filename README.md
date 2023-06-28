@@ -18,7 +18,7 @@ Use **dgpost** in your Jupyter notebooks by importing it as a python package: `i
 
 ### Features:
 
-**dgpost** can **load** data from multiple file formats, **extract** data from those files into `pd.DataFrames` and automatically interpolate the datapoints along the time-axis (generally the index of the `pd.DataFrame`) as necessary, **transform** the created tables using functions from the built-in library, **plot** data from those tables using its matplotlib interface, and **save** the tables into several output formats.
+**dgpost** can **load** data from multiple file formats, **extract** data from those files into `pd.DataFrames` and automatically interpolate the datapoints along the time-axis (generally the index of the `pd.DataFrame`) as necessary, **pivot** selected columns of the tables using another column as index, **transform** the created tables using functions from the built-in library, **plot** data from those tables using its matplotlib interface, and **save** the tables into several output formats.
 
 Of course, **dgpost** is fully unit-aware, and supports values with uncertainties by using the `pint.Quantity` and `uncertainties.ufloat` under the hood.
 

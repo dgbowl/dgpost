@@ -1,0 +1,12 @@
+version: "2.1"
+load:
+  - as: trans_a
+    path: geis.trans.pkl
+    type: table
+  - as: plain
+    path: geis.plain.pkl
+    type: table
+pivot:
+  - table: plain
+    using: cycle number
+    as: trans_b
