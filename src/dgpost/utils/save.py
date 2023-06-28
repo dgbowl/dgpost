@@ -9,7 +9,7 @@ The function :func:`dgpost.utils.save.save` processes the below specification
 in order to save the given DataFrame:
 
 .. _dgpost.recipe save:
-.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_1_0.save.Save
+.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_2_1.save.Save
 
 .. note::
 

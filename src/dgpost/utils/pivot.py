@@ -5,8 +5,8 @@
     Peter Kraus
 
 The function :func:`dgpost.utils.pivot.pivot` processes the below specification,
-allowing the user to "pivot" the table using a certain column as an additional
-index:
+allowing the user to "pivot" a given :class:`pd.DataFrame` using specified column(s) as
+additional indices:
 
 .. _dgpost.recipe pivot:
 .. autopydantic_model:: dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot
@@ -78,8 +78,14 @@ the traces are grouped in each row:
      - [1e9,    2e9,    4e9,    8e9]
      - [0.5740, 0.5480, 0.5000, 0.4950]
 
-This `pivoting` can be achieved using the :func:`~dgpost.utils.pivot.pivot`
-function.
+This can be achieved using the following code:
+
+.. code:: python
+
+  newdf = pivot(df, on="index", columns=["frequency", "impedance"], timestamp="first")
+
+More documentation is provided in the :func:`~dgpost.utils.pivot.pivot`
+function definition.
 
 """
 import pandas as pd
@@ -94,9 +100,7 @@ def pivot(
     columns: list[str] = None,
     timestamp: str = "first",
 ) -> pd.DataFrame:
-    """
-    Pivot a table using a certain column as an additional index.
-    """
+    """"""
     if isinstance(using, str):
         using = [using]
 
