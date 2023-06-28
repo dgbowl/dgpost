@@ -7,14 +7,14 @@ from uncertainties import unumpy as unp
 import pytest
 from dgpost.transform import impedance
 from dgpost.utils import extract, transform
-from .utils import compare_dfs
+import pint
 
 
 @pytest.mark.parametrize(
     "filepath, fit_info, expected",
     [
         (
-            "test.single.Data.pkl",
+            "test.trans.data.pkl",
             [
                 {
                     "real": "Re(Z)",
@@ -42,7 +42,7 @@ from .utils import compare_dfs
             ],
         ),
         (
-            "test.multiple.Data.pkl",
+            "test.multi.data.pkl",
             [
                 {
                     "real": "Re(Z)",
@@ -77,34 +77,8 @@ from .utils import compare_dfs
                 },
             ],
         ),
-    ],
-)
-def test_impedance_fit_circuit_pkl(filepath, fit_info, expected, datadir):
-    os.chdir(datadir)
-    df = pd.read_pickle(filepath)
-    df = transform(df, "impedance.fit_circuit", using=fit_info)
-    for index, expect in enumerate(expected):
-        for col in df["fit_circuit"].columns:
-            value = df["fit_circuit"][col].iloc[index]
-            assert col in expect
-            assert value == pytest.approx(expect[col])
-
-
-@pytest.mark.parametrize(
-    "data_info, fit_info, expected",
-    [
         (
-            {
-                "filepath": "peis.single.data.dg.json",
-                "spec": {
-                    "at": {"index": 0},
-                    "columns": [
-                        {"key": "raw->traces->PEIS->Re(Z)", "as": "Re(Z)"},
-                        {"key": "raw->traces->PEIS->-Im(Z)", "as": "-Im(Z)"},
-                        {"key": "raw->traces->PEIS->freq", "as": "freq"},
-                    ],
-                },
-            },
+            "extracted.single.pkl",
             [
                 {
                     "real": "Re(Z)",
@@ -132,17 +106,7 @@ def test_impedance_fit_circuit_pkl(filepath, fit_info, expected, datadir):
             ],
         ),
         (
-            {
-                "filepath": "peis.multiple.data.dg.json",
-                "spec": {
-                    "at": {"index": 0},
-                    "columns": [
-                        {"key": "raw->traces->PEIS->Re(Z)", "as": "Re(Z)"},
-                        {"key": "raw->traces->PEIS->-Im(Z)", "as": "-Im(Z)"},
-                        {"key": "raw->traces->PEIS->freq", "as": "freq"},
-                    ],
-                },
-            },
+            "extracted.multiple.pkl",
             [
                 {
                     "real": "Re(Z)",
@@ -187,25 +151,23 @@ def test_impedance_fit_circuit_pkl(filepath, fit_info, expected, datadir):
         ),
     ],
 )
-def test_impedance_fit_circuit_dg(data_info, fit_info, expected, datadir):
+def test_impedance_fit_circuit_df(filepath, fit_info, expected, datadir):
     os.chdir(datadir)
-    with open(data_info["filepath"], "r") as infile:
-        dg = json.load(infile)
-    df = extract(dg, data_info["spec"])
+    df = pd.read_pickle(filepath)
     df = transform(df, "impedance.fit_circuit", using=fit_info)
     for index, expect in enumerate(expected):
         for col in df["fit_circuit"].columns:
-            assert col in expect
             value = df["fit_circuit"][col].iloc[index]
+            assert col in expect
             assert value == pytest.approx(expect[col])
 
 
 def test_impedance_fit_circuit_direct(datadir):
     os.chdir(datadir)
-    df = pd.read_pickle("test.single.Data.pkl")
-    real = df["Re(Z)"][0]
-    imag = df["-Im(Z)"][0]
-    freq = df["freq"][0]
+    df = pd.read_pickle("test.plain.data.pkl")
+    real = df["Re(Z)"]
+    imag = df["-Im(Z)"]
+    freq = df["freq"]
     fit_info = {
         "circuit": "R0-p(R1,C1)-p(R2,C2)",
         "initial_values": {
@@ -219,11 +181,11 @@ def test_impedance_fit_circuit_direct(datadir):
     retvals = impedance.fit_circuit(real, imag, freq, **fit_info)
     expected = {
         "circuit": "R0-p(R1,C1)-p(R2,C2)",
-        "R0": 100,
-        "R1": 250,
-        "C1": 1e-8,
-        "R2": 150,
-        "C2": 1e-6,
+        "R0": pint.Quantity(100.0, "ohm"),
+        "R1": pint.Quantity(250.0, "ohm"),
+        "C1": pint.Quantity(1e-8, "farad"),
+        "R2": pint.Quantity(150.0, "ohm"),
+        "C2": pint.Quantity(1e-6, "farad"),
     }
     for key, val in retvals.items():
         ref = expected.get(key.split(">")[-1])
@@ -249,7 +211,7 @@ def test_impedance_calc_circuit(datadir):
     df = pd.DataFrame.from_dict({"freq": [np.logspace(-3, 9, 120)]})
     df.attrs["units"] = {"freq": "Hz"}
     df = transform(df, "impedance.calc_circuit", using=calc_info)
-    ref = pd.read_pickle("test.single.Data.pkl")
+    ref = pd.read_pickle("test.trans.data.pkl")
     for col in df["test"].columns:
         pd.testing.assert_series_equal(ref[col], df["test"][col])
         assert ref.attrs["units"][col] == df.attrs["units"][f"test"][col]
@@ -259,7 +221,7 @@ def test_impedance_calc_circuit(datadir):
     "filepath, inp_extr, inp_using, expected",
     [
         (
-            "peis.dg.json",
+            "peis1.dg.json",
             {
                 "at": {"index": 0},
                 "columns": [
