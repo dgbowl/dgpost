@@ -42,7 +42,7 @@ def _parse_ufloat(v: Union[str, Any]) -> Union[UFloat, Any]:
 def load(
     path: str,
     check: bool = None,
-    type: str = "NetCDF",
+    type: str = "netcdf",
 ) -> Union[dict, pd.DataFrame]:
     """"""
     assert os.path.exists(path), f"Provided 'path' '{path}' does not exist."

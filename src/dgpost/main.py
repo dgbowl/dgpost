@@ -90,9 +90,9 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
         else:
             fp = el["path"].replace("$patch", patch).replace("$PATCH", patch)
         if el["type"] == "datagram":
-            datagrams[el["as"]] = load(fp, el["check"], el["type"])
+            datagrams[el["as"]] = load(fp, el.get("check", None), el["type"])
         else:
-            tables[el["as"]] = load(fp, el["check"], el["type"])
+            tables[el["as"]] = load(fp, None, el["type"])
 
     logger.info("Processing 'extract'.")
     e = spec.get("extract", [])
