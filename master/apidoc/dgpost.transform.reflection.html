@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>reflection: utilities for processing reflection coefficient traces &mdash; dgpost  documentation</title>
@@ -13,10 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -59,22 +60,29 @@
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.reflection.prune_cutoff"><code class="docutils literal notranslate"><span class="pre">prune_cutoff()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.reflection.prune_gradient"><code class="docutils literal notranslate"><span class="pre">prune_gradient()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.reflection.qf_kajfez"><code class="docutils literal notranslate"><span class="pre">qf_kajfez()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.reflection.qf_naive"><code class="docutils literal notranslate"><span class="pre">qf_naive()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.reflection.qf_lorentz"><code class="docutils literal notranslate"><span class="pre">qf_lorentz()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.html">dgpost package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
 </ul>
 
         </div>
@@ -101,8 +109,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="module-dgpost.transform.reflection"></span><section id="reflection-utilities-for-processing-reflection-coefficient-traces">
-<h1><strong>reflection</strong>: utilities for processing reflection coefficient traces<a class="headerlink" href="#reflection-utilities-for-processing-reflection-coefficient-traces" title="Permalink to this headline"></a></h1>
+  <section id="module-dgpost.transform.reflection">
+<span id="reflection-utilities-for-processing-reflection-coefficient-traces"></span><h1><strong>reflection</strong>: utilities for processing reflection coefficient traces<a class="headerlink" href="#module-dgpost.transform.reflection" title="Permalink to this heading"></a></h1>
 <p><em>Code author: Peter Kraus,
 Darko Kajfez</em></p>
 <p>Provides several functions for processing reflection coefficient traces. Includes
@@ -112,10 +120,6 @@ factors to the reflection trace data. The use of the peak-height based pruning v
 <a class="reference internal" href="#dgpost.transform.reflection.qf_kajfez" title="dgpost.transform.reflection.qf_kajfez"><code class="xref py py-func docutils literal notranslate"><span class="pre">qf_kajfez()</span></code></a> is recommended.</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.reflection.prune_cutoff" title="dgpost.transform.reflection.prune_cutoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prune_cutoff</span></code></a>(real, imag, freq[, near, ...])</p></td>
 <td><p>Cutoff-based reflection coefficient trace prune.</p></td>
@@ -134,14 +138,16 @@ factors to the reflection trace data. The use of the peak-height based pruning v
 </tr>
 </tbody>
 </table>
-<dl class="citation">
-<dt class="label" id="kajfez1994"><span class="brackets">Kajfez1994</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
-<dd><p>Kajfez, D.
+<div role="list" class="citation-list">
+<div class="citation" id="kajfez1994" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Kajfez1994<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>Kajfez, D.
 <em>Linear fractional curve fitting for measurement of high Q factors</em>, IEEE
 Transactions on Microwave Theory and Techniques <strong>1994</strong>, <em>42</em>, 1149 - 1153,
 DOI: <a class="reference external" href="https://doi.org/10.1109/22.299749">https://doi.org/10.1109/22.299749</a></p>
-</dd>
-</dl>
+</div>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.reflection.prune_cutoff">
 <span class="sig-prename descclassname"><span class="pre">dgpost.transform.reflection.</span></span><span class="sig-name descname"><span class="pre">prune_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">near</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pruned'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.reflection.prune_cutoff" title="Permalink to this definition"></a></dt>
@@ -152,7 +158,7 @@ be used with <a class="reference internal" href="#dgpost.transform.reflection.qf
 specified, the pruning is performed around the global maximum in
 <span class="math notranslate nohighlight">\(\log(|\Gamma|)\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>real</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the reflection
 coefficient data, <span class="math notranslate nohighlight">\(\text{Re}(\Gamma)\)</span>. Unitless.</p></li>
@@ -172,11 +178,11 @@ Uses a fraction of normalised <span class="math notranslate nohighlight">\(|\Gam
 <li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name for the output namespace. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;pruned&quot;</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>retvals</strong> – A dictionary containing the pruned values of <code class="docutils literal notranslate"><span class="pre">real</span></code>, <code class="docutils literal notranslate"><span class="pre">imag</span></code> and <code class="docutils literal notranslate"><span class="pre">freq</span></code>
 data stored in namespaced <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict[str, pint.Quantity]</p>
 </dd>
 </dl>
@@ -191,7 +197,7 @@ The pruning is performed using the a threshold value in the gradient of
 <span class="math notranslate nohighlight">\(|\Gamma|\)</span>. Unless a frequency value using <code class="docutils literal notranslate"><span class="pre">near</span></code> is specified, the
 pruning is performed around the global maximum in <span class="math notranslate nohighlight">\(\log(|\Gamma|)\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>real</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the reflection
 coefficient data, <span class="math notranslate nohighlight">\(\text{Re}(\Gamma)\)</span>. Unitless.</p></li>
@@ -211,11 +217,11 @@ trace is pruned. Defaults to <code class="docutils literal notranslate"><span cl
 <li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name for the output namespace. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;pruned&quot;</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ret</strong> – A dictionary containing the pruned values of <code class="docutils literal notranslate"><span class="pre">real</span></code>, <code class="docutils literal notranslate"><span class="pre">imag</span></code> and <code class="docutils literal notranslate"><span class="pre">freq</span></code>
 data stored in namespaced <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict[str, pint.Quantity]</p>
 </dd>
 </dl>
@@ -230,7 +236,7 @@ fitting process attempts to fit a circle to a near-circular section of points
 on a Smith’s chart. It’s robust, quick, and reliable, and produces reasonable
 error estimates.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>real</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the reflection
 coefficient data, <span class="math notranslate nohighlight">\(\text{Re}(\Gamma)\)</span>. Unitless.</p></li>
@@ -242,11 +248,11 @@ corresponding to the reflection coefficient data. Defaults to <code class="docut
 <li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Name for the output namespace. Defaults to no namespace.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ret</strong> – An optionally namespaced dictionary containing the fitted values of
 <span class="math notranslate nohighlight">\(Q_0\)</span> and <span class="math notranslate nohighlight">\(f_0\)</span> as <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict[str, pint.Quantity]</p>
 </dd>
 </dl>
@@ -278,11 +284,11 @@ corresponding to the reflection coefficient data. Defaults to <code class="docut
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ret</strong> – An optionally namespaced dictionary containing the fitted values of
 <span class="math notranslate nohighlight">\(Q_0\)</span> and <span class="math notranslate nohighlight">\(f_0\)</span> as <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict[str, pint.Quantity]</p>
 </dd>
 </dl>
@@ -315,11 +321,11 @@ corresponding to the reflection coefficient data. Defaults to <code class="docut
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ret</strong> – An optionally namespaced dictionary containing the fitted values of
 <span class="math notranslate nohighlight">\(Q_0\)</span> and <span class="math notranslate nohighlight">\(f_0\)</span> as <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict[str, pint.Quantity]</p>
 </dd>
 </dl>

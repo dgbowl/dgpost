@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rates: determining molar rates of chemical species &mdash; dgpost  documentation</title>
@@ -13,10 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -58,23 +59,27 @@
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.chromatography.html"><strong>chromatography</strong>: chromatographic trace postprocessing library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>rates</strong>: determining molar rates of chemical species</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.rates.flow_to_molar"><code class="docutils literal notranslate"><span class="pre">flow_to_molar()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.rates.batch_to_molar"><code class="docutils literal notranslate"><span class="pre">batch_to_molar()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.reflection.html"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.html">dgpost package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
 </ul>
 
         </div>
@@ -101,8 +106,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="module-dgpost.transform.rates"></span><section id="rates-determining-molar-rates-of-chemical-species">
-<h1><strong>rates</strong>: determining molar rates of chemical species<a class="headerlink" href="#rates-determining-molar-rates-of-chemical-species" title="Permalink to this headline"></a></h1>
+  <section id="module-dgpost.transform.rates">
+<span id="rates-determining-molar-rates-of-chemical-species"></span><h1><strong>rates</strong>: determining molar rates of chemical species<a class="headerlink" href="#module-dgpost.transform.rates" title="Permalink to this heading"></a></h1>
 <p><em>Code author: Peter Kraus</em></p>
 <p>Includes functions to convert mixture compositions (concentration, mol fraction)
 from instantaneous flow data or continuous batch data to rates (dimension of
@@ -112,10 +117,6 @@ is useful for converting gas-phase or liquid flows, while
 rates from the concentration profile of a batch mixture.</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.rates.batch_to_molar" title="dgpost.transform.rates.batch_to_molar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_to_molar</span></code></a>(time, c, V[, t0, output])</p></td>
 <td><p>Calculates a molar rate of species from specified volume and composition at the specified timesteps.</p></td>
@@ -157,7 +158,7 @@ specifying the state at which the flow <span class="math notranslate nohighlight
 </ul>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>flow</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The total flow of the mixture.</p></li>
 <li><p><strong>c</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – A dictionary containing the composition of the mixture as concentration.
@@ -171,7 +172,7 @@ specified using a mol fraction. By default set to 1 atm.</p></li>
 <li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the keys of the returned rate dictionary.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</p>
 </dd>
 </dl>
@@ -190,7 +191,7 @@ calculated:</p>
 \delta c(x)_n = c(x)_n - c(x)_{n-1}\]</div>
 <p>Then, the formation rate is calculated using the volume:</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the concentrations and volumes are measured.</p></li>
 <li><p><strong>c</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A dictionary containing concentrations of species at the specified timestamps.</p></li>
@@ -201,7 +202,7 @@ reference with its rates set to zero.</p></li>
 <li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns where the calculated rate will be stored.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</p>
 </dd>
 </dl>

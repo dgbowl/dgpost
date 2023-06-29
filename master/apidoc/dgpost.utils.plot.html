@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>plot: Reproducible plots from a table. &mdash; dgpost  documentation</title>
+  <title>plot: create reproducible plots from tables &mdash; dgpost  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
@@ -13,15 +13,16 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="save: Save a table into a file." href="dgpost.utils.save.html" />
-    <link rel="prev" title="transform: Reproducible transformations made simple." href="dgpost.utils.transform.html" /> 
+    <link rel="next" title="save: save and export tables into files" href="dgpost.utils.save.html" />
+    <link rel="prev" title="transform: transform and calculate data in tables" href="dgpost.utils.transform.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -63,17 +64,32 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>plot</strong>: create reproducible plots from tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot"><code class="docutils literal notranslate"><span class="pre">Plot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.table"><code class="docutils literal notranslate"><span class="pre">Plot.table</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.nrows"><code class="docutils literal notranslate"><span class="pre">Plot.nrows</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.ncols"><code class="docutils literal notranslate"><span class="pre">Plot.ncols</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.fig_args"><code class="docutils literal notranslate"><span class="pre">Plot.fig_args</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.ax_args"><code class="docutils literal notranslate"><span class="pre">Plot.ax_args</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.style"><code class="docutils literal notranslate"><span class="pre">Plot.style</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.save"><code class="docutils literal notranslate"><span class="pre">Plot.save</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.utils.plot.apply_plot_style"><code class="docutils literal notranslate"><span class="pre">apply_plot_style()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.utils.plot.plt_axes"><code class="docutils literal notranslate"><span class="pre">plt_axes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.utils.plot.plot"><code class="docutils literal notranslate"><span class="pre">plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.html">dgpost package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
 </ul>
 
         </div>
@@ -90,7 +106,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><strong>plot</strong>: Reproducible plots from a table.</li>
+      <li class="breadcrumb-item active"><strong>plot</strong>: create reproducible plots from tables</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/apidoc/dgpost.utils.plot.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -100,38 +116,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="module-dgpost.utils.plot"></span><section id="plot-reproducible-plots-from-a-table">
-<h1><strong>plot</strong>: Reproducible plots from a table.<a class="headerlink" href="#plot-reproducible-plots-from-a-table" title="Permalink to this headline"></a></h1>
+  <section id="module-dgpost.utils.plot">
+<span id="plot-create-reproducible-plots-from-tables"></span><h1><strong>plot</strong>: create reproducible plots from tables<a class="headerlink" href="#module-dgpost.utils.plot" title="Permalink to this heading"></a></h1>
 <p><em>Code author: Ueli Sauter,
 Peter Kraus</em></p>
 <p>The function <a class="reference internal" href="#dgpost.utils.plot.plot" title="dgpost.utils.plot.plot"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.utils.plot.plot()</span></code></a> processes the below specification
 in order to generate a plot:</p>
 <span class="target" id="dgpost-recipe-plot"></span><dl class="py class pydantic_model">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_0.plot.Plot">
-<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgbowl_schemas.dgpost.recipe_1_0.plot.</span></span><span class="sig-name descname"><span class="pre">Plot</span></span><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_0.plot.Plot" title="Permalink to this definition"></a></dt>
-<dd><p><details  class="autodoc_pydantic_collapsable_json">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Plot">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgbowl_schemas.dgpost.recipe.</span></span><span class="sig-name descname"><span class="pre">Plot</span></span><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Plot" title="Permalink to this definition"></a></dt>
+<dd><p>Plot data from a single table.</p>
+<p><details  class="autodoc_pydantic_collapsable_json">
 <summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">   </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Plot&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Plot data from a single table.&quot;</span><span class="p">,</span>
 <span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
 <span class="w">   </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;table&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Table&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;ax_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ax Args&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/definitions/AxArgs&quot;</span>
-<span class="w">         </span><span class="p">}</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;fig_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fig Args&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;style&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Style&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;nrows&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nrows&quot;</span><span class="p">,</span>
@@ -142,6 +145,21 @@ in order to generate a plot:</p>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ncols&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;fig_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fig Args&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;ax_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ax Args&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/definitions/AxArgs&quot;</span>
+<span class="w">         </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;style&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Style&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;save&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/definitions/PlotSave&quot;</span>
@@ -283,39 +301,46 @@ in order to generate a plot:</p>
 </pre></div>
 </div>
 </details></p><dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.table">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">table</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.table" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Plot.table">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">table</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Plot.table" title="Permalink to this definition"></a></dt>
+<dd><p>The name of the table loaded in memory to be plotted.</p>
+</dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.ax_args">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ax_args</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/dgbowl_schemas.dgpost.recipe_1_0.html#dgbowl_schemas.dgpost.recipe_1_0.plot.AxArgs" title="(in dgbowl-schemas vmaster)"><span class="pre">dgbowl_schemas.dgpost.recipe_1_0.plot.AxArgs</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.ax_args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Plot.nrows">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nrows</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Plot.nrows" title="Permalink to this definition"></a></dt>
+<dd><p>Number of rows in the figure grid.</p>
+</dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.fig_args">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fig_args</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.fig_args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Plot.ncols">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ncols</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Plot.ncols" title="Permalink to this definition"></a></dt>
+<dd><p>Number of columns in the figure grid.</p>
+</dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.style">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">style</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.style" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Plot.fig_args">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fig_args</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">,</span> <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Plot.fig_args" title="Permalink to this definition"></a></dt>
+<dd><p>Any optional method calls for the figure; passed to <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>.</p>
+</dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.nrows">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nrows</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.nrows" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Plot.ax_args">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ax_args</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code><span class="pre">[</span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.plot.html#dgbowl_schemas.dgpost.recipe_2_1.plot.AxArgs" title="(in dgbowl-schemas vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AxArgs</span></code></a><span class="pre">]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Plot.ax_args" title="Permalink to this definition"></a></dt>
+<dd><p>Specifications of the figure axes, including selection of data for the plots.</p>
+</dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.ncols">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ncols</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.ncols" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Plot.style">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">style</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">,</span> <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Plot.style" title="Permalink to this definition"></a></dt>
+<dd><p>Specification of overall <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> style.</p>
+</dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.save">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/dgbowl_schemas.dgpost.recipe_1_0.html#dgbowl_schemas.dgpost.recipe_1_0.plot.PlotSave" title="(in dgbowl-schemas vmaster)"><span class="pre">dgbowl_schemas.dgpost.recipe_1_0.plot.PlotSave</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_1_0.plot.Plot.save" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Plot.save">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.plot.html#dgbowl_schemas.dgpost.recipe_2_1.plot.PlotSave" title="(in dgbowl-schemas vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotSave</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Plot.save" title="Permalink to this definition"></a></dt>
+<dd><p>Arguments for saving the plotted figure into files.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -326,10 +351,10 @@ in order to generate a plot:</p>
 For available kwargs see <code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.rcParams</span></code>.
 If style is None, applies/resets to the default matplotlib style.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>style</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – A dictionary object containing valid key/value pairs.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -340,17 +365,17 @@ If style is None, applies/resets to the default matplotlib style.</p>
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.plot.</span></span><span class="sig-name descname"><span class="pre">plt_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.plot.plt_axes" title="Permalink to this definition"></a></dt>
 <dd><p>Processes ax_args and plots the data</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code>) – axes object to be plotted to</p></li>
+<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.7.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a>) – axes object to be plotted to</p></li>
 <li><p><strong>table</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – dataframe containing the data</p></li>
 <li><p><strong>ax_args</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – arguments for the axes</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ret</strong> – True if axes contain only timeseries as x-axis, False otherwise.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -367,8 +392,8 @@ If style is None, applies/resets to the default matplotlib style.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="dgpost.utils.transform.html" class="btn btn-neutral float-left" title="transform: Reproducible transformations made simple." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="dgpost.utils.save.html" class="btn btn-neutral float-right" title="save: Save a table into a file." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dgpost.utils.transform.html" class="btn btn-neutral float-left" title="transform: transform and calculate data in tables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.utils.save.html" class="btn btn-neutral float-right" title="save: save and export tables into files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

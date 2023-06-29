@@ -16,12 +16,12 @@ Developed in the Materials for Energy Conversion lab at Empa, in Dübendorf.
 This is a bugfix release, including:
 
 - ``--patch`` functionality, allowing the user to specify a file prefix on a command
-  line when **dgpost** is executed;
+  line when dgpost is executed;
 - additional :mod:`~dgpost.transform.catalysis` functionality for calculating
   conversion using rates;
 - fixes to index-based x-axes in single-column figures in the :mod:`~dgpost.utils.plot`
   module,
-- support for version 1.1 of the :mod:`~dgbowl_schemas.dgpost.recipe_1_1` schema.
+- support for the :mod:`~dgbowl_schemas.dgpost.recipe_1_1` schema.
 
 .. codeauthor::
     Ueli Sauter,

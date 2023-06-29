@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dgpost: datagram post-processing toolkit &mdash; dgpost  documentation</title>
@@ -13,10 +13,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -62,17 +63,17 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.html">dgpost package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
 </ul>
 
         </div>
@@ -100,18 +101,18 @@
            <div itemprop="articleBody">
              
   <section id="dgpost-datagram-post-processing-toolkit">
-<h1><strong>dgpost</strong>: datagram post-processing toolkit<a class="headerlink" href="#dgpost-datagram-post-processing-toolkit" title="Permalink to this headline"></a></h1>
+<h1><strong>dgpost</strong>: datagram post-processing toolkit<a class="headerlink" href="#dgpost-datagram-post-processing-toolkit" title="Permalink to this heading"></a></h1>
 <a class="reference external image-reference" href="https://dgbowl.github.io/dgpost"><img alt="https://badgen.net/badge/docs/dgbowl.github.io/grey?icon=firefox" src="https://badgen.net/badge/docs/dgbowl.github.io/grey?icon=firefox" /></a>
 <a class="reference external image-reference" href="https://pypi.org/project/dgpost"><img alt="https://badgen.net/pypi/v/dgpost/?icon=pypi" src="https://badgen.net/pypi/v/dgpost/?icon=pypi" /></a>
 <a class="reference external image-reference" href="https://github.com/dgbowl/dgpost"><img alt="https://badgen.net/github/tag/dgbowl/dgpost/?icon=github" src="https://badgen.net/github/tag/dgbowl/dgpost/?icon=github" /></a>
 <p>A set of datagram postprocessing tools, functions, visualisations and export scripts.</p>
 <p>dgpost is a Python library for reproducible postprocessing of time-resolved data.
-It provides functions to load data from <cite>datagrams</cite> and <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code>,
-automatic datapoint interpolation using unix timestamps, a library of transformation
-functions with implementations of common calculations in chemistry, catalysis,
-electrochemistry, etc., and convenience functions to save and plot the calculated data.</p>
-<p>dgpost relies on the <cite>dgpost-recipe</cite> schema, defined in the
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">dgbowl_schemas.dgpost_recipe</span></code> module of that package.</p>
+It provides functions to load data from <code class="docutils literal notranslate"><span class="pre">NetCDF</span></code> files, <code class="docutils literal notranslate"><span class="pre">JSON</span></code> <cite>datagrams</cite>, and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code>, automatic datapoint interpolation using unix timestamps, a
+library of transformation functions with implementations of common calculations in chemistry,
+catalysis, electrochemistry, etc., and convenience functions to save and plot the calculated data.</p>
+<p>dgpost relies on the <a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe.html#dgbowl_schemas.dgpost.recipe.Recipe" title="(in dgbowl-schemas vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a> schema, defined in the
+<a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe.html#module-dgbowl_schemas.dgpost.recipe" title="(in dgbowl-schemas vmaster)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgbowl_schemas.dgpost.recipe</span></code></a> module of that package.</p>
 <p>In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
 <a class="reference external" href="https://pint.readthedocs.io/en/stable/">pint</a> and
 <a class="reference external" href="https://pythonhosted.org/uncertainties/">uncertainties</a> packages.</p>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>parse: YAML and JSON input handler &mdash; dgpost  documentation</title>
@@ -13,10 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -63,17 +64,17 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="dgpost.html">dgpost package</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="dgpost.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="dgpost.transform.html">dgpost.transform package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="dgpost.utils.html">dgpost.utils package</a><ul class="current">
@@ -101,7 +102,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="dgpost.html">dgpost package</a></li>
+          <li class="breadcrumb-item"><a href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
           <li class="breadcrumb-item"><a href="dgpost.utils.html">dgpost.utils package</a></li>
       <li class="breadcrumb-item active"><strong>parse</strong>: YAML and JSON input handler</li>
       <li class="wy-breadcrumbs-aside">
@@ -114,29 +115,29 @@
            <div itemprop="articleBody">
              
   <span class="target" id="module-dgpost.utils.parse"></span><section id="parse-yaml-and-json-input-handler">
-<h1><strong>parse</strong>: YAML and JSON input handler<a class="headerlink" href="#parse-yaml-and-json-input-handler" title="Permalink to this headline"></a></h1>
+<h1><strong>parse</strong>: YAML and JSON input handler<a class="headerlink" href="#parse-yaml-and-json-input-handler" title="Permalink to this heading"></a></h1>
 <p><em>Code author: Peter Kraus</em></p>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.utils.parse.parse">
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.parse.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.parse.parse" title="Permalink to this definition"></a></dt>
 <dd><p>Input file parsing function.</p>
 <p>Supports loading <code class="docutils literal notranslate"><span class="pre">yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">json</span></code> files using the <cite>recipe</cite>-parsing
-function and schema provided in the <a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/dgbowl_schemas.dgpost.recipe_1_0.html#module-dgbowl_schemas.dgpost.recipe_1_0" title="(in dgbowl-schemas vmaster)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgbowl_schemas.dgpost.recipe_1_0</span></code></a>
+function and schema provided in the <a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe.html#module-dgbowl_schemas.dgpost.recipe" title="(in dgbowl-schemas vmaster)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgbowl_schemas.dgpost.recipe</span></code></a>
 module.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>fn</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Path to the filename to be parsed</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ret</strong> – A dictionary representing the recipe.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict[str, Any]</p>
 </dd>
 </dl>
 </dd></dl>
 
-</section>
 
 
            </div>

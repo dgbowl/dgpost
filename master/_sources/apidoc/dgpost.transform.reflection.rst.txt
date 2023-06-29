@@ -1,3 +1,5 @@
+**reflection**: utilities for processing reflection coefficient traces
+======================================================================
 .. automodule:: dgpost.transform.reflection
    :members:
    :undoc-members:

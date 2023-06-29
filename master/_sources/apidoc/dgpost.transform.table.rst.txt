@@ -1,3 +1,6 @@
+**table**: utilities for operations with tables
+===============================================
+
 .. automodule:: dgpost.transform.table
    :members:
    :undoc-members:

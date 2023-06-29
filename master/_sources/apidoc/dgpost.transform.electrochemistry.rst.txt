@@ -1,3 +1,5 @@
+**electrochemistry**: calculations relevant in electrochemistry
+===============================================================
 .. automodule:: dgpost.transform.electrochemistry
    :members:
    :undoc-members:

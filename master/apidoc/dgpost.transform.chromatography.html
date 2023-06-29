@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>chromatography: chromatographic trace postprocessing library &mdash; dgpost  documentation</title>
@@ -13,10 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -54,7 +55,11 @@
 <p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>chromatography</strong>: chromatographic trace postprocessing library</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>chromatography</strong>: chromatographic trace postprocessing library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.chromatography.integrate_trace"><code class="docutils literal notranslate"><span class="pre">integrate_trace()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.chromatography.apply_calibration"><code class="docutils literal notranslate"><span class="pre">apply_calibration()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
@@ -63,17 +68,17 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.html">dgpost package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
 </ul>
 
         </div>
@@ -100,17 +105,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="module-dgpost.transform.chromatography"></span><section id="chromatography-chromatographic-trace-postprocessing-library">
-<h1><strong>chromatography</strong>: chromatographic trace postprocessing library<a class="headerlink" href="#chromatography-chromatographic-trace-postprocessing-library" title="Permalink to this headline"></a></h1>
+  <section id="module-dgpost.transform.chromatography">
+<span id="chromatography-chromatographic-trace-postprocessing-library"></span><h1><strong>chromatography</strong>: chromatographic trace postprocessing library<a class="headerlink" href="#module-dgpost.transform.chromatography" title="Permalink to this heading"></a></h1>
 <p><em>Code author: Peter Kraus</em></p>
 <p>Includes functions to integrate a chromatographic trace, and post-process an integrated
 trace using calibration.</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.chromatography.integrate_trace" title="dgpost.transform.chromatography.integrate_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_trace</span></code></a>(time, signal, species[, ...])</p></td>
 <td><p>Chromatographic trace integration.</p></td>
@@ -159,7 +160,7 @@ maximum of the peak. The limits can be either <code class="xref py py-class docu
 with the same dimensionality as <code class="docutils literal notranslate"><span class="pre">time</span></code>, or a <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> in which case the units
 of <code class="docutils literal notranslate"><span class="pre">time</span></code> are assumed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> array object determining the X-axis of the trace.
 By default in seconds.</p></li>
@@ -181,11 +182,11 @@ the <code class="docutils literal notranslate"><span class="pre">f&quot;{output}
 namespace for peak height.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>retvals</strong> – A dictionary containing the peak areas and peak heights of matched peaks
 stored in namespaced <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict[str, dict[str, pint.Quantity]</p>
 </dd>
 </dl>
@@ -212,7 +213,7 @@ converted to <code class="xref py py-class docutils literal notranslate"><span c
 but have to be annotated by appropriate units to convert the units of the peak areas
 to the desired output.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>areas</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing a namespace of <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> containing the
 integrated peak areas $A$, with their keys corresponding to chemicals.</p></li>
@@ -221,7 +222,7 @@ peak <code class="docutils literal notranslate"><span class="pre">areas</span></
 <li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output namespace.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</p>
 </dd>
 </dl>

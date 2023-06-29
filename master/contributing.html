@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>contributing to dgpost &mdash; dgpost  documentation</title>
@@ -13,15 +13,16 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="dgpost package" href="apidoc/dgpost.html" />
-    <link rel="prev" title="save: Save a table into a file." href="apidoc/dgpost.utils.save.html" /> 
+    <link rel="next" title="dgpost: apidoc documentation" href="apidoc/dgpost.html" />
+    <link rel="prev" title="save: save and export tables into files" href="apidoc/dgpost.utils.save.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -63,12 +64,12 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul class="current">
@@ -78,7 +79,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.html">dgpost package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
 </ul>
 
         </div>
@@ -106,19 +107,19 @@
            <div itemprop="articleBody">
              
   <section id="contributing-to-dgpost">
-<h1>contributing to <strong>dgpost</strong><a class="headerlink" href="#contributing-to-dgpost" title="Permalink to this headline"></a></h1>
+<h1>contributing to <strong>dgpost</strong><a class="headerlink" href="#contributing-to-dgpost" title="Permalink to this heading"></a></h1>
 <p>Contributions are welcome! If you have a function or a module that you’d like to
 include in the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> library, or a design suggestion for dgpost,
 please make a pull-request or an issue on <a class="reference external" href="https://github.com/dgbowl/dgpost">GitHub</a>.</p>
 <section id="developer-documentation">
-<h2>Developer documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this headline"></a></h2>
+<h2>Developer documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this heading"></a></h2>
 <p>The project follows fairly standard developer practices. Every new feature should be
 implemented in a separate pull-request, and be associated with a unit test. Every pull-
 request should be formatted using <a class="reference external" href="https://black.readthedocs.io/en/stable/">black</a>
 prior to merging.</p>
 </section>
 <section id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline"></a></h2>
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h2>
 <p>Tests are located in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder of the repository, and are executed using
 <code class="docutils literal notranslate"><span class="pre">pytest</span></code> for every commit in every PR.</p>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">tests.utils</span></code> module contains a convenience <code class="xref py py-class docutils literal notranslate"><span class="pre">&#64;pytest.fixture</span></code>, called
@@ -130,7 +131,7 @@ comparison of tables including data with uncertainties, units, and the provenanc
 information.</p>
 </section>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h2>
 <p>Each module within the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> package should have a top-level
 docstring, including a short description of the functions in the module, and code
 author names.</p>
@@ -144,8 +145,8 @@ obvious maths as equations within the docstring.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="apidoc/dgpost.utils.save.html" class="btn btn-neutral float-left" title="save: Save a table into a file." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="apidoc/dgpost.html" class="btn btn-neutral float-right" title="dgpost package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="apidoc/dgpost.utils.save.html" class="btn btn-neutral float-left" title="save: save and export tables into files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="apidoc/dgpost.html" class="btn btn-neutral float-right" title="dgpost: apidoc documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

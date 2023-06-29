@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>load: Datagram and table loading routine &mdash; dgpost  documentation</title>
+  <title>load: load datagrams and tables &mdash; dgpost  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
@@ -13,14 +13,15 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="extract: Data extraction and interpolation routine." href="dgpost.utils.extract.html" />
+    <link rel="next" title="extract: extract and interpolate data into tables" href="dgpost.utils.extract.html" />
     <link rel="prev" title="table: utilities for operations with tables" href="dgpost.transform.table.html" /> 
 </head>
 
@@ -63,17 +64,28 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>load</strong>: load datagrams and tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load"><code class="docutils literal notranslate"><span class="pre">Load</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.as_"><code class="docutils literal notranslate"><span class="pre">Load.as_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.path"><code class="docutils literal notranslate"><span class="pre">Load.path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.type"><code class="docutils literal notranslate"><span class="pre">Load.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.check"><code class="docutils literal notranslate"><span class="pre">Load.check</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.check_is_deprecated"><code class="docutils literal notranslate"><span class="pre">Load.check_is_deprecated</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.utils.load.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.html">dgpost package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
 </ul>
 
         </div>
@@ -90,7 +102,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><strong>load</strong>: Datagram and table loading routine</li>
+      <li class="breadcrumb-item active"><strong>load</strong>: load datagrams and tables</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/apidoc/dgpost.utils.load.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -100,15 +112,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="module-dgpost.utils.load"></span><section id="load-datagram-and-table-loading-routine">
-<h1><strong>load</strong>: Datagram and table loading routine<a class="headerlink" href="#load-datagram-and-table-loading-routine" title="Permalink to this headline"></a></h1>
+  <section id="module-dgpost.utils.load">
+<span id="load-load-datagrams-and-tables"></span><h1><strong>load</strong>: load datagrams and tables<a class="headerlink" href="#module-dgpost.utils.load" title="Permalink to this heading"></a></h1>
 <p><em>Code author: Ueli Sauter,
 Peter Kraus</em></p>
 <p>The function <a class="reference internal" href="#dgpost.utils.load.load" title="dgpost.utils.load.load"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.utils.load.load()</span></code></a> processes the below specification
 in order to load the datagram json file:</p>
 <span class="target" id="dgpost-recipe-load"></span><dl class="py class pydantic_model">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.load.Load">
-<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgbowl_schemas.dgpost.recipe_2_1.load.</span></span><span class="sig-name descname"><span class="pre">Load</span></span><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgbowl_schemas.dgpost.recipe.</span></span><span class="sig-name descname"><span class="pre">Load</span></span><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load" title="Permalink to this definition"></a></dt>
 <dd><p>Select external files (<code class="docutils literal notranslate"><span class="pre">NetCDF</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> datagrams, <code class="docutils literal notranslate"><span class="pre">pkl</span></code> tables) to load.</p>
 <p><details  class="autodoc_pydantic_collapsable_json">
 <summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -148,52 +160,52 @@ in order to load the datagram json file:</p>
 </pre></div>
 </div>
 </details></p><dl class="field-list simple">
-<dt class="field-odd">Validators</dt>
+<dt class="field-odd">Validators<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check_is_deprecated" title="dgbowl_schemas.dgpost.recipe_2_1.load.Load.check_is_deprecated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_is_deprecated</span></code></a> » <a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check" title="dgbowl_schemas.dgpost.recipe_2_1.load.Load.check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check</span></code></a></p></li>
+<li><p><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check_is_deprecated" title="(in dgbowl-schemas vmaster)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_is_deprecated</span></code></a> » <a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check" title="(in dgbowl-schemas vmaster)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.load.Load.as_">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'as')</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load.as_" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.as_">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"> <span class="pre">[Required]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'as')</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.as_" title="Permalink to this definition"></a></dt>
 <dd><p>Name under which the loaded object will be stored in memory.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.load.Load.path">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load.path" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.path">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.path" title="Permalink to this definition"></a></dt>
 <dd><p>Path to the file containing the object to be loaded.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.load.Load.type">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'netcdf'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'datagram'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'table'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'datagram'</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load.type" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.type">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code><span class="pre">[</span><code class="docutils literal notranslate"><span class="pre">'netcdf'</span></code><span class="pre">,</span> <code class="docutils literal notranslate"><span class="pre">'datagram'</span></code><span class="pre">,</span> <code class="docutils literal notranslate"><span class="pre">'table'</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'datagram'</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.type" title="Permalink to this definition"></a></dt>
 <dd><p>Type of the loaded object. Can be either a <code class="docutils literal notranslate"><span class="pre">netcdf</span></code> file created e.g. using
 <code class="docutils literal notranslate"><span class="pre">yadg~5.0</span></code>, a <code class="docutils literal notranslate"><span class="pre">datagram</span></code> file in JSON format created using <code class="docutils literal notranslate"><span class="pre">yadg~4.0</span></code>, or a
 <code class="docutils literal notranslate"><span class="pre">table</span></code> stored in a <code class="docutils literal notranslate"><span class="pre">pkl</span></code> file as created by Pandas.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.load.Load.check">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.check">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.check" title="Permalink to this definition"></a></dt>
 <dd><div class="deprecated">
-<p><span class="versionmodified deprecated">Deprecated since version 2.1: </span>The <code class="docutils literal notranslate"><span class="pre">check</span></code> attribute of <a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load" title="dgbowl_schemas.dgpost.recipe_2_1.load.Load"><code class="xref py py-class docutils literal notranslate"><span class="pre">Load</span></code></a> has been deprecated. The passed value
+<p><span class="versionmodified deprecated">Deprecated since version 2.1: </span>The <code class="docutils literal notranslate"><span class="pre">check</span></code> attribute of <a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load" title="dgbowl_schemas.dgpost.recipe.Load"><code class="xref py py-class docutils literal notranslate"><span class="pre">Load</span></code></a> has been deprecated. The passed value
 is currently ignored, however it <strong>will cause an error</strong> in future versions of
-<a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/dgbowl_schemas.html#dgbowl_schemas.Recipe" title="(in dgbowl-schemas vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a>.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code>.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Validated by</dt>
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check_is_deprecated" title="dgbowl_schemas.dgpost.recipe_2_1.load.Load.check_is_deprecated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_is_deprecated</span></code></a></p></li>
+<li><p><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check_is_deprecated" title="(in dgbowl-schemas vmaster)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_is_deprecated</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method pydantic_validator">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.load.Load.check_is_deprecated">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_is_deprecated</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check" title="dgbowl_schemas.dgpost.recipe_2_1.load.Load.check"><em class="xref py py-obj"><span class="pre">check</span></em></a><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check_is_deprecated" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.check_is_deprecated">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_is_deprecated</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check" title="(in dgbowl-schemas vmaster)"><em class="xref py py-obj"><span class="pre">check</span></em></a><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.check_is_deprecated" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -207,7 +219,7 @@ to store the returned <cite>datagram</cite> or <code class="xref py py-class doc
 <dt class="sig sig-object py" id="dgpost.utils.load.load">
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.load.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'netcdf'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.load.load" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]</p>
 </dd>
 </dl>
@@ -220,7 +232,7 @@ to store the returned <cite>datagram</cite> or <code class="xref py py-class doc
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="dgpost.transform.table.html" class="btn btn-neutral float-left" title="table: utilities for operations with tables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="dgpost.utils.extract.html" class="btn btn-neutral float-right" title="extract: Data extraction and interpolation routine." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dgpost.utils.extract.html" class="btn btn-neutral float-right" title="extract: extract and interpolate data into tables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

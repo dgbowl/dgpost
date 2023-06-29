@@ -1,5 +1,5 @@
-dgpost package
-==============
+**dgpost**: `apidoc` documentation
+==================================
 
 .. automodule:: dgpost
    :members:

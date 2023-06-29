@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>extract: Data extraction and interpolation routine. &mdash; dgpost  documentation</title>
+  <title>extract: extract and interpolate data into tables &mdash; dgpost  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
@@ -13,15 +13,16 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pivot: Reorder tables using columns." href="dgpost.utils.pivot.html" />
-    <link rel="prev" title="load: Datagram and table loading routine" href="dgpost.utils.load.html" /> 
+    <link rel="next" title="pivot: reorder tables using columns" href="dgpost.utils.pivot.html" />
+    <link rel="prev" title="load: load datagrams and tables" href="dgpost.utils.load.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -63,17 +64,32 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>extract</strong>: extract and interpolate data into tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract"><code class="docutils literal notranslate"><span class="pre">Extract</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.into"><code class="docutils literal notranslate"><span class="pre">Extract.into</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.from_"><code class="docutils literal notranslate"><span class="pre">Extract.from_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.at"><code class="docutils literal notranslate"><span class="pre">Extract.at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.columns"><code class="docutils literal notranslate"><span class="pre">Extract.columns</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.constants"><code class="docutils literal notranslate"><span class="pre">Extract.constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.check_one_input"><code class="docutils literal notranslate"><span class="pre">Extract.check_one_input</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.utils.extract.get_step"><code class="docutils literal notranslate"><span class="pre">get_step()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.utils.extract.get_constant"><code class="docutils literal notranslate"><span class="pre">get_constant()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.utils.extract.extract"><code class="docutils literal notranslate"><span class="pre">extract()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.utils.extract.extract_obj"><code class="docutils literal notranslate"><span class="pre">extract_obj()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dgpost.html">dgpost package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
 </ul>
 
         </div>
@@ -90,7 +106,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><strong>extract</strong>: Data extraction and interpolation routine.</li>
+      <li class="breadcrumb-item active"><strong>extract</strong>: extract and interpolate data into tables</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/apidoc/dgpost.utils.extract.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -100,14 +116,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="module-dgpost.utils.extract"></span><section id="extract-data-extraction-and-interpolation-routine">
-<h1><strong>extract</strong>: Data extraction and interpolation routine.<a class="headerlink" href="#extract-data-extraction-and-interpolation-routine" title="Permalink to this headline"></a></h1>
+  <section id="module-dgpost.utils.extract">
+<span id="extract-extract-and-interpolate-data-into-tables"></span><h1><strong>extract</strong>: extract and interpolate data into tables<a class="headerlink" href="#module-dgpost.utils.extract" title="Permalink to this heading"></a></h1>
 <p><em>Code author: Peter Kraus</em></p>
 <p>The function <a class="reference internal" href="#dgpost.utils.extract.extract" title="dgpost.utils.extract.extract"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.utils.extract.extract()</span></code></a> processes the below specification
 in order to extract the required data from the supplied datagram.</p>
 <span class="target" id="dgpost-recipe-extract"></span><dl class="py class pydantic_model">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract">
-<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgbowl_schemas.dgpost.recipe_2_1.extract.</span></span><span class="sig-name descname"><span class="pre">Extract</span></span><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Extract">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgbowl_schemas.dgpost.recipe.</span></span><span class="sig-name descname"><span class="pre">Extract</span></span><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Extract" title="Permalink to this definition"></a></dt>
 <dd><p>Extract columns from loaded files into tables, interpolate as necessary.</p>
 <p><details  class="autodoc_pydantic_collapsable_json">
 <summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -219,73 +235,73 @@ in order to extract the required data from the supplied datagram.</p>
 </pre></div>
 </div>
 </details></p><dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.into">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">into</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.into" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Extract.into">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">into</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Extract.into" title="Permalink to this definition"></a></dt>
 <dd><p>Name of a new, or existing / loaded table into which the extraction happens.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Validated by</dt>
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
+<li><p><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="(in dgbowl-schemas vmaster)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.from_">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'from')</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.from_" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Extract.from_">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'from')</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Extract.from_" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the source object for the extracted data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Validated by</dt>
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
+<li><p><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="(in dgbowl-schemas vmaster)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.at">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">at</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/dgbowl_schemas.dgpost.recipe_2_1.html#dgbowl_schemas.dgpost.recipe_2_1.extract.At" title="(in dgbowl-schemas vmaster)"><span class="pre">dgbowl_schemas.dgpost.recipe_2_1.extract.At</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.at" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Extract.at">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">at</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.At" title="(in dgbowl-schemas vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">At</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Extract.at" title="Permalink to this definition"></a></dt>
 <dd><p>Specification of the steps (or data indices) from which data is to be extracted.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Validated by</dt>
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
+<li><p><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="(in dgbowl-schemas vmaster)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.columns">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/dgbowl_schemas.dgpost.recipe_2_1.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Column" title="(in dgbowl-schemas vmaster)"><span class="pre">dgbowl_schemas.dgpost.recipe_2_1.extract.Column</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.columns" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Extract.columns">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code><span class="pre">[</span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Column" title="(in dgbowl-schemas vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Column</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Extract.columns" title="Permalink to this definition"></a></dt>
 <dd><p>Specifications for the columns to be extracted, including new headers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Validated by</dt>
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
+<li><p><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="(in dgbowl-schemas vmaster)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.constants">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">constants</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/dgbowl_schemas.dgpost.recipe_2_1.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Constant" title="(in dgbowl-schemas vmaster)"><span class="pre">dgbowl_schemas.dgpost.recipe_2_1.extract.Constant</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.constants" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Extract.constants">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">constants</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code><span class="pre">[</span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Constant" title="(in dgbowl-schemas vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constant</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Extract.constants" title="Permalink to this definition"></a></dt>
 <dd><p>Specifications for additional columns containing data constants, including units.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Validated by</dt>
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
+<li><p><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="(in dgbowl-schemas vmaster)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_one_input</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method pydantic_validator">
-<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_one_input</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe_2_1.extract.Extract.check_one_input" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Extract.check_one_input">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_one_input</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Extract.check_one_input" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -343,7 +359,7 @@ are interpolated onto the index of the existing <code class="xref py py-class do
 <dt class="sig sig-object py" id="dgpost.utils.extract.get_step">
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.extract.</span></span><span class="sig-name descname"><span class="pre">get_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.extract.get_step" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataTree</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</p>
 </dd>
 </dl>
@@ -358,7 +374,7 @@ are interpolated onto the index of the existing <code class="xref py py-class do
 <dt class="sig sig-object py" id="dgpost.utils.extract.extract">
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.extract.</span></span><span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.extract.extract" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
 </dd>
 </dl>
@@ -368,7 +384,7 @@ are interpolated onto the index of the existing <code class="xref py py-class do
 <dt class="sig sig-object py" id="dgpost.utils.extract.extract_obj">
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.extract.</span></span><span class="sig-name descname"><span class="pre">extract_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.extract.extract_obj" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code>]</p>
 </dd>
 </dl>
@@ -380,8 +396,8 @@ are interpolated onto the index of the existing <code class="xref py py-class do
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="dgpost.utils.load.html" class="btn btn-neutral float-left" title="load: Datagram and table loading routine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="dgpost.utils.pivot.html" class="btn btn-neutral float-right" title="pivot: Reorder tables using columns." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dgpost.utils.load.html" class="btn btn-neutral float-left" title="load: load datagrams and tables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.utils.pivot.html" class="btn btn-neutral float-right" title="pivot: reorder tables using columns" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dgpost features &mdash; dgpost  documentation</title>
@@ -13,10 +13,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -68,17 +69,17 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.html">dgpost package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
 </ul>
 
         </div>
@@ -106,16 +107,16 @@
            <div itemprop="articleBody">
              
   <section id="dgpost-features">
-<h1><strong>dgpost</strong> features<a class="headerlink" href="#dgpost-features" title="Permalink to this headline"></a></h1>
+<h1><strong>dgpost</strong> features<a class="headerlink" href="#dgpost-features" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For an overview of the data-processing features within <strong>dgpost</strong>, see the
+<p>For an overview of the data-processing features within dgpost, see the
 documentation of the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module.</p>
 </div>
 <section id="pandas-compatibility">
-<h2><a class="reference external" href="https://pandas.pydata.org/">Pandas</a> compatibility<a class="headerlink" href="#pandas-compatibility" title="Permalink to this headline"></a></h2>
-<p>One of the design goals of <strong>dgpost</strong> was to develop a library that can be used with
-<cite>datagrams</cite>, the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> created by <strong>dgpost</strong>, as well as with any
+<h2><a class="reference external" href="https://pandas.pydata.org/">Pandas</a> compatibility<a class="headerlink" href="#pandas-compatibility" title="Permalink to this heading"></a></h2>
+<p>One of the design goals of dgpost was to develop a library that can be used with
+<a class="reference external" href="https://dgbowl.github.io/yadg/master/apidoc/yadg.html#module-yadg" title="(in yadg vmaster)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yadg</span></code></a> <cite>datagrams</cite>, the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> created by dgpost, as well as with any
 other <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code>, created e.g. by parsing an <code class="docutils literal notranslate"><span class="pre">xlsx</span></code> or <code class="docutils literal notranslate"><span class="pre">csv</span></code>
 file.</p>
 <p>This is achieved by placing some necessary requirements on the functions in the
@@ -131,18 +132,18 @@ from the supplied <code class="xref py py-class docutils literal notranslate"><s
 function transparently to the user.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>As of <code class="docutils literal notranslate"><span class="pre">dgpost-2.0</span></code>, <strong>dgpost</strong> internally converts the loaded tables into
+<p>As of <code class="docutils literal notranslate"><span class="pre">dgpost-2.0</span></code>, dgpost internally converts the loaded tables into
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> with <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code> as the column index, if
 necessary. All namespaces separated by <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code> will be split into a
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>, and the units of those columns will be organised
-accordingly. This means <strong>dgpost</strong> can read <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndexed</span></code> tables, and
+accordingly. This means dgpost can read <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndexed</span></code> tables, and
 extract data from tables with standard a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> as well as
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code> seamlessly.</p>
 </div>
 </section>
 <section id="units-and-uncertainties">
-<h2>Units and uncertainties<a class="headerlink" href="#units-and-uncertainties" title="Permalink to this headline"></a></h2>
-<p>Another key objective of <strong>dgpost</strong> is to allow and encourage annotating data by units
+<h2>Units and uncertainties<a class="headerlink" href="#units-and-uncertainties" title="Permalink to this heading"></a></h2>
+<p>Another key objective of dgpost is to allow and encourage annotating data by units
 as well as error estimates / uncertainties. The design philosophy here is that by
 building unit- and uncertainty- awareness into the toolchain, users will be encouraged
 to use it, and in case of uncertainties, be more thoughtful about the limitations
@@ -150,10 +151,10 @@ of their data.</p>
 <p>As discussed in the
 <a class="reference external" href="https://dgbowl.github.io/yadg/master/features.html">documentation of yadg</a>,
 when experimental data is loaded from <cite>datagrams</cite>, it is annotated with units by
-default. In <strong>dgpost</strong>, the units for the data in each column in each table are stored
+default. In dgpost, the units for the data in each column in each table are stored
 as a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">str]</span></code> in the <code class="docutils literal notranslate"><span class="pre">&quot;units&quot;</span></code> key of the  <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code> attribute,
 and they are extracted and exported appropriately when the table is saved.</p>
-<p>If the <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code> attribute does not contain the <code class="docutils literal notranslate"><span class="pre">&quot;units&quot;</span></code> entry, <strong>dgpost</strong> assumes
+<p>If the <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code> attribute does not contain the <code class="docutils literal notranslate"><span class="pre">&quot;units&quot;</span></code> entry, dgpost assumes
 the underlying data is unitless, and the default units selected for each function in
 the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> library by its developers are applied to the data.
 Internally, all units are handled using yadg’s custom <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.UnitRegistry</span></code>,
@@ -171,7 +172,7 @@ values, can be done on a per-column or per-namespace basis using the
 <a class="reference internal" href="apidoc/dgpost.transform.table.html#dgpost.transform.table.set_uncertainty" title="dgpost.transform.table.set_uncertainty"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_uncertainty()</span></code></a> function from the <a class="reference internal" href="apidoc/dgpost.transform.table.html#module-dgpost.transform.table" title="dgpost.transform.table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform.table</span></code></a>
 module. Both absolute and relative errors can be supplied. The parser is fully
 unit-aware.</p>
-<p>When saving tables created in <strong>dgpost</strong>, the units are appended to the column names
+<p>When saving tables created in dgpost, the units are appended to the column names
 (<code class="docutils literal notranslate"><span class="pre">csv/xlsx</span></code>) or stored in the table (<code class="docutils literal notranslate"><span class="pre">pkl/json</span></code>). When exporting a
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndexed</span></code> table to <code class="docutils literal notranslate"><span class="pre">csv/xlsx</span></code>, units will be appended to the top-level
 index. The uncertainties may be optionally dropped completely from the exported table;
@@ -179,10 +180,10 @@ see the <a class="reference internal" href="apidoc/dgpost.utils.save.html#module
 tables in spreadsheets.</p>
 </section>
 <section id="provenance">
-<h2>Provenance<a class="headerlink" href="#provenance" title="Permalink to this headline"></a></h2>
-<p>Provenance tracking is implemented in <strong>dgpost</strong> using the <code class="docutils literal notranslate"><span class="pre">&quot;meta&quot;</span></code> entry of the
+<h2>Provenance<a class="headerlink" href="#provenance" title="Permalink to this heading"></a></h2>
+<p>Provenance tracking is implemented in dgpost using the <code class="docutils literal notranslate"><span class="pre">&quot;meta&quot;</span></code> entry of the
 <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code> attribute of the created <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>. This entry is exported
-when the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> is saved as <code class="docutils literal notranslate"><span class="pre">pkl/json</span></code>, and contains <strong>dgpost</strong> version
+when the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> is saved as <code class="docutils literal notranslate"><span class="pre">pkl/json</span></code>, and contains dgpost version
 information as well as a copy of the <cite>recipe</cite> used to create the saved object.</p>
 </section>
 </section>

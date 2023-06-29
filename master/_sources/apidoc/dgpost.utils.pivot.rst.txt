@@ -1,3 +1,5 @@
+**pivot**: reorder tables using columns
+=======================================
 .. automodule:: dgpost.utils.pivot
    :members:
    :undoc-members:

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dgpost-v1.0 &mdash; dgpost  documentation</title>
@@ -13,10 +13,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -69,17 +70,17 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: Datagram and table loading routine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: Data extraction and interpolation routine.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.pivot.html"><strong>pivot</strong>: Reorder tables using columns.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: Reproducible transformations made simple.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: Reproducible plots from a table.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: Save a table into a file.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">contributing to <strong>dgpost</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.html">dgpost package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
 </ul>
 
         </div>
@@ -108,7 +109,7 @@
            <div itemprop="articleBody">
              
   <section id="dgpost-v1-0">
-<h1><strong>dgpost</strong>-v1.0<a class="headerlink" href="#dgpost-v1-0" title="Permalink to this headline"></a></h1>
+<h1><strong>dgpost</strong>-v1.0<a class="headerlink" href="#dgpost-v1-0" title="Permalink to this heading"></a></h1>
 <a class="reference external image-reference" href="https://github.com/dgbowl/dgpost/tree/1.0"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.0&amp;color=blue&amp;logo=github" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.0&amp;color=blue&amp;logo=github" /></a>
 <a class="reference external image-reference" href="https://pypi.org/project/dgpost/1.0/"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.0&amp;color=blue&amp;logo=pypi" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.0&amp;color=blue&amp;logo=pypi" /></a>
 <img alt="https://img.shields.io/static/v1?label=release%20date&amp;message=2022-04-26&amp;color=red&amp;logo=pypi" src="https://img.shields.io/static/v1?label=release%20date&amp;message=2022-04-26&amp;color=red&amp;logo=pypi" />
@@ -126,7 +127,7 @@ to support the basic <a class="reference internal" href="apidoc/dgpost.utils.tra
 <li><p>several libraries within the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> modules, including
 <a class="reference internal" href="apidoc/dgpost.transform.catalysis.html#module-dgpost.transform.catalysis" title="dgpost.transform.catalysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">catalysis</span></code></a>, <a class="reference internal" href="apidoc/dgpost.transform.electrochemistry.html#module-dgpost.transform.electrochemistry" title="dgpost.transform.electrochemistry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">electrochemistry</span></code></a>,
 <a class="reference internal" href="apidoc/dgpost.transform.impedance.html#module-dgpost.transform.impedance" title="dgpost.transform.impedance"><code class="xref py py-mod docutils literal notranslate"><span class="pre">impedance</span></code></a>, and <a class="reference internal" href="apidoc/dgpost.transform.rates.html#module-dgpost.transform.rates" title="dgpost.transform.rates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rates</span></code></a>,</p></li>
-<li><p>the version 1.0 of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost_recipe</span></code> schema.</p></li>
+<li><p>the <a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_1_0.html#module-dgbowl_schemas.dgpost.recipe_1_0" title="(in dgbowl-schemas vmaster)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_1_0</span></code></a> schema.</p></li>
 </ul>
 <p><em>Code author: Ueli Sauter,
 Peter Kraus</em></p>

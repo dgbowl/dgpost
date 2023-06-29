@@ -1,3 +1,5 @@
+**rates**: determining molar rates of chemical species
+======================================================
 .. automodule:: dgpost.transform.rates
    :members:
    :undoc-members:

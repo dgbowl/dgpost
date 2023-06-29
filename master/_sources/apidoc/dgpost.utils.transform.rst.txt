@@ -1,3 +1,5 @@
+**transform**: transform and calculate data in tables
+=====================================================
 .. automodule:: dgpost.utils.transform
    :members:
    :undoc-members:
