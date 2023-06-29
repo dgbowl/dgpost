@@ -1,14 +1,12 @@
 """
-**impedance**: fitting electrochemical impedance spectra
---------------------------------------------------------
 .. codeauthor::
     Ueli Sauter,
     Peter Kraus
 
 Including functions relevant for Electrochemical Impedance Spectroscopy (EIS):
-evaluation of an equivalent circuit as well as the fitting of the circuit to data 
-(:func:`~dgpost.transform.impedance.calc_circuit` and 
-:func:`~dgpost.transform.impedance.fit_circuit`), and an interpolation function 
+evaluation of an equivalent circuit as well as the fitting of the circuit to data
+(:func:`~dgpost.transform.impedance.calc_circuit` and
+:func:`~dgpost.transform.impedance.fit_circuit`), and an interpolation function
 to find the :func:`~dgpost.transform.impedance.lowest_real_impedance` in the data.
 
 .. rubric:: Functions
@@ -20,10 +18,10 @@ to find the :func:`~dgpost.transform.impedance.lowest_real_impedance` in the dat
     lowest_real_impedance
 
 .. note::
-    The functions in this module expect the whole EIS trace as input - the 
+    The functions in this module expect the whole EIS trace as input - the
     :math:`\\text{Re}(Z)`, :math:`-\\text{Im}(Z)` and :math:`f` are expected to
-    be :class:`pint.Quantity` containing an :class:`np.ndarray` (or similar 
-    :class:`list`-like object), which is then processed to a (set of) scalar 
+    be :class:`pint.Quantity` containing an :class:`np.ndarray` (or similar
+    :class:`list`-like object), which is then processed to a (set of) scalar
     values. This means that for processing time resolved data, the functions
     in this module have to be called on each timestep individually.
 

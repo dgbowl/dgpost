@@ -1,6 +1,4 @@
 """
-**transform**: Reproducible transformations made simple.
---------------------------------------------------------
 .. codeauthor::
     Peter Kraus
 
@@ -8,7 +6,7 @@ The function :func:`dgpost.utils.transform.transform` processes the below specif
 in order to do data transformation on an extracted (or supplied) :class:`pd.DataFrame`.
 
 .. _dgpost.recipe transform:
-.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_1_0.transform.Transform
+.. autopydantic_model:: dgbowl_schemas.dgpost.recipe.Transform
 
 .. warning::
 

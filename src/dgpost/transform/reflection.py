@@ -1,7 +1,5 @@
 """
-**reflection**: utilities for processing reflection coefficient traces
-----------------------------------------------------------------------
-.. codeauthor:: 
+.. codeauthor::
     Peter Kraus,
     Darko Kajfez
 
@@ -14,7 +12,7 @@ factors to the reflection trace data. The use of the peak-height based pruning v
 .. rubric:: Functions
 
 .. autosummary::
-   
+
     prune_cutoff
     prune_gradient
     qf_kajfez
@@ -23,7 +21,7 @@ factors to the reflection trace data. The use of the peak-height based pruning v
 
 
 .. [Kajfez1994] Kajfez, D.
-   *Linear fractional curve fitting for measurement of high Q factors*, IEEE 
+   *Linear fractional curve fitting for measurement of high Q factors*, IEEE
    Transactions on Microwave Theory and Techniques **1994**, *42*, 1149 - 1153,
    DOI: https://doi.org/10.1109/22.299749
 

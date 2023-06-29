@@ -10,13 +10,13 @@
 A set of datagram postprocessing tools, functions, visualisations and export scripts.
 
 dgpost is a Python library for reproducible postprocessing of time-resolved data.
-It provides functions to load data from `datagrams` and :class:`pd.DataFrames`,
-automatic datapoint interpolation using unix timestamps, a library of transformation
-functions with implementations of common calculations in chemistry, catalysis,
-electrochemistry, etc., and convenience functions to save and plot the calculated data.
+It provides functions to load data from ``NetCDF`` files, ``JSON`` `datagrams`, and
+:class:`pd.DataFrames`, automatic datapoint interpolation using unix timestamps, a
+library of transformation functions with implementations of common calculations in chemistry,
+catalysis, electrochemistry, etc., and convenience functions to save and plot the calculated data.
 
-dgpost relies on the `dgpost-recipe` schema, defined in the
-:mod:`dgbowl_schemas.dgpost_recipe` module of that package.
+dgpost relies on the :class:`~dgbowl_schemas.dgpost.recipe.Recipe` schema, defined in the
+:mod:`dgbowl_schemas.dgpost.recipe` module of that package.
 
 In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
 `pint <https://pint.readthedocs.io/en/stable/>`_ and
@@ -33,7 +33,7 @@ In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
    version
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: dgpost function library
    :hidden:
 
@@ -46,7 +46,7 @@ In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
    apidoc/dgpost.transform.table
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: dgpost utility library
    :hidden:
 

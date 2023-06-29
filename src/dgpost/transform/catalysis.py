@@ -1,6 +1,4 @@
 """
-**catalysis**: common calculations in catalytic testing
--------------------------------------------------------
 .. codeauthor::
     Peter Kraus
 
