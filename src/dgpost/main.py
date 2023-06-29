@@ -136,6 +136,7 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
             using=el["using"],
             columns=el.get("columns", None),
             timestamp=el["timestamp"],
+            timedelta=el.get("timedelta", None),
         )
 
     logger.info("Processing 'transform'.")
