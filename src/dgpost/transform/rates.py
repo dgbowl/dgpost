@@ -1,20 +1,18 @@
 """
-**rates**: determining molar rates of chemical species
-------------------------------------------------------
-.. codeauthor:: 
+.. codeauthor::
     Peter Kraus
 
-Includes functions to convert mixture compositions (concentration, mol fraction) 
-from instantaneous flow data or continuous batch data to rates (dimension of 
+Includes functions to convert mixture compositions (concentration, mol fraction)
+from instantaneous flow data or continuous batch data to rates (dimension of
 ``[quantity]/[time]``). The :func:`~dgpost.transform.rates.flow_to_molar` function
-is useful for converting gas-phase or liquid flows, while 
-:func:`~dgpost.transform.rates.batch_to_molar` can be used to determine formation 
+is useful for converting gas-phase or liquid flows, while
+:func:`~dgpost.transform.rates.batch_to_molar` can be used to determine formation
 rates from the concentration profile of a batch mixture.
 
 .. rubric:: Functions
 
 .. autosummary::
-  
+
     batch_to_molar
     flow_to_molar
 

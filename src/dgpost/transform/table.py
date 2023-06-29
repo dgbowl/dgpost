@@ -1,20 +1,18 @@
 """
-**table**: utilities for operations with tables
------------------------------------------------
-.. codeauthor:: 
+.. codeauthor::
     Peter Kraus
 
 Provides convenience functions for operating with tables, including
 :func:`~dgpost.transform.table.combine_namespaces` for combining ``->``-separated
 namespaces of values or chemicals into a single namespace;
 :func:`~dgpost.transform.table.combine_columns` for combining individual columns
-into a single column; and :func:`~dgpost.transform.table.set_uncertainty` for 
+into a single column; and :func:`~dgpost.transform.table.set_uncertainty` for
 stripping or replacing uncertainties from data.
 
 .. rubric:: Functions
 
 .. autosummary::
-   
+
     combine_namespaces
     combine_columns
     set_uncertainty

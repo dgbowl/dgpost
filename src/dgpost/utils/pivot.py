@@ -1,6 +1,4 @@
 """
-**pivot**: Reorder tables using columns.
---------------------------------------------------------
 .. codeauthor::
     Peter Kraus
 
@@ -9,7 +7,7 @@ allowing the user to "pivot" a given :class:`pd.DataFrame` using specified colum
 additional indices:
 
 .. _dgpost.recipe pivot:
-.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_2_1.pivot.Pivot
+.. autopydantic_model:: dgbowl_schemas.dgpost.recipe.Pivot
 
 This feature is best illustrated using an below example. Consider an input
 table in the following format:
@@ -57,7 +55,7 @@ table in the following format:
 
 Here, the column ``index`` contains a numerical index of each impedance trace,
 with a pair of ``frequency`` and ``impedance`` data in each row. However, for
-post-processing in **dgpost**, it might be useful to re-order the data so that
+post-processing in dgpost, it might be useful to re-order the data so that
 the traces are grouped in each row:
 
 

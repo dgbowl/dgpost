@@ -1,7 +1,5 @@
 """
-**chromatography**: chromatographic trace postprocessing library
-----------------------------------------------------------------
-.. codeauthor:: 
+.. codeauthor::
     Peter Kraus
 
 Includes functions to integrate a chromatographic trace, and post-process an integrated

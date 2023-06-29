@@ -1,6 +1,4 @@
 """
-**load**: Datagram and table loading routine
---------------------------------------------
 .. codeauthor::
     Ueli Sauter,
     Peter Kraus
@@ -9,7 +7,7 @@ The function :func:`dgpost.utils.load.load` processes the below specification
 in order to load the datagram json file:
 
 .. _dgpost.recipe load:
-.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_2_1.load.Load
+.. autopydantic_model:: dgbowl_schemas.dgpost.recipe.Load
 
 .. note::
 

@@ -1,6 +1,4 @@
 """
-**extract**: Data extraction and interpolation routine.
--------------------------------------------------------
 .. codeauthor::
     Peter Kraus
 
@@ -8,7 +6,7 @@ The function :func:`dgpost.utils.extract.extract` processes the below specificat
 in order to extract the required data from the supplied datagram.
 
 .. _dgpost.recipe extract:
-.. autopydantic_model:: dgbowl_schemas.dgpost.recipe_2_1.extract.Extract
+.. autopydantic_model:: dgbowl_schemas.dgpost.recipe.Extract
 
 .. note::
     The keys ``from`` and ``into`` are not processed by :func:`extract`, they should

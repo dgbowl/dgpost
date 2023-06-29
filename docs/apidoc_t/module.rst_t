@@ -1,7 +1,35 @@
 {%- if show_headings %}
 {{- [basename, "module"] | join(' ') | e | heading }}
+{% elif 'dgpost.transform.catalysis' == basename %}
+{{- "**catalysis**: common calculations in catalytic testing" | heading }}
+{% elif 'dgpost.transform.chromatography' == basename %}
+{{- "**chromatography**: chromatographic trace postprocessing library" | heading }}
+{% elif 'dgpost.transform.electrochemistry' == basename %}
+{{- "**electrochemistry**: calculations relevant in electrochemistry" | heading }}
+{% elif 'dgpost.transform.impedance' == basename %}
+{{- "**impedance**: fitting electrochemical impedance spectra" | heading }}
+{% elif 'dgpost.transform.rates' == basename %}
+{{- "**rates**: determining molar rates of chemical species" | heading }}
+{% elif 'dgpost.transform.reflection' == basename %}
+{{- "**reflection**: utilities for processing reflection coefficient traces" | heading }}
+{% elif 'dgpost.transform.table' == basename %}
+{{- "**table**: utilities for operations with tables" | heading }}
+
+{% elif 'dgpost.utils.load' == basename %}
+{{- "**load**: load datagrams and tables" | heading }}
+{% elif 'dgpost.utils.extract' == basename %}
+{{- "**extract**: extract and interpolate data into tables" | heading }}
+{% elif 'dgpost.utils.pivot' == basename %}
+{{- "**pivot**: reorder tables using columns" | heading }}
+{% elif 'dgpost.utils.transform' == basename %}
+{{- "**transform**: transform and calculate data in tables" | heading }}
+{% elif 'dgpost.utils.plot' == basename %}
+{{- "**plot**: create reproducible plots from tables" | heading }}
+{% elif 'dgpost.utils.save' == basename %}
+{{- "**save**: save and export tables into files" | heading }}
 
 {% endif -%}
+
 .. automodule:: {{ qualname }}
 {%- for option in automodule_options %}
    :{{ option }}:

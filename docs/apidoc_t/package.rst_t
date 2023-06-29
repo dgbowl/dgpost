@@ -15,28 +15,8 @@
 
 {%- if is_namespace %}
 {{- [pkgname, "namespace"] | join(" ") | e | heading }}
-{% elif 'yadg.parsers.basiccsv' == pkgname %}
-{{- "**basiccsv**: Common tabular file parser" | heading }}
-{% elif 'yadg.parsers.chromdata' == pkgname %}
-{{- "**chromdata**: Post-processed chromatography data parser" | heading }}
-{% elif 'yadg.parsers.chromtrace' == pkgname %}
-{{- "**chromtrace**: Raw chromatogram trace file parser" | heading }}
-{% elif 'yadg.parsers.dummy' == pkgname %}
-{{- "**dummy**: A dummy parser" | heading }}
-{% elif 'yadg.parsers.electrochem' == pkgname %}
-{{- "**electrochem**: Electrochemistry data parser" | heading }}
-{% elif 'yadg.parsers.flowdata' == pkgname %}
-{{- "**flowdata**: Flow data parser" | heading }}
-{% elif 'yadg.parsers.masstrace' == pkgname %}
-{{- "**masstrace**: Mass spectroscopy trace file parser" | heading }}
-{% elif 'yadg.parsers.meascsv' == pkgname %}
-{{- "**meascsv**: Legacy MCPT log file parser" | heading }}
-{% elif 'yadg.parsers.qftrace' == pkgname %}
-{{- "**qftrace**: Network analyser trace file parser" | heading }}
-{% elif 'yadg.parsers.xpstrace' == pkgname %}
-{{- "**xpstrace**: XPS trace file parser" | heading }}
-{% elif 'yadg.parsers.xrdtrace' == pkgname %}
-{{- "**xrdtrace**: X-ray diffractogram trace file parser" | heading }}
+{% elif 'dgpost' == pkgname %}
+{{- "**dgpost**: `apidoc` documentation" | heading }}
 {% else %}
 {{- [pkgname, "package"] | join(" ") | e | heading }}
 {% endif %}

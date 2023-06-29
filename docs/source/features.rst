@@ -3,13 +3,13 @@
 
 .. note::
 
-    For an overview of the data-processing features within **dgpost**, see the
+    For an overview of the data-processing features within dgpost, see the
     documentation of the :mod:`dgpost.transform` module.
 
 `Pandas <https://pandas.pydata.org/>`_ compatibility
 ````````````````````````````````````````````````````
-One of the design goals of **dgpost** was to develop a library that can be used with
-`datagrams`, the :class:`pd.DataFrames` created by **dgpost**, as well as with any
+One of the design goals of dgpost was to develop a library that can be used with
+:mod:`yadg` `datagrams`, the :class:`pd.DataFrames` created by dgpost, as well as with any
 other :class:`pd.DataFrames`, created e.g. by parsing an ``xlsx`` or ``csv``
 file.
 
@@ -27,17 +27,17 @@ function transparently to the user.
 
 .. note::
 
-    As of ``dgpost-2.0``, **dgpost** internally converts the loaded tables into
+    As of ``dgpost-2.0``, dgpost internally converts the loaded tables into
     :class:`pd.DataFrames` with :class:`pd.MultiIndex` as the column index, if
     necessary. All namespaces separated by ``->`` will be split into a
     :class:`pd.MultiIndex`, and the units of those columns will be organised
-    accordingly. This means **dgpost** can read :class:`pd.MultiIndexed` tables, and
+    accordingly. This means dgpost can read :class:`pd.MultiIndexed` tables, and
     extract data from tables with standard a :class:`pd.Index` as well as
     :class:`pd.MultiIndex` seamlessly.
 
 Units and uncertainties
 ```````````````````````
-Another key objective of **dgpost** is to allow and encourage annotating data by units
+Another key objective of dgpost is to allow and encourage annotating data by units
 as well as error estimates / uncertainties. The design philosophy here is that by
 building unit- and uncertainty- awareness into the toolchain, users will be encouraged
 to use it, and in case of uncertainties, be more thoughtful about the limitations
@@ -46,11 +46,11 @@ of their data.
 As discussed in the
 `documentation of yadg <https://dgbowl.github.io/yadg/master/features.html>`_,
 when experimental data is loaded from `datagrams`, it is annotated with units by
-default. In **dgpost**, the units for the data in each column in each table are stored
+default. In dgpost, the units for the data in each column in each table are stored
 as a :class:`dict[str, str]` in the ``"units"`` key of the  ``df.attrs`` attribute,
 and they are extracted and exported appropriately when the table is saved.
 
-If the ``df.attrs`` attribute does not contain the ``"units"`` entry, **dgpost** assumes
+If the ``df.attrs`` attribute does not contain the ``"units"`` entry, dgpost assumes
 the underlying data is unitless, and the default units selected for each function in
 the :mod:`dgpost.transform` library by its developers are applied to the data.
 Internally, all units are handled using yadg's custom :class:`pint.UnitRegistry`,
@@ -71,7 +71,7 @@ values, can be done on a per-column or per-namespace basis using the
 module. Both absolute and relative errors can be supplied. The parser is fully
 unit-aware.
 
-When saving tables created in **dgpost**, the units are appended to the column names
+When saving tables created in dgpost, the units are appended to the column names
 (``csv/xlsx``) or stored in the table (``pkl/json``). When exporting a
 :class:`pd.MultiIndexed` table to ``csv/xlsx``, units will be appended to the top-level
 index. The uncertainties may be optionally dropped completely from the exported table;
@@ -80,7 +80,7 @@ tables in spreadsheets.
 
 Provenance
 ``````````
-Provenance tracking is implemented in **dgpost** using the ``"meta"`` entry of the
+Provenance tracking is implemented in dgpost using the ``"meta"`` entry of the
 ``df.attrs`` attribute of the created :class:`pd.DataFrame`. This entry is exported
-when the :class:`pd.DataFrame` is saved as ``pkl/json``, and contains **dgpost** version
+when the :class:`pd.DataFrame` is saved as ``pkl/json``, and contains dgpost version
 information as well as a copy of the `recipe` used to create the saved object.
