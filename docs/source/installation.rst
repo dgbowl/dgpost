@@ -34,11 +34,11 @@ You can test whether dgpost has been installed correctly by running either of:
 
        conda create -n newEnvName python=3.9 rdkit -c conda-forge
 
-    Then install **dgpost** using ``pip`` as shown above.
+    Then install dgpost using ``pip`` as shown above.
 
 Installation from source
 ````````````````````````
-To install **dgpost** from source on Github, |gh|, you first need to clone the repository
+To install dgpost from source on Github, |gh|, you first need to clone the repository
 and then you can install the development version of the package using ``pip``:
 
 .. code:: bash

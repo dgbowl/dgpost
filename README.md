@@ -10,7 +10,7 @@ Set of tools to post-process raw instrument data in **yadg**'s `datagram` format
 ### Capabilities:
 **dgpost** is indended to be used as part of your data processing pipeline, and works best with a series of timestamped data.
 
-Write a *recipe* in `yaml`, and post-process your data from `NetCDF` files, `pd.DataFrames`, or `yadg.datagrams` in a reproducible fashion, while keeping provenance information, and without touching the original data files.
+Write a **Recipe** in `yaml`, and post-process your data from `NetCDF` files, `pd.DataFrames`, or `yadg.datagrams` in a reproducible fashion, while keeping provenance information, and without touching the original data files.
 
 Post-process your data into pre-defined figures for your reports, or simply export your collated `pd.DataFrame` into one of the several supported formats!
 

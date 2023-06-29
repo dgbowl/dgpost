@@ -55,7 +55,7 @@ table in the following format:
 
 Here, the column ``index`` contains a numerical index of each impedance trace,
 with a pair of ``frequency`` and ``impedance`` data in each row. However, for
-post-processing in **dgpost**, it might be useful to re-order the data so that
+post-processing in dgpost, it might be useful to re-order the data so that
 the traces are grouped in each row:
 
 
