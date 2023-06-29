@@ -82,7 +82,7 @@ This can be achieved using the following code:
 
 .. code:: python
 
-  newdf = pivot(df, on="index", columns=["frequency", "impedance"], timestamp="first")
+  newdf = pivot(df, using="index", columns=["frequency", "impedance"], timestamp="first")
 
 More documentation is provided in the :func:`~dgpost.utils.pivot.pivot`
 function definition.
@@ -99,6 +99,7 @@ def pivot(
     using: Union[str, list[str]],
     columns: list[str] = None,
     timestamp: str = "first",
+    timedelta: str = None,
 ) -> pd.DataFrame:
     """"""
     if isinstance(using, str):
@@ -132,6 +133,8 @@ def pivot(
             row[iname] = slice.index[-1]
         elif timestamp == "mean":
             row[iname] = np.mean(slice.index)
+        if timedelta is not None:
+            row[timedelta] = slice.index.array - row[iname]
         row.update({k: slice.iloc[0][k] for k in using})
         rows.append(row)
 
@@ -143,6 +146,8 @@ def pivot(
         for k in columns:
             u = get_units(k, table)
             set_units(k, u, units)
+        if timedelta is not None:
+            units[timedelta] = "s"
         newdf.attrs["units"] = units
 
     return arrow_to_multiindex(newdf)
