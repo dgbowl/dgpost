@@ -227,6 +227,19 @@ from .utils import compare_dfs
             },
             "ref.qf.pkl",
         ),
+        (  # ts22 - extract multiple steps from NetCDF
+            "extract.steps.nc",
+            {
+                "at": {"steps": ["CA_02", "CV_01", "CV_02"]},
+                "columns": [
+                    {"key": "Ewe", "as": "Ewe"},
+                    {"key": "<I>", "as": "I"},
+                ],
+            },
+            "ref.ca+cv.pkl",
+        ),
+
+
     ],
 )
 def test_extract_single(inpath, spec, outpath, datadir):

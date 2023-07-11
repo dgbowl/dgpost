@@ -397,4 +397,3 @@ def _(obj: tuple, columns: list[dict]) -> list[pd.Series]:
                 series[si] = pd.concat([s, r], axis="index")
                 break
     return series
-
