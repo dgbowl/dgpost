@@ -96,8 +96,8 @@ def get_step(
         elif at is not None and "steps" in at:
             ret = []
             for s in at["steps"]:
-                ret += obj[s]
-            return ret
+                ret.append(obj[s])
+            return tuple(ret)
         else:
             return obj
     elif isinstance(obj, dict):
@@ -193,7 +193,6 @@ def extract(
             newsr = pd.Series(data=unp.uarray(inoms, isigs), name=sr.name, index=ts)
             df[sr.name] = newsr
         set_units(sr.name, sr.attrs.get("units", None), df)
-    print(f"{df=}")
     ret = arrow_to_multiindex(df)
     return ret
 
@@ -380,4 +379,21 @@ def _(obj: list, columns: list[dict]) -> list[pd.Series]:
             ret = pd.Series(data=uvals, index=uts, name=name)
             ret.attrs["units"] = None if units in [None, "-", " "] else units
             series.append(ret)
+    return series
+
+
+@extract_obj.register(tuple)
+def _(obj: tuple, columns: list[dict]) -> list[pd.Series]:
+    series = None
+    for step in obj:
+        ret = extract_obj(step, columns)
+        if series is None:
+            series = ret
+        else:
+            for si, s in enumerate(series):
+                for r in ret:
+                    if r.name == s.name:
+                        break
+                series[si] = pd.concat([s, r], axis="index")
+                break
     return series
