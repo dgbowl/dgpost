@@ -238,8 +238,6 @@ from .utils import compare_dfs
             },
             "ref.ca+cv.pkl",
         ),
-
-
     ],
 )
 def test_extract_single(inpath, spec, outpath, datadir):
