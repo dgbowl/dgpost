@@ -26,7 +26,7 @@ from dgpost.utils.helpers import load_data, separate_data, columns_to_smiles
 from collections import defaultdict
 from typing import Iterable, Union
 from yadg.dgutils import ureg
-from uncertainties import unumpy as unp
+from uncertainties import UFloat, unumpy as unp
 
 
 @load_data(
@@ -148,13 +148,21 @@ def combine_columns(
         Namespace of the returned dictionary. By defaults to the name of column ``a``.
 
     """
-    if fillnan:
-        if isinstance(a.m, Iterable) and isinstance(b.m, Iterable):
-            a.m[pd.isna(a.m)] = 0
-            b.m[pd.isna(b.m)] = 0
+
+    def fillnans(vals):
+        mags = vals.m
+        if isinstance(mags, float):
+            return ureg.Quantity(0, vals.u) if pd.isna(mags) else vals
+        elif isinstance(mags, UFloat):
+            return ureg.Quantity(0, vals.u) if pd.isna(mags.n) else vals
         else:
-            a = ureg.Quantity(0, a.u) if pd.isna(a.m) else a
-            b = ureg.Quantity(0, b.u) if pd.isna(b.m) else b
+            nans = pd.isna(unp.nominal_values(mags))
+            vals[nans] = ureg.Quantity(0, vals.u)
+            return vals
+
+    if fillnan:
+        a = fillnans(a)
+        b = fillnans(b)
     ret = a + b
 
     if output is None:
