@@ -1,7 +1,7 @@
 import os
 import pytest
 import pandas as pd
-from yadg.dgutils import ureg
+import pint
 from dgpost.transform import chromatography
 from .utils import compare_dfs
 
@@ -16,44 +16,44 @@ from .utils import compare_dfs
                 "signal": "signal",
                 "species": {
                     "CO": {
-                        "l": ureg.Quantity(511.8, "s"),
-                        "r": ureg.Quantity(521.4, "s"),
+                        "l": pint.Quantity(511.8, "s"),
+                        "r": pint.Quantity(521.4, "s"),
                     },
                     "methane": {
-                        "l": ureg.Quantity(521.4, "s"),
-                        "r": ureg.Quantity(526.8, "s"),
+                        "l": pint.Quantity(521.4, "s"),
+                        "r": pint.Quantity(526.8, "s"),
                     },
                     "CO2": {
-                        "l": ureg.Quantity(529.2, "s"),
-                        "r": ureg.Quantity(538.8, "s"),
+                        "l": pint.Quantity(529.2, "s"),
+                        "r": pint.Quantity(538.8, "s"),
                     },
                     "ethylene": {
-                        "l": ureg.Quantity(541.8, "s"),
-                        "r": ureg.Quantity(550.2, "s"),
+                        "l": pint.Quantity(541.8, "s"),
+                        "r": pint.Quantity(550.2, "s"),
                     },
                     "ethane": {
-                        "l": ureg.Quantity(552.6, "s"),
-                        "r": ureg.Quantity(558.0, "s"),
+                        "l": pint.Quantity(552.6, "s"),
+                        "r": pint.Quantity(558.0, "s"),
                     },
                     "propylene": {
-                        "l": ureg.Quantity(595.2, "s"),
-                        "r": ureg.Quantity(602.0, "s"),
+                        "l": pint.Quantity(595.2, "s"),
+                        "r": pint.Quantity(602.0, "s"),
                     },
                     "propane": {
-                        "l": ureg.Quantity(602.0, "s"),
-                        "r": ureg.Quantity(606.0, "s"),
+                        "l": pint.Quantity(602.0, "s"),
+                        "r": pint.Quantity(606.0, "s"),
                     },
                     "butane": {
-                        "l": ureg.Quantity(690.0, "s"),
-                        "r": ureg.Quantity(696.0, "s"),
+                        "l": pint.Quantity(690.0, "s"),
+                        "r": pint.Quantity(696.0, "s"),
                     },
                     "acetic": {
-                        "l": ureg.Quantity(249.6, "s"),
-                        "r": ureg.Quantity(260.4, "s"),
+                        "l": pint.Quantity(249.6, "s"),
+                        "r": pint.Quantity(260.4, "s"),
                     },
                     "acrylic": {
-                        "l": ureg.Quantity(307.2, "s"),
-                        "r": ureg.Quantity(318.0, "s"),
+                        "l": pint.Quantity(307.2, "s"),
+                        "r": pint.Quantity(318.0, "s"),
                     },
                 },
                 "output": "FID",

@@ -2,10 +2,8 @@ import os
 import pytest
 import pandas as pd
 import numpy as np
-import uncertainties as uc
-import uncertainties.unumpy as unp
+import pint
 
-from yadg.dgutils import ureg
 from dgpost.transform import rates
 
 from .utils import compare_dfs
@@ -22,24 +20,24 @@ from .utils import compare_dfs
                 "t0": 0,
             },
             {
-                "rate->A": ureg.Quantity([10.0, 5.0, 5.0], "mol/s"),
-                "rate->B": ureg.Quantity([5.0, 5.0, 1.0], "mol/s"),
+                "rate->A": pint.Quantity([10.0, 5.0, 5.0], "mol/s"),
+                "rate->B": pint.Quantity([5.0, 5.0, 1.0], "mol/s"),
             },
         ),
         (  # ts1 - explicit units
             {
-                "time": ureg.Quantity([0, 1, 3, 4], "min"),
+                "time": pint.Quantity([0, 1, 3, 4], "min"),
                 "c": {
-                    "A": ureg.Quantity([0, 10, 20, 25], "mol/l"),
-                    "B": ureg.Quantity([0, 5, 15, 16], "mol/l"),
+                    "A": pint.Quantity([0, 10, 20, 25], "mol/l"),
+                    "B": pint.Quantity([0, 5, 15, 16], "mol/l"),
                 },
-                "V": ureg.Quantity(1, "l"),
+                "V": pint.Quantity(1, "l"),
             },
             {
-                "rate->A": ureg.Quantity(
+                "rate->A": pint.Quantity(
                     [np.NaN, 10.0 / 60, 5.0 / 60, 5.0 / 60], "mol/s"
                 ),
-                "rate->B": ureg.Quantity(
+                "rate->B": pint.Quantity(
                     [np.NaN, 5.0 / 60, 5.0 / 60, 1.0 / 60], "mol/s"
                 ),
             },
@@ -72,7 +70,7 @@ def test_rates_batchtomolar_direct(spec, ref):
         (  # ts2 - unit-aware dataframe with floats, custom volume with units
             "batchtomolar.units.df.pkl",
             [
-                {"V": ureg.Quantity(0.05, "mm³"), "c": "c"},
+                {"V": pint.Quantity(0.05, "mm³"), "c": "c"},
             ],
             "ref.batchtomolar.units.df.pkl",
         ),

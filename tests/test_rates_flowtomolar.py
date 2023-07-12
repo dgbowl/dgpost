@@ -1,16 +1,14 @@
 import os
 import pytest
 import pandas as pd
-import numpy as np
 import uncertainties as uc
-import uncertainties.unumpy as unp
+import pint
 
-from yadg.dgutils import ureg
 from dgpost.transform import rates
 
 from .utils import compare_dfs
 
-Trefs = [293.15, ureg.Quantity(20, "degC"), uc.ufloat(293.15, 0.0)]
+Trefs = [293.15, pint.Quantity(20, "degC"), uc.ufloat(293.15, 0.0)]
 
 
 @pytest.mark.parametrize(

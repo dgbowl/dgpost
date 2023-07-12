@@ -18,12 +18,13 @@ rates from the concentration profile of a batch mixture.
 
 """
 import pint
-from yadg.dgutils import ureg
 import pandas as pd
 import numpy as np
 from typing import Iterable
 
 from dgpost.utils.helpers import load_data
+
+ureg = pint.get_application_registry()
 
 
 @load_data(
@@ -37,8 +38,8 @@ def flow_to_molar(
     flow: pint.Quantity,
     c: dict[str, pint.Quantity] = None,
     x: dict[str, pint.Quantity] = None,
-    Tref: pint.Quantity = ureg.Quantity(273.15, "K"),
-    pref: pint.Quantity = ureg.Quantity(1, "atm"),
+    Tref: pint.Quantity = pint.Quantity(273.15, "K"),
+    pref: pint.Quantity = pint.Quantity(1, "atm"),
     output: str = "rate",
 ) -> dict[str, pint.Quantity]:
     """

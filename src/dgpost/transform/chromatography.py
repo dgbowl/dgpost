@@ -19,7 +19,6 @@ import logging
 import pint
 import numpy as np
 from uncertainties import unumpy as unp
-from yadg.dgutils import ureg
 from scipy.signal import savgol_filter, find_peaks
 from dgpost.utils.helpers import separate_data, load_data, columns_to_smiles
 
@@ -195,9 +194,9 @@ def integrate_trace(
         lim["l"], lim["r"] = limits["l"], limits["r"]
         for k in {"l", "r"}:
             if isinstance(lim[k], float):
-                lim[k] = ureg.Quantity(lim[k], time.u)
+                lim[k] = pint.Quantity(lim[k], time.u)
             elif isinstance(lim[k], str):
-                lim[k] = ureg.Quantity(lim[k])
+                lim[k] = pint.Quantity(lim[k])
         for p in allpeaks:
             if time[p["max"]] > lim["l"] and time[p["max"]] < lim["r"]:
                 truepeaks[name] = p
@@ -220,7 +219,7 @@ def integrate_trace(
         bn[pair[0] : pair[1]] = interp
         bs[pair[0] : pair[1]] = np.zeros(n)
 
-    baseline = ureg.Quantity(unp.uarray(bn, bs), yunit)
+    baseline = pint.Quantity(unp.uarray(bn, bs), yunit)
 
     retval = {}
     for k, v in truepeaks.items():
@@ -236,20 +235,20 @@ def integrate_trace(
 
 
 def _inverse(y, m=1.0, c=None):
-    m = ureg.Quantity(m)
+    m = pint.Quantity(m)
     if c is None:
         return y / m
     else:
-        c = ureg.Quantity(c)
+        c = pint.Quantity(c)
         return (y - c) / m
 
 
 def _linear(x, m=1.0, c=None):
-    m = ureg.Quantity(m)
+    m = pint.Quantity(m)
     if c is None:
         return m * x
     else:
-        c = ureg.Quantity(c)
+        c = pint.Quantity(c)
         return m * x + c
 
 

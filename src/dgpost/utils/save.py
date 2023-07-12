@@ -19,11 +19,11 @@ in order to save the given DataFrame:
 """
 import json
 import os
-from yadg.dgutils.pintutils import ureg
 from uncertainties import unumpy as unp
 from importlib import metadata
 import pandas as pd
 import logging
+import pint
 
 from dgpost.utils.helpers import get_units
 
@@ -89,7 +89,7 @@ def save(
         if unit is None:
             names.append(col)
         else:
-            names.append((col[0] + f" [{ureg.Unit(unit):~P}]", *col[1:]))
+            names.append((col[0] + f" [{pint.Unit(unit):~P}]", *col[1:]))
 
     savedf = table.copy()
     if all([isinstance(name, str) for name in names]):

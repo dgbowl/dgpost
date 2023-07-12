@@ -25,8 +25,9 @@ import numpy as np
 from dgpost.utils.helpers import load_data, separate_data, columns_to_smiles
 from collections import defaultdict
 from typing import Iterable, Union
-from yadg.dgutils import ureg
 from uncertainties import UFloat, unumpy as unp
+
+ureg = pint.get_application_registry()
 
 
 @load_data(

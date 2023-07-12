@@ -20,7 +20,6 @@ charge and timestamps.
 
 """
 import pint
-from yadg.dgutils import ureg
 import numpy as np
 import pandas as pd
 from typing import Iterable
@@ -32,6 +31,8 @@ from dgpost.utils.helpers import (
     name_to_chem,
     electrons_from_smiles,
 )
+
+ureg = pint.get_application_registry()
 
 
 @load_data(
@@ -46,10 +47,10 @@ from dgpost.utils.helpers import (
 )
 def nernst(
     Ewe: pint.Quantity,
-    R: pint.Quantity = ureg.Quantity(0.0, "Ω"),
-    I: pint.Quantity = ureg.Quantity(0.0, "A"),
-    Eref: pint.Quantity = ureg.Quantity(0.0, "V"),
-    T: pint.Quantity = ureg.Quantity(298.15, "K"),
+    R: pint.Quantity = pint.Quantity(0.0, "Ω"),
+    I: pint.Quantity = pint.Quantity(0.0, "A"),
+    Eref: pint.Quantity = pint.Quantity(0.0, "V"),
+    T: pint.Quantity = pint.Quantity(298.15, "K"),
     n: int = None,
     Q: float = None,
     pH: float = None,

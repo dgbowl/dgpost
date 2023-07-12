@@ -1,9 +1,9 @@
 import os
 import pytest
 from dgpost.transform import electrochemistry, rates
-from yadg.dgutils import ureg
 import numpy as np
 import pandas as pd
+import pint
 
 from .utils import compare_dfs
 
@@ -22,45 +22,45 @@ from .utils import compare_dfs
                 "charges": {"C": 4, "H": 1, "O": -2},
             },
             {
-                "fe->H2": ureg.Quantity(0.36511734),
-                "fe->CH4": ureg.Quantity(0.24329496),
-                "fe->C2H4": ureg.Quantity(0.07689462),
+                "fe->H2": pint.Quantity(0.36511734),
+                "fe->CH4": pint.Quantity(0.24329496),
+                "fe->C2H4": pint.Quantity(0.07689462),
             },
         ),
         (  # ts1 - all Quantities, weird units
             {
-                "I": ureg.Quantity(100, "mA"),
+                "I": pint.Quantity(100, "mA"),
                 "rate": {
-                    "H2": ureg.Quantity(0.6811524, "mmol/hour"),
-                    "CH4": ureg.Quantity(0.1134709, "mmol/hour"),
-                    "C2H4": ureg.Quantity(0.0239087, "mmol/hour"),
-                    "CO": ureg.Quantity(0.0533184, "mmol/hour"),
+                    "H2": pint.Quantity(0.6811524, "mmol/hour"),
+                    "CH4": pint.Quantity(0.1134709, "mmol/hour"),
+                    "C2H4": pint.Quantity(0.0239087, "mmol/hour"),
+                    "CO": pint.Quantity(0.0533184, "mmol/hour"),
                 },
                 "charges": {"C": 4, "H": 1, "O": -2},
             },
             {
-                "fe->H2": ureg.Quantity(0.36511734),
-                "fe->CH4": ureg.Quantity(0.24329496),
-                "fe->C2H4": ureg.Quantity(0.07689462),
-                "fe->CO": ureg.Quantity(0.02858024),
+                "fe->H2": pint.Quantity(0.36511734),
+                "fe->CH4": pint.Quantity(0.24329496),
+                "fe->C2H4": pint.Quantity(0.07689462),
+                "fe->CO": pint.Quantity(0.02858024),
             },
         ),
         (  # ts2 - arrays, with I == 0, all Quantities, weird units
             {
-                "I": ureg.Quantity([0, 100], "mA"),
+                "I": pint.Quantity([0, 100], "mA"),
                 "rate": {
-                    "H2": ureg.Quantity([0.6811524, 0.6811524], "mmol/hour"),
-                    "CH4": ureg.Quantity([0.1134709, 0.1134709], "mmol/hour"),
-                    "C2H4": ureg.Quantity([0.0239087, 0.0239087], "mmol/hour"),
-                    "CO": ureg.Quantity([0.0533184, 0.0533184], "mmol/hour"),
+                    "H2": pint.Quantity([0.6811524, 0.6811524], "mmol/hour"),
+                    "CH4": pint.Quantity([0.1134709, 0.1134709], "mmol/hour"),
+                    "C2H4": pint.Quantity([0.0239087, 0.0239087], "mmol/hour"),
+                    "CO": pint.Quantity([0.0533184, 0.0533184], "mmol/hour"),
                 },
                 "charges": {"C": 4, "H": 1, "O": -2},
             },
             {
-                "fe->H2": ureg.Quantity([np.NaN, 0.36511734]),
-                "fe->CH4": ureg.Quantity([np.NaN, 0.24329496]),
-                "fe->C2H4": ureg.Quantity([np.NaN, 0.07689462]),
-                "fe->CO": ureg.Quantity([np.NaN, 0.02858024]),
+                "fe->H2": pint.Quantity([np.NaN, 0.36511734]),
+                "fe->CH4": pint.Quantity([np.NaN, 0.24329496]),
+                "fe->C2H4": pint.Quantity([np.NaN, 0.07689462]),
+                "fe->CO": pint.Quantity([np.NaN, 0.02858024]),
             },
         ),
     ],
@@ -84,8 +84,8 @@ def test_electrochemistry_fe_direct(inputs, output):
                     "flow": "fout",
                     "x": "xout",
                     "output": "nout",
-                    "Tref": ureg.Quantity(0, "degC"),
-                    "pref": ureg.Quantity(1, "atm"),
+                    "Tref": pint.Quantity(0, "degC"),
+                    "pref": pint.Quantity(1, "atm"),
                 },
                 {
                     "I": "I",
