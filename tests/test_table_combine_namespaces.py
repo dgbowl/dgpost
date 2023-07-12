@@ -2,12 +2,11 @@ import os
 import pytest
 import pandas as pd
 import numpy as np
+import pint
 
 from dgpost.transform import table
 from dgpost.utils import transform
 from .utils import compare_dfs
-
-from yadg.dgutils import ureg
 
 
 @pytest.mark.parametrize(
@@ -15,50 +14,50 @@ from yadg.dgutils import ureg
     [
         (  # ts0 - sum
             {
-                "a": ureg.Quantity(10.0, "ml/min"),
-                "b": ureg.Quantity(6.0, "ml/min"),
+                "a": pint.Quantity(10.0, "ml/min"),
+                "b": pint.Quantity(6.0, "ml/min"),
             },
             {
-                "b": ureg.Quantity(0.6, "l/h"),
-                "c": ureg.Quantity(6.0, "l/h"),
+                "b": pint.Quantity(0.6, "l/h"),
+                "c": pint.Quantity(6.0, "l/h"),
             },
             "sum",
             {
-                "c->a": ureg.Quantity(10.0, "ml/min"),
-                "c->b": ureg.Quantity(16.0, "ml/min"),
-                "c->c": ureg.Quantity(100.0, "ml/min"),
+                "c->a": pint.Quantity(10.0, "ml/min"),
+                "c->b": pint.Quantity(16.0, "ml/min"),
+                "c->c": pint.Quantity(100.0, "ml/min"),
             },
         ),
         (  # ts1 - replace
             {
-                "a": ureg.Quantity(10.0, "mmol/s"),
-                "b": ureg.Quantity(6.0, "mmol/s"),
+                "a": pint.Quantity(10.0, "mmol/s"),
+                "b": pint.Quantity(6.0, "mmol/s"),
             },
             {
-                "b": ureg.Quantity(3.6, "mol/h"),
-                "c": ureg.Quantity(72.0, "mol/h"),
+                "b": pint.Quantity(3.6, "mol/h"),
+                "c": pint.Quantity(72.0, "mol/h"),
             },
             "replace",
             {
-                "c->a": ureg.Quantity(10.0, "mmol/s"),
-                "c->b": ureg.Quantity(1.0, "mmol/s"),
-                "c->c": ureg.Quantity(20.0, "mmol/s"),
+                "c->a": pint.Quantity(10.0, "mmol/s"),
+                "c->b": pint.Quantity(1.0, "mmol/s"),
+                "c->c": pint.Quantity(20.0, "mmol/s"),
             },
         ),
         (  # ts2 - sum with nan
             {
-                "a": ureg.Quantity(10.0, "ml/min"),
-                "b": ureg.Quantity(float("NaN"), "ml/min"),
+                "a": pint.Quantity(10.0, "ml/min"),
+                "b": pint.Quantity(float("NaN"), "ml/min"),
             },
             {
-                "b": ureg.Quantity(0.6, "l/h"),
-                "c": ureg.Quantity(6.0, "l/h"),
+                "b": pint.Quantity(0.6, "l/h"),
+                "c": pint.Quantity(6.0, "l/h"),
             },
             "sum",
             {
-                "c->a": ureg.Quantity(10.0, "ml/min"),
-                "c->b": ureg.Quantity(10.0, "ml/min"),
-                "c->c": ureg.Quantity(100.0, "ml/min"),
+                "c->a": pint.Quantity(10.0, "ml/min"),
+                "c->b": pint.Quantity(10.0, "ml/min"),
+                "c->c": pint.Quantity(100.0, "ml/min"),
             },
         ),
     ],

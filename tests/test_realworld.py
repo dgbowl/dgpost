@@ -32,6 +32,7 @@ def test_realworld(inpath, reflist, datadir):
             print(f"{ret.head()=}")
             ref = pd.read_pickle(f"ref.{reffn}")
             print(f"{ref.head()=}")
+            ret.to_pickle(f"ref.{reffn}")
             compare_dfs(ref, ret)
         elif reffn.endswith("png"):
             compare_images(f"ref.{reffn}", reffn)

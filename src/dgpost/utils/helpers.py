@@ -19,10 +19,13 @@ from collections import defaultdict
 from typing import Any, Union, Sequence
 from chemicals.elements import periodic_table, simple_formula_parser
 from chemicals.identifiers import search_chemical
-from yadg.dgutils import ureg
 import logging
 
 logger = logging.getLogger(__name__)
+ureg = pint.get_application_registry()
+
+ureg.define("refractive_index_units = [] = RIU")
+ureg.define("standard_milliliter = milliliter = smL")
 
 
 def element_from_formula(f: str, el: str) -> int:
@@ -113,19 +116,19 @@ def electrons_from_smiles(
 
 def pQ(
     df: pd.DataFrame, col: Union[str, tuple[str]], unit: str = None
-) -> pint.Quantity:
+) -> ureg.Quantity:
     """
     Unit-aware dataframe accessor function.
 
     Given a dataframe in ``df`` and a column name in ``col``, the function looks
     through the units stored in ``df.attrs["units"]`` and returns a unit-annotated
-    :class:`pint.Quantity` containing the column data. Alternatively, the data in
+    :class:`ureg.Quantity` containing the column data. Alternatively, the data in
     ``df[col]`` can be annotated by the provided ``unit``.
 
     .. note::
 
         If ``df.attrs`` has no units, or ``col`` is not in ``df.attrs["units"]``,
-        the returned :class:`pint.Quantity` is dimensionless.
+        the returned :class:`ureg.Quantity` is dimensionless.
 
     Parameters
     ----------
@@ -140,7 +143,7 @@ def pQ(
 
     Returns
     -------
-    Quantity: pint.Quantity
+    Quantity: ureg.Quantity
         Unit-aware :class:`ping.Quantity` object containing the data from ``df[col]``.
 
     """
@@ -154,7 +157,16 @@ def pQ(
         pass
     else:
         unit = get_units(col, df)
-    return ureg.Quantity(vals, unit)
+    try:
+        q = ureg.Quantity(vals, unit)
+    except pint.errors.UndefinedUnitError:
+        logger.warning(
+            f"pint does not understand unit '{unit}', "
+            "treating Quantity as dimensionless"
+        )
+        ureg.define(f"{unit} = []")
+        q = ureg.Quantity(vals, unit)
+    return q
 
 
 def separate_data(
@@ -166,7 +178,7 @@ def separate_data(
     Parameters
     ----------
     data
-        A :class:`pint.Quantity` object containing the data points. Can be either
+        A :class:`ureg.Quantity` object containing the data points. Can be either
         :class:`float` or :class:`uc.ufloat`.
 
     unit
@@ -178,7 +190,7 @@ def separate_data(
         Converted nominal values and errors, and the original unit of the data.
     """
     old_unit = data.u
-    if not data.dimensionless and unit is not None:
+    if unit is not None and not data.dimensionless:
         data = data.to(unit)
     data = data.m
     return unp.nominal_values(data), unp.std_devs(data), old_unit
@@ -190,7 +202,7 @@ def load_data(*cols: tuple[str, str, type]):
 
     Creates a decorator that will load the columns specified in ``cols``
     and calls the wrapped function ``func`` as appropriate. The ``func`` has to
-    accept :class:`pint.Quantity` objects, return a :class:`dict[str, pint.Quantity]`,
+    accept :class:`ureg.Quantity` objects, return a :class:`dict[str, ureg.Quantity]`,
     and handle an optional parameter ``"output"`` which prefixes (or assigns) the
     output data in the returned :class:`dict` appropriately.
 
@@ -200,7 +212,7 @@ def load_data(*cols: tuple[str, str, type]):
     :class:`str` field denotes the default units for that argument (or ``None`` for
     a unitless quantity), and the :class:`type` field allows the use of the decorator
     with functions that expect :class:`list` of points in the argument (such as
-    trace-processing functions) or :class:`dict` of :class:`pint.Quantity` objects
+    trace-processing functions) or :class:`dict` of :class:`ureg.Quantity` objects
     (such as functions operating on chemical compositions).
 
     The decorator handles the following cases:
@@ -212,9 +224,9 @@ def load_data(*cols: tuple[str, str, type]):
           ``args`` and ``cols`` array as provided to the decorator
         - all elements in ``kwargs`` that match the argument names in the ``cols``
           :class:`list` provided to the decorator are converted to
-          :class:`pint.Quantity` objects, assigning the default units using the
+          :class:`ureg.Quantity` objects, assigning the default units using the
           data from the ``cols`` :class:`list`, unless they are a
-          :class:`pint.Quantity` already.
+          :class:`ureg.Quantity` already.
 
     - decorated ``func`` is launched with a :class:`pd.DataFrame` as the ``args``
       and other parameters in ``kwargs``:
@@ -228,7 +240,7 @@ def load_data(*cols: tuple[str, str, type]):
         - data from unit-aware :class:`pd.DataFrame` objects is loaded using the
           :func:`pQ` accessor accordingly
         - data from unit-naive :class:`pd.DataFrame` objects are coerced into
-          :class:`pint.Quantity` objects using the default units as specified in the
+          :class:`ureg.Quantity` objects using the default units as specified in the
           ``cols`` :class:`list`
 
     Parameters
@@ -397,7 +409,7 @@ def load_data(*cols: tuple[str, str, type]):
                     for cname, arg in zip(cnames, args):
                         kwargs[cname] = arg
                 # Go through cols again and convert the input data
-                # into pint.Quantity, using the unit specification if necessary
+                # into ureg.Quantity, using the unit specification if necessary
                 for cname, cunit, ctype in fcols:
                     v = kwargs.pop(cname, None)
                     if v is None:
@@ -428,7 +440,7 @@ def load_data(*cols: tuple[str, str, type]):
                         kwargs[cname] = temp
                     else:
                         raise ValueError(
-                            f"The provided argument '{cname}' is neither a pint.Quantity "
+                            f"The provided argument '{cname}' is neither a ureg.Quantity "
                             f"nor an np.ndarray: '{type(v)}'."
                         )
                 return func(**kwargs)

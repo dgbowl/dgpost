@@ -2,8 +2,8 @@ import os
 import pytest
 import pandas as pd
 import numpy as np
+import pint
 
-from yadg.dgutils import ureg
 from dgpost.transform import electrochemistry
 
 from .utils import compare_dfs
@@ -19,16 +19,16 @@ from .utils import compare_dfs
                 "t0": 0,
             },
             {
-                "Q": ureg.Quantity([0.1, 0.2, 0.4, 0.5, 0.7, 0.8], "A s"),
+                "Q": pint.Quantity([0.1, 0.2, 0.4, 0.5, 0.7, 0.8], "A s"),
             },
         ),
         (  # ts1 - variable I, custom units
             {
-                "time": ureg.Quantity([0.1, 0.2, 0.4, 0.5, 0.7, 0.8], "h"),
-                "I": ureg.Quantity([100, 99, 99, 100, 100, 98], "mA"),
+                "time": pint.Quantity([0.1, 0.2, 0.4, 0.5, 0.7, 0.8], "h"),
+                "I": pint.Quantity([100, 99, 99, 100, 100, 98], "mA"),
             },
             {
-                "Q": ureg.Quantity([0.0, 9.9, 29.7, 39.7, 59.7, 69.5], "mAh"),
+                "Q": pint.Quantity([0.0, 9.9, 29.7, 39.7, 59.7, 69.5], "mAh"),
             },
         ),
     ],

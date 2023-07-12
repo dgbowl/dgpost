@@ -2,26 +2,25 @@ import os
 import pytest
 import pandas as pd
 import numpy as np
+import pint
 
 from dgpost.transform import table
 from dgpost.utils import transform
 from .utils import compare_dfs
-
-from yadg.dgutils import ureg
 
 
 @pytest.mark.parametrize(
     "a, b, output",
     [
         (  # ts0 - sum
-            ureg.Quantity(6.0, "ml/min"),
-            ureg.Quantity(0.6, "l/h"),
-            {"c": ureg.Quantity(16.0, "ml/min")},
+            pint.Quantity(6.0, "ml/min"),
+            pint.Quantity(0.6, "l/h"),
+            {"c": pint.Quantity(16.0, "ml/min")},
         ),
         (  # ts1 - sum with nan
-            ureg.Quantity(float("NaN"), "ml/min"),
-            ureg.Quantity(0.6, "l/h"),
-            {"c": ureg.Quantity(10.0, "ml/min")},
+            pint.Quantity(float("NaN"), "ml/min"),
+            pint.Quantity(0.6, "l/h"),
+            {"c": pint.Quantity(10.0, "ml/min")},
         ),
     ],
 )

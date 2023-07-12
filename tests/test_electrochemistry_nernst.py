@@ -1,9 +1,9 @@
 import os
 import pytest
 from dgpost.transform import electrochemistry
-from yadg.dgutils import ureg
 import numpy as np
 import pandas as pd
+import pint
 
 from .utils import compare_dfs
 
@@ -20,17 +20,17 @@ from .utils import compare_dfs
                 "T": 298.15,
                 "pH": 8.5,
             },
-            {"Eapp": ureg.Quantity(-0.9201455, "volt")},
+            {"Eapp": pint.Quantity(-0.9201455, "volt")},
         ),
         (  # ts1 - pH, all Quantities, default T = 298.15 K
             {
-                "Ewe": ureg.Quantity(np.array([-3.09, -3.09]), "volt"),
-                "Eref": ureg.Quantity(np.array([0.197, 0.197]), "volt"),
-                "R": ureg.Quantity(np.array([14.7, 14.7]), "ohm"),
-                "I": ureg.Quantity(np.array([100, 100]), "mA"),
+                "Ewe": pint.Quantity(np.array([-3.09, -3.09]), "volt"),
+                "Eref": pint.Quantity(np.array([0.197, 0.197]), "volt"),
+                "R": pint.Quantity(np.array([14.7, 14.7]), "ohm"),
+                "I": pint.Quantity(np.array([100, 100]), "mA"),
                 "pH": 8.5,
             },
-            {"Eapp": ureg.Quantity(np.array([-0.9201455, -0.9201455]), "volt")},
+            {"Eapp": pint.Quantity(np.array([-0.9201455, -0.9201455]), "volt")},
         ),
         (  # ts2 - pH, all np.ndarrays, no Eref
             {
@@ -39,20 +39,20 @@ from .utils import compare_dfs
                 "I": np.asarray([0.1, 0.1]),
                 "pH": 8.5,
             },
-            {"Eapp": ureg.Quantity(np.array([-1.1171455, -1.1171455]), "volt")},
+            {"Eapp": pint.Quantity(np.array([-1.1171455, -1.1171455]), "volt")},
         ),
         (  # ts3 - n and Q, all floats,
             {"Ewe": -3.09, "n": 1, "Q": 10 ** (-8.5), "output": "E"},
-            {"E": ureg.Quantity(-2.5871455, "volt")},
+            {"E": pint.Quantity(-2.5871455, "volt")},
         ),
         (  # ts4 - Francesco's data
             {
-                "Ewe": ureg.Quantity(-3.42246, "volt"),
-                "R": ureg.Quantity(0.997466, "ohm"),
-                "Eref": ureg.Quantity(0.197, "volt"),
-                "I": ureg.Quantity(-199.919, "milliampere"),
+                "Ewe": pint.Quantity(-3.42246, "volt"),
+                "R": pint.Quantity(0.997466, "ohm"),
+                "Eref": pint.Quantity(0.197, "volt"),
+                "I": pint.Quantity(-199.919, "milliampere"),
             },
-            {"Eapp": ureg.Quantity(-3.02605, "volt")},
+            {"Eapp": pint.Quantity(-3.02605, "volt")},
         ),
     ],
 )
