@@ -41,6 +41,8 @@ setuptools.setup(
         "pint>=0.22",
         "chemicals>=1.0.0",
         "rdkit>=2022.3",
+        "h5netcdf~=1.0",
+        "xarray-datatree>=0.0.12",
         "dgbowl-schemas @ git+https://github.com/dgbowl/dgbowl-schemas.git@116rc2",
         "matplotlib>=3.5.0",
         "requests",
