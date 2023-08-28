@@ -53,7 +53,7 @@ setuptools.setup(
             "sphinx~=6.2.1",
             "sphinx-rtd-theme",
             "sphinx-autodoc-typehints",
-            "autodoc-pydantic",
+            "autodoc-pydantic>=2.0.0",
         ],
     },
     entry_points={"console_scripts": ["dgpost=dgpost:run_with_arguments"]},
