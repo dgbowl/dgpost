@@ -14,9 +14,11 @@ Developed in the `ConCat lab <https://tu.berlin/en/concat>`_ at Technische Unive
 
 An update to ``dgpost-2.0``, including the following features:
 
-- support for reading ``NetCDF`` files created by ``yadg-5.0``;
-- added a new :mod:`~dgpost.utils.pivot` functionality, allowing the users to reorganise
+- :mod:`~dgpost.utils.load`: support for reading ``NetCDF`` files created by ``yadg-5.0``;
+- :mod:`~dgpost.utils.pivot`: added a new functionality, allowing the users to reorganise
   data by grouping them into arrays from multiple rows;
+- :mod:`~dgpost.utils.save`: added a new ``columns`` argument, allowing the user to select
+  which columns of a table are to be exported;
 
 .. codeauthor::
     Ueli Sauter,
