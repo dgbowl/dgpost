@@ -163,7 +163,14 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
             fp = el["as"]
         else:
             fp = el["as"].replace("$patch", patch).replace("$PATCH", patch)
-        save(tables[el["table"]], fp, el.get("type"), el.get("sigma", True), meta)
+        save(
+            tables[el["table"]],
+            fp,
+            el.get("type"),
+            el.get("columns"),
+            el.get("sigma", True),
+            meta,
+        )
     return datagrams, tables
 
 
