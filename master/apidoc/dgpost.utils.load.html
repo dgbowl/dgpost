@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -114,14 +114,14 @@
            <div itemprop="articleBody">
              
   <section id="module-dgpost.utils.load">
-<span id="load-load-datagrams-and-tables"></span><h1><strong>load</strong>: load datagrams and tables<a class="headerlink" href="#module-dgpost.utils.load" title="Permalink to this heading"></a></h1>
+<span id="load-load-datagrams-and-tables"></span><h1><strong>load</strong>: load datagrams and tables<a class="headerlink" href="#module-dgpost.utils.load" title="Link to this heading"></a></h1>
 <p><em>Code author: Ueli Sauter,
 Peter Kraus</em></p>
 <p>The function <a class="reference internal" href="#dgpost.utils.load.load" title="dgpost.utils.load.load"><code class="xref py py-func docutils literal notranslate"><span class="pre">dgpost.utils.load.load()</span></code></a> processes the below specification
 in order to load the datagram json file:</p>
-<span class="target" id="dgpost-recipe-load"></span><dl class="py class pydantic_model">
+<dl class="py class pydantic_model" id="dgpost-recipe-load">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load">
-<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgbowl_schemas.dgpost.recipe.</span></span><span class="sig-name descname"><span class="pre">Load</span></span><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dgbowl_schemas.dgpost.recipe.</span></span><span class="sig-name descname"><span class="pre">Load</span></span><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load" title="Link to this definition"></a></dt>
 <dd><p>Select external files (<code class="docutils literal notranslate"><span class="pre">NetCDF</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> datagrams, <code class="docutils literal notranslate"><span class="pre">pkl</span></code> tables) to load.</p>
 <p><details  class="autodoc_pydantic_collapsable_json">
 <summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -184,19 +184,19 @@ in order to load the datagram json file:</p>
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.as_">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"> <span class="pre">[Required]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'as')</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.as_" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"> <span class="pre">[Required]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'as')</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.as_" title="Link to this definition"></a></dt>
 <dd><p>Name under which the loaded object will be stored in memory.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.path">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.path" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.path" title="Link to this definition"></a></dt>
 <dd><p>Path to the file containing the object to be loaded.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.type">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code><span class="pre">[</span><code class="docutils literal notranslate"><span class="pre">'netcdf'</span></code><span class="pre">,</span> <code class="docutils literal notranslate"><span class="pre">'datagram'</span></code><span class="pre">,</span> <code class="docutils literal notranslate"><span class="pre">'table'</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'datagram'</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.type" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code><span class="pre">[</span><code class="docutils literal notranslate"><span class="pre">'netcdf'</span></code><span class="pre">,</span> <code class="docutils literal notranslate"><span class="pre">'datagram'</span></code><span class="pre">,</span> <code class="docutils literal notranslate"><span class="pre">'table'</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'datagram'</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.type" title="Link to this definition"></a></dt>
 <dd><p>Type of the loaded object. Can be either a <code class="docutils literal notranslate"><span class="pre">NetCDF</span></code> file created e.g. using
 <code class="docutils literal notranslate"><span class="pre">yadg~5.0</span></code>, a <code class="docutils literal notranslate"><span class="pre">datagram</span></code> file in JSON format created using <code class="docutils literal notranslate"><span class="pre">yadg~4.0</span></code>, or a
 <code class="docutils literal notranslate"><span class="pre">table</span></code> stored in a <code class="docutils literal notranslate"><span class="pre">pkl</span></code> file as created by Pandas.</p>
@@ -211,7 +211,7 @@ in order to load the datagram json file:</p>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.check">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.check" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.check" title="Link to this definition"></a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 2.1: </span>The <code class="docutils literal notranslate"><span class="pre">check</span></code> attribute of <a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load" title="dgbowl_schemas.dgpost.recipe.Load"><code class="xref py py-class docutils literal notranslate"><span class="pre">Load</span></code></a> has been deprecated. The passed value
 is currently ignored, however it <strong>will cause an error</strong> in future versions of
@@ -228,12 +228,12 @@ is currently ignored, however it <strong>will cause an error</strong> in future 
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.check_is_deprecated">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_is_deprecated</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check" title="(in dgbowl-schemas vmaster)"><em class="xref py py-obj"><span class="pre">check</span></em></a><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.check_is_deprecated" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_is_deprecated</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.check" title="(in dgbowl-schemas vmaster)"><em class="xref py py-obj"><span class="pre">check</span></em></a><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.check_is_deprecated" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method pydantic_validator">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.lowercase_type">
-<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lowercase_type</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.type" title="(in dgbowl-schemas vmaster)"><em class="xref py py-obj"><span class="pre">type</span></em></a><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.lowercase_type" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lowercase_type</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.load.html#dgbowl_schemas.dgpost.recipe_2_1.load.Load.type" title="(in dgbowl-schemas vmaster)"><em class="xref py py-obj"><span class="pre">type</span></em></a><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.lowercase_type" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -245,7 +245,7 @@ to store the returned <cite>datagram</cite> or <code class="xref py py-class doc
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.utils.load.load">
-<span class="sig-prename descclassname"><span class="pre">dgpost.utils.load.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'netcdf'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.load.load" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.utils.load.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'netcdf'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.load.load" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]</p>

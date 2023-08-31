@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -109,7 +109,7 @@
            <div itemprop="articleBody">
              
   <section id="module-dgpost.transform.electrochemistry">
-<span id="electrochemistry-calculations-relevant-in-electrochemistry"></span><h1><strong>electrochemistry</strong>: calculations relevant in electrochemistry<a class="headerlink" href="#module-dgpost.transform.electrochemistry" title="Permalink to this heading"></a></h1>
+<span id="electrochemistry-calculations-relevant-in-electrochemistry"></span><h1><strong>electrochemistry</strong>: calculations relevant in electrochemistry<a class="headerlink" href="#module-dgpost.transform.electrochemistry" title="Link to this heading"></a></h1>
 <p><em>Code author: Peter Kraus</em></p>
 <p>Includes functions for calculating applied voltage correction via the
 <a class="reference internal" href="#dgpost.transform.electrochemistry.nernst" title="dgpost.transform.electrochemistry.nernst"><code class="xref py py-func docutils literal notranslate"><span class="pre">nernst()</span></code></a> equation, calculation of the
@@ -136,7 +136,7 @@ charge and timestamps.</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.electrochemistry.nernst">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">nernst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ewe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ohm')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ampere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eref=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'volt')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=&lt;Quantity(298.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pH=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output='Eapp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.nernst" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">nernst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ewe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ohm')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ampere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eref=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'volt')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=&lt;Quantity(298.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pH=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output='Eapp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.nernst" title="Link to this definition"></a></dt>
 <dd><p>Correct measured voltage to calculate the applied voltage, using corrections
 for Ohmic drop, reference potential vs RHE, and ionic concentration using
 the Nernst equation, either by providing <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(n\)</span>, or by
@@ -192,7 +192,7 @@ of <span class="math notranslate nohighlight">\(\text{H}^+ \rightarrow \text{H}`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.electrochemistry.fe">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">fe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.fe" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">fe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.fe" title="Link to this definition"></a></dt>
 <dd><p>Calculate the Faradaic efficiency <span class="math notranslate nohighlight">\(\eta_F\)</span> from a set of molar rates
 <span class="math notranslate nohighlight">\(\dot{n}`\)</span> corresponding to a single mixture, and the applied current
 <span class="math notranslate nohighlight">\(I\)</span> required to produce that mixture from a source mixture. A set of
@@ -227,7 +227,7 @@ mixture.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.electrochemistry.charge">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">charge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Q'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.charge" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">charge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Q'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.charge" title="Link to this definition"></a></dt>
 <dd><p>Calculate the total charge <span class="math notranslate nohighlight">\(Q\)</span> as a time-integral of the electric current:</p>
 <div class="math notranslate nohighlight">
 \[Q_n = \int_{t_0}^{t_n} I(t) dt = \sum_0^n I_n (t_n - t_{n-1})\]</div>
@@ -256,7 +256,7 @@ at that timestamp set to zero.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.electrochemistry.average_current">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">average_current</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;I&gt;'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.average_current" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.electrochemistry.</span></span><span class="sig-name descname"><span class="pre">average_current</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;I&gt;'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.electrochemistry.average_current" title="Link to this definition"></a></dt>
 <dd><p>Calculate the average current <span class="math notranslate nohighlight">\(&lt;I&gt;\)</span> from a set of timestamped values of
 electical charge,</p>
 <div class="math notranslate nohighlight">

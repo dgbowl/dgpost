@@ -13,11 +13,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -107,14 +107,14 @@
            <div itemprop="articleBody">
              
   <section id="dgpost-features">
-<h1><strong>dgpost</strong> features<a class="headerlink" href="#dgpost-features" title="Permalink to this heading"></a></h1>
+<h1><strong>dgpost</strong> features<a class="headerlink" href="#dgpost-features" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For an overview of the data-processing features within dgpost, see the
 documentation of the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module.</p>
 </div>
 <section id="pandas-compatibility">
-<h2><a class="reference external" href="https://pandas.pydata.org/">Pandas</a> compatibility<a class="headerlink" href="#pandas-compatibility" title="Permalink to this heading"></a></h2>
+<h2><a class="reference external" href="https://pandas.pydata.org/">Pandas</a> compatibility<a class="headerlink" href="#pandas-compatibility" title="Link to this heading"></a></h2>
 <p>One of the design goals of dgpost was to develop a library that can be used with
 <a class="reference external" href="https://dgbowl.github.io/yadg/master/apidoc/yadg.html#module-yadg" title="(in yadg vmaster)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yadg</span></code></a> <cite>datagrams</cite>, the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code> created by dgpost, as well as with any
 other <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code>, created e.g. by parsing an <code class="docutils literal notranslate"><span class="pre">xlsx</span></code> or <code class="docutils literal notranslate"><span class="pre">csv</span></code>
@@ -142,7 +142,7 @@ extract data from tables with standard a <code class="xref py py-class docutils 
 </div>
 </section>
 <section id="units-and-uncertainties">
-<h2>Units and uncertainties<a class="headerlink" href="#units-and-uncertainties" title="Permalink to this heading"></a></h2>
+<h2>Units and uncertainties<a class="headerlink" href="#units-and-uncertainties" title="Link to this heading"></a></h2>
 <p>Another key objective of dgpost is to allow and encourage annotating data by units
 as well as error estimates / uncertainties. The design philosophy here is that by
 building unit- and uncertainty- awareness into the toolchain, users will be encouraged
@@ -180,7 +180,7 @@ see the <a class="reference internal" href="apidoc/dgpost.utils.save.html#module
 tables in spreadsheets.</p>
 </section>
 <section id="provenance">
-<h2>Provenance<a class="headerlink" href="#provenance" title="Permalink to this heading"></a></h2>
+<h2>Provenance<a class="headerlink" href="#provenance" title="Link to this heading"></a></h2>
 <p>Provenance tracking is implemented in dgpost using the <code class="docutils literal notranslate"><span class="pre">&quot;meta&quot;</span></code> entry of the
 <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code> attribute of the created <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>. This entry is exported
 when the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> is saved as <code class="docutils literal notranslate"><span class="pre">pkl/json</span></code>, and contains dgpost version

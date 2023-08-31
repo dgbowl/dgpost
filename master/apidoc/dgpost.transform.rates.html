@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -107,7 +107,7 @@
            <div itemprop="articleBody">
              
   <section id="module-dgpost.transform.rates">
-<span id="rates-determining-molar-rates-of-chemical-species"></span><h1><strong>rates</strong>: determining molar rates of chemical species<a class="headerlink" href="#module-dgpost.transform.rates" title="Permalink to this heading"></a></h1>
+<span id="rates-determining-molar-rates-of-chemical-species"></span><h1><strong>rates</strong>: determining molar rates of chemical species<a class="headerlink" href="#module-dgpost.transform.rates" title="Link to this heading"></a></h1>
 <p><em>Code author: Peter Kraus</em></p>
 <p>Includes functions to convert mixture compositions (concentration, mol fraction)
 from instantaneous flow data or continuous batch data to rates (dimension of
@@ -128,7 +128,7 @@ rates from the concentration profile of a batch mixture.</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.rates.flow_to_molar">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">flow_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tref=&lt;Quantity(273.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pref=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'standard_atmosphere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output='rate'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.rates.flow_to_molar" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">flow_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tref=&lt;Quantity(273.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pref=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'standard_atmosphere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output='rate'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.rates.flow_to_molar" title="Link to this definition"></a></dt>
 <dd><p>Calculates a molar rate of species from specified flow and composition. The
 units of the rate have to be either dimensionless (for unit-naive dataframes) or
 in dimensions of [substance]/[time].</p>
@@ -180,7 +180,7 @@ specified using a mol fraction. By default set to 1 atm.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.rates.batch_to_molar">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">batch_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rate'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.rates.batch_to_molar" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">batch_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rate'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.rates.batch_to_molar" title="Link to this definition"></a></dt>
 <dd><p>Calculates a molar rate of species from specified volume and composition at
 the specified timesteps. The units of the rate have to be either dimensionless
 (for unit-naive dataframes) or in dimensions of [substance]/[time].</p>

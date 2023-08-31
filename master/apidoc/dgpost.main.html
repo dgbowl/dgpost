@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -111,18 +111,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="module-dgpost.main"></span><section id="dgpost-main">
-<h1>dgpost.main<a class="headerlink" href="#dgpost-main" title="Permalink to this heading"></a></h1>
+  <section id="dgpost-main">
+<span id="module-dgpost.main"></span><h1>dgpost.main<a class="headerlink" href="#dgpost-main" title="Link to this heading"></a></h1>
 <p>Module containing the execution functions for dgpost.</p>
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.main.version_check">
-<span class="sig-prename descclassname"><span class="pre">dgpost.main.</span></span><span class="sig-name descname"><span class="pre">version_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dgpost'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.main.version_check" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.main.</span></span><span class="sig-name descname"><span class="pre">version_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dgpost'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.main.version_check" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.main.run">
-<span class="sig-prename descclassname"><span class="pre">dgpost.main.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.main.run" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.main.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.main.run" title="Link to this definition"></a></dt>
 <dd><p>Main API execution function. Loads the <cite>recipe</cite> from the provided <code class="docutils literal notranslate"><span class="pre">path</span></code>,
 patches the file paths specified within the <cite>recipe</cite>, if necessary, and
 processes the following entries, in order:</p>
@@ -155,7 +155,7 @@ object.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.main.run_with_arguments">
-<span class="sig-prename descclassname"><span class="pre">dgpost.main.</span></span><span class="sig-name descname"><span class="pre">run_with_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.main.run_with_arguments" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.main.</span></span><span class="sig-name descname"><span class="pre">run_with_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.main.run_with_arguments" title="Link to this definition"></a></dt>
 <dd><p>Main external execution function.</p>
 <p>This is the function executed when dgpost is launched using the executable. It
 processes the <code class="docutils literal notranslate"><span class="pre">--version</span></code> command, sets the loglevel based on the number of

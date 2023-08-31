@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -116,12 +116,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="module-dgpost.transform.circuit_utils.circuit_parser"></span><section id="dgpost-transform-circuit-utils-circuit-parser">
-<h1>dgpost.transform.circuit_utils.circuit_parser<a class="headerlink" href="#dgpost-transform-circuit-utils-circuit-parser" title="Permalink to this heading"></a></h1>
+  <section id="dgpost-transform-circuit-utils-circuit-parser">
+<span id="module-dgpost.transform.circuit_utils.circuit_parser"></span><h1>dgpost.transform.circuit_utils.circuit_parser<a class="headerlink" href="#dgpost-transform-circuit-utils-circuit-parser" title="Link to this heading"></a></h1>
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_parser.parse_circuit">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_parser.</span></span><span class="sig-name descname"><span class="pre">parse_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circ</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_parser.parse_circuit" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_parser.</span></span><span class="sig-name descname"><span class="pre">parse_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circ</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_parser.parse_circuit" title="Link to this definition"></a></dt>
 <dd><p>Extended Backus–Naur form (EBNF) parser for a circuit string.</p>
 <p>Implements an extended Backus–Naur form (EBNF) to parse a string containing a description of a circuit.</p>
 <dl class="simple">
@@ -157,7 +157,7 @@ Already implemented circuit elements are located in <code class="xref py py-mod 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_parser.fit_routine">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_parser.</span></span><span class="sig-name descname"><span class="pre">fit_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_guess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_parser.fit_routine" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_parser.</span></span><span class="sig-name descname"><span class="pre">fit_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_guess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_parser.fit_routine" title="Link to this definition"></a></dt>
 <dd><p>Fitting routine which uses scipy least_squares and minimize.</p>
 <p>Least_squares is a good fitting method but will get stuck in local minima.
 For this reason, the Nelder-Mead-Simplex algorithm is used to get out of these local minima.

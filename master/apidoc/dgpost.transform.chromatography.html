@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -106,7 +106,7 @@
            <div itemprop="articleBody">
              
   <section id="module-dgpost.transform.chromatography">
-<span id="chromatography-chromatographic-trace-postprocessing-library"></span><h1><strong>chromatography</strong>: chromatographic trace postprocessing library<a class="headerlink" href="#module-dgpost.transform.chromatography" title="Permalink to this heading"></a></h1>
+<span id="chromatography-chromatographic-trace-postprocessing-library"></span><h1><strong>chromatography</strong>: chromatographic trace postprocessing library<a class="headerlink" href="#module-dgpost.transform.chromatography" title="Link to this heading"></a></h1>
 <p><em>Code author: Peter Kraus</em></p>
 <p>Includes functions to integrate a chromatographic trace, and post-process an integrated
 trace using calibration.</p>
@@ -123,7 +123,7 @@ trace using calibration.</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.chromatography.integrate_trace">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.chromatography.</span></span><span class="sig-name descname"><span class="pre">integrate_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polyorder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prominence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'trace'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.chromatography.integrate_trace" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.chromatography.</span></span><span class="sig-name descname"><span class="pre">integrate_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polyorder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prominence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'trace'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.chromatography.integrate_trace" title="Link to this definition"></a></dt>
 <dd><p>Chromatographic trace integration.</p>
 <p>Function which integrates peaks found in the chromatographic trace, which is
 itself defined as a set of <code class="docutils literal notranslate"><span class="pre">time,</span> <span class="pre">signal</span></code> arrays. The procedure is as
@@ -194,7 +194,7 @@ stored in namespaced <code class="xref py py-class docutils literal notranslate"
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dgpost.transform.chromatography.apply_calibration">
-<span class="sig-prename descclassname"><span class="pre">dgpost.transform.chromatography.</span></span><span class="sig-name descname"><span class="pre">apply_calibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">areas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.chromatography.apply_calibration" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.chromatography.</span></span><span class="sig-name descname"><span class="pre">apply_calibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">areas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.chromatography.apply_calibration" title="Link to this definition"></a></dt>
 <dd><p>Apply calibration to an integrated chromatographic trace.</p>
 <p>Function which applies calibration information, provided in a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, to
 an integrated chromatographic trace. Elements in the calibration <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> are
