@@ -36,7 +36,7 @@ setuptools.setup(
     install_requires=[
         "numpy",
         "uncertainties",
-        "pandas",
+        "pandas~=1.0",
         "openpyxl",
         "pint>=0.22",
         "chemicals>=1.0.0",
