@@ -36,7 +36,7 @@ setuptools.setup(
     install_requires=[
         "numpy",
         "uncertainties",
-        "pandas~=1.0",
+        "pandas<2.1.0",
         "openpyxl",
         "pint>=0.22",
         "chemicals>=1.0.0",
@@ -50,7 +50,7 @@ setuptools.setup(
     extras_require={
         "testing": ["pytest", "Pillow"],
         "docs": [
-            "sphinx~=6.2.1",
+            "sphinx~=7.2",
             "sphinx-rtd-theme",
             "sphinx-autodoc-typehints",
             "autodoc-pydantic>=2.0.0",
