@@ -79,3 +79,22 @@ def test_save_ordering(datadir):
     df = pd.read_excel(path)
     ref = pd.read_excel(refp)
     compare_dfs(ref, df, order=True)
+
+
+@pytest.mark.parametrize(
+    "columns, ncols",
+    [
+        (None, 57),
+        (["I"], 1),
+        (["fe(GC)"], 14),
+        (["fe(GC)", "I"], 15),
+    ],
+)
+def test_save_columns(columns, ncols, datadir):
+    os.chdir(datadir)
+    table = "fe_gc.ufloat.df.pkl"
+    path = "test.pkl"
+    dgpost.utils.save(table=pd.read_pickle(table), path=path, columns=columns)
+    df = pd.read_pickle(path)
+    print(df.head())
+    assert len(df.columns) == ncols

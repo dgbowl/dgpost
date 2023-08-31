@@ -34,6 +34,7 @@ def save(
     table: pd.DataFrame,
     path: str,
     type: str = None,
+    columns: list[str] = None,
     sigma: bool = True,
     meta: dict = None,
 ) -> None:
@@ -46,6 +47,19 @@ def save(
         pass
     else:
         raise ValueError(f"Parent folder '{folder}' provided in 'path' does not exist.")
+
+    if columns is None:
+        pass
+    else:
+        cols = []
+        for col in columns:
+            if col not in table.columns:
+                logger.warning(
+                    f"Column '{col}' is not present in table and will not be exported."
+                )
+            else:
+                cols.append(col)
+        table = table[cols]
 
     # strip uncertainties if required
     if not sigma:
