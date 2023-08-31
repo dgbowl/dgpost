@@ -191,12 +191,12 @@ as <code class="xref py py-class docutils literal notranslate"><span class="pre"
 <dd><p>Unit-aware dataframe accessor function.</p>
 <p>Given a dataframe in <code class="docutils literal notranslate"><span class="pre">df</span></code> and a column name in <code class="docutils literal notranslate"><span class="pre">col</span></code>, the function looks
 through the units stored in <code class="docutils literal notranslate"><span class="pre">df.attrs[&quot;units&quot;]</span></code> and returns a unit-annotated
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> containing the column data. Alternatively, the data in
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ureg.Quantity</span></code> containing the column data. Alternatively, the data in
 <code class="docutils literal notranslate"><span class="pre">df[col]</span></code> can be annotated by the provided <code class="docutils literal notranslate"><span class="pre">unit</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code> has no units, or <code class="docutils literal notranslate"><span class="pre">col</span></code> is not in <code class="docutils literal notranslate"><span class="pre">df.attrs[&quot;units&quot;]</span></code>,
-the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> is dimensionless.</p>
+the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">ureg.Quantity</span></code> is dimensionless.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -210,7 +210,7 @@ the returned <code class="xref py py-class docutils literal notranslate"><span c
 <dd class="field-even"><p><strong>Quantity</strong> – Unit-aware <code class="xref py py-class docutils literal notranslate"><span class="pre">ping.Quantity</span></code> object containing the data from <code class="docutils literal notranslate"><span class="pre">df[col]</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pint.Quantity</p>
+<dd class="field-odd"><p>ureg.Quantity</p>
 </dd>
 </dl>
 </dd></dl>
@@ -222,7 +222,7 @@ the returned <code class="xref py py-class docutils literal notranslate"><span c
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the data points. Can be either
+<li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">ureg.Quantity</span></code> object containing the data points. Can be either
 <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">uc.ufloat</span></code>.</p></li>
 <li><p><strong>unit</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – When specified, converts the data to this unit.</p></li>
 </ul>
@@ -242,7 +242,7 @@ the returned <code class="xref py py-class docutils literal notranslate"><span c
 <dd><p>Decorator factory for data loading.</p>
 <p>Creates a decorator that will load the columns specified in <code class="docutils literal notranslate"><span class="pre">cols</span></code>
 and calls the wrapped function <code class="docutils literal notranslate"><span class="pre">func</span></code> as appropriate. The <code class="docutils literal notranslate"><span class="pre">func</span></code> has to
-accept <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects, return a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">pint.Quantity]</span></code>,
+accept <code class="xref py py-class docutils literal notranslate"><span class="pre">ureg.Quantity</span></code> objects, return a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">ureg.Quantity]</span></code>,
 and handle an optional parameter <code class="docutils literal notranslate"><span class="pre">&quot;output&quot;</span></code> which prefixes (or assigns) the
 output data in the returned <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> appropriately.</p>
 <p>The argument of the decorator is a <code class="xref py py-class docutils literal notranslate"><span class="pre">list[tuple]</span></code>, with each element being
@@ -251,7 +251,7 @@ the <code class="xref py py-class docutils literal notranslate"><span class="pre
 <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> field denotes the default units for that argument (or <code class="docutils literal notranslate"><span class="pre">None</span></code> for
 a unitless quantity), and the <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code> field allows the use of the decorator
 with functions that expect <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of points in the argument (such as
-trace-processing functions) or <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects
+trace-processing functions) or <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">ureg.Quantity</span></code> objects
 (such as functions operating on chemical compositions).</p>
 <p>The decorator handles the following cases:</p>
 <ul>
@@ -263,9 +263,9 @@ mixture of <code class="docutils literal notranslate"><span class="pre">args</sp
 <code class="docutils literal notranslate"><span class="pre">args</span></code> and <code class="docutils literal notranslate"><span class="pre">cols</span></code> array as provided to the decorator</p></li>
 <li><p>all elements in <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> that match the argument names in the <code class="docutils literal notranslate"><span class="pre">cols</span></code>
 <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> provided to the decorator are converted to
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects, assigning the default units using the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ureg.Quantity</span></code> objects, assigning the default units using the
 data from the <code class="docutils literal notranslate"><span class="pre">cols</span></code> <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, unless they are a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> already.</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ureg.Quantity</span></code> already.</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -282,7 +282,7 @@ into the called function</p></li>
 <li><p>data from unit-aware <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> objects is loaded using the
 <a class="reference internal" href="#dgpost.utils.helpers.pQ" title="dgpost.utils.helpers.pQ"><code class="xref py py-func docutils literal notranslate"><span class="pre">pQ()</span></code></a> accessor accordingly</p></li>
 <li><p>data from unit-naive <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> objects are coerced into
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> objects using the default units as specified in the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ureg.Quantity</span></code> objects using the default units as specified in the
 <code class="docutils literal notranslate"><span class="pre">cols</span></code> <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p></li>
 </ul>
 </div></blockquote>
