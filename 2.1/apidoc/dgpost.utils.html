@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dgpost.utils package &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="helpers: helper functions for the transform package" href="dgpost.utils.helpers.html" />
+    <link rel="prev" title="dgpost.transform.circuit_utils.circuit_parser" href="dgpost.transform.circuit_utils.circuit_parser.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dgpost
+              <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.chromatography.html"><strong>chromatography</strong>: chromatographic trace postprocessing library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.reflection.html"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="dgpost.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.html">dgpost.transform package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">dgpost.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
+      <li class="breadcrumb-item active">dgpost.utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dgpost.utils">
+<span id="dgpost-utils-package"></span><h1>dgpost.utils package<a class="headerlink" href="#module-dgpost.utils" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe.Extract"><code class="docutils literal notranslate"><span class="pre">Extract</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe.Extract.into"><code class="docutils literal notranslate"><span class="pre">Extract.into</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe.Extract.from_"><code class="docutils literal notranslate"><span class="pre">Extract.from_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe.Extract.at"><code class="docutils literal notranslate"><span class="pre">Extract.at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe.Extract.columns"><code class="docutils literal notranslate"><span class="pre">Extract.columns</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe.Extract.constants"><code class="docutils literal notranslate"><span class="pre">Extract.constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.extract.html#dgbowl_schemas.dgpost.recipe.Extract.check_one_input"><code class="docutils literal notranslate"><span class="pre">Extract.check_one_input</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.extract.html#dgpost.utils.extract.get_step"><code class="docutils literal notranslate"><span class="pre">get_step()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.extract.html#dgpost.utils.extract.get_constant"><code class="docutils literal notranslate"><span class="pre">get_constant()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.extract.html#dgpost.utils.extract.extract"><code class="docutils literal notranslate"><span class="pre">extract()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.extract.html#dgpost.utils.extract.extract_obj"><code class="docutils literal notranslate"><span class="pre">extract_obj()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html"><strong>helpers</strong>: helper functions for the <code class="xref py py-mod docutils literal notranslate"><span class="pre">transform</span></code> package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.element_from_formula"><code class="docutils literal notranslate"><span class="pre">element_from_formula()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.default_element"><code class="docutils literal notranslate"><span class="pre">default_element()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.name_to_chem"><code class="docutils literal notranslate"><span class="pre">name_to_chem()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.columns_to_smiles"><code class="docutils literal notranslate"><span class="pre">columns_to_smiles()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.electrons_from_smiles"><code class="docutils literal notranslate"><span class="pre">electrons_from_smiles()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.pQ"><code class="docutils literal notranslate"><span class="pre">pQ()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.separate_data"><code class="docutils literal notranslate"><span class="pre">separate_data()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.load_data"><code class="docutils literal notranslate"><span class="pre">load_data()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.combine_tables"><code class="docutils literal notranslate"><span class="pre">combine_tables()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.arrow_to_multiindex"><code class="docutils literal notranslate"><span class="pre">arrow_to_multiindex()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.keys_in_df"><code class="docutils literal notranslate"><span class="pre">keys_in_df()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.key_to_tuple"><code class="docutils literal notranslate"><span class="pre">key_to_tuple()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.get_units"><code class="docutils literal notranslate"><span class="pre">get_units()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.helpers.html#dgpost.utils.helpers.set_units"><code class="docutils literal notranslate"><span class="pre">set_units()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe.Load"><code class="docutils literal notranslate"><span class="pre">Load</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe.Load.as_"><code class="docutils literal notranslate"><span class="pre">Load.as_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe.Load.path"><code class="docutils literal notranslate"><span class="pre">Load.path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe.Load.type"><code class="docutils literal notranslate"><span class="pre">Load.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe.Load.check"><code class="docutils literal notranslate"><span class="pre">Load.check</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe.Load.check_is_deprecated"><code class="docutils literal notranslate"><span class="pre">Load.check_is_deprecated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.load.html#dgbowl_schemas.dgpost.recipe.Load.lowercase_type"><code class="docutils literal notranslate"><span class="pre">Load.lowercase_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.load.html#dgpost.utils.load.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.parse.html"><strong>parse</strong>: YAML and JSON input handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.parse.html#dgpost.utils.parse.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe.Pivot"><code class="docutils literal notranslate"><span class="pre">Pivot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe.Pivot.table"><code class="docutils literal notranslate"><span class="pre">Pivot.table</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe.Pivot.as_"><code class="docutils literal notranslate"><span class="pre">Pivot.as_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe.Pivot.using"><code class="docutils literal notranslate"><span class="pre">Pivot.using</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe.Pivot.columns"><code class="docutils literal notranslate"><span class="pre">Pivot.columns</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe.Pivot.timestamp"><code class="docutils literal notranslate"><span class="pre">Pivot.timestamp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.pivot.html#dgbowl_schemas.dgpost.recipe.Pivot.timedelta"><code class="docutils literal notranslate"><span class="pre">Pivot.timedelta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.pivot.html#dgpost.utils.pivot.pivot"><code class="docutils literal notranslate"><span class="pre">pivot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.plot.html#dgbowl_schemas.dgpost.recipe.Plot"><code class="docutils literal notranslate"><span class="pre">Plot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.plot.html#dgbowl_schemas.dgpost.recipe.Plot.table"><code class="docutils literal notranslate"><span class="pre">Plot.table</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.plot.html#dgbowl_schemas.dgpost.recipe.Plot.nrows"><code class="docutils literal notranslate"><span class="pre">Plot.nrows</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.plot.html#dgbowl_schemas.dgpost.recipe.Plot.ncols"><code class="docutils literal notranslate"><span class="pre">Plot.ncols</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.plot.html#dgbowl_schemas.dgpost.recipe.Plot.fig_args"><code class="docutils literal notranslate"><span class="pre">Plot.fig_args</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.plot.html#dgbowl_schemas.dgpost.recipe.Plot.ax_args"><code class="docutils literal notranslate"><span class="pre">Plot.ax_args</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.plot.html#dgbowl_schemas.dgpost.recipe.Plot.style"><code class="docutils literal notranslate"><span class="pre">Plot.style</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.plot.html#dgbowl_schemas.dgpost.recipe.Plot.save"><code class="docutils literal notranslate"><span class="pre">Plot.save</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.plot.html#dgpost.utils.plot.apply_plot_style"><code class="docutils literal notranslate"><span class="pre">apply_plot_style()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.plot.html#dgpost.utils.plot.plt_axes"><code class="docutils literal notranslate"><span class="pre">plt_axes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.plot.html#dgpost.utils.plot.plot"><code class="docutils literal notranslate"><span class="pre">plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe.Save"><code class="docutils literal notranslate"><span class="pre">Save</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe.Save.table"><code class="docutils literal notranslate"><span class="pre">Save.table</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe.Save.as_"><code class="docutils literal notranslate"><span class="pre">Save.as_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe.Save.type"><code class="docutils literal notranslate"><span class="pre">Save.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe.Save.columns"><code class="docutils literal notranslate"><span class="pre">Save.columns</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.save.html#dgbowl_schemas.dgpost.recipe.Save.sigma"><code class="docutils literal notranslate"><span class="pre">Save.sigma</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.save.html#dgpost.utils.save.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.transform.html#dgbowl_schemas.dgpost.recipe.Transform"><code class="docutils literal notranslate"><span class="pre">Transform</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.transform.html#dgbowl_schemas.dgpost.recipe.Transform.table"><code class="docutils literal notranslate"><span class="pre">Transform.table</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.transform.html#dgbowl_schemas.dgpost.recipe.Transform.with_"><code class="docutils literal notranslate"><span class="pre">Transform.with_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.transform.html#dgbowl_schemas.dgpost.recipe.Transform.using"><code class="docutils literal notranslate"><span class="pre">Transform.using</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.utils.transform.html#dgpost.utils.transform.transform"><code class="docutils literal notranslate"><span class="pre">transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.transform.circuit_utils.circuit_parser.html" class="btn btn-neutral float-left" title="dgpost.transform.circuit_utils.circuit_parser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.utils.helpers.html" class="btn btn-neutral float-right" title="helpers: helper functions for the transform package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2023, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 2.1
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

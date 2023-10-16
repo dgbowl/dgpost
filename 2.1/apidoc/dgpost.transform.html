@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dgpost.transform package &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dgpost.transform.circuit_utils package" href="dgpost.transform.circuit_utils.html" />
+    <link rel="prev" title="dgpost: apidoc documentation" href="dgpost.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dgpost
+              <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.chromatography.html"><strong>chromatography</strong>: chromatographic trace postprocessing library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.reflection.html"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="dgpost.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">dgpost.transform package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.html">dgpost.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
+      <li class="breadcrumb-item active">dgpost.transform package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.transform.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dgpost.transform">
+<span id="dgpost-transform-package"></span><h1>dgpost.transform package<a class="headerlink" href="#module-dgpost.transform" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.circuit_utils.html">dgpost.transform.circuit_utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.circuit_utils.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html">dgpost.transform.circuit_utils.circuit_components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.create_parameter"><code class="docutils literal notranslate"><span class="pre">create_parameter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Component"><code class="docutils literal notranslate"><span class="pre">Component</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Component.get_symbol"><code class="docutils literal notranslate"><span class="pre">Component.get_symbol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Component.get_parameters"><code class="docutils literal notranslate"><span class="pre">Component.get_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Component.calc_impedance"><code class="docutils literal notranslate"><span class="pre">Component.calc_impedance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Resistor"><code class="docutils literal notranslate"><span class="pre">Resistor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Resistor.get_symbol"><code class="docutils literal notranslate"><span class="pre">Resistor.get_symbol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Resistor.get_parameters"><code class="docutils literal notranslate"><span class="pre">Resistor.get_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Resistor.calc_impedance"><code class="docutils literal notranslate"><span class="pre">Resistor.calc_impedance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Capacitor"><code class="docutils literal notranslate"><span class="pre">Capacitor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Capacitor.get_symbol"><code class="docutils literal notranslate"><span class="pre">Capacitor.get_symbol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Capacitor.get_parameters"><code class="docutils literal notranslate"><span class="pre">Capacitor.get_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Capacitor.calc_impedance"><code class="docutils literal notranslate"><span class="pre">Capacitor.calc_impedance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.CPE"><code class="docutils literal notranslate"><span class="pre">CPE</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.CPE.get_symbol"><code class="docutils literal notranslate"><span class="pre">CPE.get_symbol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.CPE.get_parameters"><code class="docutils literal notranslate"><span class="pre">CPE.get_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.CPE.calc_impedance"><code class="docutils literal notranslate"><span class="pre">CPE.calc_impedance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Warburg"><code class="docutils literal notranslate"><span class="pre">Warburg</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Warburg.get_symbol"><code class="docutils literal notranslate"><span class="pre">Warburg.get_symbol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Warburg.get_parameters"><code class="docutils literal notranslate"><span class="pre">Warburg.get_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.Warburg.calc_impedance"><code class="docutils literal notranslate"><span class="pre">Warburg.calc_impedance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.WarburgOpen"><code class="docutils literal notranslate"><span class="pre">WarburgOpen</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.WarburgOpen.get_symbol"><code class="docutils literal notranslate"><span class="pre">WarburgOpen.get_symbol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.WarburgOpen.get_parameters"><code class="docutils literal notranslate"><span class="pre">WarburgOpen.get_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.WarburgOpen.calc_impedance"><code class="docutils literal notranslate"><span class="pre">WarburgOpen.calc_impedance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.WarburgShort"><code class="docutils literal notranslate"><span class="pre">WarburgShort</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.WarburgShort.get_symbol"><code class="docutils literal notranslate"><span class="pre">WarburgShort.get_symbol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.WarburgShort.get_parameters"><code class="docutils literal notranslate"><span class="pre">WarburgShort.get_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#dgpost.transform.circuit_utils.circuit_components.WarburgShort.calc_impedance"><code class="docutils literal notranslate"><span class="pre">WarburgShort.calc_impedance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_parser.html">dgpost.transform.circuit_utils.circuit_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_parser.html#dgpost.transform.circuit_utils.circuit_parser.parse_circuit"><code class="docutils literal notranslate"><span class="pre">parse_circuit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.transform.circuit_utils.circuit_parser.html#dgpost.transform.circuit_utils.circuit_parser.fit_routine"><code class="docutils literal notranslate"><span class="pre">fit_routine()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.catalysis.html#dgpost.transform.catalysis.conversion"><code class="docutils literal notranslate"><span class="pre">conversion()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.catalysis.html#dgpost.transform.catalysis.selectivity"><code class="docutils literal notranslate"><span class="pre">selectivity()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.catalysis.html#dgpost.transform.catalysis.catalytic_yield"><code class="docutils literal notranslate"><span class="pre">catalytic_yield()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.catalysis.html#dgpost.transform.catalysis.atom_balance"><code class="docutils literal notranslate"><span class="pre">atom_balance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.chromatography.html"><strong>chromatography</strong>: chromatographic trace postprocessing library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.chromatography.html#dgpost.transform.chromatography.integrate_trace"><code class="docutils literal notranslate"><span class="pre">integrate_trace()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.chromatography.html#dgpost.transform.chromatography.apply_calibration"><code class="docutils literal notranslate"><span class="pre">apply_calibration()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.electrochemistry.html#dgpost.transform.electrochemistry.nernst"><code class="docutils literal notranslate"><span class="pre">nernst()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.electrochemistry.html#dgpost.transform.electrochemistry.fe"><code class="docutils literal notranslate"><span class="pre">fe()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.electrochemistry.html#dgpost.transform.electrochemistry.charge"><code class="docutils literal notranslate"><span class="pre">charge()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.electrochemistry.html#dgpost.transform.electrochemistry.average_current"><code class="docutils literal notranslate"><span class="pre">average_current()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.impedance.html#dgpost.transform.impedance.fit_circuit"><code class="docutils literal notranslate"><span class="pre">fit_circuit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.impedance.html#dgpost.transform.impedance.calc_circuit"><code class="docutils literal notranslate"><span class="pre">calc_circuit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.impedance.html#dgpost.transform.impedance.lowest_real_impedance"><code class="docutils literal notranslate"><span class="pre">lowest_real_impedance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.rates.html#dgpost.transform.rates.flow_to_molar"><code class="docutils literal notranslate"><span class="pre">flow_to_molar()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.rates.html#dgpost.transform.rates.batch_to_molar"><code class="docutils literal notranslate"><span class="pre">batch_to_molar()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.reflection.html"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.reflection.html#dgpost.transform.reflection.prune_cutoff"><code class="docutils literal notranslate"><span class="pre">prune_cutoff()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.reflection.html#dgpost.transform.reflection.prune_gradient"><code class="docutils literal notranslate"><span class="pre">prune_gradient()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.reflection.html#dgpost.transform.reflection.qf_kajfez"><code class="docutils literal notranslate"><span class="pre">qf_kajfez()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.reflection.html#dgpost.transform.reflection.qf_naive"><code class="docutils literal notranslate"><span class="pre">qf_naive()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.reflection.html#dgpost.transform.reflection.qf_lorentz"><code class="docutils literal notranslate"><span class="pre">qf_lorentz()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.table.html#dgpost.transform.table.combine_namespaces"><code class="docutils literal notranslate"><span class="pre">combine_namespaces()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.table.html#dgpost.transform.table.combine_columns"><code class="docutils literal notranslate"><span class="pre">combine_columns()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.transform.table.html#dgpost.transform.table.set_uncertainty"><code class="docutils literal notranslate"><span class="pre">set_uncertainty()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.html" class="btn btn-neutral float-left" title="dgpost: apidoc documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.transform.circuit_utils.html" class="btn btn-neutral float-right" title="dgpost.transform.circuit_utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2023, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 2.1
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

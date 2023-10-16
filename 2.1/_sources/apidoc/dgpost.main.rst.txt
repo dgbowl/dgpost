@@ -1,0 +1,4 @@
+.. automodule:: dgpost.main
+   :members:
+   :undoc-members:
+   :show-inheritance:
