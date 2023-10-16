@@ -43,7 +43,7 @@ setuptools.setup(
         "rdkit>=2022.3",
         "h5netcdf~=1.0",
         "xarray-datatree>=0.0.12",
-        "dgbowl-schemas @ git+https://github.com/dgbowl/dgbowl-schemas.git",
+        "dgbowl-schemas>=116",
         "matplotlib>=3.5.0",
         "requests",
     ],
