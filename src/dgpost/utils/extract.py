@@ -256,7 +256,7 @@ def _(obj: datatree.DataTree, columns: list[dict]) -> list[pd.Series]:
         if len(vals.coords.dims) > 1:
             assert "uts" in vals.coords.dims
             for coord in vals.coords.dims:
-                if vals.coords.dtypes[coord] in {np.dtype("O")}:
+                if vals.coords.dtypes[coord].kind in {"O", "U"}:
                     splits = vals[coord].values
                     break
         else:
