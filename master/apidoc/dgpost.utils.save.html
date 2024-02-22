@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>save: save and export tables into files &mdash; dgpost  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
     <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -73,6 +75,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Save"><code class="docutils literal notranslate"><span class="pre">Save</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Save.table"><code class="docutils literal notranslate"><span class="pre">Save.table</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Save.as_"><code class="docutils literal notranslate"><span class="pre">Save.as_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Save.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Save.model_computed_fields</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Save.type"><code class="docutils literal notranslate"><span class="pre">Save.type</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Save.columns"><code class="docutils literal notranslate"><span class="pre">Save.columns</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Save.sigma"><code class="docutils literal notranslate"><span class="pre">Save.sigma</span></code></a></li>
@@ -204,6 +207,12 @@ in order to save the given DataFrame:</p>
 <dd><p>Path to which the table is stored.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Save.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[dict[str,</span> <span class="pre">ComputedFieldInfo]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Save.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Save.type">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code><span class="pre">[</span><code class="docutils literal notranslate"><span class="pre">'pkl'</span></code><span class="pre">,</span> <code class="docutils literal notranslate"><span class="pre">'json'</span></code><span class="pre">,</span> <code class="docutils literal notranslate"><span class="pre">'xlsx'</span></code><span class="pre">,</span> <code class="docutils literal notranslate"><span class="pre">'csv'</span></code><span class="pre">,</span> <code class="docutils literal notranslate"><span class="pre">'nc'</span></code><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Save.type" title="Link to this definition"></a></dt>
@@ -250,7 +259,7 @@ available in <code class="docutils literal notranslate"><span class="pre">pkl</s
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.save.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.save.save" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>

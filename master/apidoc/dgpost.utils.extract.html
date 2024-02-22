@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>extract: extract and interpolate data into tables &mdash; dgpost  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
     <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -70,6 +72,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.into"><code class="docutils literal notranslate"><span class="pre">Extract.into</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.from_"><code class="docutils literal notranslate"><span class="pre">Extract.from_</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.at"><code class="docutils literal notranslate"><span class="pre">Extract.at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Extract.model_computed_fields</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.columns"><code class="docutils literal notranslate"><span class="pre">Extract.columns</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.constants"><code class="docutils literal notranslate"><span class="pre">Extract.constants</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Extract.check_one_input"><code class="docutils literal notranslate"><span class="pre">Extract.check_one_input</span></code></a></li>
@@ -329,6 +332,12 @@ in order to extract the required data from the supplied datagram.</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Extract.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[dict[str,</span> <span class="pre">ComputedFieldInfo]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Extract.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Extract.columns">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code><span class="pre">[</span><a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/master/apidoc/dgbowl_schemas.dgpost.recipe_2_1.extract.html#dgbowl_schemas.dgpost.recipe_2_1.extract.Column" title="(in dgbowl-schemas vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Column</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Extract.columns" title="Link to this definition"></a></dt>
@@ -416,7 +425,7 @@ are interpolated onto the index of the existing <code class="xref py py-class do
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.extract.</span></span><span class="sig-name descname"><span class="pre">get_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.extract.get_step" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataTree</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataTree</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -431,7 +440,7 @@ are interpolated onto the index of the existing <code class="xref py py-class do
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.extract.</span></span><span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.extract.extract" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -441,7 +450,7 @@ are interpolated onto the index of the existing <code class="xref py py-class do
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.extract.</span></span><span class="sig-name descname"><span class="pre">extract_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.extract.extract_obj" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code>]</p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>

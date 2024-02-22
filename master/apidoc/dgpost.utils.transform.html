@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>transform: transform and calculate data in tables &mdash; dgpost  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
     <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -70,6 +72,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>transform</strong>: transform and calculate data in tables</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Transform"><code class="docutils literal notranslate"><span class="pre">Transform</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Transform.table"><code class="docutils literal notranslate"><span class="pre">Transform.table</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Transform.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Transform.model_computed_fields</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Transform.with_"><code class="docutils literal notranslate"><span class="pre">Transform.with_</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Transform.using"><code class="docutils literal notranslate"><span class="pre">Transform.using</span></code></a></li>
 </ul>
@@ -164,6 +167,12 @@ in order to do data transformation on an extracted (or supplied) <code class="xr
 <dd><p>The name of the table loaded in memory to be transformed.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Transform.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[dict[str,</span> <span class="pre">ComputedFieldInfo]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Transform.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Transform.with_">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">with_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"> <span class="pre">[Required]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'with')</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Transform.with_" title="Link to this definition"></a></dt>
@@ -190,7 +199,7 @@ decorator: <code class="xref py py-func docutils literal notranslate"><span clas
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.transform.</span></span><span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">withstr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.transform.transform" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>impedance: fitting electrochemical impedance spectra &mdash; dgpost  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
     <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -220,26 +222,26 @@ and pass it as <code class="docutils literal notranslate"><span class="pre">fit_
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>real</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the impedance data,
+<li><p><strong>real</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the impedance data,
 <span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span>. The unit of the provided gets converted to ‘Ω’.</p></li>
-<li><p><strong>imag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the impedance
+<li><p><strong>imag</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the impedance
 data, <span class="math notranslate nohighlight">\(-\text{Im}(Z)\)</span>. The unit of the provided gets converted to ‘Ω’.</p></li>
-<li><p><strong>freq</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the frequency <span class="math notranslate nohighlight">\(f\)</span> of the
+<li><p><strong>freq</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the frequency <span class="math notranslate nohighlight">\(f\)</span> of the
 impedance data. The unit of the provided data should gets converted to ‘Hz’.</p></li>
-<li><p><strong>circuit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> description of the equivalent circuit.</p></li>
-<li><p><strong>initial_values</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with the initial (guess) values.
+<li><p><strong>circuit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> description of the equivalent circuit.</p></li>
+<li><p><strong>initial_values</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with the initial (guess) values.
 Structure: {“param name”: value, … }</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix</p></li>
-<li><p><strong>fit_bounds</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]]) – Custom bounds for a parameter if default bounds are not wanted
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix</p></li>
+<li><p><strong>fit_bounds</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]]</span>) – Custom bounds for a parameter if default bounds are not wanted
 Structure: {“param name”: (lower bound, upper bound), …}
 Default is ‘’None’’</p></li>
-<li><p><strong>fit_constants</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – list of parameters which should stay constant during fitting
+<li><p><strong>fit_constants</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span>) – list of parameters which should stay constant during fitting
 Structure: [“param name”, …]
 Default is ‘’None’’</p></li>
-<li><p><strong>ignore_neg_res</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – ignores impedance values with a negative real part</p></li>
-<li><p><strong>upper_freq</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – upper frequency bound to be considered for fitting</p></li>
-<li><p><strong>lower_freq</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – lower frequency bound to be considered for fitting</p></li>
-<li><p><strong>repeat</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – how many times <code class="docutils literal notranslate"><span class="pre">fit_routine</span></code> gets called</p></li>
+<li><p><strong>ignore_neg_res</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – ignores impedance values with a negative real part</p></li>
+<li><p><strong>upper_freq</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – upper frequency bound to be considered for fitting</p></li>
+<li><p><strong>lower_freq</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – lower frequency bound to be considered for fitting</p></li>
+<li><p><strong>repeat</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – how many times <code class="docutils literal notranslate"><span class="pre">fit_routine</span></code> gets called</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -266,13 +268,13 @@ of the prescribed equivalent circuit as a function of frequency <span class="mat
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>freq</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> containing the frequencies <span class="math notranslate nohighlight">\(f\)</span> at which the
+<li><p><strong>freq</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> containing the frequencies <span class="math notranslate nohighlight">\(f\)</span> at which the
 equivalent circuit is to be evaluated. The provided data should be in “Hz”.</p></li>
-<li><p><strong>circuit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> description of the equivalent circuit. For more details see
+<li><p><strong>circuit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> description of the equivalent circuit. For more details see
 <a class="reference internal" href="#dgpost.transform.impedance.fit_circuit" title="dgpost.transform.impedance.fit_circuit"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_circuit()</span></code></a>.</p></li>
-<li><p><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the values defining the equivalent circuit.
+<li><p><strong>parameters</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the values defining the equivalent circuit.
 Structure: {“param name”: value, … }</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the <code class="docutils literal notranslate"><span class="pre">Re(Z)</span></code> and <code class="docutils literal notranslate"><span class="pre">-Im(Z)</span></code> values calculated
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the <code class="docutils literal notranslate"><span class="pre">Re(Z)</span></code> and <code class="docutils literal notranslate"><span class="pre">-Im(Z)</span></code> values calculated
 in this function. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;calc_circuit&quot;</span></code>.</p></li>
 </ul>
 </dd>
@@ -297,12 +299,12 @@ cross the real-zero axis, the <span class="math notranslate nohighlight">\(\text
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>real</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the impedance data,
+<li><p><strong>real</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the impedance data,
 <span class="math notranslate nohighlight">\(\text{Re}(Z)\)</span>. The units of <code class="docutils literal notranslate"><span class="pre">real</span></code> and <code class="docutils literal notranslate"><span class="pre">imag</span></code> are assumed to match.</p></li>
-<li><p><strong>imag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the impedance
+<li><p><strong>imag</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the impedance
 data, <span class="math notranslate nohighlight">\(-\text{Im}(Z)\)</span>. The units of <code class="docutils literal notranslate"><span class="pre">real</span></code> and <code class="docutils literal notranslate"><span class="pre">imag</span></code> are assumed to
 match.</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> name for the output column, defaults to <code class="docutils literal notranslate"><span class="pre">&quot;min</span> <span class="pre">Re(Z)&quot;</span></code>.</p></li>
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> name for the output column, defaults to <code class="docutils literal notranslate"><span class="pre">&quot;min</span> <span class="pre">Re(Z)&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

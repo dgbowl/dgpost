@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>plot: create reproducible plots from tables &mdash; dgpost  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
     <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -73,6 +75,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.table"><code class="docutils literal notranslate"><span class="pre">Plot.table</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.nrows"><code class="docutils literal notranslate"><span class="pre">Plot.nrows</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.ncols"><code class="docutils literal notranslate"><span class="pre">Plot.ncols</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Plot.model_computed_fields</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.fig_args"><code class="docutils literal notranslate"><span class="pre">Plot.fig_args</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.ax_args"><code class="docutils literal notranslate"><span class="pre">Plot.ax_args</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Plot.style"><code class="docutils literal notranslate"><span class="pre">Plot.style</span></code></a></li>
@@ -402,6 +405,12 @@ in order to generate a plot:</p>
 <dd><p>Number of columns in the figure grid.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Plot.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[dict[str,</span> <span class="pre">ComputedFieldInfo]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Plot.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Plot.fig_args">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fig_args</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">,</span> <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Plot.fig_args" title="Link to this definition"></a></dt>
@@ -436,10 +445,10 @@ For available kwargs see <code class="xref py py-class docutils literal notransl
 If style is None, applies/resets to the default matplotlib style.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>style</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – A dictionary object containing valid key/value pairs.</p>
+<dd class="field-odd"><p><strong>style</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span>) – A dictionary object containing valid key/value pairs.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -451,9 +460,9 @@ If style is None, applies/resets to the default matplotlib style.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.8.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a>) – axes object to be plotted to</p></li>
-<li><p><strong>table</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – dataframe containing the data</p></li>
-<li><p><strong>ax_args</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – arguments for the axes</p></li>
+<li><p><strong>ax</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.8.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a></span>) – axes object to be plotted to</p></li>
+<li><p><strong>table</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span>) – dataframe containing the data</p></li>
+<li><p><strong>ax_args</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span>) – arguments for the axes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>load: load datagrams and tables &mdash; dgpost  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
     <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -69,6 +71,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.as_"><code class="docutils literal notranslate"><span class="pre">Load.as_</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.path"><code class="docutils literal notranslate"><span class="pre">Load.path</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.type"><code class="docutils literal notranslate"><span class="pre">Load.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Load.model_computed_fields</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.check"><code class="docutils literal notranslate"><span class="pre">Load.check</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.check_is_deprecated"><code class="docutils literal notranslate"><span class="pre">Load.check_is_deprecated</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dgbowl_schemas.dgpost.recipe.Load.lowercase_type"><code class="docutils literal notranslate"><span class="pre">Load.lowercase_type</span></code></a></li>
@@ -209,6 +212,12 @@ in order to load the datagram json file:</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[dict[str,</span> <span class="pre">ComputedFieldInfo]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="dgbowl_schemas.dgpost.recipe.Load.check">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dgbowl_schemas.dgpost.recipe.Load.check" title="Link to this definition"></a></dt>
@@ -248,7 +257,7 @@ to store the returned <cite>datagram</cite> or <code class="xref py py-class doc
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.load.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'netcdf'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.load.load" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]</p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>electrochemistry: calculations relevant in electrochemistry &mdash; dgpost  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
     <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -162,23 +164,23 @@ term <span class="math notranslate nohighlight">\(R |I|\)</span> is added to <sp
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Ewe</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The measured working potential with respect to the reference electrode.
+<li><p><strong>Ewe</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – The measured working potential with respect to the reference electrode.
 By default in V.</p></li>
-<li><p><strong>R</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The resistance of the cell. By default in Ω.</p></li>
-<li><p><strong>I</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The applied current. By default in A.</p></li>
-<li><p><strong>Eref</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The potential of the reference electrode with respect to RHE.
+<li><p><strong>R</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – The resistance of the cell. By default in Ω.</p></li>
+<li><p><strong>I</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – The applied current. By default in A.</p></li>
+<li><p><strong>Eref</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – The potential of the reference electrode with respect to RHE.
 By default in V.</p></li>
-<li><p><strong>T</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Temperature of the working electrode, used in the Nernst equation.
+<li><p><strong>T</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – Temperature of the working electrode, used in the Nernst equation.
 By default 298.15 K.</p></li>
-<li><p><strong>n</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Number of electrons transferred in the process described by the Nernst
+<li><p><strong>n</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – Number of electrons transferred in the process described by the Nernst
 equation. Must be specified along <code class="docutils literal notranslate"><span class="pre">Q</span></code>, cannot be specified with <code class="docutils literal notranslate"><span class="pre">pH</span></code>.</p></li>
-<li><p><strong>Q</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – The reaction quotient of the components of the process described by the
+<li><p><strong>Q</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – The reaction quotient of the components of the process described by the
 Nernst equation. Must be specified along <code class="docutils literal notranslate"><span class="pre">n</span></code>, cannot be specified with
 <code class="docutils literal notranslate"><span class="pre">pH</span></code>.</p></li>
-<li><p><strong>pH</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – The pH of the solution. This assumes the modelled process is the reduction
+<li><p><strong>pH</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – The pH of the solution. This assumes the modelled process is the reduction
 of <span class="math notranslate nohighlight">\(\text{H}^+ \rightarrow \text{H}`\)</span>, i.e. <span class="math notranslate nohighlight">\(n = 1\)</span> and
 <span class="math notranslate nohighlight">\(\text{ln}(Q) = -\text{ln}(10)\text{pH}\)</span></p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the output variable. Defaults to <code class="docutils literal notranslate"><span class="pre">Eapp</span></code>.</p></li>
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of the output variable. Defaults to <code class="docutils literal notranslate"><span class="pre">Eapp</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -208,12 +210,12 @@ mixture, and <span class="math notranslate nohighlight">\(\dot{n}(x)\)</span> is
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of molar flow or production rates of species in a mixture.
+<li><p><strong>rate</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of molar flow or production rates of species in a mixture.
 By default in mol/l.</p></li>
-<li><p><strong>I</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – The applied current. By default in A.</p></li>
-<li><p><strong>charges</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of formal atomic/ionic charges of atoms in the source
+<li><p><strong>I</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – The applied current. By default in A.</p></li>
+<li><p><strong>charges</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of formal atomic/ionic charges of atoms in the source
 mixture.</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Name of the prefix for the species in the output variable. Defaults to <code class="docutils literal notranslate"><span class="pre">fe</span></code>.</p></li>
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span>) – Name of the prefix for the species in the output variable. Defaults to <code class="docutils literal notranslate"><span class="pre">fe</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -236,13 +238,13 @@ mixture.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the instantaneous current was measured.
+<li><p><strong>time</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – An array of timestamps at which the instantaneous current was measured.
 Defaults to the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> of the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p></li>
-<li><p><strong>I</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Values of the instantaneous current.</p></li>
-<li><p><strong>t0</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – An optional timestamp representing the time at which charge was zero. If not
+<li><p><strong>I</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – Values of the instantaneous current.</p></li>
+<li><p><strong>t0</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</span>) – An optional timestamp representing the time at which charge was zero. If not
 supplied, the first value in the <code class="docutils literal notranslate"><span class="pre">time</span></code> array will be used, with the charge
 at that timestamp set to zero.</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns where the calculated rate will be stored.</p></li>
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Prefix of the columns where the calculated rate will be stored.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -266,13 +268,13 @@ datapoint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – An array of timestamps at which the instantaneous current was measured.
+<li><p><strong>time</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – An array of timestamps at which the instantaneous current was measured.
 Defaults to the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> of the <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p></li>
-<li><p><strong>Q</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Values of the overall charge.</p></li>
-<li><p><strong>t0</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – An optional timestamp representing the time at which charge was zero. If not
+<li><p><strong>Q</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – Values of the overall charge.</p></li>
+<li><p><strong>t0</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</span>) – An optional timestamp representing the time at which charge was zero. If not
 supplied, the first value in the <code class="docutils literal notranslate"><span class="pre">time</span></code> array will be used, with the charge
 at that timestamp set to zero.</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Prefix of the columns where the calculated rate will be stored.</p></li>
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Prefix of the columns where the calculated rate will be stored.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

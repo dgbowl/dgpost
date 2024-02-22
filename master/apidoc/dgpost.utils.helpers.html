@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>helpers: helper functions for the transform package &mdash; dgpost  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
     <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -126,7 +128,7 @@ Ueli Sauter</em></p>
 in that formula.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -138,7 +140,7 @@ in that formula.</p>
 conversion. The priority list is <code class="docutils literal notranslate"><span class="pre">[&quot;C&quot;,</span> <span class="pre">&quot;O&quot;,</span> <span class="pre">&quot;H&quot;]</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -148,7 +150,7 @@ conversion. The priority list is <code class="docutils literal notranslate"><spa
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">name_to_chem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.helpers.name_to_chem" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -161,7 +163,7 @@ the keys in the kwargs, storing the returned <code class="xref py py-class docut
 as well as the full name within args.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">Any]</span></code> values. The <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
+<dd class="field-odd"><p><strong>kwargs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">Any]</span></code> values. The <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
 keys of the inner <code class="xref py py-class docutils literal notranslate"><span class="pre">dicts</span></code> are parsed to SMILES.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -180,7 +182,7 @@ as <code class="xref py py-class docutils literal notranslate"><span class="pre"
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">electrons_from_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.helpers.electrons_from_smiles" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -201,9 +203,9 @@ the returned <code class="xref py py-class docutils literal notranslate"><span c
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>, optionally annotated with units in <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code>.</p></li>
-<li><p><strong>col</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> name of the column to be loaded from the <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p></li>
-<li><p><strong>unit</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Optional override for units.</p></li>
+<li><p><strong>df</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>, optionally annotated with units in <code class="docutils literal notranslate"><span class="pre">df.attrs</span></code>.</p></li>
+<li><p><strong>col</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span>) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> name of the column to be loaded from the <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p></li>
+<li><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span>) – Optional override for units.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -222,9 +224,9 @@ the returned <code class="xref py py-class docutils literal notranslate"><span c
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">ureg.Quantity</span></code> object containing the data points. Can be either
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">ureg.Quantity</span></code> object containing the data points. Can be either
 <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">uc.ufloat</span></code>.</p></li>
-<li><p><strong>unit</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – When specified, converts the data to this unit.</p></li>
+<li><p><strong>unit</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span>) – When specified, converts the data to this unit.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -290,7 +292,7 @@ into the called function</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">list[tuple[str,</span> <span class="pre">str,</span> <span class="pre">type]]</span></code> containing the column names used to
+<dd class="field-odd"><p><strong>cols</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code>]</span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">list[tuple[str,</span> <span class="pre">str,</span> <span class="pre">type]]</span></code> containing the column names used to
 call the <code class="docutils literal notranslate"><span class="pre">func</span></code>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -311,7 +313,7 @@ pads the <code class="xref py py-class docutils literal notranslate"><span class
 Merges units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -320,7 +322,7 @@ Merges units.</p>
 <dt class="sig sig-object py" id="dgpost.utils.helpers.arrow_to_multiindex">
 <span class="sig-prename descclassname"><span class="pre">dgpost.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">arrow_to_multiindex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.utils.helpers.arrow_to_multiindex" title="Link to this definition"></a></dt>
 <dd><p>Convert the provided <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> to a <code class="docutils literal notranslate"><span class="pre">dgpost</span></code>-compatible format.
-:rtype: <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+:rtype: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
 <ul class="simple">
 <li><p>converts tables with <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.Index</span></code> into <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>,</p></li>
 <li><p>converts <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>-separated namespaces into <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>,</p></li>
@@ -336,7 +338,7 @@ Merges units.</p>
 Assumes the provided <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> contains a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]</p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -348,7 +350,7 @@ Assumes the provided <code class="xref py py-class docutils literal notranslate"
 containing a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -361,7 +363,7 @@ provided <code class="docutils literal notranslate"><span class="pre">key</span>
 or any other <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code> for a <code class="docutils literal notranslate"><span class="pre">df</span></code> with <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -373,7 +375,7 @@ or any other <code class="xref py py-class docutils literal notranslate"><span c
 either a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> or a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>. See also <a class="reference internal" href="#dgpost.utils.helpers.get_units" title="dgpost.utils.helpers.get_units"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_units()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>

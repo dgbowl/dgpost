@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>chromatography: chromatographic trace postprocessing library &mdash; dgpost  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
     <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -162,22 +164,22 @@ of <code class="docutils literal notranslate"><span class="pre">time</span></cod
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> array object determining the X-axis of the trace.
+<li><p><strong>time</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> array object determining the X-axis of the trace.
 By default in seconds.</p></li>
-<li><p><strong>signal</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> array object containing the Y-axis of the trace.
+<li><p><strong>signal</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> array object containing the Y-axis of the trace.
 By default dimensionless.</p></li>
-<li><p><strong>species</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">dict]</span></code>, where the keys are species names and the
+<li><p><strong>species</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">dict]</span></code>, where the keys are species names and the
 values define the left and right limits for matching the peak maximum.</p></li>
-<li><p><strong>polyorder</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – An <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> defining the order of the polynomial for the Savigny-Golay
+<li><p><strong>polyorder</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – An <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> defining the order of the polynomial for the Savigny-Golay
 filter. Defaults to 3. The <code class="docutils literal notranslate"><span class="pre">polyorder</span></code> must be less than <code class="docutils literal notranslate"><span class="pre">window</span></code>.</p></li>
-<li><p><strong>window</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – An <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> defining the smoothing window for the Savigny-Golay filter.
+<li><p><strong>window</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – An <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> defining the smoothing window for the Savigny-Golay filter.
 Defaults to 7. Must be odd. The <code class="docutils literal notranslate"><span class="pre">polyorder</span></code> must be less than <code class="docutils literal notranslate"><span class="pre">window</span></code>.</p></li>
-<li><p><strong>prominence</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> used to calculate the prominence of the peaks in <code class="docutils literal notranslate"><span class="pre">signal</span></code>
+<li><p><strong>prominence</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> used to calculate the prominence of the peaks in <code class="docutils literal notranslate"><span class="pre">signal</span></code>
 by scaling the <code class="docutils literal notranslate"><span class="pre">max(abs(signal))</span></code>. Used in the peak picking process.
 Defaults to 0.0001.</p></li>
-<li><p><strong>threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> used to find ends of peaks by comparing to the gradient
+<li><p><strong>threshold</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> used to find ends of peaks by comparing to the gradient
 of <code class="docutils literal notranslate"><span class="pre">signal</span></code> at the nearest inflection points.</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output namespace. The results are collated in
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output namespace. The results are collated in
 the <code class="docutils literal notranslate"><span class="pre">f&quot;{output}-&gt;area</span></code> namespace for peak areas and <code class="docutils literal notranslate"><span class="pre">f&quot;{output}-&gt;height</span></code>
 namespace for peak height.</p></li>
 </ul>
@@ -215,15 +217,15 @@ to the desired output.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>areas</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing a namespace of <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> containing the
+<li><p><strong>areas</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing a namespace of <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> containing the
 integrated peak areas $A$, with their keys corresponding to chemicals.</p></li>
-<li><p><strong>calibration</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calibration information for processing the above
+<li><p><strong>calibration</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calibration information for processing the above
 peak <code class="docutils literal notranslate"><span class="pre">areas</span></code> into the resulting <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code>.</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output namespace.</p></li>
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output namespace.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>

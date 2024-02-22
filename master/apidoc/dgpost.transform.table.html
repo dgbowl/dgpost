@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>table: utilities for operations with tables &mdash; dgpost  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
     <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -139,19 +141,19 @@ as chemicals.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – Namespace <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
-<li><p><strong>b</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – Namespace <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
-<li><p><strong>conflicts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name resolution scheme. Can be either <code class="docutils literal notranslate"><span class="pre">&quot;sum&quot;</span></code> where conflicts are summed,
+<li><p><strong>a</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</span>) – Namespace <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+<li><p><strong>b</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</span>) – Namespace <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
+<li><p><strong>conflicts</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name resolution scheme. Can be either <code class="docutils literal notranslate"><span class="pre">&quot;sum&quot;</span></code> where conflicts are summed,
 or <code class="docutils literal notranslate"><span class="pre">&quot;replace&quot;</span></code>, where conflicting values in <code class="docutils literal notranslate"><span class="pre">a</span></code> are overwritten by <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
-<li><p><strong>fillnan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Toggle whether <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values within the columns ought to be treated as
+<li><p><strong>fillnan</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Toggle whether <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values within the columns ought to be treated as
 zeroes or as <code class="docutils literal notranslate"><span class="pre">NaN</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>chemicals</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Treat keys within <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> as chemicals, and combine them accordingly.
+<li><p><strong>chemicals</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Treat keys within <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> as chemicals, and combine them accordingly.
 Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Namespace of the returned dictionary. Defaults to the namespace of <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span>) – Namespace of the returned dictionary. Defaults to the namespace of <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -165,15 +167,15 @@ column is set to <code class="docutils literal notranslate"><span class="pre">a<
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Column <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
-<li><p><strong>b</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>) – Column <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
-<li><p><strong>fillnan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Toggle whether <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values within the columns ought to be treated as
+<li><p><strong>a</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – Column <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+<li><p><strong>b</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – Column <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
+<li><p><strong>fillnan</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Toggle whether <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values within the columns ought to be treated as
 zeroes or as <code class="docutils literal notranslate"><span class="pre">NaN</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>output</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Namespace of the returned dictionary. By defaults to the name of column <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+<li><p><strong>output</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span>) – Namespace of the returned dictionary. By defaults to the name of column <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -188,19 +190,19 @@ If neither <code class="docutils literal notranslate"><span class="pre">abs</spa
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>namespace</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]) – The prefix of the namespace for which uncertainties are to be replaced or
+<li><p><strong>namespace</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]]</span>) – The prefix of the namespace for which uncertainties are to be replaced or
 stripped. Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">column</span></code>.</p></li>
-<li><p><strong>column</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]) – The name of the column for which uncertainties are to be replaced or stripped.
+<li><p><strong>column</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</span>) – The name of the column for which uncertainties are to be replaced or stripped.
 Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">namespace</span></code></p></li>
-<li><p><strong>abs</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – The absolute value of the uncertainty. If units are not supplied, the units of
+<li><p><strong>abs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>) – The absolute value of the uncertainty. If units are not supplied, the units of
 the column/namespace will be used. If both <code class="docutils literal notranslate"><span class="pre">abs</span></code> and <code class="docutils literal notranslate"><span class="pre">rel</span></code> are <code class="docutils literal notranslate"><span class="pre">None</span></code>,
 the existing uncertainties will be stripped.</p></li>
-<li><p><strong>rel</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – The relative value of the uncertainty, should be in dimensionless units. If
+<li><p><strong>rel</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>) – The relative value of the uncertainty, should be in dimensionless units. If
 both <code class="docutils literal notranslate"><span class="pre">abs</span></code> and <code class="docutils literal notranslate"><span class="pre">rel</span></code> are <code class="docutils literal notranslate"><span class="pre">None</span></code>, the existing uncertainties will be stripped.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
