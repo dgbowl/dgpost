@@ -114,7 +114,7 @@ def prune_cutoff(
     pi = _find_peak(near, absgamma, freq)
     max_v = absgamma.max()
     min_v = absgamma[pi]
-    norm = absgamma - (min_v / (max_v / min_v))
+    norm = (absgamma - min_v) / (max_v - min_v)
     for l in range(pi - 1):
         li = pi - l
         if norm[li] <= cutoff:
