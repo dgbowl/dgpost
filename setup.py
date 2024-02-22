@@ -42,7 +42,7 @@ setuptools.setup(
         "chemicals>=1.0.0",
         "rdkit>=2022.3",
         "h5netcdf~=1.0",
-        "xarray < 2023.11",
+        "xarray ~= 2024.02",
         "xarray-datatree>=0.0.12",
         "dgbowl-schemas>=116",
         "matplotlib>=3.5.0",
