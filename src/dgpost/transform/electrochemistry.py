@@ -195,7 +195,7 @@ def fe(
     etot = abs(I) / (ureg("elementary_charge") * ureg("avogadro_constant"))
     if isinstance(etot.m, Iterable):
         etotn, _, _ = separate_data(etot)
-        etot.m[etotn == 0] = np.NaN
+        etot.m[etotn == 0] = np.nan
     pretag = "fe" if output is None else output
     ret = {}
     for k, v in rate.items():

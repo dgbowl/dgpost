@@ -35,10 +35,10 @@ from .utils import compare_dfs
             },
             {
                 "rate->A": pint.Quantity(
-                    [np.NaN, 10.0 / 60, 5.0 / 60, 5.0 / 60], "mol/s"
+                    [np.nan, 10.0 / 60, 5.0 / 60, 5.0 / 60], "mol/s"
                 ),
                 "rate->B": pint.Quantity(
-                    [np.NaN, 5.0 / 60, 5.0 / 60, 1.0 / 60], "mol/s"
+                    [np.nan, 5.0 / 60, 5.0 / 60, 1.0 / 60], "mol/s"
                 ),
             },
         ),
