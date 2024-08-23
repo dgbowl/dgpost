@@ -30,7 +30,7 @@ jobs:
                     subprocess.run(["pip", "install", f"{fn}[testing]"])
           - name: Print dgpost version
             shell: bash
-            run: yadg --version
+            run: dgpost --version
           - name: Run pytest
             shell: bash
             run: pytest -vv
