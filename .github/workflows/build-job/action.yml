@@ -5,5 +5,5 @@ runs:
   steps:
     - run: pip install wheel
       shell: bash
-    - run: python setup.py bdist_wheel
+    - run: python -m build
       shell: bash
