@@ -24,7 +24,6 @@ import logging
 logger = logging.getLogger(__name__)
 ureg = pint.get_application_registry()
 
-ureg.define("refractive_index_units = [] = RIU")
 ureg.define("standard_milliliter = milliliter = smL")
 
 

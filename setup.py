@@ -38,7 +38,7 @@ setuptools.setup(
         "uncertainties",
         "pandas<2.1.0",
         "openpyxl",
-        "pint>=0.22",
+        "pint>=0.24.1",
         "chemicals>=1.0.0",
         "rdkit>=2022.3",
         "h5netcdf~=1.0",
