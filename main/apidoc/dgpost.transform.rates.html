@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rates: determining molar rates of chemical species &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="reflection: utilities for processing reflection coefficient traces" href="dgpost.transform.reflection.html" />
+    <link rel="prev" title="impedance: fitting electrochemical impedance spectra" href="dgpost.transform.impedance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dgpost
+              <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.chromatography.html"><strong>chromatography</strong>: chromatographic trace postprocessing library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>rates</strong>: determining molar rates of chemical species</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.rates.flow_to_molar"><code class="docutils literal notranslate"><span class="pre">flow_to_molar()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.rates.batch_to_molar"><code class="docutils literal notranslate"><span class="pre">batch_to_molar()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.reflection.html"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><strong>rates</strong>: determining molar rates of chemical species</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.transform.rates.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dgpost.transform.rates">
+<span id="rates-determining-molar-rates-of-chemical-species"></span><h1><strong>rates</strong>: determining molar rates of chemical species<a class="headerlink" href="#module-dgpost.transform.rates" title="Link to this heading"></a></h1>
+<p><em>Code author: Peter Kraus</em></p>
+<p>Includes functions to convert mixture compositions (concentration, mol fraction)
+from instantaneous flow data or continuous batch data to rates (dimension of
+<code class="docutils literal notranslate"><span class="pre">[quantity]/[time]</span></code>). The <a class="reference internal" href="#dgpost.transform.rates.flow_to_molar" title="dgpost.transform.rates.flow_to_molar"><code class="xref py py-func docutils literal notranslate"><span class="pre">flow_to_molar()</span></code></a> function
+is useful for converting gas-phase or liquid flows, while
+<a class="reference internal" href="#dgpost.transform.rates.batch_to_molar" title="dgpost.transform.rates.batch_to_molar"><code class="xref py py-func docutils literal notranslate"><span class="pre">batch_to_molar()</span></code></a> can be used to determine formation
+rates from the concentration profile of a batch mixture.</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.rates.batch_to_molar" title="dgpost.transform.rates.batch_to_molar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_to_molar</span></code></a>(time, c, V[, t0, output])</p></td>
+<td><p>Calculates a molar rate of species from specified volume and composition at the specified timesteps.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.rates.flow_to_molar" title="dgpost.transform.rates.flow_to_molar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_to_molar</span></code></a>(flow[, c, x, Tref, pref, output])</p></td>
+<td><p>Calculates a molar rate of species from specified flow and composition.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.rates.flow_to_molar">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">flow_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow:</span> <span class="pre">~pint.registry.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c:</span> <span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~pint.registry.Quantity]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x:</span> <span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~pint.registry.Quantity]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tref:</span> <span class="pre">~pint.registry.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(273.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pref:</span> <span class="pre">~pint.registry.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'standard_atmosphere')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'rate'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.rates.flow_to_molar" title="Link to this definition"></a></dt>
+<dd><p>Calculates a molar rate of species from specified flow and composition. The
+units of the rate have to be either dimensionless (for unit-naive dataframes) or
+in dimensions of [substance]/[time].</p>
+<p>Currently, three combinations of units are supported:</p>
+<blockquote>
+<div><ul>
+<li><p>Dimensionless <code class="docutils literal notranslate"><span class="pre">flow</span></code> and dimensionless <code class="docutils literal notranslate"><span class="pre">comp</span></code>, as is the case for unit-naive
+dataframes. In this case, the molar flow rates of species <span class="math notranslate nohighlight">\(r_s\)</span> are
+calculated by a simple multiplication:</p>
+<div class="math notranslate nohighlight">
+\[r_s = \text{flow} \times \text{comp}_s\]</div>
+</li>
+<li><p>Volumetric <code class="docutils literal notranslate"><span class="pre">flow</span></code> <span class="math notranslate nohighlight">\(\dot{V}\)</span> and composition <code class="docutils literal notranslate"><span class="pre">comp</span></code> as a concentration,
+as is often the case in liquid flows. In this case, the molar rates of species
+<span class="math notranslate nohighlight">\(r_s\)</span> are also a simple multiplication (accounting for unit conversion):</p>
+<div class="math notranslate nohighlight">
+\[r_s = \dot{V} \times c_s\]</div>
+</li>
+<li><p>Volumetric <code class="docutils literal notranslate"><span class="pre">flow</span></code> <span class="math notranslate nohighlight">\(\dot{V}\)</span> and composition <code class="docutils literal notranslate"><span class="pre">comp</span></code> as a dimensionless
+molar fraction <span class="math notranslate nohighlight">\(x_s\)</span>, in which case the flow is assumed to be gas-phase. In
+this case, the flow has to be converted to molar units using the ideal gas law:</p>
+<div class="math notranslate nohighlight">
+\[r_s = \dot{V} \times \frac{p_\text{ref}}{RT_\text{ref}} \times x_s\]</div>
+<p>The pressure <span class="math notranslate nohighlight">\(p_\text{ref}\)</span> and temperature <span class="math notranslate nohighlight">\(T_\text{ref}\)</span> are
+specifying the state at which the flow <span class="math notranslate nohighlight">\(\dot{V}\)</span> has been measured.</p>
+</li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flow</strong> – The total flow of the mixture.</p></li>
+<li><p><strong>c</strong> – A dictionary containing the composition of the mixture as concentration.
+Cannot be supplied at the same time as <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p></li>
+<li><p><strong>x</strong> – A dictionary containing the composition of the mixture as mole fraction.
+Assuming ideal gas-phase flow. Cannot be supplied at the same time as <code class="docutils literal notranslate"><span class="pre">c</span></code>.</p></li>
+<li><p><strong>Tref</strong> – Reference temperature of the flow measurement, used when composition is
+specified using a mol fraction. By default set to 273.15 K.</p></li>
+<li><p><strong>pref</strong> – Reference pressure of the flow measurement, used when composition is
+specified using a mol fraction. By default set to 1 atm.</p></li>
+<li><p><strong>output</strong> – Prefix of the keys of the returned rate dictionary.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.rates.batch_to_molar">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.rates.</span></span><span class="sig-name descname"><span class="pre">batch_to_molar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rate'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.rates.batch_to_molar" title="Link to this definition"></a></dt>
+<dd><p>Calculates a molar rate of species from specified volume and composition at
+the specified timesteps. The units of the rate have to be either dimensionless
+(for unit-naive dataframes) or in dimensions of [substance]/[time].</p>
+<p>First, the <span class="math notranslate nohighlight">\(\delta t\)</span> and <span class="math notranslate nohighlight">\(\delta c(x)\)</span> at each timestep <span class="math notranslate nohighlight">\(n\)</span> is
+calculated:</p>
+<div class="math notranslate nohighlight">
+\[\delta t_n = t_n - t_{n-1}
+\delta c(x)_n = c(x)_n - c(x)_{n-1}\]</div>
+<p>Then, the formation rate is calculated using the volume:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> – An array of timestamps at which the concentrations and volumes are measured.</p></li>
+<li><p><strong>c</strong> – A dictionary containing concentrations of species at the specified timestamps.</p></li>
+<li><p><strong>V</strong> – Volume of the batch at the timestamps.</p></li>
+<li><p><strong>t0</strong> – An optional timestamp representing the initial time where all concentrations
+are zero. If not supplied, the calculation will use the first datapoint as
+reference with its rates set to zero.</p></li>
+<li><p><strong>output</strong> – Prefix of the columns where the calculated rate will be stored.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.transform.impedance.html" class="btn btn-neutral float-left" title="impedance: fitting electrochemical impedance spectra" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.transform.reflection.html" class="btn btn-neutral float-right" title="reflection: utilities for processing reflection coefficient traces" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2024, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
