@@ -61,10 +61,10 @@ The data pulled out of the datagram in the second step using the prescription in
 are interpolated onto the index of the existing :class:`pd.DataFrame`.
 
 """
+
 import numpy as np
 import pandas as pd
 import datatree
-import xarray as xr
 import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union, Any, Optional

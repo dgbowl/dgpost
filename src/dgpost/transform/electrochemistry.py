@@ -19,6 +19,7 @@ charge and timestamps.
     nernst
 
 """
+
 import pint
 import numpy as np
 import pandas as pd
@@ -48,7 +49,7 @@ ureg = pint.get_application_registry()
 def nernst(
     Ewe: pint.Quantity,
     R: pint.Quantity = pint.Quantity(0.0, "Ω"),
-    I: pint.Quantity = pint.Quantity(0.0, "A"),
+    I: pint.Quantity = pint.Quantity(0.0, "A"),  # noqa: E741
     Eref: pint.Quantity = pint.Quantity(0.0, "V"),
     T: pint.Quantity = pint.Quantity(298.15, "K"),
     n: int = None,
@@ -148,7 +149,7 @@ def nernst(
 )
 def fe(
     rate: dict[str, pint.Quantity],
-    I: pint.Quantity,
+    I: pint.Quantity,  # noqa: E741
     charges: dict[str, int],
     output: str = None,
 ) -> dict[str, pint.Quantity]:
@@ -214,7 +215,7 @@ def fe(
 )
 def charge(
     time: pint.Quantity,
-    I: pint.Quantity,
+    I: pint.Quantity,  # noqa: E741
     t0: pint.Quantity = None,
     output: str = "Q",
 ) -> dict[str, pint.Quantity]:
@@ -327,10 +328,10 @@ def average_current(
         dt = np.diff(time)
         dQ = np.diff(Q)
 
-    I = dQ / dt
+    current = dQ / dt
 
-    if len(I) != nts:
-        I = np.insert(I, 0, ureg.Quantity(0, "A"))
+    if len(current) != nts:
+        current = np.insert(current, 0, ureg.Quantity(0, "A"))
 
-    ret = {output: I}
+    ret = {output: current}
     return ret

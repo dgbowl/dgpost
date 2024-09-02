@@ -45,10 +45,10 @@ from .utils import compare_dfs
 )
 def test_roundtrip_direct(input, filetype, datadir):
     os.chdir(datadir)
-    l, e = deepcopy(input)
-    outpath = f"out.{l['path']}.{filetype}"
-    dg = dgpost.utils.load(**l)
-    ref = dgpost.utils.extract(dg, spec=e)
+    load, extr = deepcopy(input)
+    outpath = f"out.{load['path']}.{filetype}"
+    dg = dgpost.utils.load(**load)
+    ref = dgpost.utils.extract(dg, spec=extr)
     dgpost.utils.save(table=ref, path=outpath, type=filetype)
 
     assert os.path.exists(outpath)

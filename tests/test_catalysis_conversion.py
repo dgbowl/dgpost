@@ -3,7 +3,7 @@ import pytest
 import pandas as pd
 import numpy as np
 
-from dgpost.transform import catalysis, rates
+from dgpost.transform import catalysis
 from dgpost.utils import transform
 from .utils import compare_dfs
 

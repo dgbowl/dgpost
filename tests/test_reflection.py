@@ -1,7 +1,6 @@
 import os
 import pytest
 import pandas as pd
-import numpy as np
 
 
 from dgpost.utils import transform

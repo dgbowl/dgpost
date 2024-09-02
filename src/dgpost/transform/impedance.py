@@ -26,6 +26,7 @@ to find the :func:`~dgpost.transform.impedance.lowest_real_impedance` in the dat
     in this module have to be called on each timestep individually.
 
 """
+
 import logging
 from typing import Union
 import numpy as np

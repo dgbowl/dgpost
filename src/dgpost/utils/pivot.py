@@ -86,6 +86,7 @@ More documentation is provided in the :func:`~dgpost.utils.pivot.pivot`
 function definition.
 
 """
+
 import pandas as pd
 import numpy as np
 from typing import Union

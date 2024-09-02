@@ -5,6 +5,7 @@ dgpost.main
 Module containing the execution functions for dgpost.
 
 """
+
 import argparse
 import logging
 from importlib import metadata
@@ -83,8 +84,8 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
     tables = {}
 
     logger.info("Processing 'load'.")
-    l = spec.pop("load")
-    for el in l:
+    ldict = spec.pop("load")
+    for el in ldict:
         if patch is None:
             fp = el["path"]
         else:

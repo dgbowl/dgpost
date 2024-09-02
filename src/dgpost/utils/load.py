@@ -15,6 +15,7 @@ in order to load the datagram json file:
     to store the returned `datagram` or :class:`pd.DataFrame` into the correct variable.
 
 """
+
 import os
 import json
 import pandas as pd
