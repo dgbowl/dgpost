@@ -2,6 +2,7 @@
 dgpost.transform.circuit_utils.circuit_parser
 =============================================
 """
+
 import re
 import warnings
 import logging
@@ -156,7 +157,7 @@ def fit_routine(
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore", message="overflow encountered in tanh")
 
-        logger.debug(f"Started fitting routine")
+        logger.debug("Started fitting routine")
         for i in range(repeat):
             logger.debug(f"Fitting routine pass {i}")
             opt_result = least_squares(
@@ -168,7 +169,7 @@ def fit_routine(
                 ftol=1e-9,
             )
             initial_value = opt_result.x
-            logger.debug(f"Finished least squares")
+            logger.debug("Finished least squares")
             opt_result = minimize(
                 opt_func,
                 initial_value,
@@ -178,6 +179,6 @@ def fit_routine(
                 method="Nelder-Mead",
             )
             initial_value = opt_result.x
-            logger.debug(f"Finished Nelder-Mead")
-    logger.debug(f"Finished fitting routine")
+            logger.debug("Finished Nelder-Mead")
+    logger.debug("Finished fitting routine")
     return opt_result

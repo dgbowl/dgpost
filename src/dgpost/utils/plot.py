@@ -9,6 +9,7 @@ in order to generate a plot:
 .. _dgpost.recipe plot:
 .. autopydantic_model:: dgbowl_schemas.dgpost.recipe.Plot
 """
+
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec

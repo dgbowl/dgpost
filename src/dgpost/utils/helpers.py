@@ -115,7 +115,7 @@ def electrons_from_smiles(
 
 def pQ(
     df: pd.DataFrame, col: Union[str, tuple[str]], unit: str = None
-) -> ureg.Quantity:
+) -> pint.Quantity:
     """
     Unit-aware dataframe accessor function.
 
@@ -357,12 +357,12 @@ def load_data(*cols: tuple[str, str, type]):
                                     row_k.append(k)
                                     row_v.append([v])
                                     to_pad.append(len(row_k) - 1)
-                        l = max([len(i) for i in row_v])
+                        left = max([len(i) for i in row_v])
                         for i in to_pad:
-                            row_v[i] = row_v[i] * l
+                            row_v[i] = row_v[i] * left
                     ret_data = {}
-                    for ri, r in enumerate(zip(*row_v)):
-                        row_data = {k: v for k, v in zip(row_k, r)}
+                    for ri, rght in enumerate(zip(*row_v)):
+                        row_data = {k: v for k, v in zip(row_k, rght)}
                         retvals = func(**row_data, **kwargs)
                         for name, qty in retvals.items():
                             if name not in ret_data:
@@ -467,20 +467,20 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
         temp = a.join(b, how="outer")
     else:
         if a.columns.nlevels > b.columns.nlevels:
-            l = a
-            r = b
+            left = a
+            rght = b
         else:
-            l = b
-            r = a
-        llen = l.columns.nlevels
+            left = b
+            rght = a
+        llen = left.columns.nlevels
         rcols = []
-        for col in r.columns:
+        for col in rght.columns:
             rcols.append(tuple(list(col) + [None] * (llen - len(col))))
-        r.columns = pd.MultiIndex.from_tuples(rcols)
-        for k in l.columns:
-            if k in r.columns:
-                del l[k]
-        temp = l.join(r, how="outer")
+        rght.columns = pd.MultiIndex.from_tuples(rcols)
+        for k in left.columns:
+            if k in rght.columns:
+                del left[k]
+        temp = left.join(rght, how="outer")
     temp.attrs = a.attrs
     if "units" in b.attrs:
         if "units" not in temp.attrs:

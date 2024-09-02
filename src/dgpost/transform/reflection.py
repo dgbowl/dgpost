@@ -27,6 +27,7 @@ factors to the reflection trace data. The use of the peak-height based pruning v
 
 
 """
+
 import pint
 import numpy as np
 import uncertainties as uc
@@ -115,14 +116,14 @@ def prune_cutoff(
     max_v = absgamma.max()
     min_v = absgamma[pi]
     norm = (absgamma - min_v) / (max_v - min_v)
-    for l in range(pi - 1):
-        li = pi - l
+    for left in range(pi - 1):
+        li = pi - left
         if norm[li] <= cutoff:
             pass
         else:
             break
-    for r in range(len(absgamma) - pi):
-        ri = pi + r
+    for rght in range(len(absgamma) - pi):
+        ri = pi + rght
         if norm[ri] <= cutoff:
             pass
         else:
@@ -199,15 +200,15 @@ def prune_gradient(
 
     pi = _find_peak(near, absgamma, freq)
 
-    for l in range(pi - 1):
-        li = pi - l
-        if abs(grad[li]) > threshold or l < 100:
+    for left in range(pi - 1):
+        li = pi - left
+        if abs(grad[li]) > threshold or left < 100:
             pass
         else:
             break
-    for r in range(absgamma.size - pi):
-        ri = pi + r
-        if abs(grad[ri]) > threshold or r < 100:
+    for rght in range(absgamma.size - pi):
+        ri = pi + rght
+        if abs(grad[ri]) > threshold or rght < 100:
             pass
         else:
             break

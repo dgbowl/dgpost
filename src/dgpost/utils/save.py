@@ -17,6 +17,7 @@ in order to save the given DataFrame:
     available in ``pkl`` or ``json`` exports.
 
 """
+
 import json
 import os
 from uncertainties import unumpy as unp
@@ -63,7 +64,7 @@ def save(
 
     # strip uncertainties if required
     if not sigma:
-        logger.warning(f"Stripping uncertainties from table.")
+        logger.warning("Stripping uncertainties from table.")
         for col in table.columns:
             try:
                 table[col] = unp.nominal_values(table[col].array)

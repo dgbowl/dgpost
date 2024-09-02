@@ -1,0 +1,39 @@
+name: push-main
+on:
+    push:
+        branches: ['main']
+jobs:
+    build:
+        uses: ./.github/workflows/workflow-build.yml
+        with:
+            pyver: '3.9'
+            os: 'ubuntu-latest'
+    test:
+        needs: [build]
+        uses: ./.github/workflows/workflow-test.yml
+        with:
+            pyver: '3.9'
+            os: 'ubuntu-latest'
+    pages:
+        needs: [build]
+        uses: ./.github/workflows/workflow-pages.yml
+        with:
+            pyver: '3.9'
+            os: ubuntu-latest
+    deploy:
+        needs: [pages]
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - uses: actions/setup-python@v5
+            with:
+                python-version: '3.9'
+          - uses: actions/download-artifact@v4
+            with:
+                name: public-ubuntu-latest-3.9
+                path: public/main
+          - uses: peaceiris/actions-gh-pages@v3
+            with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                publish_dir: ./public
+                keep_files: true

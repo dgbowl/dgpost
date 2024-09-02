@@ -61,10 +61,10 @@ The data pulled out of the datagram in the second step using the prescription in
 are interpolated onto the index of the existing :class:`pd.DataFrame`.
 
 """
+
 import numpy as np
 import pandas as pd
 import datatree
-import xarray as xr
 import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union, Any, Optional
@@ -188,8 +188,8 @@ def extract(
                 inoms = np.interp(df.index, sr.index[mask], noms[mask])
                 isigs = np.interp(df.index, sr.index[mask], sigs[mask])
             else:
-                inoms = np.ones(df.index.size) * np.NaN
-                isigs = np.ones(df.index.size) * np.NaN
+                inoms = np.ones(df.index.size) * np.nan
+                isigs = np.ones(df.index.size) * np.nan
             newsr = pd.Series(data=unp.uarray(inoms, isigs), name=sr.name, index=ts)
             df[sr.name] = newsr
         set_units(sr.name, sr.attrs.get("units", None), df)

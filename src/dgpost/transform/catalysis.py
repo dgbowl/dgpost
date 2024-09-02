@@ -36,9 +36,6 @@ import pint
 import logging
 import numpy as np
 from typing import Iterable
-
-logger = logging.getLogger(__name__)
-
 from dgpost.utils.helpers import (
     name_to_chem,
     columns_to_smiles,
@@ -47,6 +44,8 @@ from dgpost.utils.helpers import (
     load_data,
     separate_data,
 )
+
+logger = logging.getLogger(__name__)
 
 
 @load_data(
@@ -182,7 +181,7 @@ def conversion(
     if product is not None:
         logger.warning(
             "Specifying reactant- and product-based conversion using "
-            f"'product' is deprecated and will stop working in dgpost-2.0. "
+            "'product' is deprecated and will stop working in dgpost-2.0. "
             "Use 'type={product,reactant,mixed}' instead."
         )
         type = "product" if product else "reactant"
