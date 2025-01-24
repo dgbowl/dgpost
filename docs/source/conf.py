@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath(os.path.join("..", "..", "src")))
 # -- Project information -----------------------------------------------------
 
 project = "dgpost"
-copyright = "2021-2024, dgpost authors"
+copyright = "2021-2025, dgpost authors"
 author = "Peter Kraus"
 
 
