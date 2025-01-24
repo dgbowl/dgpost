@@ -64,7 +64,7 @@ are interpolated onto the index of the existing :class:`pd.DataFrame`.
 
 import numpy as np
 import pandas as pd
-import datatree
+from xarray import DataTree
 import uncertainties as uc
 import uncertainties.unumpy as unp
 from typing import Union, Any, Optional
@@ -83,14 +83,14 @@ logger = logging.getLogger(__name__)
 
 
 def get_step(
-    obj: Union[pd.DataFrame, datatree.DataTree, dict, None],
+    obj: Union[pd.DataFrame, DataTree, dict, None],
     at: Optional[dict] = None,
-) -> Union[pd.DataFrame, datatree.DataTree, list[dict], None]:
+) -> Union[pd.DataFrame, DataTree, list[dict], None]:
     if obj is None:
         return None
     elif isinstance(obj, pd.DataFrame):
         return obj
-    elif isinstance(obj, datatree.DataTree):
+    elif isinstance(obj, DataTree):
         if at is not None and "step" in at:
             return obj[at["step"]]
         elif at is not None and "steps" in at:
@@ -115,7 +115,7 @@ def get_step(
             if isinstance(step, int):
                 assert step < len(obj["steps"]), (
                     f"extract: specified step index {step} is out of bounds "
-                    f"of the supplied datagtam with {len(obj['steps'])} steps."
+                    f"of the supplied datagram with {len(obj['steps'])} steps."
                 )
                 ret += obj["steps"][step]["data"]
             elif isinstance(step, str):
@@ -148,7 +148,7 @@ def get_constant(spec: dict, ts: pd.Index):
 
 
 def extract(
-    obj: Union[dict, pd.DataFrame, datatree.DataTree, None],
+    obj: Union[dict, pd.DataFrame, DataTree, None],
     spec: dict,
     index: pd.Index = None,
 ) -> pd.DataFrame:
@@ -229,8 +229,8 @@ def _(obj: pd.DataFrame, columns: list[dict]) -> list[pd.Series]:
     return series
 
 
-@extract_obj.register(datatree.DataTree)
-def _(obj: datatree.DataTree, columns: list[dict]) -> list[pd.Series]:
+@extract_obj.register(DataTree)
+def _(obj: DataTree, columns: list[dict]) -> list[pd.Series]:
     def get_key_recurse(dt, keys):
         key = keys.pop(0)
         if len(keys) == 0:

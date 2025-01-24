@@ -23,7 +23,7 @@ from uncertainties import ufloat_fromstr, UFloat
 from typing import Union, Any
 import logging
 from dgpost.utils.helpers import arrow_to_multiindex
-import datatree
+from xarray import open_datatree
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ def load(
 
     if type.lower() == "netcdf":
         logger.debug("loading a NetCDF file from '%s'" % path)
-        return datatree.open_datatree(path, engine="h5netcdf")
+        return open_datatree(path, engine="h5netcdf")
     elif type.lower() == "datagram":
         logger.debug("loading datagram from '%s'" % path)
         with open(path, "r") as infile:
