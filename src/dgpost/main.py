@@ -188,7 +188,7 @@ def run_with_arguments():
     parser.add_argument(
         "--version",
         action="version",
-        version=f'%(prog)s version {metadata.version("dgpost")}',
+        version=f"%(prog)s version {metadata.version('dgpost')}",
     )
 
     parser.add_argument(
