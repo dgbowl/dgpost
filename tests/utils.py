@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import uncertainties.unumpy as unp
 from PIL import Image, ImageChops
-import datatree
 import xarray as xr
 
 
@@ -58,14 +57,14 @@ def compare_images(path_one, path_two):
     assert equal_content
 
 
-def compare_datatrees(ret: datatree.DataTree, ref: datatree.DataTree):
+def compare_datatrees(ret: xr.DataTree, ref: xr.DataTree):
     for k in ret:
         assert k in ref, f"Entry {k} not present in reference DataTree."
     for k in ref:
         assert k in ret, f"Entry {k} not present in result DataTree."
 
     for k in ret:
-        if isinstance(ret[k], datatree.DataTree):
+        if isinstance(ret[k], xr.DataTree):
             compare_datatrees(ret[k], ref[k])
         elif isinstance(ret[k], (xr.Dataset, xr.DataArray)):
             assert ret[k].to_dict() == ref[k].to_dict()

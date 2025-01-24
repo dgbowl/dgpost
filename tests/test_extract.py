@@ -2,7 +2,7 @@ import pytest
 import json
 import os
 import pandas as pd
-import datatree
+from xarray import open_datatree
 
 from dgpost.utils.helpers import combine_tables
 import dgpost.utils
@@ -248,7 +248,7 @@ def test_extract_single(inpath, spec, outpath, datadir):
     elif inpath.endswith("pkl"):
         data = pd.read_pickle(inpath)
     elif inpath.endswith("nc"):
-        data = datatree.open_datatree(inpath)
+        data = open_datatree(inpath)
     ret = dgpost.utils.extract(data, spec)
     print(f"{ret.head()=}")
     ref = pd.read_pickle(outpath)
@@ -340,7 +340,7 @@ def test_extract_multiple(inpath, spec, outpath, datadir):
     elif inpath.endswith("pkl"):
         data = pd.read_pickle(inpath)
     elif inpath.endswith("nc"):
-        data = datatree.open_datatree(inpath)
+        data = open_datatree(inpath)
     for si, sp in enumerate(spec):
         if si == 0:
             df = dgpost.utils.extract(data, sp)

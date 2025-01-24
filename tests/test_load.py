@@ -2,7 +2,7 @@ import pytest
 import json
 import os
 import pandas as pd
-import datatree
+from xarray import open_datatree
 
 import dgpost.utils
 from .utils import compare_dfs, compare_datatrees
@@ -79,5 +79,5 @@ def test_load_table(spec, outfile, datadir):
 def test_load_datatree(input, datadir):
     os.chdir(datadir)
     ret = dgpost.utils.load(**input)
-    ref = datatree.open_datatree(input["path"])
+    ref = open_datatree(input["path"])
     compare_datatrees(ret, ref)
