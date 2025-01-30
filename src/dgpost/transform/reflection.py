@@ -32,21 +32,24 @@ import pint
 import numpy as np
 import uncertainties as uc
 from scipy.optimize import curve_fit
+from scipy.signal import find_peaks
 
 from dgpost.utils.helpers import separate_data, load_data
 
 
-def _find_peak(near, absgamma, freq) -> int:
+def _find_peak(near, absgamma, freq, height = 0.2) -> int:
     if near is None:
-        logmag = -10 * np.log10(absgamma)
-        return np.argmax(logmag)
+        return np.argmax((1 - absgamma))
     else:
-        dp = len(freq) // 10
-        idx = np.argmax(freq > near)
-        s = max(0, idx - dp)
-        e = min(len(freq), idx + dp)
-        logmag = -10 * np.log10(absgamma[s:e])
-        return s + np.argmax(logmag)
+        peaks, _ = find_peaks((1 - absgamma), height = height)
+        nearest = None
+        for pi in peaks:
+            if nearest is None:
+                nearest = pi
+            elif abs(freq[pi] - near) < abs(freq[nearest] - near):
+                nearest = pi
+        return nearest
+
 
 
 @load_data(
@@ -61,6 +64,7 @@ def prune_cutoff(
     freq: pint.Quantity,
     near: pint.Quantity = None,
     cutoff: float = 0.4,
+    height: float = 0.2,
     output: str = "pruned",
 ) -> dict[str, pint.Quantity]:
     """
@@ -88,16 +92,17 @@ def prune_cutoff(
 
     near
         A frequency used to select the point around which to prune. By default, pruning
-        is performed around the highest peak in :math:`\\text{log}|\\Gamma|`. When set,
-        pruning will be perfomed around any maximum in :math:`\\text{log}|\\Gamma|` that
-        exists within 10% of the trace size on either side of the selected point. This
-        means that for a trace size of 20001 points, 2000 points below and 2000 points
-        above the point corresponding to the selected frequency will be used to find a
-        local maximum.
+        is performed around the highest peak in :math:`(1 - \\Gamma)`. When ``near`` is
+        set, the peak nearest in frequency as identified using :func:`~scipy.signal.find_peaks`
+        will be used for pruning.
 
     cutoff
         Relative peak height below which the reflection trace should be pruned.
         Uses a fraction of normalised :math:`|\\Gamma|`. Defaults to ``0.4``.
+
+    height
+        Peak height in :math:`(1 - \\Gamma)` passed to :func:`~scipy.signal.find_peaks`,
+        defaults to ``0.2``.
 
     output
         Name for the output namespace. Defaults to ``"pruned"``.
@@ -112,7 +117,9 @@ def prune_cutoff(
     re, _, _ = separate_data(real)
     im, _, _ = separate_data(imag)
     absgamma = np.abs(re + 1j * im)
-    pi = _find_peak(near, absgamma, freq)
+
+    pi = _find_peak(near, absgamma, freq, height=height)
+
     max_v = absgamma.max()
     min_v = absgamma[pi]
     norm = (absgamma - min_v) / (max_v - min_v)
@@ -170,13 +177,10 @@ def prune_gradient(
         corresponding to the reflection coefficient data. Defaults to ``Hz``.
 
     near
-        A frequency used to select around which peak to prune. By default, pruning
-        is performed around the highest peak in :math:`\\text{log}|\\Gamma|`. When set,
-        pruning will be perfomed around any maximum in :math:`\\text{log}|\\Gamma|` that
-        exists within 10% of the trace size on either side of the selected point. This
-        means that for a trace size of 20001 points, 2000 points below and 2000 points
-        above the point corresponding to the selected frequency will be used to find a
-        local maximum.
+        A frequency used to select the point around which to prune. By default, pruning
+        is performed around the highest peak in :math:`(1 - \\Gamma)`. When ``near`` is
+        set, the peak nearest in frequency as identified using :func:`~scipy.signal.find_peaks`
+        will be used for pruning.
 
     threshold
         Threshold for the gradient in the :math:`\\text{abs}(\\Gamma)` below which the
