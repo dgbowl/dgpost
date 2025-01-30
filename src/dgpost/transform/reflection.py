@@ -37,11 +37,11 @@ from scipy.signal import find_peaks
 from dgpost.utils.helpers import separate_data, load_data
 
 
-def _find_peak(near, absgamma, freq, height = 0.2) -> int:
+def _find_peak(near, absgamma, freq, height=0.2) -> int:
     if near is None:
         return np.argmax((1 - absgamma))
     else:
-        peaks, _ = find_peaks((1 - absgamma), height = height)
+        peaks, _ = find_peaks((1 - absgamma), height=height)
         nearest = None
         for pi in peaks:
             if nearest is None:
@@ -49,7 +49,6 @@ def _find_peak(near, absgamma, freq, height = 0.2) -> int:
             elif abs(freq[pi] - near) < abs(freq[nearest] - near):
                 nearest = pi
         return nearest
-
 
 
 @load_data(
