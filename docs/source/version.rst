@@ -4,6 +4,7 @@
 .. toctree::
    :maxdepth: 1
 
+   version.v2.2
    version.v2.1
    version.v2.0
    version.v1.1
