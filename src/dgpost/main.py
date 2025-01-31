@@ -10,37 +10,11 @@ import argparse
 import logging
 from importlib import metadata
 import copy
-import requests
-import json
-from packaging import version
 
 from dgpost.utils import parse, load, extract, transform, save, plot, pivot
 from dgpost.utils.helpers import combine_tables
 
 logger = logging.getLogger(__name__)
-
-
-def version_check(project="dgpost"):
-    url = f"https://pypi.org/pypi/{project}/json"
-    try:
-        res = requests.get(url, timeout=1)
-    except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
-        logger.debug(f"Version check could not proceed due to Exception={e}.")
-        return
-    jsdata = json.loads(res.text)
-    versions = sorted([version.parse(i) for i in jsdata["releases"].keys()])
-    latest = versions[-1]
-    current = version.parse(metadata.version(project))
-    if latest > current:
-        logger.warning("You are using an out-of-date version of '%s'. ", project)
-        logger.info(
-            "The latest version is '%s', the current version is '%s'.", latest, current
-        )
-        logger.info(
-            "Consider updating using: pip install --upgrade %s==%s", project, latest
-        )
-    else:
-        logger.debug("Your version of '%s' is up-to-date.", project)
 
 
 def run(path: str, patch: str = None) -> tuple[dict, dict]:
@@ -226,5 +200,4 @@ def run_with_arguments():
     logging.basicConfig(level=loglevel)
     logging.debug(f"loglevel set to '{logging._levelToName[loglevel]}'")
 
-    version_check()
     run(args.infile, patch=args.patch)

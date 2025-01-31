@@ -15,6 +15,7 @@ Developed in the `ConCat lab <https://tu.berlin/en/concat>`_ at Technische Unive
 An update to ``dgpost-2.1``, including the following changes:
 
 - modification of peak-picking in :mod:`~dgpost.transform.reflection` to use :func:`scipy.signal.find_peaks`
+- Removed version checking from :mod:`dgpost` and its dependency on :mod:`requests`.
 
 .. codeauthor::
     Ueli Sauter,
