@@ -10,8 +10,6 @@ import argparse
 import logging
 from importlib import metadata
 import copy
-import json
-from packaging import version
 
 from dgpost.utils import parse, load, extract, transform, save, plot, pivot
 from dgpost.utils.helpers import combine_tables
