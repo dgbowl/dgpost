@@ -36,7 +36,6 @@ dependencies = [
     "xarray >= 2024.10.0",
     "dgbowl-schemas >= 116",
     "matplotlib >= 3.5.0",
-    "requests",
 ]
 
 [project.optional-dependencies]
