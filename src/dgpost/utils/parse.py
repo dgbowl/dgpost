@@ -36,9 +36,9 @@ def parse(fn: str) -> dict[str, Any]:
         A dictionary representing the recipe.
 
     """
-    assert os.path.exists(fn) and os.path.isfile(fn), (
-        f"provided file name '{fn}' does not exist or is not a valid file"
-    )
+    assert os.path.exists(fn) and os.path.isfile(
+        fn
+    ), f"provided file name '{fn}' does not exist or is not a valid file"
 
     logger.debug("loading recipe from '%s'" % fn)
     with open(fn, "r") as infile:
