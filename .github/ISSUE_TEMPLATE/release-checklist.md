@@ -1,3 +1,12 @@
+---
+name: Release Checklist
+about: Release checklist for minor and major dgpost releases.
+title: Release checklist for `dgpost-vX.Y`
+labels: ''
+assignees: ''
+
+---
+
 ## Release checklist
 
 ### Preparing a release candidate:
