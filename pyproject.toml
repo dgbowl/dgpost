@@ -34,7 +34,7 @@ dependencies = [
     "rdkit >= 2022.3",
     "h5netcdf >= 1.0",
     "xarray >= 2024.10.0",
-    "dgbowl-schemas >= 116",
+    "dgbowl-schemas >= 122",
     "matplotlib >= 3.5.0",
 ]
 
