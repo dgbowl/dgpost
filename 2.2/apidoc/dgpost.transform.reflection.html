@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reflection: utilities for processing reflection coefficient traces &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="table: utilities for operations with tables" href="dgpost.transform.table.html" />
+    <link rel="prev" title="rates: determining molar rates of chemical species" href="dgpost.transform.rates.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dgpost
+              <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.chromatography.html"><strong>chromatography</strong>: chromatographic trace postprocessing library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.reflection.prune_cutoff"><code class="docutils literal notranslate"><span class="pre">prune_cutoff()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.reflection.prune_gradient"><code class="docutils literal notranslate"><span class="pre">prune_gradient()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.reflection.qf_kajfez"><code class="docutils literal notranslate"><span class="pre">qf_kajfez()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.reflection.qf_naive"><code class="docutils literal notranslate"><span class="pre">qf_naive()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.reflection.qf_lorentz"><code class="docutils literal notranslate"><span class="pre">qf_lorentz()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><strong>reflection</strong>: utilities for processing reflection coefficient traces</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.transform.reflection.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dgpost.transform.reflection">
+<span id="reflection-utilities-for-processing-reflection-coefficient-traces"></span><h1><strong>reflection</strong>: utilities for processing reflection coefficient traces<a class="headerlink" href="#module-dgpost.transform.reflection" title="Link to this heading"></a></h1>
+<p><em>Code author: Peter Kraus,
+Darko Kajfez</em></p>
+<p>Provides several functions for processing reflection coefficient traces. Includes
+a few trace pruning functions, as well as several algorithms for fitting of quality
+factors to the reflection trace data. The use of the peak-height based pruning via
+<a class="reference internal" href="#dgpost.transform.reflection.prune_cutoff" title="dgpost.transform.reflection.prune_cutoff"><code class="xref py py-func docutils literal notranslate"><span class="pre">prune_cutoff()</span></code></a> and Kajfez’s circle fitting algorithm <a class="reference internal" href="#kajfez1994" id="id1"><span>[Kajfez1994]</span></a> via
+<a class="reference internal" href="#dgpost.transform.reflection.qf_kajfez" title="dgpost.transform.reflection.qf_kajfez"><code class="xref py py-func docutils literal notranslate"><span class="pre">qf_kajfez()</span></code></a> is recommended.</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.reflection.prune_cutoff" title="dgpost.transform.reflection.prune_cutoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prune_cutoff</span></code></a>(real, imag, freq[, near, ...])</p></td>
+<td><p>Cutoff-based reflection coefficient trace prune.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.reflection.prune_gradient" title="dgpost.transform.reflection.prune_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prune_gradient</span></code></a>(real, imag, freq[, near, ...])</p></td>
+<td><p>Gradient-based reflection coefficient trace prune.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.reflection.qf_kajfez" title="dgpost.transform.reflection.qf_kajfez"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qf_kajfez</span></code></a>(real, imag, freq[, iterations, output])</p></td>
+<td><p>Kajfez's circle-fitting algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.reflection.qf_naive" title="dgpost.transform.reflection.qf_naive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qf_naive</span></code></a>(real, imag, freq[, output])</p></td>
+<td><p>Naive quality factor fitting algorithm using FWHM.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.reflection.qf_lorentz" title="dgpost.transform.reflection.qf_lorentz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qf_lorentz</span></code></a>(real, imag, freq[, output])</p></td>
+<td><p>Quality factor fitting algorithm using Lorentzian approximation.</p></td>
+</tr>
+</tbody>
+</table>
+<div role="list" class="citation-list">
+<div class="citation" id="kajfez1994" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Kajfez1994<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>Kajfez, D.
+<em>Linear fractional curve fitting for measurement of high Q factors</em>, IEEE
+Transactions on Microwave Theory and Techniques <strong>1994</strong>, <em>42</em>, 1149 - 1153,
+DOI: <a class="reference external" href="https://doi.org/10.1109/22.299749">https://doi.org/10.1109/22.299749</a></p>
+</div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.reflection.prune_cutoff">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.reflection.</span></span><span class="sig-name descname"><span class="pre">prune_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">near</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pruned'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.reflection.prune_cutoff" title="Link to this definition"></a></dt>
+<dd><p>Cutoff-based reflection coefficient trace prune.</p>
+<p>Prunes the reflection trace around a single peak position in <span class="math notranslate nohighlight">\(|\Gamma|\)</span>.
+The pruning is performed using a cutoff value in the <span class="math notranslate nohighlight">\(|\Gamma|\)</span>. Should
+be used with <a class="reference internal" href="#dgpost.transform.reflection.qf_kajfez" title="dgpost.transform.reflection.qf_kajfez"><code class="xref py py-func docutils literal notranslate"><span class="pre">qf_kajfez()</span></code></a>. Unless a frequency value using <code class="docutils literal notranslate"><span class="pre">near</span></code> is
+specified, the pruning is performed around the global maximum in
+<span class="math notranslate nohighlight">\(\log(|\Gamma|)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>real</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the reflection
+coefficient data, <span class="math notranslate nohighlight">\(\text{Re}(\Gamma)\)</span>. Unitless.</p></li>
+<li><p><strong>imag</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the reflection
+coefficient data, <span class="math notranslate nohighlight">\(\text{Im}(\Gamma)\)</span>. Unitless.</p></li>
+<li><p><strong>freq</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the frequencies <span class="math notranslate nohighlight">\(f\)</span>
+corresponding to the reflection coefficient data. Defaults to <code class="docutils literal notranslate"><span class="pre">Hz</span></code>.</p></li>
+<li><p><strong>near</strong> – A frequency used to select the point around which to prune. By default, pruning
+is performed around the highest peak in <span class="math notranslate nohighlight">\((1 - \Gamma)\)</span>. When <code class="docutils literal notranslate"><span class="pre">near</span></code> is
+set, the peak nearest in frequency as identified using <code class="xref py py-func docutils literal notranslate"><span class="pre">find_peaks()</span></code>
+will be used for pruning.</p></li>
+<li><p><strong>cutoff</strong> – Relative peak height below which the reflection trace should be pruned.
+Uses a fraction of normalised <span class="math notranslate nohighlight">\(|\Gamma|\)</span>. Defaults to <code class="docutils literal notranslate"><span class="pre">0.4</span></code>.</p></li>
+<li><p><strong>height</strong> – Peak height in <span class="math notranslate nohighlight">\((1 - \Gamma)\)</span> passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">find_peaks()</span></code>,
+defaults to <code class="docutils literal notranslate"><span class="pre">0.2</span></code>.</p></li>
+<li><p><strong>output</strong> – Name for the output namespace. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;pruned&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>retvals</strong> – A dictionary containing the pruned values of <code class="docutils literal notranslate"><span class="pre">real</span></code>, <code class="docutils literal notranslate"><span class="pre">imag</span></code> and <code class="docutils literal notranslate"><span class="pre">freq</span></code>
+data stored in namespaced <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.reflection.prune_gradient">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.reflection.</span></span><span class="sig-name descname"><span class="pre">prune_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">near</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pruned'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.reflection.prune_gradient" title="Link to this definition"></a></dt>
+<dd><p>Gradient-based reflection coefficient trace prune.</p>
+<p>Prunes the reflection trace around a single peak position in <span class="math notranslate nohighlight">\(|\Gamma|\)</span>.
+The pruning is performed using the a threshold value in the gradient of
+<span class="math notranslate nohighlight">\(|\Gamma|\)</span>. Unless a frequency value using <code class="docutils literal notranslate"><span class="pre">near</span></code> is specified, the
+pruning is performed around the global maximum in <span class="math notranslate nohighlight">\(\log(|\Gamma|)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>real</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the reflection
+coefficient data, <span class="math notranslate nohighlight">\(\text{Re}(\Gamma)\)</span>. Unitless.</p></li>
+<li><p><strong>imag</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the reflection
+coefficient data, <span class="math notranslate nohighlight">\(\text{Im}(\Gamma)\)</span>. Unitless.</p></li>
+<li><p><strong>freq</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the frequencies <span class="math notranslate nohighlight">\(f\)</span>
+corresponding to the reflection coefficient data. Defaults to <code class="docutils literal notranslate"><span class="pre">Hz</span></code>.</p></li>
+<li><p><strong>near</strong> – A frequency used to select the point around which to prune. By default, pruning
+is performed around the highest peak in <span class="math notranslate nohighlight">\((1 - \Gamma)\)</span>. When <code class="docutils literal notranslate"><span class="pre">near</span></code> is
+set, the peak nearest in frequency as identified using <code class="xref py py-func docutils literal notranslate"><span class="pre">find_peaks()</span></code>
+will be used for pruning.</p></li>
+<li><p><strong>threshold</strong> – Threshold for the gradient in the <span class="math notranslate nohighlight">\(\text{abs}(\Gamma)\)</span> below which the
+trace is pruned. Defaults to <code class="docutils literal notranslate"><span class="pre">1e-6</span></code>.</p></li>
+<li><p><strong>output</strong> – Name for the output namespace. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;pruned&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ret</strong> – A dictionary containing the pruned values of <code class="docutils literal notranslate"><span class="pre">real</span></code>, <code class="docutils literal notranslate"><span class="pre">imag</span></code> and <code class="docutils literal notranslate"><span class="pre">freq</span></code>
+data stored in namespaced <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.reflection.qf_kajfez">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.reflection.</span></span><span class="sig-name descname"><span class="pre">qf_kajfez</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.reflection.qf_kajfez" title="Link to this definition"></a></dt>
+<dd><p>Kajfez’s circle-fitting algorithm.</p>
+<p>Adapted with permission from Q0REFL.m, which is a part of <a class="reference internal" href="#kajfez1994" id="id2"><span>[Kajfez1994]</span></a>. This
+fitting process attempts to fit a circle to a near-circular section of points
+on a Smith’s chart. It’s robust, quick, and reliable, and produces reasonable
+error estimates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>real</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the reflection
+coefficient data, <span class="math notranslate nohighlight">\(\text{Re}(\Gamma)\)</span>. Unitless.</p></li>
+<li><p><strong>imag</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the reflection
+coefficient data, <span class="math notranslate nohighlight">\(\text{Im}(\Gamma)\)</span>. Unitless.</p></li>
+<li><p><strong>freq</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the frequencies <span class="math notranslate nohighlight">\(f\)</span>
+corresponding to the reflection coefficient data. Defaults to <code class="docutils literal notranslate"><span class="pre">Hz</span></code>.</p></li>
+<li><p><strong>iterations</strong> – A number of iterations for circle-fitting refinement. Default is <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
+<li><p><strong>output</strong> – Name for the output namespace. Defaults to no namespace.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ret</strong> – An optionally namespaced dictionary containing the fitted values of
+<span class="math notranslate nohighlight">\(Q_0\)</span> and <span class="math notranslate nohighlight">\(f_0\)</span> as <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.reflection.qf_naive">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.reflection.</span></span><span class="sig-name descname"><span class="pre">qf_naive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.reflection.qf_naive" title="Link to this definition"></a></dt>
+<dd><p>Naive quality factor fitting algorithm using FWHM.</p>
+<p>This fit finds the central frequency <span class="math notranslate nohighlight">\(f_0\)</span>, determines the full-width at
+the half-maximum <span class="math notranslate nohighlight">\(\Delta f_{HM}\)</span> by linear interpolation, and calculates
+the quality factor using <span class="math notranslate nohighlight">\(Q_0 = f_0 / \Delta f_{HM}\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This quality factor fitting algorithm is unreliable and has been implemented
+only for testing purposes. Use <a class="reference internal" href="#dgpost.transform.reflection.qf_kajfez" title="dgpost.transform.reflection.qf_kajfez"><code class="xref py py-func docutils literal notranslate"><span class="pre">qf_kajfez()</span></code></a> for any production runs!</p>
+</div>
+<dl class="simple">
+<dt>real</dt><dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the reflection
+coefficient data, <span class="math notranslate nohighlight">\(\text{Re}(\Gamma)\)</span>. Unitless.</p>
+</dd>
+<dt>imag</dt><dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the reflection
+coefficient data, <span class="math notranslate nohighlight">\(\text{Im}(\Gamma)\)</span>. Unitless.</p>
+</dd>
+<dt>freq</dt><dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the frequencies <span class="math notranslate nohighlight">\(f\)</span>
+corresponding to the reflection coefficient data. Defaults to <code class="docutils literal notranslate"><span class="pre">Hz</span></code>.</p>
+</dd>
+<dt>output</dt><dd><p>Name for the output namespace. Defaults to no namespace.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ret</strong> – An optionally namespaced dictionary containing the fitted values of
+<span class="math notranslate nohighlight">\(Q_0\)</span> and <span class="math notranslate nohighlight">\(f_0\)</span> as <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.reflection.qf_lorentz">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.reflection.</span></span><span class="sig-name descname"><span class="pre">qf_lorentz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.reflection.qf_lorentz" title="Link to this definition"></a></dt>
+<dd><p>Quality factor fitting algorithm using Lorentzian approximation.</p>
+<p>This fit fits a Lorentzian to the (pruned) data. The <span class="math notranslate nohighlight">\(f_0 = x_0\)</span>, and the
+<span class="math notranslate nohighlight">\(Q_0\)</span> is calculated from <span class="math notranslate nohighlight">\(x_0 / \Delta x = x_0 / (2\gamma)\)</span>.
+Uncertainties of <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(Q_0\)</span> are calculated using the
+covariance matrix of the fit of <span class="math notranslate nohighlight">\(L(x)\)</span> to <span class="math notranslate nohighlight">\(|\Gamma(f)|\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This quality factor fitting algorithm is unreliable and has been implemented
+only for testing purposes. Use <a class="reference internal" href="#dgpost.transform.reflection.qf_kajfez" title="dgpost.transform.reflection.qf_kajfez"><code class="xref py py-func docutils literal notranslate"><span class="pre">qf_kajfez()</span></code></a> for any production runs!</p>
+</div>
+<dl class="simple">
+<dt>real</dt><dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the real part of the reflection
+coefficient data, <span class="math notranslate nohighlight">\(\text{Re}(\Gamma)\)</span>. Unitless.</p>
+</dd>
+<dt>imag</dt><dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the imaginary part of the reflection
+coefficient data, <span class="math notranslate nohighlight">\(\text{Im}(\Gamma)\)</span>. Unitless.</p>
+</dd>
+<dt>freq</dt><dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> object containing the frequencies <span class="math notranslate nohighlight">\(f\)</span>
+corresponding to the reflection coefficient data. Defaults to <code class="docutils literal notranslate"><span class="pre">Hz</span></code>.</p>
+</dd>
+<dt>output</dt><dd><p>Name for the output namespace. Defaults to no namespace.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ret</strong> – An optionally namespaced dictionary containing the fitted values of
+<span class="math notranslate nohighlight">\(Q_0\)</span> and <span class="math notranslate nohighlight">\(f_0\)</span> as <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.transform.rates.html" class="btn btn-neutral float-left" title="rates: determining molar rates of chemical species" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.transform.table.html" class="btn btn-neutral float-right" title="table: utilities for operations with tables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2025, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

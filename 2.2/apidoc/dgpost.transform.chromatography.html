@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chromatography: chromatographic trace postprocessing library &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="electrochemistry: calculations relevant in electrochemistry" href="dgpost.transform.electrochemistry.html" />
+    <link rel="prev" title="catalysis: common calculations in catalytic testing" href="dgpost.transform.catalysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dgpost
+              <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>chromatography</strong>: chromatographic trace postprocessing library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.chromatography.integrate_trace"><code class="docutils literal notranslate"><span class="pre">integrate_trace()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.chromatography.apply_calibration"><code class="docutils literal notranslate"><span class="pre">apply_calibration()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.reflection.html"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><strong>chromatography</strong>: chromatographic trace postprocessing library</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.transform.chromatography.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dgpost.transform.chromatography">
+<span id="chromatography-chromatographic-trace-postprocessing-library"></span><h1><strong>chromatography</strong>: chromatographic trace postprocessing library<a class="headerlink" href="#module-dgpost.transform.chromatography" title="Link to this heading"></a></h1>
+<p><em>Code author: Peter Kraus</em></p>
+<p>Includes functions to integrate a chromatographic trace, and post-process an integrated
+trace using calibration.</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.chromatography.integrate_trace" title="dgpost.transform.chromatography.integrate_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_trace</span></code></a>(time, signal, species[, ...])</p></td>
+<td><p>Chromatographic trace integration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.chromatography.apply_calibration" title="dgpost.transform.chromatography.apply_calibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_calibration</span></code></a>(areas, calibration[, output])</p></td>
+<td><p>Apply calibration to an integrated chromatographic trace.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.chromatography.integrate_trace">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.chromatography.</span></span><span class="sig-name descname"><span class="pre">integrate_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polyorder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prominence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'trace'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.chromatography.integrate_trace" title="Link to this definition"></a></dt>
+<dd><p>Chromatographic trace integration.</p>
+<p>Function which integrates peaks found in the chromatographic trace, which is
+itself defined as a set of <code class="docutils literal notranslate"><span class="pre">time,</span> <span class="pre">signal</span></code> arrays. The procedure is as
+follows:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">signal</span></code> is smoothed the Savigny-Golay filter, via the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.signal.savgol_filter()</span></code>. For this, the arguments <code class="docutils literal notranslate"><span class="pre">polyorder</span></code>
+and <code class="docutils literal notranslate"><span class="pre">window</span></code> are used.</p></li>
+<li><p>Peak maxima are found using <code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.signal.find_peaks()</span></code>. For this,
+the argument <code class="docutils literal notranslate"><span class="pre">prominence</span></code> is used, scaled by <code class="docutils literal notranslate"><span class="pre">max(abs(signal))</span></code>.</p></li>
+<li><p>Peak edges of every found peak are determined. The peak ends are either
+determined from the nearest minima, or from the nearest inflection point
+at which the gradient is below the <code class="docutils literal notranslate"><span class="pre">threshold</span></code>.</p></li>
+<li><p>Peak maxima are matched against known peaks, provided in the <code class="docutils literal notranslate"><span class="pre">species</span></code>
+argument. The peak is considered matching a species when its maximum is
+between the left and right limits defined in <code class="docutils literal notranslate"><span class="pre">species</span></code>.</p></li>
+<li><p>A baseline is constructed by interpolating by copying the <code class="docutils literal notranslate"><span class="pre">signal</span></code> data
+and interpolating between the ends of all matched peaks. If consecutive
+peaks are found, the interpolation spans the whole domain.</p></li>
+<li><p>The baseline is subtracted from the signal and the peak areas are
+integrated using the <code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.trapezoid()</span></code> function.</p></li>
+<li><p>The peak height is taken from the original <code class="docutils literal notranslate"><span class="pre">signal</span></code> data.</p></li>
+</ol>
+</div></blockquote>
+<p>The format of the <code class="docutils literal notranslate"><span class="pre">species</span></code> specification, used for peak matching, is as follows:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">species_name</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"> </span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">l</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">pint.Quantity</span>
+<span class="w">    </span><span class="nt">r</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">pint.Quantity</span>
+</pre></div>
+</div>
+<p>with the keys <code class="docutils literal notranslate"><span class="pre">&quot;l&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;r&quot;</span></code> corresponding to the left and right limit for the
+maximum of the peak. The limits can be either <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, or <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
+with the same dimensionality as <code class="docutils literal notranslate"><span class="pre">time</span></code>, or a <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> in which case the units
+of <code class="docutils literal notranslate"><span class="pre">time</span></code> are assumed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> array object determining the X-axis of the trace.
+By default in seconds.</p></li>
+<li><p><strong>signal</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> array object containing the Y-axis of the trace.
+By default dimensionless.</p></li>
+<li><p><strong>species</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">dict]</span></code>, where the keys are species names and the
+values define the left and right limits for matching the peak maximum.</p></li>
+<li><p><strong>polyorder</strong> – An <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> defining the order of the polynomial for the Savigny-Golay
+filter. Defaults to 3. The <code class="docutils literal notranslate"><span class="pre">polyorder</span></code> must be less than <code class="docutils literal notranslate"><span class="pre">window</span></code>.</p></li>
+<li><p><strong>window</strong> – An <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> defining the smoothing window for the Savigny-Golay filter.
+Defaults to 7. Must be odd. The <code class="docutils literal notranslate"><span class="pre">polyorder</span></code> must be less than <code class="docutils literal notranslate"><span class="pre">window</span></code>.</p></li>
+<li><p><strong>prominence</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> used to calculate the prominence of the peaks in <code class="docutils literal notranslate"><span class="pre">signal</span></code>
+by scaling the <code class="docutils literal notranslate"><span class="pre">max(abs(signal))</span></code>. Used in the peak picking process.
+Defaults to 0.0001.</p></li>
+<li><p><strong>threshold</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> used to find ends of peaks by comparing to the gradient
+of <code class="docutils literal notranslate"><span class="pre">signal</span></code> at the nearest inflection points.</p></li>
+<li><p><strong>output</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output namespace. The results are collated in
+the <code class="docutils literal notranslate"><span class="pre">f&quot;{output}-&gt;area</span></code> namespace for peak areas and <code class="docutils literal notranslate"><span class="pre">f&quot;{output}-&gt;height</span></code>
+namespace for peak height.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>retvals</strong> – A dictionary containing the peak areas and peak heights of matched peaks
+stored in namespaced <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantities</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.chromatography.apply_calibration">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.chromatography.</span></span><span class="sig-name descname"><span class="pre">apply_calibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">areas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'x'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.chromatography.apply_calibration" title="Link to this definition"></a></dt>
+<dd><p>Apply calibration to an integrated chromatographic trace.</p>
+<p>Function which applies calibration information, provided in a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, to
+an integrated chromatographic trace. Elements in the calibration <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> are
+treated as chemicals, matched against the chromatographic data using SMILES.</p>
+<p>The format of the <code class="docutils literal notranslate"><span class="pre">calibration</span></code> is as follows:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">species_name</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"> </span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Literal[&quot;inverse&quot;, &quot;linear&quot;]</span>
+<span class="w">    </span><span class="nt">m</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">float</span>
+<span class="w">    </span><span class="nt">c</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">Optional[float]</span>
+</pre></div>
+</div>
+<p>Two calibration functions are provided. Either the output value <code class="docutils literal notranslate"><span class="pre">x</span></code> is calculated
+as $x = (A - c) / m$, i.e. an “inverse” relationship, or using $x = m times A + c$,
+a “linear” relationship. The offset $c$ is optional. Both $m$ and $c$ are internally
+converted to <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, therefore they can be specified with uncertainty,
+but have to be annotated by appropriate units to convert the units of the peak areas
+to the desired output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>areas</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing a namespace of <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code> containing the
+integrated peak areas $A$, with their keys corresponding to chemicals.</p></li>
+<li><p><strong>calibration</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing the calibration information for processing the above
+peak <code class="docutils literal notranslate"><span class="pre">areas</span></code> into the resulting <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code>.</p></li>
+<li><p><strong>output</strong> – The <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> prefix for the output namespace.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.transform.catalysis.html" class="btn btn-neutral float-left" title="catalysis: common calculations in catalytic testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.transform.electrochemistry.html" class="btn btn-neutral float-right" title="electrochemistry: calculations relevant in electrochemistry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2025, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
