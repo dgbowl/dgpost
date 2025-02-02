@@ -17,7 +17,7 @@ from pydantic import BaseModel
 from pydantic.v1 import BaseModel as BaseModel_v1
 from packaging.version import Version
 
-__latest_recipe__ = "2.1"
+__latest_recipe__ = "2.2"
 logger = logging.getLogger(__name__)
 
 
