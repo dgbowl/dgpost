@@ -10,11 +10,25 @@
 import os
 import yaml
 import json
-from typing import Any
+from typing import Any, Union
 from dgbowl_schemas.dgpost import to_recipe
 import logging
+from pydantic import BaseModel
+from pydantic.v1 import BaseModel as BaseModel_v1
+from packaging.version import Version
 
+__latest_recipe__ = "2.1"
 logger = logging.getLogger(__name__)
+
+
+def update_recipe(object: Union[BaseModel, BaseModel_v1]) -> BaseModel:
+    maxver = Version(__latest_recipe__)
+    while hasattr(object, "update"):
+        temp = object.update()
+        if Version(temp.version) > maxver:
+            break
+        object = temp
+    return object
 
 
 def parse(fn: str) -> dict[str, Any]:
@@ -47,5 +61,6 @@ def parse(fn: str) -> dict[str, Any]:
         elif fn.endswith("json"):
             indict = json.load(infile)
     logger.debug("parsing loaded recipe dictionary")
-    ret = to_recipe(**indict).dict(by_alias=True, exclude_none=True)
+    obj = update_recipe(to_recipe(**indict))
+    ret = obj.model_dump(by_alias=True, exclude_none=True)
     return ret

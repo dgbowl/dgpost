@@ -61,7 +61,7 @@ def integrate_trace(
          and interpolating between the ends of all matched peaks. If consecutive
          peaks are found, the interpolation spans the whole domain.
       #) The baseline is subtracted from the signal and the peak areas are
-         integrated using the :func:`numpy.trapz` function.
+         integrated using the :func:`numpy.trapezoid` function.
       #) The peak height is taken from the original ``signal`` data.
 
     The format of the ``species`` specification, used for peak matching, is as follows:
@@ -227,7 +227,7 @@ def integrate_trace(
         e = v["rlim"] + 1
         py = signal[s:e] - baseline[s:e]
         px = time[s:e]
-        A = np.trapz(py, px)
+        A = np.trapezoid(py, px)
         retval[f"{output}->area->{k}"] = A
         retval[f"{output}->height->{k}"] = py[v["max"] - s]
 
