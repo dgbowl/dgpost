@@ -238,6 +238,18 @@ from .utils import compare_dfs
             },
             "ref.ca+cv.pkl",
         ),
+        (  # ts23 - extract multidimensional data from netcdf
+            "extract.multidim.nc",
+            {
+                "at": {"steps": ["0"]},
+                "columns": [
+                    {"key": "S11->magnitude", "as": "mag"},
+                    {"key": "S11->phase_angle", "as": "ang"},
+                    {"key": "S11->frequency", "as": "freq"},
+                ],
+            },
+            "ref.extract.multidim.nc.pkl",
+        ),
     ],
 )
 def test_extract_single(inpath, spec, outpath, datadir):

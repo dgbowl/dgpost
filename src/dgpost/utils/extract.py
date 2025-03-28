@@ -259,6 +259,8 @@ def _(obj: datatree.DataTree, columns: list[dict]) -> list[pd.Series]:
                 if vals.coords.dtypes[coord].kind in {"O", "U"}:
                     splits = vals[coord].values
                     break
+            else:
+                splits = [None]
         else:
             coord = None
             splits = [None]
@@ -276,6 +278,8 @@ def _(obj: datatree.DataTree, columns: list[dict]) -> list[pd.Series]:
             if sigs is None:
                 if coord is None:
                     data = vals
+                elif split is None:
+                    data = vals.values
                 else:
                     data = vals.loc[{coord: split}]
                     name.append(split)
