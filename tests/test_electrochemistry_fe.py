@@ -114,6 +114,9 @@ def test_electrochemistry_fe_df(infile, spec, outfile, datadir):
     "chem, spec, charge",
     [
         ("H2O", {"H": 1, "O": -2}, 0.0),
+        ("OH-", {"H": 1, "O": -2}, 0.0),
+        ("H+", {"H": 1, "O": -2}, 0.0),
+        ("H3O+", {"H": 1, "O": -2}, 0.0),
         ("NH3", {"N": -3, "H": 1}, 0.0),
         ("NH4+", {"N": -3, "H": 1}, 0.0),
         ("HNO3", {"N": 5, "O": -2, "H": 1}, 0.0),
