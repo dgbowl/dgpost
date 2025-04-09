@@ -103,7 +103,7 @@ def electrons_from_smiles(
     charges = defaultdict(lambda: 0)
     charges.update(ions)
     mol = Chem.AddHs(Chem.MolFromSmiles(smiles))
-    n = 0
+    n = -Chem.GetFormalCharge(mol)
     for atom in mol.GetAtoms():
         ela = periodic_table[atom.GetAtomicNum()].elneg
         for bond in atom.GetBonds():
