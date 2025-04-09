@@ -1,6 +1,7 @@
 import os
 import pytest
 from dgpost.transform import electrochemistry, rates
+from dgpost.utils.helpers import search_chemical, electrons_from_smiles
 import numpy as np
 import pandas as pd
 import pint
@@ -107,3 +108,23 @@ def test_electrochemistry_fe_df(infile, spec, outfile, datadir):
     print(f"{ref.head()=}")
     df.to_pickle(outfile)
     compare_dfs(ref, df)
+
+
+@pytest.mark.parametrize(
+    "chem, spec, charge",
+    [
+        ("H2O", {"H": 1, "O": -2}, 0.0),
+        ("OH-", {"H": 1, "O": -2}, 0.0),
+        ("H+", {"H": 1, "O": -2}, 0.0),
+        ("H3O+", {"H": 1, "O": -2}, 0.0),
+        ("NH3", {"N": -3, "H": 1}, 0.0),
+        ("NH4+", {"N": -3, "H": 1}, 0.0),
+        ("HNO3", {"N": 5, "O": -2, "H": 1}, 0.0),
+        ("HNO2", {"N": 5, "O": -2, "H": 1}, 2.0),
+        ("NO3-", {"N": 5, "O": -2}, 0.0),
+        ("NO2-", {"N": 5, "O": -2}, 2.0),
+    ],
+)
+def test_formal_charges(chem, spec, charge):
+    mol = search_chemical(chem)
+    assert electrons_from_smiles(mol.smiles, spec) == charge
