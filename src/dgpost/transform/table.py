@@ -6,8 +6,10 @@ Provides convenience functions for operating with tables, including
 :func:`~dgpost.transform.table.combine_namespaces` for combining ``->``-separated
 namespaces of values or chemicals into a single namespace;
 :func:`~dgpost.transform.table.combine_columns` for combining individual columns
-into a single column; and :func:`~dgpost.transform.table.set_uncertainty` for
-stripping or replacing uncertainties from data.
+into a single column; :func:`~dgpost.transform.table.set_uncertainty` for
+stripping or replacing uncertainties from data, and :func:`~dgpost.transform.table.apply_linear`
+and :func:`~dgpost.transform.table.apply_inverse` for applying linear corrections to
+columns or namespaces.
 
 .. rubric:: Functions
 
@@ -16,6 +18,8 @@ stripping or replacing uncertainties from data.
     combine_namespaces
     combine_columns
     set_uncertainty
+    apply_linear
+    apply_inverse
 
 
 """
@@ -247,4 +251,156 @@ def set_uncertainty(
             else:
                 s = np.maximum(abs.to(u).m, np.abs(v) * rel.to("dimensionless").m)
             ret[k] = ureg.Quantity(unp.uarray(v, s), u)
+    return ret
+
+
+@load_data(
+    ("namespace", None, dict),
+    ("column", None),
+)
+def apply_linear(
+    namespace: dict[str, pint.Quantity] = None,
+    column: pint.Quantity = None,
+    slope: Union[pint.Quantity, float] = None,
+    intercept: Union[pint.Quantity, float] = None,
+    output: str = "output",
+    _inp: dict = {},
+) -> dict[str, pint.Quantity]:
+    """
+    Allows for applying linear functions / corrections to columns and namespaces.
+
+    Given the linear formula, :math:`y = m \times x + c`, this function returns :math:`y`
+    calculated from the input, where :math:`m` is the provided ``slope`` and :math:`c`
+    is the provided ``intercept``.
+
+    The arguments ``slope`` and ``intercept`` can be provided without units, in which
+    case the units of ``column`` or ``namespace`` are preserved. If units of ``slope``
+    and ``intercept``  are provided, they have to be dimensionally consistent.
+
+    The arguments ``slope`` and ``intercept`` can be provided with uncertainties, in
+    which case the uncertainty of the output value is calculated from linear uncertainty
+    propagation.
+
+    Parameters
+    ----------
+    namespace
+        The prefix of the namespace for which uncertainties are to be replaced or
+        stripped. Cannot be supplied along with ``column``.
+
+    column
+        The name of the column for which uncertainties are to be replaced or stripped.
+        Cannot be supplied along with ``namespace``
+
+    slope
+        The slope :math:`m`.
+
+    intercept
+        The intercept :math:`c`.
+
+    output
+        Name of the output column or the namespace of the output columns.
+
+    """
+
+    def linear(
+        x: Union[pint.Quantity, float],
+        slope: Union[pint.Quantity, float],
+        intercept: Union[pint.Quantity, float],
+    ) -> Union[pint.Quantity, float]:
+        y = slope * x + intercept
+        return y
+
+    outk = []
+    outv = []
+    if column is not None:
+        if isinstance(column, list):
+            column = np.asarray(column)
+        outk.append(_inp.get("column", output))
+        outv.append(linear(column, slope, intercept))
+
+    elif namespace is not None:
+        for key, vals in namespace.items():
+            if isinstance(vals, list):
+                vals = np.asarray(vals)
+            outk.append(_inp.get("namespace", output) + f"->{key}")
+            outv.append(linear(vals, slope, intercept))
+
+    ret = {}
+    for k, v in zip(outk, outv):
+        ret[k] = v
+    return ret
+
+
+@load_data(
+    ("namespace", None, dict),
+    ("column", None),
+)
+def apply_inverse(
+    namespace: dict[str, pint.Quantity] = None,
+    column: pint.Quantity = None,
+    slope: Union[pint.Quantity, float] = None,
+    intercept: Union[pint.Quantity, float] = None,
+    output: str = "output",
+    _inp: dict = {},
+) -> dict[str, pint.Quantity]:
+    """
+    Allows for applying inverse linear functions / corrections to columns and namespaces.
+
+    Given the linear formula, :math:`y = m \times x + c`, this function returns :math:`x`,
+    calculated from the input, i.e. :math:`x = (y - c) / m`,  where :math:`m` is the
+    provided ``slope`` and :math:`c` is the provided ``intercept``.
+
+    The arguments ``slope`` and ``intercept`` can be provided without units, in which
+    case the units of ``column`` or ``namespace`` are preserved. If units of ``slope``
+    and ``intercept``  are provided, they have to be dimensionally consistent.
+
+    The arguments ``slope`` and ``intercept`` can be provided with uncertainties, in
+    which case the uncertainty of the output value is calculated from linear uncertainty
+    propagation.
+
+    Parameters
+    ----------
+    namespace
+        The prefix of the namespace for which uncertainties are to be replaced or
+        stripped. Cannot be supplied along with ``column``.
+
+    column
+        The name of the column for which uncertainties are to be replaced or stripped.
+        Cannot be supplied along with ``namespace``
+
+    slope
+        The slope :math:`m`.
+
+    intercept
+        The intercept :math:`c`.
+
+    output
+        Name of the output column or the namespace of the output columns.
+
+    """
+
+    def inverse(
+        y: Union[pint.Quantity, float],
+        slope: Union[pint.Quantity, float],
+        intercept: Union[pint.Quantity, float],
+    ) -> Union[pint.Quantity, float]:
+        x = (y - intercept) / slope
+        return x
+
+    outk = []
+    outv = []
+    if column is not None:
+        if isinstance(column, list):
+            column = np.asarray(column)
+        outk.append(_inp.get("column", output))
+        outv.append(inverse(column, slope, intercept))
+
+    elif namespace is not None:
+        for key, vals in namespace.items():
+            outk.append(_inp.get("namespace", output) + f"->{key}")
+            outv.append(inverse(vals, slope, intercept))
+
+    ret = {}
+    for k, v in zip(outk, outv):
+        ret[k] = v
     return ret
