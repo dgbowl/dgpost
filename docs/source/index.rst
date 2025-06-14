@@ -39,6 +39,7 @@ In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
 
    apidoc/dgpost.transform.catalysis
    apidoc/dgpost.transform.chromatography
+   apidoc/dgpost.transform.complex
    apidoc/dgpost.transform.electrochemistry
    apidoc/dgpost.transform.impedance
    apidoc/dgpost.transform.rates
