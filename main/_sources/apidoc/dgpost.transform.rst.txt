@@ -22,6 +22,7 @@ Submodules
 
    dgpost.transform.catalysis
    dgpost.transform.chromatography
+   dgpost.transform.complex
    dgpost.transform.electrochemistry
    dgpost.transform.impedance
    dgpost.transform.rates
