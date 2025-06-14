@@ -15,6 +15,7 @@ Developed in the `ConCat lab <https://tu.berlin/en/concat>`_ at Technische Unive
 An update to ``dgpost-2.2``, including the following changes:
 
 - Added the :mod:`~dgpost.transform.complex` module for converting complex numbers between their polar and rectangular forms.
+- Added the :func:`~dgpost.transform.table.apply_linear` and :func:`~dgpost.transform.table.apply_inverse` functions to allow application of calibrations or scaling factors to columns / namespaces.
 
 
 .. codeauthor::

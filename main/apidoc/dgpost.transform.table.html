@@ -18,6 +18,7 @@
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -66,6 +67,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.combine_namespaces"><code class="docutils literal notranslate"><span class="pre">combine_namespaces()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.combine_columns"><code class="docutils literal notranslate"><span class="pre">combine_columns()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.set_uncertainty"><code class="docutils literal notranslate"><span class="pre">set_uncertainty()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.apply_linear"><code class="docutils literal notranslate"><span class="pre">apply_linear()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.apply_inverse"><code class="docutils literal notranslate"><span class="pre">apply_inverse()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -115,8 +118,10 @@
 <a class="reference internal" href="#dgpost.transform.table.combine_namespaces" title="dgpost.transform.table.combine_namespaces"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_namespaces()</span></code></a> for combining <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>-separated
 namespaces of values or chemicals into a single namespace;
 <a class="reference internal" href="#dgpost.transform.table.combine_columns" title="dgpost.transform.table.combine_columns"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_columns()</span></code></a> for combining individual columns
-into a single column; and <a class="reference internal" href="#dgpost.transform.table.set_uncertainty" title="dgpost.transform.table.set_uncertainty"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_uncertainty()</span></code></a> for
-stripping or replacing uncertainties from data.</p>
+into a single column; <a class="reference internal" href="#dgpost.transform.table.set_uncertainty" title="dgpost.transform.table.set_uncertainty"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_uncertainty()</span></code></a> for
+stripping or replacing uncertainties from data, and <a class="reference internal" href="#dgpost.transform.table.apply_linear" title="dgpost.transform.table.apply_linear"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_linear()</span></code></a>
+and <a class="reference internal" href="#dgpost.transform.table.apply_inverse" title="dgpost.transform.table.apply_inverse"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_inverse()</span></code></a> for applying linear corrections to
+columns or namespaces.</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -128,6 +133,12 @@ stripping or replacing uncertainties from data.</p>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.table.set_uncertainty" title="dgpost.transform.table.set_uncertainty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_uncertainty</span></code></a>([namespace, column, abs, ...])</p></td>
 <td><p>Allows for stripping or replacing uncertainties using absolute and relative values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.table.apply_linear" title="dgpost.transform.table.apply_linear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_linear</span></code></a>([namespace, column, slope, ...])</p></td>
+<td><p>Allows for applying linear functions / corrections to columns and namespaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.table.apply_inverse" title="dgpost.transform.table.apply_inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_inverse</span></code></a>([namespace, column, slope, ...])</p></td>
+<td><p>Allows for applying inverse linear functions / corrections to columns and namespaces.</p></td>
 </tr>
 </tbody>
 </table>
@@ -193,6 +204,62 @@ the column/namespace will be used. If both <code class="docutils literal notrans
 the existing uncertainties will be stripped.</p></li>
 <li><p><strong>rel</strong> – The relative value of the uncertainty, should be in dimensionless units. If
 both <code class="docutils literal notranslate"><span class="pre">abs</span></code> and <code class="docutils literal notranslate"><span class="pre">rel</span></code> are <code class="docutils literal notranslate"><span class="pre">None</span></code>, the existing uncertainties will be stripped.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.table.apply_linear">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">apply_linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intercept</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'output'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.table.apply_linear" title="Link to this definition"></a></dt>
+<dd><p>Allows for applying linear functions / corrections to columns and namespaces.</p>
+<p>Given the linear formula, <span class="math notranslate nohighlight">\(y = m      imes x + c\)</span>, this function returns <span class="math notranslate nohighlight">\(y\)</span>
+calculated from the input, where <span class="math notranslate nohighlight">\(m\)</span> is the provided <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <span class="math notranslate nohighlight">\(c\)</span>
+is the provided <code class="docutils literal notranslate"><span class="pre">intercept</span></code>.</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <code class="docutils literal notranslate"><span class="pre">intercept</span></code> can be provided without units, in which
+case the units of <code class="docutils literal notranslate"><span class="pre">column</span></code> or <code class="docutils literal notranslate"><span class="pre">namespace</span></code> are preserved. If units of <code class="docutils literal notranslate"><span class="pre">slope</span></code>
+and <code class="docutils literal notranslate"><span class="pre">intercept</span></code>  are provided, they have to be dimensionally consistent.</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <code class="docutils literal notranslate"><span class="pre">intercept</span></code> can be provided with uncertainties, in
+which case the uncertainty of the output value is calculated from linear uncertainty
+propagation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>namespace</strong> – The prefix of the namespace for which uncertainties are to be replaced or
+stripped. Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">column</span></code>.</p></li>
+<li><p><strong>column</strong> – The name of the column for which uncertainties are to be replaced or stripped.
+Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">namespace</span></code></p></li>
+<li><p><strong>slope</strong> – The slope <span class="math notranslate nohighlight">\(m\)</span>.</p></li>
+<li><p><strong>intercept</strong> – The intercept <span class="math notranslate nohighlight">\(c\)</span>.</p></li>
+<li><p><strong>output</strong> – Name of the output column or the namespace of the output columns.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.table.apply_inverse">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">apply_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intercept</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'output'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.table.apply_inverse" title="Link to this definition"></a></dt>
+<dd><p>Allows for applying inverse linear functions / corrections to columns and namespaces.</p>
+<p>Given the linear formula, <span class="math notranslate nohighlight">\(y = m      imes x + c\)</span>, this function returns <span class="math notranslate nohighlight">\(x\)</span>,
+calculated from the input, i.e. <span class="math notranslate nohighlight">\(x = (y - c) / m\)</span>,  where <span class="math notranslate nohighlight">\(m\)</span> is the
+provided <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <span class="math notranslate nohighlight">\(c\)</span> is the provided <code class="docutils literal notranslate"><span class="pre">intercept</span></code>.</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <code class="docutils literal notranslate"><span class="pre">intercept</span></code> can be provided without units, in which
+case the units of <code class="docutils literal notranslate"><span class="pre">column</span></code> or <code class="docutils literal notranslate"><span class="pre">namespace</span></code> are preserved. If units of <code class="docutils literal notranslate"><span class="pre">slope</span></code>
+and <code class="docutils literal notranslate"><span class="pre">intercept</span></code>  are provided, they have to be dimensionally consistent.</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <code class="docutils literal notranslate"><span class="pre">intercept</span></code> can be provided with uncertainties, in
+which case the uncertainty of the output value is calculated from linear uncertainty
+propagation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>namespace</strong> – The prefix of the namespace for which uncertainties are to be replaced or
+stripped. Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">column</span></code>.</p></li>
+<li><p><strong>column</strong> – The name of the column for which uncertainties are to be replaced or stripped.
+Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">namespace</span></code></p></li>
+<li><p><strong>slope</strong> – The slope <span class="math notranslate nohighlight">\(m\)</span>.</p></li>
+<li><p><strong>intercept</strong> – The intercept <span class="math notranslate nohighlight">\(c\)</span>.</p></li>
+<li><p><strong>output</strong> – Name of the output column or the namespace of the output columns.</p></li>
 </ul>
 </dd>
 </dl>
