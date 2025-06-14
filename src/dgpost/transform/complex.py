@@ -17,11 +17,13 @@ polar forms.
 
 import pint
 import numpy as np
+from uncertainties import unumpy as unp
 from dgpost.utils.helpers import load_data
 
+
 @load_data(
-    ("mag", None),
-    ("arg", "radians"),
+    ("mag", None, list),
+    ("arg", "radians", list),
 )
 def to_rectangular(
     mag: pint.Quantity,
@@ -54,15 +56,15 @@ def to_rectangular(
 
     """
     arg_rad = arg.to("radians")
-    x = mag * np.sin(arg_rad)
-    y = mag * np.cos(arg_rad)
+    y = mag * unp.sin(arg_rad)
+    x = mag * unp.cos(arg_rad)
     pretag = "" if output is None else f"{output}->"
     return {f"{pretag}x": x, f"{pretag}y": y}
 
 
 @load_data(
-    ("x", None),
-    ("y", None),
+    ("x", None, list),
+    ("y", None, list),
 )
 def to_polar(
     x: pint.Quantity,
@@ -96,9 +98,11 @@ def to_polar(
         Returns the argument (θ) of the complex number, in radians.
 
     """
+    print(f"{x=}")
     x = np.asarray(x)
     y = np.asarray(y)
-    mag = pint.Quantity(np.sqrt(x**2 + y**2), "dimensionless")
-    arg = pint.Quantity(np.atan2(x, y), "radians")
+    print(f"{x=}")
+    mag = pint.Quantity(unp.sqrt(x**2 + y**2), "dimensionless")
+    arg = pint.Quantity(unp.arctan2(y, x), "radians")
     pretag = "" if output is None else f"{output}->"
     return {f"{pretag}mag": mag, f"{pretag}arg": arg}
