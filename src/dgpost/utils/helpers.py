@@ -449,6 +449,36 @@ def load_data(*cols: tuple[str, str, type]):
     return loading
 
 
+def kwarg_to_quantity(*kws: str):
+    """
+    A decorator to convert kwargs passed as :class:`str` into transform functions into
+    :class:`pint.Quantities`.
+    """
+    def outer(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            for key in kws:
+                val = kwargs.pop(key, None)
+                if isinstance(val, str):
+                    kwargs[key] = ureg.Quantity(val)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return outer
+
+
+def merge_units(a: dict, b: dict):
+    for key in b:
+        if key in a:
+            if isinstance(a[key], dict) and isinstance(b[key], dict):
+                merge_units(a[key], b[key])
+            elif a[key] != b[key]:
+                raise ValueError(f"conflict when merging units on key {key!r}")
+        else:
+            a[key] = b[key]
+
+
 def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
     """
     Combine two :class:`pd.DataFrames` into a new :class:`pd.DataFrame`.
@@ -485,7 +515,7 @@ def combine_tables(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
     if "units" in b.attrs:
         if "units" not in temp.attrs:
             temp.attrs["units"] = {}
-        temp.attrs["units"].update(b.attrs.get("units", {}))
+        merge_units(temp.attrs["units"], b.attrs.get("units", {}))
     return temp
 
 
