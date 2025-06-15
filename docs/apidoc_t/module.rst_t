@@ -4,6 +4,8 @@
 {{- "**catalysis**: common calculations in catalytic testing" | heading }}
 {% elif 'dgpost.transform.chromatography' == basename %}
 {{- "**chromatography**: chromatographic trace postprocessing library" | heading }}
+{% elif 'dgpost.transform.complex' == basename %}
+{{- "**complex**: utilities for handling complex numbers" | heading }}
 {% elif 'dgpost.transform.electrochemistry' == basename %}
 {{- "**electrochemistry**: calculations relevant in electrochemistry" | heading }}
 {% elif 'dgpost.transform.impedance' == basename %}

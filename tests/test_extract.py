@@ -384,3 +384,16 @@ def test_extract_nan(inpath, outpath, datadir):
     print(f"{ref.head()=}")
     df.to_pickle(f"ref.{outpath}")
     compare_dfs(ref, df)
+
+
+def test_extract_nested_units():
+    a = pd.DataFrame(data={("raw", "a"): [1, 2, 3, 4, 5]})
+    a.attrs["units"] = {"raw": {"a": "meter"}}
+    b = pd.DataFrame(data={("raw", "b"): [1, 2, 3, 4, 5]})
+    b.attrs["units"] = {"raw": {"b": "meter"}}
+    ret = combine_tables(a, b)
+    assert ("raw", "a") in ret.columns
+    assert ("raw", "b") in ret.columns
+    print(f"{ret.attrs=}")
+    assert ret.attrs["units"]["raw"]["a"] == "meter"
+    assert ret.attrs["units"]["raw"]["b"] == "meter"

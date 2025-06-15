@@ -97,7 +97,6 @@ def run(path: str, patch: str = None) -> tuple[dict, dict]:
         if saveas in tables:
             temp = combine_tables(tables[saveas], newdf)
             temp.attrs = tables[saveas].attrs
-            temp.attrs["units"].update(newdf.attrs["units"])
             tables[saveas] = temp
         else:
             tables[saveas] = newdf
