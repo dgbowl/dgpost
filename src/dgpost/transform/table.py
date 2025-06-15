@@ -27,7 +27,12 @@ columns or namespaces.
 import pint
 import pandas as pd
 import numpy as np
-from dgpost.utils.helpers import load_data, separate_data, columns_to_smiles
+from dgpost.utils.helpers import (
+    load_data,
+    separate_data,
+    columns_to_smiles,
+    kwarg_to_quantity,
+)
 from collections import defaultdict
 from typing import Iterable, Union
 from uncertainties import UFloat, unumpy as unp
@@ -258,6 +263,7 @@ def set_uncertainty(
     ("namespace", None, dict),
     ("column", None),
 )
+@kwarg_to_quantity("slope", "intercept")
 def apply_linear(
     namespace: dict[str, pint.Quantity] = None,
     column: pint.Quantity = None,
@@ -307,6 +313,9 @@ def apply_linear(
         slope: Union[pint.Quantity, float],
         intercept: Union[pint.Quantity, float],
     ) -> Union[pint.Quantity, float]:
+        if isinstance(x, pint.Quantity) and isinstance(intercept, float):
+            intercept = pint.Quantity(intercept, (slope * x).units)
+        print(f"{slope=} {x=} {intercept=}")
         y = slope * x + intercept
         return y
 
@@ -315,7 +324,10 @@ def apply_linear(
     if column is not None:
         if isinstance(column, list):
             column = np.asarray(column)
-        outk.append(_inp.get("column", output))
+        if output is not None:
+            outk.append(output)
+        else:
+            outk.append(_inp.get("column", "output"))
         outv.append(linear(column, slope, intercept))
 
     elif namespace is not None:
@@ -335,6 +347,7 @@ def apply_linear(
     ("namespace", None, dict),
     ("column", None),
 )
+@kwarg_to_quantity("slope", "intercept")
 def apply_inverse(
     namespace: dict[str, pint.Quantity] = None,
     column: pint.Quantity = None,
@@ -381,9 +394,11 @@ def apply_inverse(
 
     def inverse(
         y: Union[pint.Quantity, float],
-        slope: Union[pint.Quantity, float],
-        intercept: Union[pint.Quantity, float],
+        slope: Union[pint.Quantity, float, str],
+        intercept: Union[pint.Quantity, float, str],
     ) -> Union[pint.Quantity, float]:
+        if isinstance(y, pint.Quantity) and isinstance(intercept, float):
+            intercept = pint.Quantity(intercept, y.units)
         x = (y - intercept) / slope
         return x
 

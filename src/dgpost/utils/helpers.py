@@ -454,11 +454,12 @@ def kwarg_to_quantity(*kws: str):
     A decorator to convert kwargs passed as :class:`str` into transform functions into
     :class:`pint.Quantities`.
     """
+
     def outer(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             for key in kws:
-                val = kwargs.pop(key, None)
+                val = kwargs.get(key)
                 if isinstance(val, str):
                     kwargs[key] = ureg.Quantity(val)
             return func(*args, **kwargs)
