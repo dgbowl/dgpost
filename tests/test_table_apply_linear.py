@@ -39,14 +39,14 @@ from dgpost.transform import table
         ),
         (
             pint.Quantity([10, 12, 10], "second"),
-            pint.Quantity("0.5 meter/second"),
-            pint.Quantity("0.0(5) meter"),
+            "0.5 meter/second",
+            "0.0(5) meter",
             "output",
             pint.Quantity(uarray([5.0, 6.0, 5.0], [0.5, 0.5, 0.5]), "meter"),
         ),
         (
             pint.Quantity([10, 12, 10], "second"),
-            pint.Quantity("1.00+/-0.01 meter/second"),
+            "1.00+/-0.01 meter/second",
             0.0,
             "output",
             pint.Quantity(uarray([10.0, 12.0, 10.0], [0.1, 0.12, 0.1]), "meter"),
@@ -88,8 +88,8 @@ def test_table_apply_linear_namespace():
         ),
         (
             pint.Quantity([10.1, 12.1, 10.1], "meter"),
-            pint.Quantity("0.5 meter/second"),
-            pint.Quantity("0.1 meter"),
+            "0.5 meter/second",
+            "0.1 meter",
             "test",
             pint.Quantity([20, 24, 20], "second"),
         ),
