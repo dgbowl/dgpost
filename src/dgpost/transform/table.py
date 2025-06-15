@@ -269,7 +269,7 @@ def apply_linear(
     """
     Allows for applying linear functions / corrections to columns and namespaces.
 
-    Given the linear formula, :math:`y = m \times x + c`, this function returns :math:`y`
+    Given the linear formula, :math:`y = m \\times x + c`, this function returns :math:`y`
     calculated from the input, where :math:`m` is the provided ``slope`` and :math:`c`
     is the provided ``intercept``.
 
@@ -346,7 +346,7 @@ def apply_inverse(
     """
     Allows for applying inverse linear functions / corrections to columns and namespaces.
 
-    Given the linear formula, :math:`y = m \times x + c`, this function returns :math:`x`,
+    Given the linear formula, :math:`y = m \\times x + c`, this function returns :math:`x`,
     calculated from the input, i.e. :math:`x = (y - c) / m`,  where :math:`m` is the
     provided ``slope`` and :math:`c` is the provided ``intercept``.
 
