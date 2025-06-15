@@ -278,12 +278,14 @@ def set_uncertainty(
     ("namespace", None, dict),
     ("column", None),
 )
-@kwarg_to_quantity("slope", "intercept")
+@kwarg_to_quantity("slope", "intercept", "minimum", "maximum")
 def apply_linear(
     namespace: dict[str, pint.Quantity] = None,
     column: pint.Quantity = None,
     slope: Union[pint.Quantity, float] = None,
     intercept: Union[pint.Quantity, float] = None,
+    minimum: Union[pint.Quantity, float] = None,
+    maximum: Union[pint.Quantity, float] = None,
     output: str = "output",
     _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
@@ -318,6 +320,14 @@ def apply_linear(
     intercept
         The intercept :math:`c`.
 
+    minimum
+        The minimum of the returned value. If the calculate value is below the minimum,
+        the minimum is returned.
+
+    maximum
+        The maximum of the returned value. If the calculate value is above the maximum,
+        the maximum is returned.
+
     output
         Name of the output column or the namespace of the output columns.
 
@@ -327,11 +337,16 @@ def apply_linear(
         x: Union[pint.Quantity, float],
         slope: Union[pint.Quantity, float],
         intercept: Union[pint.Quantity, float],
+        minimum: Union[pint.Quantity, float] = None,
+        maximum: Union[pint.Quantity, float] = None,
     ) -> Union[pint.Quantity, float]:
         if isinstance(x, pint.Quantity) and isinstance(intercept, float):
             intercept = pint.Quantity(intercept, (slope * x).units)
-        print(f"{slope=} {x=} {intercept=}")
         y = slope * x + intercept
+        if maximum is not None:
+            y = np.where(y > maximum, maximum, y)
+        if minimum is not None:
+            y = np.where(y < minimum, minimum, y)
         return y
 
     outk = []
@@ -343,14 +358,17 @@ def apply_linear(
             outk.append(output)
         else:
             outk.append(_inp.get("column", "output"))
-        outv.append(linear(column, slope, intercept))
+        outv.append(linear(column, slope, intercept, minimum, maximum))
 
     elif namespace is not None:
-        for key, vals in namespace.items():
-            if isinstance(vals, list):
-                vals = np.asarray(vals)
-            outk.append(_inp.get("namespace", output) + f"->{key}")
-            outv.append(linear(vals, slope, intercept))
+        for key, column in namespace.items():
+            if isinstance(column, list):
+                column = np.asarray(column)
+            if output is not None:
+                outk.append(f"{output}->{key}")
+            else:
+                outk.append(_inp.get("namespace", "output") + f"->{key}")
+            outv.append(linear(column, slope, intercept, minimum, maximum))
 
     ret = {}
     for k, v in zip(outk, outv):
@@ -362,12 +380,14 @@ def apply_linear(
     ("namespace", None, dict),
     ("column", None),
 )
-@kwarg_to_quantity("slope", "intercept")
+@kwarg_to_quantity("slope", "intercept", "minimum", "maximum")
 def apply_inverse(
     namespace: dict[str, pint.Quantity] = None,
     column: pint.Quantity = None,
     slope: Union[pint.Quantity, float] = None,
     intercept: Union[pint.Quantity, float] = None,
+    minimum: Union[pint.Quantity, float] = None,
+    maximum: Union[pint.Quantity, float] = None,
     output: str = "output",
     _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
@@ -402,6 +422,14 @@ def apply_inverse(
     intercept
         The intercept :math:`c`.
 
+    minimum
+        The minimum of the returned value. If the calculate value is below the minimum,
+        the minimum is returned.
+
+    maximum
+        The maximum of the returned value. If the calculate value is above the maximum,
+        the maximum is returned.
+
     output
         Name of the output column or the namespace of the output columns.
 
@@ -409,12 +437,18 @@ def apply_inverse(
 
     def inverse(
         y: Union[pint.Quantity, float],
-        slope: Union[pint.Quantity, float, str],
-        intercept: Union[pint.Quantity, float, str],
+        slope: Union[pint.Quantity, float],
+        intercept: Union[pint.Quantity, float],
+        minimum: Union[pint.Quantity, float] = None,
+        maximum: Union[pint.Quantity, float] = None,
     ) -> Union[pint.Quantity, float]:
         if isinstance(y, pint.Quantity) and isinstance(intercept, float):
             intercept = pint.Quantity(intercept, y.units)
         x = (y - intercept) / slope
+        if maximum is not None:
+            x = np.where(x > maximum, maximum, x)
+        if minimum is not None:
+            x = np.where(x < minimum, minimum, x)
         return x
 
     outk = []
@@ -422,14 +456,21 @@ def apply_inverse(
     if column is not None:
         if isinstance(column, list):
             column = np.asarray(column)
-        outk.append(_inp.get("column", output))
-        outv.append(inverse(column, slope, intercept))
+        if output is not None:
+            outk.append(output)
+        else:
+            outk.append(_inp.get("column", "output"))
+        outv.append(inverse(column, slope, intercept, minimum, maximum))
 
     elif namespace is not None:
-        for key, vals in namespace.items():
-            outk.append(_inp.get("namespace", output) + f"->{key}")
-            outv.append(inverse(vals, slope, intercept))
-
+        for key, column in namespace.items():
+            if isinstance(column, list):
+                column = np.asarray(column)
+            if output is not None:
+                outk.append(f"{output}->{key}")
+            else:
+                outk.append(_inp.get("namespace", "output") + f"->{key}")
+            outv.append(inverse(column, slope, intercept, minimum, maximum))
     ret = {}
     for k, v in zip(outk, outv):
         ret[k] = v
