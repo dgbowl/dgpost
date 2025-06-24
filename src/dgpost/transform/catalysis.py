@@ -208,7 +208,7 @@ def conversion(
             standard,
         )
         sd = smiles[name_to_chem(standard).smiles]
-        temp  = np.where(out[sd["out"]] > 0, out[sd["out"]], np.nan)
+        temp = np.where(out[sd["out"]] > 0, out[sd["out"]], np.nan)
         exp = inp[sd["inp"]] / temp
 
     # reactant-based conversion
