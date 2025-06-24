@@ -264,4 +264,3 @@ def test_catalysis_conversion_nan(datadir):
         np.array([0.050163, np.nan, np.nan, 0.105459, 0.101619, 0.099789]),
         equal_nan=True,
     )
-
