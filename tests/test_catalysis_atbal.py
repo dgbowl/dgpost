@@ -107,3 +107,14 @@ def test_catalysis_atbal_rinxin(datadir):
     assert np.allclose(df["C2"], pd.DataFrame([1.0, 1.0, 0.995, 1.005, 1.01, 0.99]))
     assert np.allclose(df["O1"], pd.DataFrame([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))
     assert np.allclose(df["O2"], pd.DataFrame([1.0, 1.0, 0.95, 1.05, 1.0, 1.0]))
+
+
+def test_catalysis_atbal_nan(datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle("rinxin.nan.pkl")
+    df = catalysis.atom_balance(df, xin="xin", xout="xout", element="C", output="C1")
+    assert np.allclose(
+        df["C1"],
+        pd.DataFrame([1.0, np.nan, np.nan, 1.005, 1.01, 0.99]),
+        equal_nan=True,
+    )

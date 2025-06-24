@@ -217,7 +217,8 @@ def conversion(
         assert "out" in fd, f"Feedstock '{feedstock}' not in outlet."
         logger.debug("Calculating reactant-based conversion.")
         dfsm = inp[fd["inp"]] - out[fd["out"]] * exp
-        Xr = dfsm / inp[fd["inp"]]
+        f_in = np.where(inp[fd["inp"]] > 0, inp[fd["inp"]], np.nan)
+        Xr = dfsm / f_in
         tag = f"{'Xr' if output is None else output}->{feedstock}"
         ret = {tag: Xr}
 
