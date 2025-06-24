@@ -129,6 +129,47 @@ def combine_namespaces(
     return out
 
 
+
+@load_data(
+    ("namespace", None, dict),
+)
+def sum_namespace(
+    namespace: dict[str, pint.Quantity],
+    output: str = "output",
+    fillnan: bool = True,
+    _inp: dict = {},
+) -> dict[str, pint.Quantity]:
+    """
+    Sums all entries within the provided namespace into one column, defined by ``output``.
+
+    Parameters
+    ----------
+    namespace
+        Namespace to be summed.
+
+    fillnan
+        Toggle whether ``NaN`` values within the columns ought to be treated as
+        zeroes or as ``NaN``. Default is ``True``.
+
+    output
+        Namespace of the returned dictionary. Defaults to ``output``.
+
+    """
+    ret = None
+
+    for v in namespace.values():
+        if fillnan:
+            if isinstance(v.m, Iterable):
+                v = np.where(pd.isna(v.m), 0.0, v)
+            else:
+                v = ureg.Quantity(0, v.u) if pd.isna(v.m) else v
+        if ret is None:
+            ret = v
+        else:
+            ret += v
+    return {output: ret}
+
+
 @load_data(
     ("a", None),
     ("b", None),
@@ -344,9 +385,9 @@ def apply_linear(
             intercept = pint.Quantity(intercept, (slope * x).units)
         y = slope * x + intercept
         if maximum is not None:
-            y = np.where(y > maximum, maximum, y)
+            y = np.where(y > maximum, np.nan, y)
         if minimum is not None:
-            y = np.where(y < minimum, minimum, y)
+            y = np.where(y < minimum, np.nan, y)
         return y
 
     outk = []
@@ -446,9 +487,9 @@ def apply_inverse(
             intercept = pint.Quantity(intercept, y.units)
         x = (y - intercept) / slope
         if maximum is not None:
-            x = np.where(x > maximum, maximum, x)
+            x = np.where(x > maximum, np.nan, x)
         if minimum is not None:
-            x = np.where(x < minimum, minimum, x)
+            x = np.where(x < minimum, np.nan, x)
         return x
 
     outk = []
