@@ -191,3 +191,38 @@ def batch_to_molar(
             r = np.insert(r, 0, r0)
         ret[f"{output}->{k}"] = r.to_base_units()
     return ret
+
+
+@load_data(
+    ("total", "m³/s"),
+    ("vdot", "m³/s", dict),
+)
+def flow_to_fraction(
+    total: pint.Quantity,
+    vdot: dict[str, pint.Quantity] = None,
+    output: str = "x",
+    _inp: dict = {},
+) -> dict[str, pint.Quantity]:
+    """
+    Calculates the volume fractions of components in the provided namespace ``vdot``,
+    given the total flow in ``total``.
+
+    Parameters
+    ----------
+    total
+        The total flow, by default in m³/s. Negative or zero values are ignored.
+
+    vdot
+        The dictionary containing flows of all species/components. By default in m³/s.
+
+    output
+        Prefix of the output namespace. Defaults to "x" for mole fraction.
+
+    """
+    ret = {}
+    temp = np.where(total > 0, total, np.nan)
+    for k, v in vdot.items():
+        if _inp["total"] == f"{_inp['vdot']}->{k}":
+            continue
+        ret[f"{output}->{k}"] = v / temp
+    return ret
