@@ -235,3 +235,32 @@ def test_catalysis_conversion_rinxin(datadir):
             np.array([0.05, 0.1, 0.095, 0.105, 0.101, 0.099]),
             atol=1e-6,
         ), f"Failed calculating {col}."
+
+
+def test_catalysis_conversion_nan(datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle("rinxin.nan.pkl")
+    df = catalysis.conversion(
+        df, feedstock="CH4", xin="xin", xout="xout", type="reactant", output="Xr1"
+    )
+    df = catalysis.conversion(
+        df, feedstock="CH4", xin="xin", xout="xout", type="product", output="Xp1"
+    )
+    df = catalysis.conversion(
+        df, feedstock="CH4", xin="xin", xout="xout", type="mixed", output="Xm1"
+    )
+    assert np.allclose(
+        df["Xr1"]["CH4"],
+        np.array([0.05, np.nan, np.nan, 0.1, 0.091, 0.109]),
+        equal_nan=True,
+    )
+    assert np.allclose(
+        df["Xp1"]["CH4"],
+        np.array([0.05, np.nan, np.nan, 0.104478, 0.1, 0.1]),
+        equal_nan=True,
+    )
+    assert np.allclose(
+        df["Xm1"]["CH4"],
+        np.array([0.050163, np.nan, np.nan, 0.105459, 0.101619, 0.099789]),
+        equal_nan=True,
+    )

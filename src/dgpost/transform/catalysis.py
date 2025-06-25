@@ -208,7 +208,8 @@ def conversion(
             standard,
         )
         sd = smiles[name_to_chem(standard).smiles]
-        exp = inp[sd["inp"]] / out[sd["out"]]
+        temp = np.where(out[sd["out"]] > 0, out[sd["out"]], np.nan)
+        exp = inp[sd["inp"]] / temp
 
     # reactant-based conversion
     if type == "reactant":
@@ -216,7 +217,8 @@ def conversion(
         assert "out" in fd, f"Feedstock '{feedstock}' not in outlet."
         logger.debug("Calculating reactant-based conversion.")
         dfsm = inp[fd["inp"]] - out[fd["out"]] * exp
-        Xr = dfsm / inp[fd["inp"]]
+        f_in = np.where(inp[fd["inp"]] > 0, inp[fd["inp"]], np.nan)
+        Xr = dfsm / f_in
         tag = f"{'Xr' if output is None else output}->{feedstock}"
         ret = {tag: Xr}
 
@@ -224,6 +226,7 @@ def conversion(
     else:
         assert "inp" in fd, f"Feedstock '{feedstock}' not in inlet."
         f_in = inp[fd["inp"]] * element_from_formula(fform, element)
+        f_in = np.where(f_in > 0, f_in, np.nan)
         nat_out = f_in * 0.0
 
         if "out" in fd:
@@ -241,6 +244,7 @@ def conversion(
                 nat_out += dnat
         if type == "product":
             logger.debug("Calculating product-based conversion using reactant outlet.")
+            nat_out = np.where(nat_out > 0, nat_out, np.nan)
             Xp = (nat_out - f_out) / nat_out
             prefix = f"Xp_{element}" if output is None else output
         elif type == "mixed":
@@ -342,6 +346,8 @@ def selectivity(
                 nat_out = dnat
             else:
                 nat_out += dnat
+
+    nat_out = np.where(nat_out > 0, nat_out, np.nan)
     ret = {}
     for k, v in smiles.items():
         if k != fsmi and "out" in v:
@@ -537,6 +543,8 @@ def atom_balance(
         if "out" in v:
             dout = exp * out[v["out"]] * element_from_formula(formula, element)
             nat_out = dout if nat_out is None else nat_out + dout
+
+    nat_in = np.where(nat_in > 0, nat_in, np.nan)
     dnat = nat_in - nat_out
     atbal = 1 - dnat / nat_in
     tag = f"atbal_{element}" if output is None else output
