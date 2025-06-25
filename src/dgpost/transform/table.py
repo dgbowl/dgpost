@@ -54,10 +54,12 @@ def combine_namespaces(
     _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
     """
-    Combines two namespaces into one. Unit checks are performed, with the resulting
-    units corresponding to the units in namespace ``a``. By default, the output
-    namespace is set to ``a``. Optionally, the keys in each namespace can be treated
-    as chemicals.
+    Combines two namespaces into one, either summing or merging entries.
+
+    Unit checks are performed, with the resulting units corresponding to the units in
+    namespace ``a``. By default, the output namespace is set to ``a``. Optionally, the
+    keys in each namespace can be treated as chemicals instead of strings (i.e. "C2H6"
+    and "ethane" would be summed / merged).
 
     Parameters
     ----------
@@ -134,14 +136,16 @@ def combine_namespaces(
 def combine_columns(
     a: pint.Quantity,
     b: pint.Quantity,
+    conflicts: str = "sum",
     fillnan: bool = True,
     output: str = None,
     _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
     """
-    Combines two columns into one. Unit checks are performed, with the resulting
-    units corresponding to the units in column ``a``. By default, the output
-    column is set to ``a``.
+    Combines two columns into one, by summing or replacing missing elements.
+
+    Unit checks are performed, with the resulting units corresponding to the units in
+    column ``a``. By default, the output column is set to ``a``.
 
     Parameters
     ----------
@@ -151,9 +155,15 @@ def combine_columns(
     b
         Column ``b``.
 
+    conflicts
+        Conflict resolution scheme. Can be either ``"sum"`` where the two columns are
+        summed, or ``"replace"``, where values in column ``a`` are overwritten by
+        non-``np.nan`` values in column ``b``.
+
     fillnan
         Toggle whether ``NaN`` values within the columns ought to be treated as
-        zeroes or as ``NaN``. Default is ``True``.
+        zeroes or as ``NaN``. Default is ``True``. Note that ``conflicts="replace"`` and
+        ``fillnan="true"`` will lead to all ``NaN``s in column ``a`` to be set to zero.
 
     output
         Namespace of the returned dictionary. By defaults to the name of column ``a``.
@@ -174,7 +184,12 @@ def combine_columns(
     if fillnan:
         a = fillnans(a)
         b = fillnans(b)
-    ret = a + b
+    if conflicts == "sum":
+        ret = a + b
+    elif conflicts == "replace":
+        ret = np.where(np.isnan(b), a, b)
+    else:
+        raise ValueError(f"Unknown value of 'conflicts': {conflicts}")
 
     if output is None:
         output = _inp.get("a", "c")
