@@ -52,18 +52,18 @@ from dgpost.transform import table
             pint.Quantity(uarray([10.0, 12.0, 10.0], [0.1, 0.12, 0.1]), "meter"),
         ),
         (
-            pint.Quantity([10, np.nan, np.inf], "second"),
+            pint.Quantity([10, np.nan, np.inf, 0.0], "second"),
             "1.50 meter/second",
             "0.0 meter",
             "output",
-            pint.Quantity([15.0, np.nan, np.inf], "meter"),
+            pint.Quantity([15.0, np.nan, np.inf, np.nan], "meter"),
         ),
         (
-            pint.Quantity([10, np.nan, np.inf], "second"),
+            pint.Quantity([10, np.nan, np.inf, 0.0], "second"),
             "1.50 meter/second",
             "0.0(5) meter",
             "output",
-            pint.Quantity(uarray([15.0, np.nan, np.inf], [0.5, 0.5, 0.5]), "meter"),
+            pint.Quantity(uarray([15.0, np.nan, np.inf, np.nan], [0.5] * 4), "meter"),
         ),
     ],
 )
@@ -85,20 +85,31 @@ def test_table_apply_linear_namespace():
 
 def test_table_apply_linear_minmax():
     ret = table.apply_linear(
-        column=pint.Quantity([0.1, 0.5, 1.0]),
+        column=pint.Quantity([0.0, 0.1, 0.5, 1.0]),
         slope=2.0,
         intercept=-0.5,
         minimum=0.0,
+        nonzero_only=True,
     )
-    assert np.allclose(ret["output"], pint.Quantity([0, 0.5, 1.5]), atol=0, rtol=0)
+    assert np.allclose(
+        ret["output"],
+        pint.Quantity([np.nan, 0, 0.5, 1.5]),
+        atol=0,
+        rtol=0,
+        equal_nan=True,
+    )
 
     ret = table.apply_linear(
-        column=pint.Quantity([0.1, 0.5, 1.0], "meter"),
+        column=pint.Quantity([0.0, 0.1, 0.5, 1.0], "meter"),
         slope=2.0,
         intercept="0.5 centimeter",
         maximum="2 meter",
+        nonzero_only=False,
     )
-    assert np.allclose(ret["output"], pint.Quantity([0.205, 1.005, 2.0], "meter"))
+    assert np.allclose(
+        ret["output"],
+        pint.Quantity([0.005, 0.205, 1.005, 2.0], "meter"),
+    )
 
     ret = table.apply_linear(
         column=pint.Quantity(uarray([0.1, 0.5, 1.0], [0.1, 0.1, 0.1]), "meter"),
@@ -152,6 +163,7 @@ def test_table_apply_inverse_namespace():
     x = {"ns->a": [4.5, 5.0, 5.5], "ns->b": 2.5}
     for k, v in ret.items():
         assert np.allclose(ret[k], x[k])
+
 
 def test_table_apply_inverse_minmax():
     ret = table.apply_inverse(
