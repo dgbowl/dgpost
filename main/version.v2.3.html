@@ -67,6 +67,7 @@
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.complex.html"><strong>complex</strong>: utilities for handling complex numbers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.mixtures.html"><strong>mixtures</strong>: converting representations of mixtures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.reflection.html"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="apidoc/dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
@@ -113,12 +114,19 @@
              
   <section id="dgpost-v2-3">
 <h1><strong>dgpost</strong>-v2.3<a class="headerlink" href="#dgpost-v2-3" title="Link to this heading"></a></h1>
+<a class="reference external image-reference" href="https://github.com/dgbowl/dgpost/tree/2.3"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.3&amp;color=blue&amp;logo=github" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.3&amp;color=blue&amp;logo=github" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/dgpost/2.3/"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.3&amp;color=blue&amp;logo=pypi" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.3&amp;color=blue&amp;logo=pypi" /></a>
+<img alt="https://img.shields.io/static/v1?label=release%20date&amp;message=2025-06-29&amp;color=red&amp;logo=pypi" src="https://img.shields.io/static/v1?label=release%20date&amp;message=2025-06-29&amp;color=red&amp;logo=pypi" />
 <p><em>Section author: Peter Kraus</em></p>
 <p>Developed in the <a class="reference external" href="https://tu.berlin/en/concat">ConCat lab</a> at Technische Universität Berlin.</p>
 <p>An update to <code class="docutils literal notranslate"><span class="pre">dgpost-2.2</span></code>, including the following changes:</p>
 <ul class="simple">
 <li><p>Added the <a class="reference internal" href="apidoc/dgpost.transform.complex.html#module-dgpost.transform.complex" title="dgpost.transform.complex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">complex</span></code></a> module for converting complex numbers between their polar and rectangular forms.</p></li>
+<li><p>Added the <a class="reference internal" href="apidoc/dgpost.transform.mixtures.html#module-dgpost.transform.mixtures" title="dgpost.transform.mixtures"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mixtures</span></code></a> module for converting between different representation of mixtures.</p></li>
 <li><p>Added the <a class="reference internal" href="apidoc/dgpost.transform.table.html#dgpost.transform.table.apply_linear" title="dgpost.transform.table.apply_linear"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_linear()</span></code></a> and <a class="reference internal" href="apidoc/dgpost.transform.table.html#dgpost.transform.table.apply_inverse" title="dgpost.transform.table.apply_inverse"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_inverse()</span></code></a> functions to allow application of calibrations or scaling factors to columns / namespaces.</p></li>
+<li><p>Added the <a class="reference internal" href="apidoc/dgpost.transform.table.html#dgpost.transform.table.sum_namespace" title="dgpost.transform.table.sum_namespace"><code class="xref py py-func docutils literal notranslate"><span class="pre">sum_namespace()</span></code></a> function to provide a way to sum namespaces into a single column.</p></li>
+<li><p>Bug fixes to many division-by-zero bugs in the <a class="reference internal" href="apidoc/dgpost.transform.catalysis.html#module-dgpost.transform.catalysis" title="dgpost.transform.catalysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">catalysis</span></code></a> module.</p></li>
+<li><p>Bug fix in <a class="reference internal" href="apidoc/dgpost.transform.electrochemistry.html#dgpost.transform.electrochemistry.fe" title="dgpost.transform.electrochemistry.fe"><code class="xref py py-func docutils literal notranslate"><span class="pre">fe()</span></code></a> to count electrons properly when using charged species.</p></li>
 </ul>
 <p><em>Code author: Ueli Sauter,
 Peter Kraus</em></p>
