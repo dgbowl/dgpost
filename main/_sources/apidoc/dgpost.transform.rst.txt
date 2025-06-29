@@ -25,6 +25,7 @@ Submodules
    dgpost.transform.complex
    dgpost.transform.electrochemistry
    dgpost.transform.impedance
+   dgpost.transform.mixtures
    dgpost.transform.rates
    dgpost.transform.reflection
    dgpost.transform.table
