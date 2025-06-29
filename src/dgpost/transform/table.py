@@ -15,6 +15,7 @@ columns or namespaces.
 
 .. autosummary::
 
+    sum_namespace
     combine_namespaces
     combine_columns
     set_uncertainty
@@ -38,6 +39,43 @@ from typing import Union
 from uncertainties import unumpy as unp
 
 ureg = pint.get_application_registry()
+
+
+@load_data(
+    ("namespace", None, dict),
+)
+def sum_namespace(
+    namespace: dict[str, pint.Quantity],
+    output: str = "output",
+    fillnan: bool = True,
+    _inp: dict = {},
+) -> dict[str, pint.Quantity]:
+    """
+    Sums all entries within the provided namespace into one column, defined by ``output``.
+
+    Parameters
+    ----------
+    namespace
+        Namespace to be summed.
+
+    fillnan
+        Toggle whether ``NaN`` values within the columns ought to be treated as zeroes
+        (when ``True``) or as ``NaN``. Default is ``True``.
+
+    output
+        Namespace of the returned dictionary. Defaults to ``output``.
+
+    """
+    ret = None
+
+    for v in namespace.values():
+        if fillnan:
+            v = fill_nans(v, fillmag=0.0)
+        if ret is None:
+            ret = v
+        else:
+            ret += v
+    return {output: ret}
 
 
 @load_data(
@@ -128,43 +166,6 @@ def combine_namespaces(
     for k, v in ret.items():
         out[f"{output}->{k}"] = v
     return out
-
-
-@load_data(
-    ("namespace", None, dict),
-)
-def sum_namespace(
-    namespace: dict[str, pint.Quantity],
-    output: str = "output",
-    fillnan: bool = True,
-    _inp: dict = {},
-) -> dict[str, pint.Quantity]:
-    """
-    Sums all entries within the provided namespace into one column, defined by ``output``.
-
-    Parameters
-    ----------
-    namespace
-        Namespace to be summed.
-
-    fillnan
-        Toggle whether ``NaN`` values within the columns ought to be treated as zeroes
-        (when ``True``) or as ``NaN``. Default is ``True``.
-
-    output
-        Namespace of the returned dictionary. Defaults to ``output``.
-
-    """
-    ret = None
-
-    for v in namespace.values():
-        if fillnan:
-            v = fill_nans(v, fillmag=0.0)
-        if ret is None:
-            ret = v
-        else:
-            ret += v
-    return {output: ret}
 
 
 @load_data(
