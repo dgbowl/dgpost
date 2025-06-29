@@ -529,7 +529,8 @@ def atom_balance(
 
     if rin is None:
         sd = smiles[name_to_chem(standard).smiles]
-        exp = inp[sd["inp"]] / out[sd["out"]]
+        temp = np.where(out[sd["out"]] > 0, out[sd["out"]], np.nan)
+        exp = inp[sd["inp"]] / temp
     else:
         exp = 1.0
 
