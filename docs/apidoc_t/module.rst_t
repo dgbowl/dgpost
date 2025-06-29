@@ -10,6 +10,8 @@
 {{- "**electrochemistry**: calculations relevant in electrochemistry" | heading }}
 {% elif 'dgpost.transform.impedance' == basename %}
 {{- "**impedance**: fitting electrochemical impedance spectra" | heading }}
+{% elif 'dgpost.transform.mixtures' == basename %}
+{{- "**mixtures**: converting representations of mixtures" | heading }}
 {% elif 'dgpost.transform.rates' == basename %}
 {{- "**rates**: determining molar rates of chemical species" | heading }}
 {% elif 'dgpost.transform.reflection' == basename %}
