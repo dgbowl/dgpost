@@ -65,23 +65,23 @@ def fractions_to_flows(
     total: pint.Quantity,
     x: dict[str, pint.Quantity] = None,
     fillnan: bool = True,
-    output: str = "x",
+    output: str = "vdot",
     _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
     """
-    Calculates the volume fractions of components in the provided namespace ``vdot``,
-    given the total flow in ``total``.
+    Calculates the partial flow rates in the mixture given mole fractions in the provided
+    namespace ``x`` and the total flow in ``total``.
 
     Parameters
     ----------
     total
         The total flow, by default in m³/s. Negative or zero values are ignored.
 
-    vdot
-        The dictionary containing flows of all species/components. By default in m³/s.
+    x
+        The dictionary containing mole fractions of all species/components.
 
     output
-        Prefix of the output namespace. Defaults to "x" for mole fraction.
+        Prefix of the output namespace. Defaults to "vdot" for flow rates.
 
     """
     ret = {}
