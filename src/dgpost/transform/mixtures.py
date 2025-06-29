@@ -21,6 +21,7 @@ from dgpost.utils.helpers import load_data, fill_nans
 
 ureg = pint.get_application_registry()
 
+
 @load_data(
     ("total", "m³/s"),
     ("vdot", "m³/s", dict),
