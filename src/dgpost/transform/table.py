@@ -398,7 +398,7 @@ def apply_linear(
 
     elif namespace is not None:
         for key, col in namespace.items():
-            if isinstance(column, list):
+            if isinstance(col, list):
                 col = np.asarray(col)
             if output is not None:
                 outk.append(f"{output}->{key}")
@@ -491,9 +491,9 @@ def apply_inverse(
 
         x = (y - intercept) / slope
         if maximum is not None:
-            x = np.where(x > maximum, np.nan, x)
+            x = np.where(x > maximum, maximum, x)
         if minimum is not None:
-            x = np.where(x < minimum, np.nan, x)
+            x = np.where(x < minimum, minimum, x)
         return x
 
     outk = []
@@ -509,7 +509,7 @@ def apply_inverse(
 
     elif namespace is not None:
         for key, col in namespace.items():
-            if isinstance(column, list):
+            if isinstance(col, list):
                 col = np.asarray(col)
             if output is not None:
                 outk.append(f"{output}->{key}")
