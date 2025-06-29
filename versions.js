@@ -4,6 +4,7 @@ document.write('\
 <dl>\
     <dt>Versions</dt> \
     <dd><a href="../main/' + page + '">main</a></dd>\
+    <dd><a href="../2.3/' + page + '">2.3</a></dd>\
     <dd><a href="../2.2/' + page + '">2.2</a></dd>\
     <dd><a href="../2.1/' + page + '">2.1</a></dd>\
     <dd><a href="../2.0/' + page + '">2.0</a></dd>\

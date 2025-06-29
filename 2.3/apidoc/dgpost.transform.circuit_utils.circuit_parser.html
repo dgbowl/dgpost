@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dgpost.transform.circuit_utils.circuit_parser &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dgpost.utils package" href="dgpost.utils.html" />
+    <link rel="prev" title="dgpost.transform.circuit_utils.circuit_components" href="dgpost.transform.circuit_utils.circuit_components.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dgpost
+              <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.chromatography.html"><strong>chromatography</strong>: chromatographic trace postprocessing library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.complex.html"><strong>complex</strong>: utilities for handling complex numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.mixtures.html"><strong>mixtures</strong>: converting representations of mixtures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.reflection.html"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dgpost.html#dgpost.run_with_arguments"><code class="docutils literal notranslate"><span class="pre">run_with_arguments()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.html#dgpost.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="dgpost.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dgpost.transform.html">dgpost.transform package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dgpost.transform.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dgpost.transform.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dgpost.utils.html">dgpost.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dgpost.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
+          <li class="breadcrumb-item"><a href="dgpost.transform.html">dgpost.transform package</a></li>
+          <li class="breadcrumb-item"><a href="dgpost.transform.circuit_utils.html">dgpost.transform.circuit_utils package</a></li>
+      <li class="breadcrumb-item active">dgpost.transform.circuit_utils.circuit_parser</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.transform.circuit_utils.circuit_parser.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dgpost-transform-circuit-utils-circuit-parser">
+<span id="module-dgpost.transform.circuit_utils.circuit_parser"></span><h1>dgpost.transform.circuit_utils.circuit_parser<a class="headerlink" href="#dgpost-transform-circuit-utils-circuit-parser" title="Link to this heading"></a></h1>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_parser.parse_circuit">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_parser.</span></span><span class="sig-name descname"><span class="pre">parse_circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_parser.parse_circuit" title="Link to this definition"></a></dt>
+<dd><p>Extended Backus–Naur form (EBNF) parser for a circuit string.</p>
+<p>Implements an extended Backus–Naur form (EBNF) to parse a string containing a description of a circuit.</p>
+<dl class="simple">
+<dt>The syntax of the EBNF is given by:</dt><dd><ul class="simple">
+<li><p>circuit = element | element-circuit</p></li>
+<li><p>element = component | parallel</p></li>
+<li><p>parallel = p(circuit {,circuit})</p></li>
+<li><p>component = a circuit component defined in <code class="docutils literal notranslate"><span class="pre">circuit_components</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>So to put elements in series connect them through ‘-’
+Parallel elements are created by p(…,… ,…)</p>
+<p>To use a component in the circuit string use its symbol. The symbol can be followed by a digit to differentiate similar components.
+Already implemented circuit elements are located in <code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform.circuit_utils.circuit_components.py</span></code>.</p>
+<p>From this a function is generated and which evaluates the impedance of the circuit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>circ</strong> – String describing a circuit</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>param_info</em> – list of used parameter. For more information about parameters look in <code class="docutils literal notranslate"><span class="pre">circuit_components</span></code></p></li>
+<li><p><em>calculate</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.circuit_utils.circuit_parser.fit_routine">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.circuit_utils.circuit_parser.</span></span><span class="sig-name descname"><span class="pre">fit_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_guess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dgpost.transform.circuit_utils.circuit_parser.fit_routine" title="Link to this definition"></a></dt>
+<dd><p>Fitting routine which uses scipy least_squares and minimize.</p>
+<p>Least_squares is a good fitting method but will get stuck in local minima.
+For this reason, the Nelder-Mead-Simplex algorithm is used to get out of these local minima.
+The fitting routine is inspired by Relaxis 3 fitting procedure.
+More information about it can be found on page 188 of revision 1.25 of Relaxis User Manual.
+<a class="reference external" href="https://www.rhd-instruments.de/download/manuals/relaxis_manual.pdf">https://www.rhd-instruments.de/download/manuals/relaxis_manual.pdf</a></p>
+<p>Open issue is estimate the errors of the parameters. For further information look:
+- <a class="reference external" href="https://github.com/andsor/notebooks/blob/master/src/nelder-mead.md">https://github.com/andsor/notebooks/blob/master/src/nelder-mead.md</a>
+- <a class="reference external" href="https://math.stackexchange.com/questions/2447382/nelder-mead-function-fit-error-estimation-via-surface-fit">https://math.stackexchange.com/questions/2447382/nelder-mead-function-fit-error-estimation-via-surface-fit</a>
+- <a class="reference external" href="https://stats.stackexchange.com/questions/424073/calculate-the-uncertainty-of-a-mle">https://stats.stackexchange.com/questions/424073/calculate-the-uncertainty-of-a-mle</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>opt_func</strong> – function that gets minimized</p></li>
+<li><p><strong>fit_guess</strong> – initial guess for minimization</p></li>
+<li><p><strong>bounds</strong> – bounds of the fitting parameters</p></li>
+<li><p><strong>repeat</strong> – how many times the least squares and minimize step gets repeated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>opt_result</strong> – the result of the optimization from the last step of Nelder-Mead.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>scipy.optimize.OptimizeResult</p>
+</dd>
+</dl>
+</dd></dl>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.transform.circuit_utils.circuit_components.html" class="btn btn-neutral float-left" title="dgpost.transform.circuit_utils.circuit_components" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.utils.html" class="btn btn-neutral float-right" title="dgpost.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2025, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+**complex**: utilities for handling complex numbers
+===================================================
+.. automodule:: dgpost.transform.complex
+   :members:
+   :undoc-members:
+   :show-inheritance:

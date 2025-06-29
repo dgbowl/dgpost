@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>table: utilities for operations with tables &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="load: load datagrams and tables" href="dgpost.utils.load.html" />
+    <link rel="prev" title="reflection: utilities for processing reflection coefficient traces" href="dgpost.transform.reflection.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dgpost
+              <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.chromatography.html"><strong>chromatography</strong>: chromatographic trace postprocessing library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.complex.html"><strong>complex</strong>: utilities for handling complex numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.mixtures.html"><strong>mixtures</strong>: converting representations of mixtures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.reflection.html"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>table</strong>: utilities for operations with tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.sum_namespace"><code class="docutils literal notranslate"><span class="pre">sum_namespace()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.combine_namespaces"><code class="docutils literal notranslate"><span class="pre">combine_namespaces()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.combine_columns"><code class="docutils literal notranslate"><span class="pre">combine_columns()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.set_uncertainty"><code class="docutils literal notranslate"><span class="pre">set_uncertainty()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.apply_linear"><code class="docutils literal notranslate"><span class="pre">apply_linear()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.table.apply_inverse"><code class="docutils literal notranslate"><span class="pre">apply_inverse()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><strong>table</strong>: utilities for operations with tables</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.transform.table.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dgpost.transform.table">
+<span id="table-utilities-for-operations-with-tables"></span><h1><strong>table</strong>: utilities for operations with tables<a class="headerlink" href="#module-dgpost.transform.table" title="Link to this heading"></a></h1>
+<p><em>Code author: Peter Kraus</em></p>
+<p>Provides convenience functions for operating with tables, including
+<a class="reference internal" href="#dgpost.transform.table.combine_namespaces" title="dgpost.transform.table.combine_namespaces"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_namespaces()</span></code></a> for combining <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>-separated
+namespaces of values or chemicals into a single namespace;
+<a class="reference internal" href="#dgpost.transform.table.combine_columns" title="dgpost.transform.table.combine_columns"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_columns()</span></code></a> for combining individual columns
+into a single column; <a class="reference internal" href="#dgpost.transform.table.set_uncertainty" title="dgpost.transform.table.set_uncertainty"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_uncertainty()</span></code></a> for
+stripping or replacing uncertainties from data, and <a class="reference internal" href="#dgpost.transform.table.apply_linear" title="dgpost.transform.table.apply_linear"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_linear()</span></code></a>
+and <a class="reference internal" href="#dgpost.transform.table.apply_inverse" title="dgpost.transform.table.apply_inverse"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_inverse()</span></code></a> for applying linear corrections to
+columns or namespaces.</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.table.sum_namespace" title="dgpost.transform.table.sum_namespace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum_namespace</span></code></a>(namespace[, output, fillnan, _inp])</p></td>
+<td><p>Sums all entries within the provided namespace into one column, defined by <code class="docutils literal notranslate"><span class="pre">output</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.table.combine_namespaces" title="dgpost.transform.table.combine_namespaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_namespaces</span></code></a>(a, b[, conflicts, ...])</p></td>
+<td><p>Combines two namespaces into one, either summing or merging entries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.table.combine_columns" title="dgpost.transform.table.combine_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_columns</span></code></a>(a, b[, conflicts, fillnan, ...])</p></td>
+<td><p>Combines two columns into one, by summing or replacing missing elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.table.set_uncertainty" title="dgpost.transform.table.set_uncertainty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_uncertainty</span></code></a>([namespace, column, abs, ...])</p></td>
+<td><p>Allows for stripping or replacing uncertainties using absolute and relative values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.table.apply_linear" title="dgpost.transform.table.apply_linear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_linear</span></code></a>([namespace, column, slope, ...])</p></td>
+<td><p>Allows for applying linear functions / corrections to columns and namespaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.table.apply_inverse" title="dgpost.transform.table.apply_inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_inverse</span></code></a>([namespace, column, slope, ...])</p></td>
+<td><p>Allows for applying inverse linear functions / corrections to columns and namespaces.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.table.sum_namespace">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">sum_namespace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'output'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillnan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.table.sum_namespace" title="Link to this definition"></a></dt>
+<dd><p>Sums all entries within the provided namespace into one column, defined by <code class="docutils literal notranslate"><span class="pre">output</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>namespace</strong> – Namespace to be summed.</p></li>
+<li><p><strong>fillnan</strong> – Toggle whether <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values within the columns ought to be treated as zeroes
+(when <code class="docutils literal notranslate"><span class="pre">True</span></code>) or as <code class="docutils literal notranslate"><span class="pre">NaN</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>output</strong> – Namespace of the returned dictionary. Defaults to <code class="docutils literal notranslate"><span class="pre">output</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.table.combine_namespaces">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">combine_namespaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conflicts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillnan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chemicals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.table.combine_namespaces" title="Link to this definition"></a></dt>
+<dd><p>Combines two namespaces into one, either summing or merging entries.</p>
+<p>Unit checks are performed, with the resulting units corresponding to the units in
+namespace <code class="docutils literal notranslate"><span class="pre">a</span></code>. By default, the output namespace is set to <code class="docutils literal notranslate"><span class="pre">a</span></code>. Optionally, the
+keys in each namespace can be treated as chemicals instead of strings (i.e. “C2H6”
+and “ethane” would be summed / merged).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – Namespace <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+<li><p><strong>b</strong> – Namespace <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
+<li><p><strong>conflicts</strong> – Name resolution scheme. Can be either <code class="docutils literal notranslate"><span class="pre">&quot;sum&quot;</span></code> where conflicts are summed,
+or <code class="docutils literal notranslate"><span class="pre">&quot;replace&quot;</span></code>, where conflicting values in <code class="docutils literal notranslate"><span class="pre">a</span></code> are overwritten by <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
+<li><p><strong>fillnan</strong> – Toggle whether <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values within the columns ought to be treated as
+zeroes or as <code class="docutils literal notranslate"><span class="pre">NaN</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>chemicals</strong> – Treat keys within <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> as chemicals, and combine them accordingly.
+Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>output</strong> – Namespace of the returned dictionary. Defaults to the namespace of <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.table.combine_columns">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">combine_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conflicts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillnan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.table.combine_columns" title="Link to this definition"></a></dt>
+<dd><p>Combines two columns into one, by summing or replacing missing elements.</p>
+<p>Unit checks are performed, with the resulting units corresponding to the units in
+column <code class="docutils literal notranslate"><span class="pre">a</span></code>. By default, the output column is set to <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – Column <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+<li><p><strong>b</strong> – Column <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
+<li><p><strong>conflicts</strong> – Conflict resolution scheme. Can be either <code class="docutils literal notranslate"><span class="pre">&quot;sum&quot;</span></code> where the two columns are
+summed, or <code class="docutils literal notranslate"><span class="pre">&quot;replace&quot;</span></code>, where values in column <code class="docutils literal notranslate"><span class="pre">a</span></code> are overwritten by
+non-<code class="docutils literal notranslate"><span class="pre">np.nan</span></code> values in column <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
+<li><p><strong>fillnan</strong> – Toggle whether <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values within the columns ought to be treated as
+zeroes or as <code class="docutils literal notranslate"><span class="pre">NaN</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>. Note that <code class="docutils literal notranslate"><span class="pre">conflicts=&quot;replace&quot;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">fillnan=&quot;true&quot;</span></code> will lead to all <code class="docutils literal notranslate"><span class="pre">NaN``s</span> <span class="pre">in</span> <span class="pre">column</span> <span class="pre">``a</span></code> to be set to zero.</p></li>
+<li><p><strong>output</strong> – Namespace of the returned dictionary. By defaults to the name of column <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.table.set_uncertainty">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">set_uncertainty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.table.set_uncertainty" title="Link to this definition"></a></dt>
+<dd><p>Allows for stripping or replacing uncertainties using absolute and relative
+values. Can target either namespaces, or individual columns. If both <code class="docutils literal notranslate"><span class="pre">abs</span></code>
+and <code class="docutils literal notranslate"><span class="pre">rel</span></code> uncertainty is provided, the higher of the two values is set.
+If neither <code class="docutils literal notranslate"><span class="pre">abs</span></code> nor <code class="docutils literal notranslate"><span class="pre">rel</span></code> are provided, the uncertainties are stripped.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>namespace</strong> – The prefix of the namespace for which uncertainties are to be replaced or
+stripped. Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">column</span></code>.</p></li>
+<li><p><strong>column</strong> – The name of the column for which uncertainties are to be replaced or stripped.
+Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">namespace</span></code></p></li>
+<li><p><strong>abs</strong> – The absolute value of the uncertainty. If units are not supplied, the units of
+the column/namespace will be used. If both <code class="docutils literal notranslate"><span class="pre">abs</span></code> and <code class="docutils literal notranslate"><span class="pre">rel</span></code> are <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+the existing uncertainties will be stripped.</p></li>
+<li><p><strong>rel</strong> – The relative value of the uncertainty, should be in dimensionless units. If
+both <code class="docutils literal notranslate"><span class="pre">abs</span></code> and <code class="docutils literal notranslate"><span class="pre">rel</span></code> are <code class="docutils literal notranslate"><span class="pre">None</span></code>, the existing uncertainties will be stripped.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.table.apply_linear">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">apply_linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intercept</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonzero_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'output'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.table.apply_linear" title="Link to this definition"></a></dt>
+<dd><p>Allows for applying linear functions / corrections to columns and namespaces.</p>
+<p>Given the linear formula, <span class="math notranslate nohighlight">\(y = m \times x + c\)</span>, this function returns <span class="math notranslate nohighlight">\(y\)</span>
+calculated from the input, where <span class="math notranslate nohighlight">\(m\)</span> is the provided <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <span class="math notranslate nohighlight">\(c\)</span>
+is the provided <code class="docutils literal notranslate"><span class="pre">intercept</span></code>.</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <code class="docutils literal notranslate"><span class="pre">intercept</span></code> can be provided without units, in which
+case the units of <code class="docutils literal notranslate"><span class="pre">column</span></code> or <code class="docutils literal notranslate"><span class="pre">namespace</span></code> are preserved. If units of <code class="docutils literal notranslate"><span class="pre">slope</span></code>
+and <code class="docutils literal notranslate"><span class="pre">intercept</span></code>  are provided, they have to be dimensionally consistent.</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <code class="docutils literal notranslate"><span class="pre">intercept</span></code> can be provided with uncertainties, in
+which case the uncertainty of the output value is calculated from linear uncertainty
+propagation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>namespace</strong> – The prefix of the namespace for which uncertainties are to be replaced or
+stripped. Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">column</span></code>.</p></li>
+<li><p><strong>column</strong> – The name of the column for which uncertainties are to be replaced or stripped.
+Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">namespace</span></code></p></li>
+<li><p><strong>slope</strong> – The slope <span class="math notranslate nohighlight">\(m\)</span>.</p></li>
+<li><p><strong>intercept</strong> – The intercept <span class="math notranslate nohighlight">\(c\)</span>.</p></li>
+<li><p><strong>nonzero_only</strong> – Whether the linear function should be applied to nonzero values of <span class="math notranslate nohighlight">\(x\)</span> only,
+defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>minimum</strong> – The minimum of the returned value. If the calculate value is below the minimum,
+the minimum is returned.</p></li>
+<li><p><strong>maximum</strong> – The maximum of the returned value. If the calculate value is above the maximum,
+the maximum is returned.</p></li>
+<li><p><strong>output</strong> – Name of the output column or the namespace of the output columns.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.table.apply_inverse">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.table.</span></span><span class="sig-name descname"><span class="pre">apply_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intercept</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonzero_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'output'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.table.apply_inverse" title="Link to this definition"></a></dt>
+<dd><p>Allows for applying inverse linear functions / corrections to columns and namespaces.</p>
+<p>Given the linear formula, <span class="math notranslate nohighlight">\(y = m \times x + c\)</span>, this function returns <span class="math notranslate nohighlight">\(x\)</span>,
+calculated from the input, i.e. <span class="math notranslate nohighlight">\(x = (y - c) / m\)</span>,  where <span class="math notranslate nohighlight">\(m\)</span> is the
+provided <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <span class="math notranslate nohighlight">\(c\)</span> is the provided <code class="docutils literal notranslate"><span class="pre">intercept</span></code>.</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <code class="docutils literal notranslate"><span class="pre">intercept</span></code> can be provided without units, in which
+case the units of <code class="docutils literal notranslate"><span class="pre">column</span></code> or <code class="docutils literal notranslate"><span class="pre">namespace</span></code> are preserved. If units of <code class="docutils literal notranslate"><span class="pre">slope</span></code>
+and <code class="docutils literal notranslate"><span class="pre">intercept</span></code>  are provided, they have to be dimensionally consistent.</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <code class="docutils literal notranslate"><span class="pre">intercept</span></code> can be provided with uncertainties, in
+which case the uncertainty of the output value is calculated from linear uncertainty
+propagation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>namespace</strong> – The prefix of the namespace for which uncertainties are to be replaced or
+stripped. Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">column</span></code>.</p></li>
+<li><p><strong>column</strong> – The name of the column for which uncertainties are to be replaced or stripped.
+Cannot be supplied along with <code class="docutils literal notranslate"><span class="pre">namespace</span></code></p></li>
+<li><p><strong>slope</strong> – The slope <span class="math notranslate nohighlight">\(m\)</span>.</p></li>
+<li><p><strong>intercept</strong> – The intercept <span class="math notranslate nohighlight">\(c\)</span>.</p></li>
+<li><p><strong>nonzero_only</strong> – Whether the linear function should be applied to nonzero values of <span class="math notranslate nohighlight">\(x\)</span> only,
+defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>minimum</strong> – The minimum of the returned value. If the calculate value is below the minimum,
+the minimum is returned.</p></li>
+<li><p><strong>maximum</strong> – The maximum of the returned value. If the calculate value is above the maximum,
+the maximum is returned.</p></li>
+<li><p><strong>output</strong> – Name of the output column or the namespace of the output columns.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.transform.reflection.html" class="btn btn-neutral float-left" title="reflection: utilities for processing reflection coefficient traces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.utils.load.html" class="btn btn-neutral float-right" title="load: load datagrams and tables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2025, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

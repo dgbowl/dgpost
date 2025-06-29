@@ -1,0 +1,24 @@
+**dgpost**: `apidoc` documentation
+==================================
+
+.. automodule:: dgpost
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dgpost.transform
+   dgpost.utils
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dgpost.main

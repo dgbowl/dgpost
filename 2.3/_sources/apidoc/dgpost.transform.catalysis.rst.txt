@@ -1,0 +1,6 @@
+**catalysis**: common calculations in catalytic testing
+=======================================================
+.. automodule:: dgpost.transform.catalysis
+   :members:
+   :undoc-members:
+   :show-inheritance:
