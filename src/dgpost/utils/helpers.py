@@ -663,3 +663,10 @@ def set_units(
         recurse(key, unit, target.attrs["units"])
     else:
         recurse(key, unit, target)
+
+
+def fill_nans(data: pint.Quantity, fillmag: float = 0.0) -> pint.Quantity:
+    vals, errs, unit = separate_data(data)
+    vals = np.where(np.isnan(vals), fillmag, vals)
+    errs = np.where(np.isnan(errs), fillmag, errs)
+    return ureg.Quantity(unp.uarray(vals, errs), unit)

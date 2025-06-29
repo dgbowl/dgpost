@@ -25,17 +25,17 @@ columns or namespaces.
 """
 
 import pint
-import pandas as pd
 import numpy as np
 from dgpost.utils.helpers import (
     load_data,
     separate_data,
     columns_to_smiles,
     kwarg_to_quantity,
+    fill_nans,
 )
 from collections import defaultdict
-from typing import Iterable, Union
-from uncertainties import UFloat, unumpy as unp
+from typing import Union
+from uncertainties import unumpy as unp
 
 ureg = pint.get_application_registry()
 
@@ -102,13 +102,8 @@ def combine_namespaces(
             aa = a[v["a"]]
             bb = b[v["b"]]
             if fillnan:
-                if isinstance(aa.m, Iterable) and isinstance(bb.m, Iterable):
-                    aa.m[pd.isna(aa.m)] = 0
-                    bb.m[pd.isna(bb.m)] = 0
-                else:
-                    aa = ureg.Quantity(0, aa.u) if pd.isna(aa.m) else aa
-                    bb = ureg.Quantity(0, bb.u) if pd.isna(bb.m) else bb
-
+                aa = fill_nans(aa)
+                bb = fill_nans(bb)
             if conflicts == "sum":
                 ret[v["a"]] = aa + bb
             elif conflicts == "replace":
@@ -116,9 +111,15 @@ def combine_namespaces(
             else:
                 raise ValueError(f"Unknown value of 'conflicts': {conflicts}")
         elif "a" in v:
-            ret[v["a"]] = a[v["a"]]
+            aa = a[v["a"]]
+            if fillnan:
+                aa = fill_nans(aa)
+            ret[v["a"]] = aa
         elif "b" in v:
-            ret[v["b"]] = b[v["b"]].to(u)
+            bb = b[v["b"]].to(u)
+            if fillnan:
+                bb = fill_nans(bb)
+            ret[v["b"]] = bb
 
     if output is None:
         output = _inp.get("a", "c")
@@ -127,6 +128,43 @@ def combine_namespaces(
     for k, v in ret.items():
         out[f"{output}->{k}"] = v
     return out
+
+
+@load_data(
+    ("namespace", None, dict),
+)
+def sum_namespace(
+    namespace: dict[str, pint.Quantity],
+    output: str = "output",
+    fillnan: bool = True,
+    _inp: dict = {},
+) -> dict[str, pint.Quantity]:
+    """
+    Sums all entries within the provided namespace into one column, defined by ``output``.
+
+    Parameters
+    ----------
+    namespace
+        Namespace to be summed.
+
+    fillnan
+        Toggle whether ``NaN`` values within the columns ought to be treated as zeroes
+        (when ``True``) or as ``NaN``. Default is ``True``.
+
+    output
+        Namespace of the returned dictionary. Defaults to ``output``.
+
+    """
+    ret = None
+
+    for v in namespace.values():
+        if fillnan:
+            v = fill_nans(v, fillmag=0.0)
+        if ret is None:
+            ret = v
+        else:
+            ret += v
+    return {output: ret}
 
 
 @load_data(
@@ -170,20 +208,9 @@ def combine_columns(
 
     """
 
-    def fillnans(vals):
-        mags = vals.m
-        if isinstance(mags, float):
-            return ureg.Quantity(0, vals.u) if pd.isna(mags) else vals
-        elif isinstance(mags, UFloat):
-            return ureg.Quantity(0, vals.u) if pd.isna(mags.n) else vals
-        else:
-            nans = pd.isna(unp.nominal_values(mags))
-            vals[nans] = ureg.Quantity(0, vals.u)
-            return vals
-
     if fillnan:
-        a = fillnans(a)
-        b = fillnans(b)
+        a = fill_nans(a)
+        b = fill_nans(b)
     if conflicts == "sum":
         ret = a + b
     elif conflicts == "replace":
@@ -278,12 +305,15 @@ def set_uncertainty(
     ("namespace", None, dict),
     ("column", None),
 )
-@kwarg_to_quantity("slope", "intercept")
+@kwarg_to_quantity("slope", "intercept", "minimum", "maximum")
 def apply_linear(
     namespace: dict[str, pint.Quantity] = None,
     column: pint.Quantity = None,
     slope: Union[pint.Quantity, float] = None,
     intercept: Union[pint.Quantity, float] = None,
+    nonzero_only: bool = True,
+    minimum: Union[pint.Quantity, float] = None,
+    maximum: Union[pint.Quantity, float] = None,
     output: str = "output",
     _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
@@ -318,6 +348,18 @@ def apply_linear(
     intercept
         The intercept :math:`c`.
 
+    nonzero_only
+        Whether the linear function should be applied to nonzero values of :math:`x` only,
+        defaults to ``True``.
+
+    minimum
+        The minimum of the returned value. If the calculate value is below the minimum,
+        the minimum is returned.
+
+    maximum
+        The maximum of the returned value. If the calculate value is above the maximum,
+        the maximum is returned.
+
     output
         Name of the output column or the namespace of the output columns.
 
@@ -327,11 +369,20 @@ def apply_linear(
         x: Union[pint.Quantity, float],
         slope: Union[pint.Quantity, float],
         intercept: Union[pint.Quantity, float],
+        nonzero_only: bool = True,
+        minimum: Union[pint.Quantity, float] = None,
+        maximum: Union[pint.Quantity, float] = None,
     ) -> Union[pint.Quantity, float]:
         if isinstance(x, pint.Quantity) and isinstance(intercept, float):
             intercept = pint.Quantity(intercept, (slope * x).units)
-        print(f"{slope=} {x=} {intercept=}")
+        if nonzero_only:
+            x = np.where(x > 0.0, x, np.nan)
+
         y = slope * x + intercept
+        if maximum is not None:
+            y = np.where(y > maximum, maximum, y)
+        if minimum is not None:
+            y = np.where(y < minimum, minimum, y)
         return y
 
     outk = []
@@ -343,14 +394,17 @@ def apply_linear(
             outk.append(output)
         else:
             outk.append(_inp.get("column", "output"))
-        outv.append(linear(column, slope, intercept))
+        outv.append(linear(column, slope, intercept, nonzero_only, minimum, maximum))
 
     elif namespace is not None:
-        for key, vals in namespace.items():
-            if isinstance(vals, list):
-                vals = np.asarray(vals)
-            outk.append(_inp.get("namespace", output) + f"->{key}")
-            outv.append(linear(vals, slope, intercept))
+        for key, col in namespace.items():
+            if isinstance(col, list):
+                col = np.asarray(col)
+            if output is not None:
+                outk.append(f"{output}->{key}")
+            else:
+                outk.append(_inp.get("namespace", "output") + f"->{key}")
+            outv.append(linear(col, slope, intercept, nonzero_only, minimum, maximum))
 
     ret = {}
     for k, v in zip(outk, outv):
@@ -362,12 +416,15 @@ def apply_linear(
     ("namespace", None, dict),
     ("column", None),
 )
-@kwarg_to_quantity("slope", "intercept")
+@kwarg_to_quantity("slope", "intercept", "minimum", "maximum")
 def apply_inverse(
     namespace: dict[str, pint.Quantity] = None,
     column: pint.Quantity = None,
     slope: Union[pint.Quantity, float] = None,
     intercept: Union[pint.Quantity, float] = None,
+    nonzero_only: bool = True,
+    minimum: Union[pint.Quantity, float] = None,
+    maximum: Union[pint.Quantity, float] = None,
     output: str = "output",
     _inp: dict = {},
 ) -> dict[str, pint.Quantity]:
@@ -402,6 +459,18 @@ def apply_inverse(
     intercept
         The intercept :math:`c`.
 
+    nonzero_only
+        Whether the linear function should be applied to nonzero values of :math:`x` only,
+        defaults to ``True``.
+
+    minimum
+        The minimum of the returned value. If the calculate value is below the minimum,
+        the minimum is returned.
+
+    maximum
+        The maximum of the returned value. If the calculate value is above the maximum,
+        the maximum is returned.
+
     output
         Name of the output column or the namespace of the output columns.
 
@@ -409,12 +478,22 @@ def apply_inverse(
 
     def inverse(
         y: Union[pint.Quantity, float],
-        slope: Union[pint.Quantity, float, str],
-        intercept: Union[pint.Quantity, float, str],
+        slope: Union[pint.Quantity, float],
+        intercept: Union[pint.Quantity, float],
+        nonzero_only: bool = True,
+        minimum: Union[pint.Quantity, float] = None,
+        maximum: Union[pint.Quantity, float] = None,
     ) -> Union[pint.Quantity, float]:
         if isinstance(y, pint.Quantity) and isinstance(intercept, float):
             intercept = pint.Quantity(intercept, y.units)
+        if nonzero_only:
+            y = np.where(y > 0.0, y, np.nan)
+
         x = (y - intercept) / slope
+        if maximum is not None:
+            x = np.where(x > maximum, maximum, x)
+        if minimum is not None:
+            x = np.where(x < minimum, minimum, x)
         return x
 
     outk = []
@@ -422,14 +501,21 @@ def apply_inverse(
     if column is not None:
         if isinstance(column, list):
             column = np.asarray(column)
-        outk.append(_inp.get("column", output))
-        outv.append(inverse(column, slope, intercept))
+        if output is not None:
+            outk.append(output)
+        else:
+            outk.append(_inp.get("column", "output"))
+        outv.append(inverse(column, slope, intercept, nonzero_only, minimum, maximum))
 
     elif namespace is not None:
-        for key, vals in namespace.items():
-            outk.append(_inp.get("namespace", output) + f"->{key}")
-            outv.append(inverse(vals, slope, intercept))
-
+        for key, col in namespace.items():
+            if isinstance(col, list):
+                col = np.asarray(col)
+            if output is not None:
+                outk.append(f"{output}->{key}")
+            else:
+                outk.append(_inp.get("namespace", "output") + f"->{key}")
+            outv.append(inverse(col, slope, intercept, nonzero_only, minimum, maximum))
     ret = {}
     for k, v in zip(outk, outv):
         ret[k] = v
