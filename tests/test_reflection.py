@@ -1,6 +1,7 @@
 import os
 import pytest
 import pandas as pd
+import pint
 
 
 from dgpost.utils import transform
@@ -184,6 +185,35 @@ def test_reflection_qf_lorentz_df(infile, spec, outfile, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(infile)
     df = transform(df, "reflection.qf_lorentz", spec)
+    print(f"{df.head()=}")
+    ref = pd.read_pickle(outfile)
+    print(f"{ref.head()=}")
+    df.to_pickle(outfile)
+    compare_dfs(ref, df)
+
+
+@pytest.mark.parametrize(
+    "infile, spec, outfile",
+    [
+        (  # ts0 -
+            "ref.Qf.pkl",
+            [
+                {
+                    "qty_nm": "TM210->f0",
+                    "temperature": "temperature->cavity",
+                    "qty_ref_cm": pint.Quantity("6462788700 Hz"),
+                    "qty_ref_nm": pint.Quantity("6527759257 Hz"),
+                    "temperature_ref": pint.Quantity(24.04, "celsius"),
+                },
+            ],
+            "ref.Qf.pkl",
+        )
+    ],
+)
+def test_reflection_tT_correction_df(infile, spec, outfile, datadir):
+    os.chdir(datadir)
+    df = pd.read_pickle(infile)
+    df = transform(df, "reflection.tT_correction", spec)
     print(f"{df.head()=}")
     ref = pd.read_pickle(outfile)
     print(f"{ref.head()=}")

@@ -43,6 +43,7 @@ In addition to the above, dgpost is fully unit- and uncertainty-aware, using the
    apidoc/dgpost.transform.electrochemistry
    apidoc/dgpost.transform.impedance
    apidoc/dgpost.transform.mixtures
+   apidoc/dgpost.transform.permittivity
    apidoc/dgpost.transform.rates
    apidoc/dgpost.transform.reflection
    apidoc/dgpost.transform.table

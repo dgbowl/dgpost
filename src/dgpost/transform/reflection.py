@@ -26,6 +26,8 @@ factors to the reflection trace data. The use of the peak-height based pruning v
    DOI: https://doi.org/10.1109/22.299749
 
 
+
+
 """
 
 import pint
@@ -37,11 +39,11 @@ from scipy.signal import find_peaks
 from dgpost.utils.helpers import separate_data, load_data
 
 
-def _find_peak(near, absgamma, freq, height=0.2) -> int:
+def _find_peak(near, absgamma, freq, height=None, prominence=None) -> int:
     if near is None:
         return np.argmax((1 - absgamma))
     else:
-        peaks, _ = find_peaks((1 - absgamma), height=height)
+        peaks, _ = find_peaks((1 - absgamma), height=height, prominence=prominence)
         nearest = None
         for pi in peaks:
             if nearest is None:
@@ -63,7 +65,8 @@ def prune_cutoff(
     freq: pint.Quantity,
     near: pint.Quantity = None,
     cutoff: float = 0.4,
-    height: float = 0.2,
+    height: float = None,
+    prominence: float = None,
     output: str = "pruned",
 ) -> dict[str, pint.Quantity]:
     """
@@ -78,16 +81,16 @@ def prune_cutoff(
     Parameters
     ----------
     real
-        A :class:`pint.Quantity` object containing the real part of the reflection
-        coefficient data, :math:`\\text{Re}(\\Gamma)`. Unitless.
+        The real part of the reflection coefficient data, :math:`\\text{Re}(\\Gamma)`.
+        Unitless.
 
     imag
-        A :class:`pint.Quantity` object containing the imaginary part of the reflection
-        coefficient data, :math:`\\text{Im}(\\Gamma)`. Unitless.
+        The imaginary part of the reflection coefficient data,
+        :math:`\\text{Im}(\\Gamma)`. Unitless.
 
     freq
-        A :class:`pint.Quantity` object containing the frequencies :math:`f`
-        corresponding to the reflection coefficient data. Defaults to ``Hz``.
+        The frequencies :math:`f` corresponding to the reflection coefficient data.
+        Defaults to ``Hz``.
 
     near
         A frequency used to select the point around which to prune. By default, pruning
@@ -117,7 +120,7 @@ def prune_cutoff(
     im, _, _ = separate_data(imag)
     absgamma = np.abs(re + 1j * im)
 
-    pi = _find_peak(near, absgamma, freq, height=height)
+    pi = _find_peak(near, absgamma, freq, height=height, prominence=prominence)
 
     max_v = absgamma.max()
     min_v = absgamma[pi]
@@ -164,16 +167,16 @@ def prune_gradient(
     Parameters
     ----------
     real
-        A :class:`pint.Quantity` object containing the real part of the reflection
-        coefficient data, :math:`\\text{Re}(\\Gamma)`. Unitless.
+        The real part of the reflection coefficient data, :math:`\\text{Re}(\\Gamma)`.
+        Unitless.
 
     imag
-        A :class:`pint.Quantity` object containing the imaginary part of the reflection
-        coefficient data, :math:`\\text{Im}(\\Gamma)`. Unitless.
+        The imaginary part of the reflection coefficient data,
+        :math:`\\text{Im}(\\Gamma)`. Unitless.
 
     freq
-        A :class:`pint.Quantity` object containing the frequencies :math:`f`
-        corresponding to the reflection coefficient data. Defaults to ``Hz``.
+        The frequencies :math:`f` corresponding to the reflection coefficient data.
+        Defaults to ``Hz``.
 
     near
         A frequency used to select the point around which to prune. By default, pruning
@@ -236,7 +239,7 @@ def qf_kajfez(
     output: str = None,
 ) -> dict[str, pint.Quantity]:
     """
-    Kajfez's circle-fitting algorithm.
+    Kajfez's circle-fitting algorithm. [Kajfez1994]_
 
     Adapted with permission from Q0REFL.m, which is a part of [Kajfez1994]_. This
     fitting process attempts to fit a circle to a near-circular section of points
@@ -246,19 +249,19 @@ def qf_kajfez(
     Parameters
     ----------
     real
-        A :class:`pint.Quantity` object containing the real part of the reflection
-        coefficient data, :math:`\\text{Re}(\\Gamma)`. Unitless.
+        The real part of the reflection coefficient data, :math:`\\text{Re}(\\Gamma)`.
+        Unitless.
 
     imag
-        A :class:`pint.Quantity` object containing the imaginary part of the reflection
-        coefficient data, :math:`\\text{Im}(\\Gamma)`. Unitless.
+        The imaginary part of the reflection coefficient data,
+        :math:`\\text{Im}(\\Gamma)`. Unitless.
 
     freq
-        A :class:`pint.Quantity` object containing the frequencies :math:`f`
-        corresponding to the reflection coefficient data. Defaults to ``Hz``.
+        The frequencies :math:`f` corresponding to the reflection coefficient data.
+        Defaults to ``Hz``.
 
     iterations
-        A number of iterations for circle-fitting refinement. Default is ``5``.
+        A number of iterations for circle-fitting refinement. Default is 5.
 
     output
         Name for the output namespace. Defaults to no namespace.
@@ -384,17 +387,19 @@ def qf_naive(
         This quality factor fitting algorithm is unreliable and has been implemented
         only for testing purposes. Use :func:`qf_kajfez` for any production runs!
 
+    Parameters
+    ----------
     real
-        A :class:`pint.Quantity` object containing the real part of the reflection
-        coefficient data, :math:`\\text{Re}(\\Gamma)`. Unitless.
+        The real part of the reflection coefficient data, :math:`\\text{Re}(\\Gamma)`.
+        Unitless.
 
     imag
-        A :class:`pint.Quantity` object containing the imaginary part of the reflection
-        coefficient data, :math:`\\text{Im}(\\Gamma)`. Unitless.
+        The imaginary part of the reflection coefficient data,
+        :math:`\\text{Im}(\\Gamma)`. Unitless.
 
     freq
-        A :class:`pint.Quantity` object containing the frequencies :math:`f`
-        corresponding to the reflection coefficient data. Defaults to ``Hz``.
+        The frequencies :math:`f` corresponding to the reflection coefficient data.
+        Defaults to ``Hz``.
 
     output
         Name for the output namespace. Defaults to no namespace.
@@ -447,17 +452,19 @@ def qf_lorentz(
         This quality factor fitting algorithm is unreliable and has been implemented
         only for testing purposes. Use :func:`qf_kajfez` for any production runs!
 
+    Parameters
+    ----------
     real
-        A :class:`pint.Quantity` object containing the real part of the reflection
-        coefficient data, :math:`\\text{Re}(\\Gamma)`. Unitless.
+        The real part of the reflection coefficient data, :math:`\\text{Re}(\\Gamma)`.
+        Unitless.
 
     imag
-        A :class:`pint.Quantity` object containing the imaginary part of the reflection
-        coefficient data, :math:`\\text{Im}(\\Gamma)`. Unitless.
+        The imaginary part of the reflection coefficient data,
+        :math:`\\text{Im}(\\Gamma)`. Unitless.
 
     freq
-        A :class:`pint.Quantity` object containing the frequencies :math:`f`
-        corresponding to the reflection coefficient data. Defaults to ``Hz``.
+        The frequencies :math:`f` corresponding to the reflection coefficient data.
+        Defaults to ``Hz``.
 
     output
         Name for the output namespace. Defaults to no namespace.
