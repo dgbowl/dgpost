@@ -14,6 +14,13 @@ frequencies and quality factors, as well as and various related corrections.
     Qec_correction
     real_eps
     imag_eps
+    log_mixing_rule
+    emt_lll
+
+.. [Dube1970] Dube, D.C.
+   *Study of Landau-Lifshitz-Looyenga's formula for dielectric correlation between powder and bulk*
+   Journal of Physics D: Applied Physics **1970**, **3**, 1648-1652,
+   DOI: https://doi.org/10.1088/0022-3727/3/11/313
 
 .. [Chen2005a] Chen, L.F., Ong, C.K., Neo, C.P., Varadan, V.V., Varadan, V.K.
    *Resonant-Perturbation Methods* in *Microwave Electronics*, John Wiley & Sons,
@@ -38,19 +45,20 @@ frequencies and quality factors, as well as and various related corrections.
 """
 
 import pint
+from uncertainties import unumpy as unp
 
 from dgpost.utils.helpers import load_data
 
 
 @load_data(
-    ("f_nm", "Hz"),
+    ("f_mnp", "Hz"),
     ("temperature", "celsius"),
-    ("f_ref_cm", "Hz"),
-    ("f_ref_nm", "Hz"),
+    ("f_0n0_ref", "Hz"),
+    ("f_mnp_ref", "Hz"),
     ("temperature_ref", "celsius"),
     ("alpha_c", "1/K"),
-    ("k_cm", "1/K"),
-    ("k_nm", "1/K"),
+    ("k_0n0", "1/K"),
+    ("k_mnp", "1/K"),
 )
 def ftT_correction(
     f_mnp: pint.Quantity,
@@ -207,7 +215,6 @@ def QtT_correction(
         && - (\\kappa_\\text{err} + (\\beta_c - 3\\alpha_c + \\kappa_\\text{020})\\Delta T)
                          Q_\\text{020,e}(0, T_\\text{ref})
 
-
     Parameters
     ----------
     Q_mnp
@@ -260,7 +267,7 @@ def QtT_correction(
     d_temp = temperature.to("K") - temperature_ref.to("K")
 
     res = (
-        (d_Q + 1) * Q_mnp_ref
+        (d_Q + 1) * Q_0n0_ref
         + (k_err + (beta_c - 3 * alpha_c + k_mnp) * d_temp) * Q_mnp_ref
         - (k_err + (beta_c - 3 * alpha_c + k_0n0) * d_temp) * Q_0n0_ref
     )
@@ -268,7 +275,7 @@ def QtT_correction(
 
 
 @load_data(
-    ("Q", None),
+    ("Q_e", None),
     ("eps", None),
     ("Vs", "mm³"),
     ("Vc", "mm³"),
@@ -345,6 +352,7 @@ def real_eps(
     of the cavity upon insertion of the sample:
 
     .. math ::
+
        \\varepsilon' = f_\\text{cal}\\left(\\frac{f_s - f_e}{f_e}\\right)
                        \\frac{V_c}{V_s} + 1
 
@@ -359,8 +367,8 @@ def real_eps(
     ``cal_intercept``, which is applied in inverse:
 
     .. math ::
-       f_\\text{cal}(y) = \\frac{y - \\text{cal_intercept}}{\\text{cal_slope}}
 
+       f_\\text{cal}(y) = \\frac{y - \\text{cal_intercept}}{\\text{cal_slope}}
 
     Parameters
     ----------
@@ -429,6 +437,7 @@ def imag_eps(
     of the cavity upon insertion of the sample:
 
     .. math ::
+
        \\varepsilon'' = f_\\text{cal}\\left(\\frac{1}{Q_s} - \\frac{1}{Q_e}\\right)
                        \\frac{V_c}{V_s}
 
@@ -438,9 +447,8 @@ def imag_eps(
     ``cal_intercept``, which is applied in inverse:
 
     .. math ::
+
        f_\\text{cal}(y) = \\frac{y - \\text{cal_intercept}}{\\text{cal_slope}}
-
-
 
     Parameters
     ----------
@@ -482,3 +490,171 @@ def imag_eps(
         cal = tmp / cal_slope
     eps = cal * (Vc / Vs) * (1 / 2)
     return {output: eps}
+
+
+@load_data(
+    ("eps_eff", None),
+    ("Vtot", "mm³"),
+    ("Vs", "mm³"),
+)
+def log_mixing_rule(
+    eps_eff: pint.Quantity,
+    Vtot: pint.Quantity,
+    Vs: pint.Quantity,
+    permittivities: list[pint.Quantity],
+    volumes: list[pint.Quantity],
+    output: str = "eps",
+) -> dict[str, pint.Quantity]:
+    """
+    Logarithmic mixing rule for permittivity.
+
+    Given an effective permittivity :math:`\\varepsilon_\\text{eff}`, and known
+    permittivities and volume fractions of mixture component(s), the unknown
+    permittivity of the sample :math:`\\varepsilon_s` can be calculated.
+
+    The logarithmic mixing rule is used to account for the effects of permittivities
+    of different materials. The effective permittivity is a logarithmic sum, weighted
+    by the volume fractions of the individual materials. For instance, for a sample
+    (:math:`s`) supported by a quartz wool (:math:`qw`) and enclosed in quartz tubing
+    (:math:`q`), the effective permittivity is:
+
+    .. math ::
+
+        \\text{log}(\\varepsilon_\\text{eff}) = \\frac{V_s}{V_\\text{tot}} \\text{log}(\\varepsilon_s)
+                                             + \\frac{V_q}{V_\\text{tot}} \\text{log}(\\varepsilon_q)
+                                             + \\frac{V_{qw}}{V_\\text{tot}} \\text{log}(\\varepsilon_{qw})
+
+    This means, the permittivity of the sample can be calculated if the other parameters
+    are known:
+
+    .. math ::
+
+        \\varepsilon_s = \\text{exp}\\left(
+                                    \\left(\\text{log}(\\varepsilon_\\text{eff})
+                                     - \\frac{V_q}{V_\\text{tot}} \\text{log}(\\varepsilon_q)
+                                     - \\frac{V_{qw}}{V_\\text{tot}} \\text{log}(\\varepsilon_{qw})
+                                    \\right)\\frac{V_\\text{tot}}{V_s}
+                                    \\right)
+
+    This implementation allows an arbitrary number of components in the mixture, as long as both the
+    permittivity and volume are provided.
+
+    Parameters
+    ----------
+    eps_eff
+        The effective permittivity, :math:`\\varepsilon_\\text{eff}`.
+
+    Vtot
+        The total volume of the sample mixture, :math:`V_\\text{tot}`. By default in mm³.
+
+    Vs
+        The volume of the sample of unknown permittivity in the mixture, :math:`V_s`. By
+        default in mm³.
+
+    permittivities
+        A list of known permittivities of components in the mixture.
+
+    volumes
+        A list of volumes of the components with known permittivities. Note that no
+        comparison checks between the provided volumes, :math:`V_s`, and :math:`V_\\text{tot}`
+        are performed.
+
+    output
+        The name of the permittivity of the unknown sample, :math:`\\varepsilon_s`
+
+    Returns
+    -------
+    ret: dict[str, pint.Quantity]
+        A dictionary containing the permittivity of the unknown sample, :math:`\\varepsilon_s`.
+
+    """
+    tmp = unp.log(eps_eff)
+    for eps, V in zip(permittivities, volumes):
+        tmp -= (pint.Quantity(V) / Vtot) * unp.log(pint.Quantity(eps))
+
+    ret = unp.exp(tmp * (Vtot / Vs))
+
+    return {output: ret}
+
+
+@load_data(
+    ("eps_r", None),
+    ("eps_i", None),
+    ("delta", None),
+    ("ms", "g"),
+    ("Vs", "cm³"),
+    ("rho", "g/cm³"),
+)
+def emt_lll(
+    eps_r: pint.Quantity,
+    eps_i: pint.Quantity,
+    delta: pint.Quantity = None,
+    ms: pint.Quantity = None,
+    Vs: pint.Quantity = None,
+    rho: pint.Quantity = None,
+    output: str = "eps_lll",
+) -> dict[str, pint.Quantity]:
+    """
+    Effective medium theory of Landau-Lifshitz-Loyenga. [Dube1970]_
+
+    This function can be used to convert the complex permittivity of an amount of powdered sample
+    to the permittivity of the solid material, accounting for the packing fraction, assuming the
+    voids are filled by air.
+
+    Given the permittivity of a powder, :math:`\\varepsilon_p = \\varepsilon_p' - j\\varepsilon_p''`,
+    the permittivity of the corresponding solid :math:`\\varepsilon_s` can be calculated using:
+
+    .. math ::
+
+        \\varepsilon_s' &= \\left(\\frac{\\varepsilon_p'^{1/3} - 1}{\\delta} + 1\\right)^3 \\\\
+        \\varepsilon_s'' &= \\frac{\\varepsilon_p''}{\delta}\\left(\\frac{\\varepsilon_s'}{\\varepsilon_p'}\\right)^{2/3}
+
+    where :math:`\delta` is the packing fraction. Note that the equation for :math:`\\varepsilon_s''` is only valid
+    for samples where :math:`\\varepsilon_p''/\\varepsilon_p' >> 1`.
+
+    In most cases, the packing fraction can be approximated from bulk bed density and crystallographic
+    density, :math:`\\delta = \\frac{m_s/V_s}{\\rho}`.
+
+    Parameters
+    ----------
+    eps_r
+        The real part of the powder permittivity, :math:`\\varepsilon_p'`.
+
+    eps_i
+        The imaginary part of the powder permittivity, :math:`\\varepsilon_p''`.
+
+    delta
+        The packing fraction, :math:`\\delta`.
+
+    ms
+        The mass of the powder sample, :math:`m_s`, used to calculate :math:`\\delta`.
+        By default in g.
+
+    Vs
+        The volume of the powder sample, :math:`V_s`, used to calculate :math:`\\delta`.
+        By default in cm³.
+
+    rho
+        The crystallographic density of the studied material, :math:`\\rho`, used to
+        calculate :math:`\\delta`. By default in g/cm³.
+
+    output
+        Prefix for the corrected real and imaginary part of the permittivity.
+
+    Returns
+    -------
+    ret: dict[str, pint.Quantity]
+        A dictionary containing the real and imaginary parts of the permittivity of the solid,
+        :math:`\\varepsilon_s'` and :math:`\\varepsilon_s''`.
+
+    """
+
+    if delta is None:
+        delta = (ms / Vs) / rho
+    eps_r_lll = ((eps_r ** (1 / 3) - 1) / delta + 1) ** 3
+    eps_i_lll = (eps_i / delta) * (eps_r / eps_r_lll) ** (2 / 3)
+
+    return {
+        f"{output}->eps'": eps_r_lll,
+        f'{output}->eps"': eps_i_lll,
+    }
