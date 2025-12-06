@@ -26,8 +26,6 @@ factors to the reflection trace data. The use of the peak-height based pruning v
    DOI: https://doi.org/10.1109/22.299749
 
 
-
-
 """
 
 import pint
