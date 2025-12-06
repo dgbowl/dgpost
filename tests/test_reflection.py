@@ -19,6 +19,7 @@ from .utils import compare_dfs
                     "real": "real",
                     "near": 7.17e9,
                     "cutoff": 0.4,
+                    "height": 0.2,
                     "output": "S11(0)",
                 },
                 {
@@ -27,6 +28,7 @@ from .utils import compare_dfs
                     "real": "real",
                     "near": 7.35e9,
                     "cutoff": 0.4,
+                    "height": 0.2,
                     "output": "S11(1)",
                 },
             ],
