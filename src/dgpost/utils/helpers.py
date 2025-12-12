@@ -22,6 +22,7 @@ from chemicals.identifiers import search_chemical
 import logging
 
 logger = logging.getLogger(__name__)
+pint.set_application_registry(pint.UnitRegistry(autoconvert_offset_to_baseunit=True))
 ureg = pint.get_application_registry()
 
 ureg.define("standard_milliliter = milliliter = smL")

@@ -23,12 +23,14 @@ transform:
         freq: freq
         near: 7150000000 Hz
         cutoff: 0.4
+        height: 0.2
         output: TM210
       - real: real
         imag: imag
         freq: freq
         near: 7.35e9
         cutoff: 0.4
+        height: 0.2
         output: TM020
   - table: table
     with: reflection.qf_kajfez
