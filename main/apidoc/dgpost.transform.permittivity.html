@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>permittivity: calculating complex permittivity &mdash; dgpost  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/dgpost_ico.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="rates: determining molar rates of chemical species" href="dgpost.transform.rates.html" />
+    <link rel="prev" title="mixtures: converting representations of mixtures" href="dgpost.transform.mixtures.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dgpost
+              <img src="../_static/dgpost_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>dgpost</strong> installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html"><strong>dgpost</strong> usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html"><strong>dgpost</strong> features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html"><strong>dgpost</strong> version history</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.catalysis.html"><strong>catalysis</strong>: common calculations in catalytic testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.chromatography.html"><strong>chromatography</strong>: chromatographic trace postprocessing library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.complex.html"><strong>complex</strong>: utilities for handling complex numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.electrochemistry.html"><strong>electrochemistry</strong>: calculations relevant in electrochemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.impedance.html"><strong>impedance</strong>: fitting electrochemical impedance spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.mixtures.html"><strong>mixtures</strong>: converting representations of mixtures</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>permittivity</strong>: calculating complex permittivity</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.permittivity.ftT_correction"><code class="docutils literal notranslate"><span class="pre">ftT_correction()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.permittivity.QtT_correction"><code class="docutils literal notranslate"><span class="pre">QtT_correction()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.permittivity.Qec_correction"><code class="docutils literal notranslate"><span class="pre">Qec_correction()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.permittivity.real_eps"><code class="docutils literal notranslate"><span class="pre">real_eps()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.permittivity.imag_eps"><code class="docutils literal notranslate"><span class="pre">imag_eps()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.permittivity.log_mixing_rule"><code class="docutils literal notranslate"><span class="pre">log_mixing_rule()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost.transform.permittivity.emt_lll"><code class="docutils literal notranslate"><span class="pre">emt_lll()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.rates.html"><strong>rates</strong>: determining molar rates of chemical species</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.reflection.html"><strong>reflection</strong>: utilities for processing reflection coefficient traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.transform.table.html"><strong>table</strong>: utilities for operations with tables</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost utility library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.load.html"><strong>load</strong>: load datagrams and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.extract.html"><strong>extract</strong>: extract and interpolate data into tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.pivot.html"><strong>pivot</strong>: reorder tables using columns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.transform.html"><strong>transform</strong>: transform and calculate data in tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.plot.html"><strong>plot</strong>: create reproducible plots from tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.utils.save.html"><strong>save</strong>: save and export tables into files</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">dgpost developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">contributing to <strong>dgpost</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dgpost.html"><strong>dgpost</strong>: <cite>apidoc</cite> documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dgpost</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><strong>permittivity</strong>: calculating complex permittivity</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/dgpost.transform.permittivity.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dgpost.transform.permittivity">
+<span id="permittivity-calculating-complex-permittivity"></span><h1><strong>permittivity</strong>: calculating complex permittivity<a class="headerlink" href="#module-dgpost.transform.permittivity" title="Link to this heading"></a></h1>
+<p><em>Code author: Peter Kraus</em></p>
+<p>Provides functions for calculating complex permittivity from resonance
+frequencies and quality factors, as well as and various related corrections.</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.permittivity.ftT_correction" title="dgpost.transform.permittivity.ftT_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ftT_correction</span></code></a>(f_mnp, temperature, ...[, ...])</p></td>
+<td><p>Nodal mode correction of resonance frequencies for temperature effects based on Cuenca et al. <a class="reference internal" href="#cuenca2017" id="id1"><span>[Cuenca2017]</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.permittivity.QtT_correction" title="dgpost.transform.permittivity.QtT_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QtT_correction</span></code></a>(Q_mnp, temperature, ...[, ...])</p></td>
+<td><p>Nodal mode correction of quality factors for temperature effects, based on Cuenca et al. <a class="reference internal" href="#cuenca2017" id="id2"><span>[Cuenca2017]</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.permittivity.Qec_correction" title="dgpost.transform.permittivity.Qec_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Qec_correction</span></code></a>(Q_e, eps, Vs, Vc[, output])</p></td>
+<td><p>The modified calibration method of Chao and Chang.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.permittivity.real_eps" title="dgpost.transform.permittivity.real_eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">real_eps</span></code></a>(f_s, f_e, Vc, Vs[, cal_slope, ...])</p></td>
+<td><p>The MCPT equation for the real part of the permittivity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.permittivity.imag_eps" title="dgpost.transform.permittivity.imag_eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imag_eps</span></code></a>(Q_s, Q_e, Vc, Vs[, cal_slope, ...])</p></td>
+<td><p>The MCPT equation for the imaginary part of the permittivity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dgpost.transform.permittivity.log_mixing_rule" title="dgpost.transform.permittivity.log_mixing_rule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_mixing_rule</span></code></a>(eps_eff, Vtot, Vs, ...[, output])</p></td>
+<td><p>Logarithmic mixing rule for permittivity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dgpost.transform.permittivity.emt_lll" title="dgpost.transform.permittivity.emt_lll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">emt_lll</span></code></a>(eps_r, eps_i[, delta, ms, Vs, rho, ...])</p></td>
+<td><p>Effective medium theory of Landau-Lifshitz-Loyenga.</p></td>
+</tr>
+</tbody>
+</table>
+<div role="list" class="citation-list">
+<div class="citation" id="dube1970" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">Dube1970</a><span class="fn-bracket">]</span></span>
+<p>Dube, D.C.
+<em>Study of Landau-Lifshitz-Looyenga’s formula for dielectric correlation between powder and bulk</em>
+Journal of Physics D: Applied Physics <strong>1970</strong>, <strong>3</strong>, 1648-1652,
+DOI: <a class="reference external" href="https://doi.org/10.1088/0022-3727/3/11/313">https://doi.org/10.1088/0022-3727/3/11/313</a></p>
+</div>
+<div class="citation" id="chen2005a" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Chen2005a<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id6">1</a>,<a role="doc-backlink" href="#id9">2</a>)</span>
+<p>Chen, L.F., Ong, C.K., Neo, C.P., Varadan, V.V., Varadan, V.K.
+<em>Resonant-Perturbation Methods</em> in <em>Microwave Electronics</em>, John Wiley &amp; Sons,
+2005, Chichester, UK,
+DOI: <a class="reference external" href="https://doi.org/10.1002/0470020466.ch6">https://doi.org/10.1002/0470020466.ch6</a></p>
+</div>
+<div class="citation" id="chao2013a" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">Chao2013a</a><span class="fn-bracket">]</span></span>
+<p>Chao, H.-W., Chang, T.-H.
+<em>A modified calibration method for complex permittivity measurement</em>, Review
+of Scientific Instruments <strong>2013</strong>, <strong>84</strong>, 084704,
+DOI: <a class="reference external" href="https://doi.org/10.1063/1.4817635">https://doi.org/10.1063/1.4817635</a></p>
+</div>
+<div class="citation" id="cuenca2017" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Cuenca2017<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id3">3</a>,<a role="doc-backlink" href="#id4">4</a>,<a role="doc-backlink" href="#id7">5</a>,<a role="doc-backlink" href="#id10">6</a>)</span>
+<p>Cuenca, J.A., Slocombe, D.R., Porch, A.
+<em>Temperature Correction for Cylindrical Cavity Perturbation Measurements</em>,
+IEEE Transactions on Microwave Theory and Techniques <strong>2017</strong>, <strong>65</strong>, 2153-2161,
+DOI: <a class="reference external" href="https://doi.org/10.1109/TMTT.2017.2652462">https://doi.org/10.1109/TMTT.2017.2652462</a></p>
+</div>
+<div class="citation" id="cuenca2017c" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">Cuenca2017c</a><span class="fn-bracket">]</span></span>
+<p>Cuenca, J.A., Slocombe, D.R., Porch, A.
+<em>Corrections to “Temperature Correction for Cylindrical Cavity Perturbation Measurements”</em>,
+IEEE Transactions on Microwave Theory and Techniques <strong>2017</strong>, <strong>65</strong>, 5078,
+DOI: <a class="reference external" href="https://doi.org/10.1109/TMTT.2017.2751550">https://doi.org/10.1109/TMTT.2017.2751550</a></p>
+</div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.permittivity.ftT_correction">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.permittivity.</span></span><span class="sig-name descname"><span class="pre">ftT_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_mnp:</span> <span class="pre">~pint.registry.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature:</span> <span class="pre">~pint.registry.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_0n0_ref:</span> <span class="pre">~pint.registry.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_mnp_ref:</span> <span class="pre">~pint.registry.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_ref:</span> <span class="pre">~pint.registry.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_err:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_c:</span> <span class="pre">~pint.registry.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(2.3e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'1</span> <span class="pre">/</span> <span class="pre">kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_0n0:</span> <span class="pre">~pint.registry.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'1</span> <span class="pre">/</span> <span class="pre">kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_mnp:</span> <span class="pre">~pint.registry.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'1</span> <span class="pre">/</span> <span class="pre">kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'f_e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.permittivity.ftT_correction" title="Link to this definition"></a></dt>
+<dd><p>Nodal mode correction of resonance frequencies for temperature effects
+based on Cuenca et al. <a class="reference internal" href="#cuenca2017" id="id3"><span>[Cuenca2017]</span></a></p>
+<p>The nodal mode correction exploits the fact that the normalized frequency shift
+<span class="math notranslate nohighlight">\(\frac{f(T) - f(T_\text{ref})}{f(T_\text{ref})}\)</span> over a shift in temperature
+<span class="math notranslate nohighlight">\(\Delta T = T - T_\text{ref}\)</span> is approximately constant, regardless of the mode
+studied.</p>
+<p>The correction also exploits the fact that the temperature-dependency of the frequency is
+proportional mainly to the linear thermal expansion coefficient <span class="math notranslate nohighlight">\(\alpha_c\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\frac{f_{mnp}(T) - f_{mnp}(T_\text{ref})}{f_{mnp}(T_\text{ref})} \approx
+- (\alpha_c + \kappa_{mnp}) \Delta T + \kappa_{err}\]</div>
+<p>This makes it possible to approximate the behaviour of the frequency of the sample mode from
+the behaviour of a nodal mode (i.e. a mode not affected by the sample). This is useful, as the
+permittivity is related to the shift of the frequency of the sample mode upon insertion of the
+sample, therefore a proxy for the measurement of the empty cavity is required for operando
+measurements. This proxy can be calculated from the behaviour of the nodal mode and a few
+reference &amp; calibration values.</p>
+<p>For example, for the TM020 and TM210 modes (sample and nodal modes, respectively):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}f_\text{020,e,p}(t, T) &amp;&amp; \approx f_\text{020,e}(0, T_\text{ref})
+\left(1 + \frac{f_\text{210,s}(t, T) - f_\text{210,e}(0, T_\text{ref})}
+                 {f_\text{210,e}(0, T_\text{ref})}\right) \\
+&amp;&amp; + (\kappa_\text{err} - (\alpha_c + \kappa_\text{210})\Delta T)
+                 f_\text{210,e}(0, T_\text{ref}) \\
+&amp;&amp; - (\kappa_\text{err} - (\alpha_c + \kappa_\text{020})\Delta T)
+                 f_\text{020,e}(0, T_\text{ref})\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f_mnp</strong> – The frequency of the nodal mode, <span class="math notranslate nohighlight">\(f_{mnp}(t, T)\)</span>. Defaults to Hz.</p></li>
+<li><p><strong>temperature</strong> – The temperature <span class="math notranslate nohighlight">\(T\)</span>. Defaults to °C.</p></li>
+<li><p><strong>f_0n0_ref</strong> – The reference frequency of the sample mode, <span class="math notranslate nohighlight">\(f_{0n0}(0, T_\text{ref})\)</span>.
+Defaults to Hz.</p></li>
+<li><p><strong>f_mnp_ref</strong> – The reference frequency of the nodal mode, <span class="math notranslate nohighlight">\(f_{mnp}(0, T_\text{ref})\)</span>.
+Defaults to Hz.</p></li>
+<li><p><strong>temperature_ref</strong> – The reference temperature <span class="math notranslate nohighlight">\(T_\text{ref}\)</span>. Defaults to °C.</p></li>
+<li><p><strong>k_err</strong> – The calibration constant <span class="math notranslate nohighlight">\(\kappa_\text{err}\)</span>. Defaults to 0.</p></li>
+<li><p><strong>alpha_c</strong> – The linear temperature expansion constant, <span class="math notranslate nohighlight">\(\alpha_c\)</span>. Defaults
+to 23×10⁻⁶ K⁻¹, i.e. aluminium.</p></li>
+<li><p><strong>k_0n0</strong> – The calibration constant of the sample mode, <span class="math notranslate nohighlight">\(\kappa_{0n0}\)</span>.
+Defaults to 0 K⁻¹.</p></li>
+<li><p><strong>k_mnp</strong> – The calibration constant of the nodal mode, <span class="math notranslate nohighlight">\(\kappa_{mnp}\)</span>.
+Defaults to 0 K⁻¹.</p></li>
+<li><p><strong>output</strong> – Name for the output quantity. Defaults to <code class="docutils literal notranslate"><span class="pre">f_e,p</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ret</strong> – A dictionary containing the proxy for the frequency of the empty cavity,
+<span class="math notranslate nohighlight">\(f_{e,p}(t, T)\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.permittivity.QtT_correction">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.permittivity.</span></span><span class="sig-name descname"><span class="pre">QtT_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q_mnp:</span> <span class="pre">~pint.registry.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature:</span> <span class="pre">~pint.registry.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_mnp_ref:</span> <span class="pre">~pint.registry.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_0n0_ref:</span> <span class="pre">~pint.registry.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_ref:</span> <span class="pre">~pint.registry.Quantity</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_err:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_c:</span> <span class="pre">~pint.registry.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(0.004</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'1</span> <span class="pre">/</span> <span class="pre">kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_c:</span> <span class="pre">~pint.registry.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(2.3e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'1</span> <span class="pre">/</span> <span class="pre">kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_0n0:</span> <span class="pre">~pint.registry.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'1</span> <span class="pre">/</span> <span class="pre">kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_mnp:</span> <span class="pre">~pint.registry.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'1</span> <span class="pre">/</span> <span class="pre">kelvin')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'Q_e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.permittivity.QtT_correction" title="Link to this definition"></a></dt>
+<dd><p>Nodal mode correction of quality factors for temperature effects,
+based on Cuenca et al. <a class="reference internal" href="#cuenca2017" id="id4"><span>[Cuenca2017]</span></a></p>
+<p>Similar to <a class="reference internal" href="#dgpost.transform.permittivity.ftT_correction" title="dgpost.transform.permittivity.ftT_correction"><code class="xref py py-func docutils literal notranslate"><span class="pre">ftT_correction()</span></code></a>. However, here the temperature effects
+are modelled using both linear expansion coefficient <span class="math notranslate nohighlight">\(\alpha_c\)</span>, as well as
+coefficient of resistivity <span class="math notranslate nohighlight">\(\beta_c\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\frac{Q_{mnp}(T) - Q_{mnp}(T_\text{ref})}{Q_{mnp}(T_\text{ref})} \approx
+ (\beta_c - 3\alpha_c + \kappa_{mnp}) \Delta T + \kappa_{err}\]</div>
+<p>For example, for the TM020 and TM210 modes (sample and nodal modes, respectively):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}Q_\text{020,e,p}(t, T) &amp;&amp; \approx Q_\text{020,e}(0, T_\text{ref})
+\left(1 + \frac{Q_\text{210,s}(t, T) - Q_\text{210,e}(0, T_\text{ref})}
+                 {Q_\text{210,e}(0, T_\text{ref})}\right) \\
+&amp;&amp; + (\kappa_\text{err} + (\beta_c - 3\alpha_c + \kappa_\text{210})\Delta T)
+                 Q_\text{210,e}(0, T_\text{ref}) \\
+&amp;&amp; - (\kappa_\text{err} + (\beta_c - 3\alpha_c + \kappa_\text{020})\Delta T)
+                 Q_\text{020,e}(0, T_\text{ref})\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Q_mnp</strong> – The quality factor of the nodal mode, <span class="math notranslate nohighlight">\(Q_{mnp}(t, T)\)</span>. Unitless.</p></li>
+<li><p><strong>temperature</strong> – The temperature <span class="math notranslate nohighlight">\(T\)</span>. Defaults to °C.</p></li>
+<li><p><strong>Q_0n0_ref</strong> – The reference quality factor of the sample mode, <span class="math notranslate nohighlight">\(Q_{0n0}(0, T_\text{ref})\)</span>.
+Unitless.</p></li>
+<li><p><strong>Q_mnp_ref</strong> – The reference quality factor of the nodal mode, <span class="math notranslate nohighlight">\(Q_{mnp}(0, T_\text{ref})\)</span>.
+Unitless.</p></li>
+<li><p><strong>temperature_ref</strong> – The reference temperature <span class="math notranslate nohighlight">\(T_\text{ref}\)</span>. Defaults to °C.</p></li>
+<li><p><strong>k_err</strong> – The calibration constant <span class="math notranslate nohighlight">\(\kappa_\text{err}\)</span>. Defaults to 0.</p></li>
+<li><p><strong>alpha_c</strong> – The linear temperature expansion constant, <span class="math notranslate nohighlight">\(\alpha_c\)</span>. Defaults
+to 23×10⁻⁶ K⁻¹, i.e. aluminium.</p></li>
+<li><p><strong>beta_c</strong> – The coefficient of resistivity, <span class="math notranslate nohighlight">\(\beta_c\)</span>. Defaults to 4×10⁻³ K⁻¹,
+i.e. aluminium.</p></li>
+<li><p><strong>k_0n0</strong> – The calibration constant of the sample mode, <span class="math notranslate nohighlight">\(\kappa_{0n0}\)</span>.
+Defaults to 0 K⁻¹.</p></li>
+<li><p><strong>k_mnp</strong> – The calibration constant of the nodal mode, <span class="math notranslate nohighlight">\(\kappa_{mnp}\)</span>.
+Defaults to 0 K⁻¹.</p></li>
+<li><p><strong>output</strong> – Name for the output quantity. Defaults to <code class="docutils literal notranslate"><span class="pre">Q_e,p</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ret</strong> – A dictionary containing the proxy for the frequency of the empty cavity,
+<span class="math notranslate nohighlight">\(Q_{e,p}(t, T)\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.permittivity.Qec_correction">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.permittivity.</span></span><span class="sig-name descname"><span class="pre">Qec_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q_e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Q_e,c'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.permittivity.Qec_correction" title="Link to this definition"></a></dt>
+<dd><p>The modified calibration method of Chao and Chang. <a class="reference internal" href="#chao2013a" id="id5"><span>[Chao2013a]</span></a></p>
+<p>This formula corrects the quality factor of the empty cavity <span class="math notranslate nohighlight">\(Q_e\)</span>
+to a corrected value <span class="math notranslate nohighlight">\(Q_{e,c}\)</span> by taking into account the real
+part of the permittivity <span class="math notranslate nohighlight">\(\varepsilon'\)</span> of the inserted sample,
+as well as its volume:</p>
+<div class="math notranslate nohighlight">
+\[Q_{e,c} = Q_e \left(1 + (\varepsilon' - 1)\frac{V_s}{V_c}\right)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Q_e</strong> – The quality factor of the empty cavity, <span class="math notranslate nohighlight">\(Q_e\)</span>. Unitless.</p></li>
+<li><p><strong>eps</strong> – The real part of the permittivity, <span class="math notranslate nohighlight">\(\varepsilon'\)</span>. Unitless.</p></li>
+<li><p><strong>Vs</strong> – Volume of the sample, <span class="math notranslate nohighlight">\(V_s\)</span>. Defaults to mm³.</p></li>
+<li><p><strong>Vc</strong> – Volume of the cavity, <span class="math notranslate nohighlight">\(V_c\)</span>. Defaults to mm³.</p></li>
+<li><p><strong>output</strong> – Name for the output quantity. Defaults to <code class="docutils literal notranslate"><span class="pre">Q_e,c</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ret</strong> – A dictionary containing the corrected quality factor of the
+empty cavity, <span class="math notranslate nohighlight">\(Q_{e,c}\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.permittivity.real_eps">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.permittivity.</span></span><span class="sig-name descname"><span class="pre">real_eps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cal_slope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cal_intercept</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&quot;eps'&quot;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.permittivity.real_eps" title="Link to this definition"></a></dt>
+<dd><p>The MCPT equation for the real part of the permittivity.</p>
+<p>This equation calculates the real part of the permittivity
+<span class="math notranslate nohighlight">\(\varepsilon'\)</span> from the shift in the resonance frequency
+of the cavity upon insertion of the sample:</p>
+<div class="math notranslate nohighlight">
+\[\varepsilon' = f_\text{cal}\left(\frac{f_s - f_e}{f_e}\right)
+                \frac{V_c}{V_s} + 1\]</div>
+<p>Note that in some literature (e.g. <a class="reference internal" href="#chen2005a" id="id6"><span>[Chen2005a]</span></a> or <a class="reference internal" href="#cuenca2017" id="id7"><span>[Cuenca2017]</span></a>),
+the denominator in the above equation is specified as <span class="math notranslate nohighlight">\(f_s\)</span>. This
+is not correct, and should be <span class="math notranslate nohighlight">\(f_e\)</span> as in the above equation,
+see <a class="reference internal" href="#cuenca2017c" id="id8"><span>[Cuenca2017c]</span></a> for details.</p>
+<p>In most literature, the calibration function <span class="math notranslate nohighlight">\(f_\text{cal}\)</span> is
+simply a multiplication by a calibration constant. Here, we allow for
+specifying a linear calibration function using <code class="docutils literal notranslate"><span class="pre">cal_slope</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cal_intercept</span></code>, which is applied in inverse:</p>
+<div class="math notranslate nohighlight">
+\[f_\text{cal}(y) = \frac{y - \text{cal_intercept}}{\text{cal_slope}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f_s</strong> – The resonance frequency of the cavity mode with the sample, <span class="math notranslate nohighlight">\(f_s\)</span>.
+Defaults to Hz.</p></li>
+<li><p><strong>f_e</strong> – The resonance frequency of the cavity mode without the sample, <span class="math notranslate nohighlight">\(f_e\)</span>.
+Defaults to Hz.</p></li>
+<li><p><strong>Vs</strong> – Volume of the sample, <span class="math notranslate nohighlight">\(V_s\)</span>. Defaults to mm³.</p></li>
+<li><p><strong>Vc</strong> – Volume of the cavity, <span class="math notranslate nohighlight">\(V_c\)</span>. Defaults to mm³.</p></li>
+<li><p><strong>cal_slope</strong> – The slope of the calibration function.</p></li>
+<li><p><strong>cal_intercept</strong> – The intercept of the calibration function.</p></li>
+<li><p><strong>output</strong> – Name for the output quantity. Defaults to <code class="docutils literal notranslate"><span class="pre">eps'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ret</strong> – A dictionary containing the real part of the permittivity,
+<span class="math notranslate nohighlight">\(\varepsilon'\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.permittivity.imag_eps">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.permittivity.</span></span><span class="sig-name descname"><span class="pre">imag_eps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cal_slope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cal_intercept</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'eps&quot;'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.permittivity.imag_eps" title="Link to this definition"></a></dt>
+<dd><p>The MCPT equation for the imaginary part of the permittivity.
+<a class="reference internal" href="#chen2005a" id="id9"><span>[Chen2005a]</span></a> <a class="reference internal" href="#cuenca2017" id="id10"><span>[Cuenca2017]</span></a></p>
+<p>This equation calculates the imaginary part of the permittivity
+<span class="math notranslate nohighlight">\(\varepsilon''\)</span> from the change of the quality factor
+of the cavity upon insertion of the sample:</p>
+<div class="math notranslate nohighlight">
+\[\varepsilon'' = f_\text{cal}\left(\frac{1}{Q_s} - \frac{1}{Q_e}\right)
+                \frac{V_c}{V_s}\]</div>
+<p>In most literature, the calibration function <span class="math notranslate nohighlight">\(f_\text{cal}\)</span> is
+simply a multiplication by a calibration constant. Here, we allow for
+specifying a linear calibration function using <code class="docutils literal notranslate"><span class="pre">cal_slope</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cal_intercept</span></code>, which is applied in inverse:</p>
+<div class="math notranslate nohighlight">
+\[f_\text{cal}(y) = \frac{y - \text{cal_intercept}}{\text{cal_slope}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Q_s</strong> – The quality factor of the cavity mode with the sample, <span class="math notranslate nohighlight">\(Q_s\)</span>.
+Unitless.</p></li>
+<li><p><strong>Q_e</strong> – The quality factor of the cavity mode without the sample, <span class="math notranslate nohighlight">\(Q_e\)</span>.
+Unitless.</p></li>
+<li><p><strong>Vs</strong> – Volume of the sample, <span class="math notranslate nohighlight">\(V_s\)</span>. Defaults to mm³.</p></li>
+<li><p><strong>Vc</strong> – Volume of the cavity, <span class="math notranslate nohighlight">\(V_c\)</span>. Defaults to mm³.</p></li>
+<li><p><strong>cal_slope</strong> – The slope of the calibration function.</p></li>
+<li><p><strong>cal_intercept</strong> – The intercept of the calibration function.</p></li>
+<li><p><strong>output</strong> – Name for the output quantity. Defaults to <code class="docutils literal notranslate"><span class="pre">eps&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ret</strong> – A dictionary containing the real part of the permittivity,
+<span class="math notranslate nohighlight">\(\varepsilon''\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.permittivity.log_mixing_rule">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.permittivity.</span></span><span class="sig-name descname"><span class="pre">log_mixing_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps_eff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vtot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volumes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'eps'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.permittivity.log_mixing_rule" title="Link to this definition"></a></dt>
+<dd><p>Logarithmic mixing rule for permittivity.</p>
+<p>Given an effective permittivity <span class="math notranslate nohighlight">\(\varepsilon_\text{eff}\)</span>, and known
+permittivities and volume fractions of mixture component(s), the unknown
+permittivity of the sample <span class="math notranslate nohighlight">\(\varepsilon_s\)</span> can be calculated.</p>
+<p>The logarithmic mixing rule is used to account for the effects of permittivities
+of different materials. The effective permittivity is a logarithmic sum, weighted
+by the volume fractions of the individual materials. For instance, for a sample
+(<span class="math notranslate nohighlight">\(s\)</span>) supported by a quartz wool (<span class="math notranslate nohighlight">\(qw\)</span>) and enclosed in quartz tubing
+(<span class="math notranslate nohighlight">\(q\)</span>), the effective permittivity is:</p>
+<div class="math notranslate nohighlight">
+\[\text{log}(\varepsilon_\text{eff}) = \frac{V_s}{V_\text{tot}} \text{log}(\varepsilon_s)
+                                     + \frac{V_q}{V_\text{tot}} \text{log}(\varepsilon_q)
+                                     + \frac{V_{qw}}{V_\text{tot}} \text{log}(\varepsilon_{qw})\]</div>
+<p>This means, the permittivity of the sample can be calculated if the other parameters
+are known:</p>
+<div class="math notranslate nohighlight">
+\[\varepsilon_s = \text{exp}\left(
+                            \left(\text{log}(\varepsilon_\text{eff})
+                             - \frac{V_q}{V_\text{tot}} \text{log}(\varepsilon_q)
+                             - \frac{V_{qw}}{V_\text{tot}} \text{log}(\varepsilon_{qw})
+                            \right)\frac{V_\text{tot}}{V_s}
+                            \right)\]</div>
+<p>This implementation allows an arbitrary number of components in the mixture, as long as both the
+permittivity and volume are provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps_eff</strong> – The effective permittivity, <span class="math notranslate nohighlight">\(\varepsilon_\text{eff}\)</span>.</p></li>
+<li><p><strong>Vtot</strong> – The total volume of the sample mixture, <span class="math notranslate nohighlight">\(V_\text{tot}\)</span>. By default in mm³.</p></li>
+<li><p><strong>Vs</strong> – The volume of the sample of unknown permittivity in the mixture, <span class="math notranslate nohighlight">\(V_s\)</span>. By
+default in mm³.</p></li>
+<li><p><strong>permittivities</strong> – A list of known permittivities of components in the mixture.</p></li>
+<li><p><strong>volumes</strong> – A list of volumes of the components with known permittivities. Note that no
+comparison checks between the provided volumes, <span class="math notranslate nohighlight">\(V_s\)</span>, and <span class="math notranslate nohighlight">\(V_\text{tot}\)</span>
+are performed.</p></li>
+<li><p><strong>output</strong> – The name of the permittivity of the unknown sample, <span class="math notranslate nohighlight">\(\varepsilon_s\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ret</strong> – A dictionary containing the permittivity of the unknown sample, <span class="math notranslate nohighlight">\(\varepsilon_s\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dgpost.transform.permittivity.emt_lll">
+<span class="sig-prename descclassname"><span class="pre">dgpost.transform.permittivity.</span></span><span class="sig-name descname"><span class="pre">emt_lll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps_r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Quantity</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'eps_lll'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dgpost.transform.permittivity.emt_lll" title="Link to this definition"></a></dt>
+<dd><p>Effective medium theory of Landau-Lifshitz-Loyenga. <a class="reference internal" href="#dube1970" id="id11"><span>[Dube1970]</span></a></p>
+<p>This function can be used to convert the complex permittivity of an amount of powdered sample
+to the permittivity of the solid material, accounting for the packing fraction, assuming the
+voids are filled by air.</p>
+<p>Given the permittivity of a powder, <span class="math notranslate nohighlight">\(\varepsilon_p = \varepsilon_p' - j\varepsilon_p''\)</span>,
+the permittivity of the corresponding solid <span class="math notranslate nohighlight">\(\varepsilon_s\)</span> can be calculated using:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\varepsilon_s' &amp;= \left(\frac{\varepsilon_p'^{1/3} - 1}{\delta} + 1\right)^3 \\
+\varepsilon_s'' &amp;= \frac{\varepsilon_p''}{\delta}\left(\frac{\varepsilon_s'}{\varepsilon_p'}\right)^{2/3}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta\)</span> is the packing fraction. Note that the equation for <span class="math notranslate nohighlight">\(\varepsilon_s''\)</span> is only valid
+for samples where <span class="math notranslate nohighlight">\(\varepsilon_p''/\varepsilon_p' &gt;&gt; 1\)</span>.</p>
+<p>In most cases, the packing fraction can be approximated from bulk bed density and crystallographic
+density, <span class="math notranslate nohighlight">\(\delta = \frac{m_s/V_s}{\rho}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps_r</strong> – The real part of the powder permittivity, <span class="math notranslate nohighlight">\(\varepsilon_p'\)</span>.</p></li>
+<li><p><strong>eps_i</strong> – The imaginary part of the powder permittivity, <span class="math notranslate nohighlight">\(\varepsilon_p''\)</span>.</p></li>
+<li><p><strong>delta</strong> – The packing fraction, <span class="math notranslate nohighlight">\(\delta\)</span>.</p></li>
+<li><p><strong>ms</strong> – The mass of the powder sample, <span class="math notranslate nohighlight">\(m_s\)</span>, used to calculate <span class="math notranslate nohighlight">\(\delta\)</span>.
+By default in g.</p></li>
+<li><p><strong>Vs</strong> – The volume of the powder sample, <span class="math notranslate nohighlight">\(V_s\)</span>, used to calculate <span class="math notranslate nohighlight">\(\delta\)</span>.
+By default in cm³.</p></li>
+<li><p><strong>rho</strong> – The crystallographic density of the studied material, <span class="math notranslate nohighlight">\(\rho\)</span>, used to
+calculate <span class="math notranslate nohighlight">\(\delta\)</span>. By default in g/cm³.</p></li>
+<li><p><strong>output</strong> – Prefix for the corrected real and imaginary part of the permittivity.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ret</strong> – A dictionary containing the real and imaginary parts of the permittivity of the solid,
+<span class="math notranslate nohighlight">\(\varepsilon_s'\)</span> and <span class="math notranslate nohighlight">\(\varepsilon_s''\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pint.Quantity]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dgpost.transform.mixtures.html" class="btn btn-neutral float-left" title="mixtures: converting representations of mixtures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dgpost.transform.rates.html" class="btn btn-neutral float-right" title="rates: determining molar rates of chemical species" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2025, dgpost authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      v: 
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"> 
+      <script src="../versions.js"></script>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

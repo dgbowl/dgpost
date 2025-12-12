@@ -1,0 +1,6 @@
+**permittivity**: calculating complex permittivity
+==================================================
+.. automodule:: dgpost.transform.permittivity
+   :members:
+   :undoc-members:
+   :show-inheritance:
