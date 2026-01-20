@@ -32,18 +32,18 @@ cross-matching of the ``feestock``, internal ``standard``, and the components of
 
 """
 
-import pint
 import logging
 import numpy as np
-from typing import Iterable
+import pint
 from dgpost.utils.helpers import (
     name_to_chem,
     columns_to_smiles,
     default_element,
     element_from_formula,
     load_data,
-    separate_data,
 )
+from typing import Iterable
+from uncertainties import unumpy as unp
 
 logger = logging.getLogger(__name__)
 
@@ -239,8 +239,7 @@ def conversion(
                 formula = v["chem"].formula
                 dnat = out[v["out"]] * element_from_formula(formula, element)
                 if isinstance(dnat, Iterable):
-                    dnatn, _, _ = separate_data(dnat)
-                    dnat.m[np.isnan(dnatn)] = 0
+                    dnat = np.where(unp.isnan(dnat), 0, dnat)
                 nat_out += dnat
         if type == "product":
             logger.debug("Calculating product-based conversion using reactant outlet.")
@@ -340,8 +339,7 @@ def selectivity(
             formula = v["chem"].formula
             dnat = out[v["out"]] * element_from_formula(formula, element)
             if isinstance(dnat, Iterable):
-                dnatn, _, _ = separate_data(dnat)
-                dnat.m[np.isnan(dnatn)] = 0
+                dnat = np.where(unp.isnan(dnat), 0, dnat)
             if nat_out is None:
                 nat_out = dnat
             else:
@@ -539,10 +537,12 @@ def atom_balance(
     for k, v in smiles.items():
         formula = v["chem"].formula
         if "inp" in v:
-            din = inp[v["inp"]] * element_from_formula(formula, element)
+            temp = inp[v["inp"]] * element_from_formula(formula, element)
+            din = np.where(unp.isnan(temp), 0, temp)
             nat_in = din if nat_in is None else nat_in + din
         if "out" in v:
-            dout = exp * out[v["out"]] * element_from_formula(formula, element)
+            temp = exp * out[v["out"]] * element_from_formula(formula, element)
+            dout = np.where(unp.isnan(temp), 0, temp)
             nat_out = dout if nat_out is None else nat_out + dout
 
     nat_in = np.where(nat_in > 0, nat_in, np.nan)
