@@ -40,6 +40,13 @@ from .utils import compare_dfs
             ],
             "atbal.units.ufloat.pkl",
         ),
+        (  # ts4 - dataframe with NaNs
+            "atbal.nan.pkl",
+            [
+                {"element": "H", "xin": "xin", "xout": "xout", "standard": "Xe"},
+            ],
+            "atbal.nan.pkl",
+        ),
     ],
 )
 def test_catalysis_atbal_df(inpath, spec, outpath, datadir):
