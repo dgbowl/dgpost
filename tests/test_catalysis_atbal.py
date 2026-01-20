@@ -1,7 +1,7 @@
-import os
-import pytest
-import pandas as pd
 import numpy as np
+import os
+import pandas as pd
+import pytest
 
 from dgpost.transform import catalysis
 from dgpost.utils import transform
@@ -39,6 +39,13 @@ from .utils import compare_dfs
                 {"element": "O", "xin": "nin", "xout": "nout"},
             ],
             "atbal.units.ufloat.pkl",
+        ),
+        (  # ts4 - dataframe with NaNs
+            "atbal.nan.pkl",
+            [
+                {"element": "H", "xin": "xin", "xout": "xout", "standard": "Xe"},
+            ],
+            "ref.atbal.nan.pkl",
         ),
     ],
 )
