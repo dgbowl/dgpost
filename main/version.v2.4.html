@@ -118,11 +118,16 @@
 <h1><strong>dgpost</strong>-v2.4<a class="headerlink" href="#dgpost-v2-4" title="Link to this heading"></a></h1>
 <p><em>Section author: Peter Kraus</em></p>
 <p>Developed in the <a class="reference external" href="https://tu.berlin/en/concat">ConCat lab</a> at Technische Universität Berlin.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Minimum version of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">uncertainties</span></code> package has been increased to <code class="docutils literal notranslate"><span class="pre">uncertainties&gt;=3.2.0</span></code>. Pickle files created with previous versions of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">uncertainties</span></code> package may not be compatible.</p>
+</div>
 <p>An update to <code class="docutils literal notranslate"><span class="pre">dgpost-2.3</span></code>, including the following changes:</p>
 <ul class="simple">
 <li><p>Added the <a class="reference internal" href="apidoc/dgpost.transform.permittivity.html#module-dgpost.transform.permittivity" title="dgpost.transform.permittivity"><code class="xref py py-mod docutils literal notranslate"><span class="pre">permittivity</span></code></a> module for calculations related to complex permittivity and various corrections.</p></li>
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">prominence</span></code> parameter to pruning functions in <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#module-dgpost.transform.reflection" title="dgpost.transform.reflection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reflection</span></code></a> module, allowing users a better control of peak picking using peak prominence.</p></li>
 <li><p>Removed the default <code class="docutils literal notranslate"><span class="pre">height=0.2</span></code> value used in <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#dgpost.transform.reflection.prune_cutoff" title="dgpost.transform.reflection.prune_cutoff"><code class="xref py py-func docutils literal notranslate"><span class="pre">prune_cutoff()</span></code></a> and <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#dgpost.transform.reflection.prune_gradient" title="dgpost.transform.reflection.prune_gradient"><code class="xref py py-func docutils literal notranslate"><span class="pre">prune_gradient()</span></code></a> functions</p></li>
+<li><p>Fixed more <code class="xref py py-obj docutils literal notranslate"><span class="pre">np.nan</span></code> issues in the <a class="reference internal" href="apidoc/dgpost.transform.catalysis.html#module-dgpost.transform.catalysis" title="dgpost.transform.catalysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">catalysis</span></code></a> module</p></li>
 </ul>
 <p><em>Code author: Peter Kraus</em></p>
 </section>
