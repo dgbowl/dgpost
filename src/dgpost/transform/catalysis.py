@@ -540,11 +540,11 @@ def atom_balance(
         formula = v["chem"].formula
         if "inp" in v:
             temp = inp[v["inp"]] * element_from_formula(formula, element)
-            din = temp.where(np.isnan(temp), 0, temp)
+            din = np.where(np.isnan(temp), 0, temp)
             nat_in = din if nat_in is None else nat_in + din
         if "out" in v:
             temp = exp * out[v["out"]] * element_from_formula(formula, element)
-            dout = temp.where(np.isnan(temp), 0, temp)
+            dout = np.where(np.isnan(temp), 0, temp)
             nat_out = dout if nat_out is None else nat_out + dout
 
     nat_in = np.where(nat_in > 0, nat_in, np.nan)
