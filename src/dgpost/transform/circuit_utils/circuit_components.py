@@ -143,6 +143,7 @@ class CPE(Component):
 
     @staticmethod
     def calc_impedance(param, name, freq):
+        # Zcpe = 1 / Q(jωᵃ) = jω⁻ᵃ / Q
         q = param.get(name + "_Q")
         n = param.get(name + "_a")
         result = (1j * 2 * np.pi * freq) ** (-n) / q
@@ -158,11 +159,12 @@ class Warburg(Component):
 
     @staticmethod
     def get_parameters(name):
-        param = create_parameter(name, (0, 1e10), "Ω^-1 s^(-1/2)")
+        param = create_parameter(name, (0, 1e10), "Ω s^(-1/2)")
         return [param]
 
     @staticmethod
     def calc_impedance(param, name, freq):
+        # Zw = [σω⁻¹ᐟ² - j(σω⁻¹ᐟ²)] = σ(1-j) / ω¹ᐟ²
         value = param.get(name)
         result = value * (1 - 1j) / np.sqrt(2 * np.pi * freq)
         return np.array(result)
