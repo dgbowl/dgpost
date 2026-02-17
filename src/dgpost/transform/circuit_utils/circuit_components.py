@@ -137,7 +137,7 @@ class CPE(Component):
 
     @staticmethod
     def get_parameters(name):
-        param1 = create_parameter(name + "_Q", (1e-20, 1), "Ω^-1 s^n")
+        param1 = create_parameter(name + "_Q", (1e-20, 1), "Ω^-1 s^a")
         param2 = create_parameter(name + "_a", (0, 1), "")
         return [param1, param2]
 
@@ -158,7 +158,7 @@ class Warburg(Component):
 
     @staticmethod
     def get_parameters(name):
-        param = create_parameter(name, (0, 1e10), "Ω^-1 s^-1/2")
+        param = create_parameter(name, (0, 1e10), "Ω^-1 s^(-1/2)")
         return [param]
 
     @staticmethod

@@ -233,6 +233,9 @@ def fit_circuit(
     # values to pint.Quantities
     for p in param_info:
         col_name = f"{output}->{p['name']}"
+        if "CPE" in p["name"]:
+            exp = round(param_values[p["name"].replace("_Q", "_a")], 3)
+            p["unit"] = p["unit"].replace("^a", f"^{exp}")
         retval[col_name] = pint.Quantity(param_values[p["name"]], p["unit"])
 
     return retval
