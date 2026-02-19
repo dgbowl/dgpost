@@ -155,8 +155,6 @@ def test_impedance_fit_circuit_df(filepath, fit_info, expected, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(filepath)
     df = transform(df, "impedance.fit_circuit", using=fit_info)
-    print(f"{df=}")
-    assert False
     for index, expect in enumerate(expected):
         for col in df["fit_circuit"].columns:
             value = df["fit_circuit"][col].iloc[index]
@@ -240,10 +238,8 @@ def test_impedance_fit_circuit_direct(filepath, fit_info, expected, datadir):
     imag = df["-Im(Z)"]
     freq = df["freq"]
     retvals = impedance.fit_circuit(real, imag, freq, **fit_info)
-    print(f"{retvals=}")
     for key, ref in expected.items():
         val = retvals[f"fit_circuit->{key}"]
-        print(f"{val=} {ref=}")
         assert val.m == pytest.approx(ref.m)
         assert val.u == ref.u
 
