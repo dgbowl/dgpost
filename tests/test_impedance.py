@@ -155,6 +155,8 @@ def test_impedance_fit_circuit_df(filepath, fit_info, expected, datadir):
     os.chdir(datadir)
     df = pd.read_pickle(filepath)
     df = transform(df, "impedance.fit_circuit", using=fit_info)
+    print(f"{df=}")
+    assert False
     for index, expect in enumerate(expected):
         for col in df["fit_circuit"].columns:
             value = df["fit_circuit"][col].iloc[index]
@@ -162,34 +164,88 @@ def test_impedance_fit_circuit_df(filepath, fit_info, expected, datadir):
             assert value == pytest.approx(expect[col])
 
 
-def test_impedance_fit_circuit_direct(datadir):
+@pytest.mark.parametrize(
+    "filepath, fit_info, expected",
+    [
+        (
+            "test.plain.data.pkl",
+            {
+                "circuit": "R0-p(R1,C1)-p(R2,C2)",
+                "initial_values": {
+                    "R0": 90,
+                    "R1": 240,
+                    "C1": 3e-8,
+                    "R2": 140,
+                    "C2": 3e-6,
+                },
+            },
+            {
+                "R0": pint.Quantity(100.0, "ohm"),
+                "R1": pint.Quantity(250.0, "ohm"),
+                "C1": pint.Quantity(1e-8, "farad"),
+                "R2": pint.Quantity(150.0, "ohm"),
+                "C2": pint.Quantity(1e-6, "farad"),
+            },
+        ),
+        (
+            "test.plain.Randles.pkl",
+            {
+                "real": "Re(Z)",
+                "imag": "-Im(Z)",
+                "freq": "freq",
+                "circuit": "R0-p(R1-W1,C1)",
+                "initial_values": {
+                    "R0": 10,
+                    "R1": 300,
+                    "C1": 1e-9,
+                    "W1": 1,
+                },
+            },
+            {
+                "R0": pint.Quantity(100.0, "ohm"),
+                "R1": pint.Quantity(250.0, "ohm"),
+                "C1": pint.Quantity(1e-8, "farad"),
+                "W1": pint.Quantity(10, "ohm second^(-0.5)"),
+            },
+        ),
+        (
+            "test.plain.CPE.pkl",
+            {
+                "real": "Re(Z)",
+                "imag": "-Im(Z)",
+                "freq": "freq",
+                "circuit": "R0-p(R1-CPE1,C1)",
+                "initial_values": {
+                    "R0": 10,
+                    "R1": 300,
+                    "C1": 1e-9,
+                    "CPE1_Q": 1,
+                    "CPE1_a": 0.5,
+                },
+            },
+            {
+                "R0": pint.Quantity(100.0, "ohm"),
+                "R1": pint.Quantity(250.0, "ohm"),
+                "C1": pint.Quantity(1e-8, "farad"),
+                "CPE1_Q": pint.Quantity(1e-2, "ohm^(-1) s^(0.2)"),
+                "CPE1_a": pint.Quantity(0.2, ""),
+            },
+        ),
+    ],
+)
+def test_impedance_fit_circuit_direct(filepath, fit_info, expected, datadir):
     os.chdir(datadir)
-    df = pd.read_pickle("test.plain.data.pkl")
+    df = pd.read_pickle(filepath)
     real = df["Re(Z)"]
     imag = df["-Im(Z)"]
     freq = df["freq"]
-    fit_info = {
-        "circuit": "R0-p(R1,C1)-p(R2,C2)",
-        "initial_values": {
-            "R0": 90,
-            "R1": 240,
-            "C1": 3e-8,
-            "R2": 140,
-            "C2": 3e-6,
-        },
-    }
     retvals = impedance.fit_circuit(real, imag, freq, **fit_info)
-    expected = {
-        "circuit": "R0-p(R1,C1)-p(R2,C2)",
-        "R0": pint.Quantity(100.0, "ohm"),
-        "R1": pint.Quantity(250.0, "ohm"),
-        "C1": pint.Quantity(1e-8, "farad"),
-        "R2": pint.Quantity(150.0, "ohm"),
-        "C2": pint.Quantity(1e-6, "farad"),
-    }
-    for key, val in retvals.items():
-        ref = expected.get(key.split(">")[-1])
-        assert val == ref or val.m == pytest.approx(ref)
+    print(f"{retvals=}")
+    for key, ref in expected.items():
+        val = retvals[f"fit_circuit->{key}"]
+        print(f"{val=} {ref=}")
+        assert val.m == pytest.approx(ref.m)
+        assert val.u == ref.u
 
 
 def test_impedance_calc_circuit(datadir):
