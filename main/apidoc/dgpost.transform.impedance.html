@@ -152,66 +152,6 @@ in a series a dash (<code class="docutils literal notranslate"><span class="pre"
 <code class="docutils literal notranslate"><span class="pre">p(</span> <span class="pre">,</span> <span class="pre">)</span></code>. An element is defined by an identifier (usually letters) followed
 by a digit. Already implemented elements are located in the
 <a class="reference internal" href="dgpost.transform.circuit_utils.circuit_components.html#module-dgpost.transform.circuit_utils.circuit_components" title="dgpost.transform.circuit_utils.circuit_components"><code class="xref py py-mod docutils literal notranslate"><span class="pre">circuit_utils.circuit_components</span></code></a> module:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Name</p></th>
-<th class="head"><p>Symbol</p></th>
-<th class="head"><p>Parameters</p></th>
-<th class="head"><p>Bounds</p></th>
-<th class="head"><p>Units</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Resistor</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">R</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">R</span></code></p></td>
-<td><p>(1e-6, 1e6)</p></td>
-<td><p>Ω</p></td>
-</tr>
-<tr class="row-odd"><td><p>Capacitance</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">C</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">C</span></code></p></td>
-<td><p>(1e-20, 1)</p></td>
-<td><p>F</p></td>
-</tr>
-<tr class="row-even"><td rowspan="2"><p>Constant Phase Element</p></td>
-<td rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">CPE</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">CPE_Q</span></code></p></td>
-<td><p>(1e-20, 1)</p></td>
-<td><p>Ω⁻¹sᵃ</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CPE_a</span></code></p></td>
-<td><p>(0, 1)</p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>Warburg element</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">W</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">W</span></code></p></td>
-<td><p>(0, 1e10)</p></td>
-<td><p>Ω⁻¹s¹ᐟ²</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="2"><p>Warburg short element</p></td>
-<td rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">Ws</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Ws_R</span></code></p></td>
-<td><p>(0, 1e10)</p></td>
-<td><p>Ω</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Ws_T</span></code></p></td>
-<td><p>(1e-10, 1e10)</p></td>
-<td><p>s</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="2"><p>Warburg open element</p></td>
-<td rowspan="2"><p><code class="docutils literal notranslate"><span class="pre">Wo</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Wo_R</span></code></p></td>
-<td><p>(0, 1e10)</p></td>
-<td><p>Ω</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Wo_T</span></code></p></td>
-<td><p>(1e-10, 1e10)</p></td>
-<td><p>s</p></td>
-</tr>
-</tbody>
-</table>
 <p>Additionally an initial guess for the fitting parameters is needed. The initial
 guess is given as a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> where each key is the parameter name and the
 corresponding value is the initial value for the circuit.</p>
