@@ -79,7 +79,7 @@ def fit_circuit(
     |                        |        +------------+---------------+--------------+
     |                        |        | ``CPE_a``  | (0, 1)        |              |
     +------------------------+--------+------------+---------------+--------------+
-    | Warburg element        | ``W``  | ``W``      | (0, 1e10)     | Ω⁻¹s¹ᐟ²      |
+    | Warburg element        | ``W``  | ``W``      | (0, 1e10)     | Ω·s⁻¹ᐟ²       |
     +------------------------+--------+------------+---------------+--------------+
     | Warburg short element  | ``Ws`` | ``Ws_R``   | (0, 1e10)     | Ω            |
     |                        |        +------------+---------------+--------------+
@@ -233,6 +233,9 @@ def fit_circuit(
     # values to pint.Quantities
     for p in param_info:
         col_name = f"{output}->{p['name']}"
+        if "CPE" in p["name"]:
+            exp = round(param_values[p["name"].replace("_Q", "_a")], 3)
+            p["unit"] = p["unit"].replace("^a", f"^{exp}")
         retval[col_name] = pint.Quantity(param_values[p["name"]], p["unit"])
 
     return retval
