@@ -103,9 +103,9 @@ def ftT_correction(
         f_\\text{020,e,p}(t, T) && \\approx f_\\text{020,e}(0, T_\\text{ref})
         \\left(1 + \\frac{f_\\text{210,s}(t, T) - f_\\text{210,e}(0, T_\\text{ref})}
                          {f_\\text{210,e}(0, T_\\text{ref})}\\right) \\\\
-        && + (\\kappa_\\text{err} - (\\alpha_c + \\kappa_\\text{210})\\Delta T)
+        && - (\\kappa_\\text{err} - (\\alpha_c + \\kappa_\\text{210})\\Delta T)
                          f_\\text{210,e}(0, T_\\text{ref}) \\\\
-        && - (\\kappa_\\text{err} - (\\alpha_c + \\kappa_\\text{020})\\Delta T)
+        && + (\\kappa_\\text{err} - (\\alpha_c + \\kappa_\\text{020})\\Delta T)
                          f_\\text{020,e}(0, T_\\text{ref})
 
 
@@ -159,8 +159,8 @@ def ftT_correction(
 
     res = (
         (d_freq + 1) * f_0n0_ref
-        + (k_err - (alpha_c + k_mnp) * d_temp) * f_mnp_ref
-        - (k_err - (alpha_c + k_0n0) * d_temp) * f_0n0_ref
+        - (k_err - (alpha_c + k_mnp) * d_temp) * f_mnp_ref
+        + (k_err - (alpha_c + k_0n0) * d_temp) * f_0n0_ref
     )
     return {output: res}
 
@@ -210,9 +210,9 @@ def QtT_correction(
         Q_\\text{020,e,p}(t, T) && \\approx Q_\\text{020,e}(0, T_\\text{ref})
         \\left(1 + \\frac{Q_\\text{210,s}(t, T) - Q_\\text{210,e}(0, T_\\text{ref})}
                          {Q_\\text{210,e}(0, T_\\text{ref})}\\right) \\\\
-        && + (\\kappa_\\text{err} + (\\beta_c - 3\\alpha_c + \\kappa_\\text{210})\\Delta T)
+        && - (\\kappa_\\text{err} + (\\beta_c - 3\\alpha_c + \\kappa_\\text{210})\\Delta T)
                          Q_\\text{210,e}(0, T_\\text{ref}) \\\\
-        && - (\\kappa_\\text{err} + (\\beta_c - 3\\alpha_c + \\kappa_\\text{020})\\Delta T)
+        && + (\\kappa_\\text{err} + (\\beta_c - 3\\alpha_c + \\kappa_\\text{020})\\Delta T)
                          Q_\\text{020,e}(0, T_\\text{ref})
 
     Parameters
@@ -268,8 +268,8 @@ def QtT_correction(
 
     res = (
         (d_Q + 1) * Q_0n0_ref
-        + (k_err + (beta_c - 3 * alpha_c + k_mnp) * d_temp) * Q_mnp_ref
-        - (k_err + (beta_c - 3 * alpha_c + k_0n0) * d_temp) * Q_0n0_ref
+        - (k_err + (beta_c - 3 * alpha_c + k_mnp) * d_temp) * Q_mnp_ref
+        + (k_err + (beta_c - 3 * alpha_c + k_0n0) * d_temp) * Q_0n0_ref
     )
     return {output: res}
 
