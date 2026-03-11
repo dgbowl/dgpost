@@ -332,6 +332,7 @@ def Qec_correction(
     ("f_e", "Hz"),
     ("Vc", "mm³"),
     ("Vs", "mm³"),
+    ("cal_A", None),
     ("cal_slope", None),
     ("cal_intercept", None),
 )
@@ -340,7 +341,8 @@ def real_eps(
     f_e: pint.Quantity,
     Vc: pint.Quantity,
     Vs: pint.Quantity,
-    cal_slope: float = 1.0,
+    cal_A: float = 1.0,
+    cal_slope: float = None,
     cal_intercept: float = None,
     output: str = "eps'",
 ) -> dict[str, pint.Quantity]:
@@ -362,9 +364,15 @@ def real_eps(
     see [Cuenca2017c]_ for details.
 
     In most literature, the calibration function :math:`f_\\text{cal}` is
-    simply a multiplication by a calibration constant. Here, we allow for
-    specifying a linear calibration function using ``cal_slope`` and
-    ``cal_intercept``, which is applied in inverse:
+    simply a multiplication by a calibration constant:
+
+    .. math ::
+
+       f_\\text{cal}(y) = \\text{cal_A} y
+
+
+    Here, we also allow for specifying a linear calibration function using
+    ``cal_slope`` and ``cal_intercept``, which is applied in inverse:
 
     .. math ::
 
@@ -386,8 +394,13 @@ def real_eps(
     Vc
         Volume of the cavity, :math:`V_c`. Defaults to mm³.
 
+    cal_A
+        The calibration constant A. Cannot be specified together with ``cal_slope``;
+        if the latter is specified, the ``cal_A`` value is not used. Defaults to 1.0.
+
     cal_slope
-        The slope of the calibration function.
+        The slope of the calibration function. When specified, overrides any ``cal_A``
+        value provided.
 
     cal_intercept
         The intercept of the calibration function.
@@ -403,10 +416,13 @@ def real_eps(
 
     """
     tmp = (f_s - f_e) / f_e
-    if cal_intercept is not None:
-        cal = (tmp - cal_intercept) / cal_slope
+    if cal_slope is not None:
+        if cal_intercept is not None:
+            cal = (tmp - cal_intercept) / cal_slope
+        else:
+            cal = tmp / cal_slope
     else:
-        cal = tmp / cal_slope
+        cal = tmp * cal_A
     eps = cal * (Vc / Vs) + 1
     return {output: eps}
 
@@ -424,7 +440,8 @@ def imag_eps(
     Q_e: pint.Quantity,
     Vc: pint.Quantity,
     Vs: pint.Quantity,
-    cal_slope: float = 1.0,
+    cal_B: float = 2.0,
+    cal_slope: float = None,
     cal_intercept: float = None,
     output: str = 'eps"',
 ) -> dict[str, pint.Quantity]:
@@ -442,8 +459,13 @@ def imag_eps(
                        \\frac{V_c}{V_s}
 
     In most literature, the calibration function :math:`f_\\text{cal}` is
-    simply a multiplication by a calibration constant. Here, we allow for
-    specifying a linear calibration function using ``cal_slope`` and
+    simply a multiplication by a calibration constant:
+
+    .. math ::
+
+       f_\\text{cal}(y) = \\text{cal_B} y
+
+    Here, we allow for specifying a linear calibration function using ``cal_slope`` and
     ``cal_intercept``, which is applied in inverse:
 
     .. math ::
@@ -466,6 +488,10 @@ def imag_eps(
     Vc
         Volume of the cavity, :math:`V_c`. Defaults to mm³.
 
+    cal_B
+        The calibration constant B. Cannot be specified together with ``cal_slope``;
+        if the latter is specified, the ``cal_B`` value is not used. Defaults to 2.0.
+
     cal_slope
         The slope of the calibration function.
 
@@ -484,10 +510,13 @@ def imag_eps(
     """
 
     tmp = 1 / Q_s - 1 / Q_e
-    if cal_intercept is not None:
-        cal = (tmp - cal_intercept) / cal_slope
+    if cal_slope is not None:
+        if cal_intercept is not None:
+            cal = (tmp - cal_intercept) / cal_slope
+        else:
+            cal = tmp / cal_slope
     else:
-        cal = tmp / cal_slope
+        cal = cal_B * tmp
     eps = cal * (Vc / Vs) * (1 / 2)
     return {output: eps}
 
