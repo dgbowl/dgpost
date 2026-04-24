@@ -162,7 +162,7 @@ def extract(
         series = []
 
     if index is not None:
-        ts = np.array(index)
+        ts = pd.Index(index)
     elif at is not None and "timestamps" in at:
         ts = pd.Index(at["timestamps"])
     elif len(series) > 0:
