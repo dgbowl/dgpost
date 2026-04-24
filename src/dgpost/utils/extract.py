@@ -67,7 +67,7 @@ import pandas as pd
 from xarray import DataTree
 import uncertainties as uc
 import uncertainties.unumpy as unp
-from typing import Union, Any, Optional
+from typing import Union, Any, Optional, Iterable
 import logging
 from functools import singledispatch
 
@@ -179,10 +179,20 @@ def extract(
     df.attrs["units"] = dict()
     for sr in series:
         if sr.index.equals(ts):
+            logger.debug("index of %s matches dataframe, no interpolation.", sr.name)
             df[sr.name] = sr
         else:
-            noms = unp.nominal_values(sr)
-            sigs = unp.std_devs(sr)
+            logger.debug(
+                "index of %s does not match dataframe, interpolating.", sr.name
+            )
+            if isinstance(sr.values[0], Iterable):
+                raise RuntimeError(
+                    f"Attempting to interpolate a non-scalar quantity {sr.name!r} of type "
+                    f"{type(sr.values[0])}. This is not supported. Process your data into "
+                    "scalars in a separate table first."
+                )
+            noms = unp.nominal_values(sr.values)
+            sigs = unp.std_devs(sr.values)
             mask = ~np.isnan(noms) & ~np.isnan(sigs)
             if np.any(mask):
                 inoms = np.interp(df.index, sr.index[mask], noms[mask])
