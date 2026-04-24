@@ -342,6 +342,26 @@ def test_extract_single(inpath, spec, outpath, datadir):
             ],
             "ref.qf+temp.pkl",
         ),
+        (  # ts4 - issue 122
+            "issue_122.nc",
+            [
+                {
+                    "at": {"step": "masstrace/1"},
+                    "columns": [
+                        {"key": "mass_to_charge", "as": "m/z_1"},
+                        {"key": "y", "as": "ion_current_1"},
+                    ],
+                },
+                {
+                    "at": {"step": "masstrace/2"},
+                    "columns": [
+                        {"key": "mass_to_charge", "as": "m/z_2"},
+                        {"key": "y", "as": "ion_current_2"},
+                    ],
+                },
+            ],
+            "ref.issue_122.pkl",
+        ),
     ],
 )
 def test_extract_multiple(inpath, spec, outpath, datadir):
@@ -397,3 +417,47 @@ def test_extract_nested_units():
     print(f"{ret.attrs=}")
     assert ret.attrs["units"]["raw"]["a"] == "meter"
     assert ret.attrs["units"]["raw"]["b"] == "meter"
+
+
+@pytest.mark.parametrize(
+    "inpath, spec, msg",
+    [
+        (  # ts4 - issue 122
+            "issue_122.nc",
+            [
+                {
+                    "at": {"step": "masstrace/1"},
+                    "columns": [
+                        {"key": "mass_to_charge", "as": "m/z_1"},
+                        {"key": "y", "as": "ion_current_1"},
+                    ],
+                },
+                {
+                    "at": {"step": "masstrace/3"},
+                    "columns": [
+                        {"key": "mass_to_charge", "as": "m/z_3"},
+                        {"key": "y", "as": "ion_current_3"},
+                    ],
+                },
+            ],
+            "Attempting to interpolate a non-scalar quantity",
+        ),
+    ],
+)
+def test_extract_xfail(inpath, spec, msg, datadir):
+    os.chdir(datadir)
+    if inpath.endswith("json"):
+        with open(inpath, "r") as inf:
+            data = json.load(inf)
+    elif inpath.endswith("pkl"):
+        data = pd.read_pickle(inpath)
+    elif inpath.endswith("nc"):
+        data = open_datatree(inpath)
+
+    with pytest.raises(RuntimeError, match=msg):
+        for si, sp in enumerate(spec):
+            if si == 0:
+                df = dgpost.utils.extract(data, sp)
+            else:
+                ret = dgpost.utils.extract(data, sp, df.index)
+                df = combine_tables(df, ret)
