@@ -311,6 +311,8 @@ def _(obj: DataTree, columns: list[dict]) -> list[pd.Series]:
                     sv = dv.values * ds.values
                 elif yut == "sig":
                     sv = np.pow(10, np.floor(np.log10(dv.values)) - ds.values + 1)
+                else:
+                    raise ValueError("Unknown yadg_uncertainty_type: '%s'", yut)
 
                 if split is None:
                     data = unp.uarray(dv, sv)
