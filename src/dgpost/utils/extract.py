@@ -244,10 +244,11 @@ def _(obj: DataTree, columns: list[dict]) -> list[pd.Series]:
     def get_key_recurse(dt, keys):
         key = keys.pop(0)
         if len(keys) == 0:
-            if f"{key}_std_err" in dt:
-                return (dt[key], dt[f"{key}_std_err"])
-            else:
+            skey = dt[key].attrs.get("ancillary_variables")
+            if skey is None:
                 return (dt[key], None)
+            else:
+                return (dt[key], dt[skey])
         else:
             return get_key_recurse(dt[key], keys)
 
@@ -295,12 +296,29 @@ def _(obj: DataTree, columns: list[dict]) -> list[pd.Series]:
                     name.append(split)
             else:
                 if split is None:
-                    data = unp.uarray(vals, sigs)
+                    dv, ds = (vals, sigs)
                 else:
-                    data = unp.uarray(
-                        vals.loc[{coord: split}], sigs.loc[{coord: split}]
-                    )
-                    name.append(split)
+                    dv = vals.loc[{coord: split}]
+                    if coord in sigs.dims:
+                        ds = sigs.loc[{coord: split}]
+                    else:
+                        ds = sigs
+
+                yut = sigs.attrs.get("yadg_uncertainty_type", "abs")
+                if yut == "abs":
+                    sv = ds.values
+                elif yut == "rel":
+                    sv = dv.values * ds.values
+                elif yut == "sig":
+                    sv = np.pow(10, np.floor(np.log10(dv.values)) - ds.values + 1)
+                else:
+                    raise ValueError("Unknown yadg_uncertainty_type: '%s'", yut)
+
+                if split is None:
+                    data = unp.uarray(dv, sv)
+                else:
+                    data = unp.uarray(dv, sv)
+                    name.append(str(split))
 
             if index.shape == data.shape:
                 ret = pd.Series(data=data, index=index, name=tuple(name))

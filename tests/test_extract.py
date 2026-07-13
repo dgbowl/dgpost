@@ -250,6 +250,43 @@ from .utils import compare_dfs
             },
             "ref.extract.multidim.nc.pkl",
         ),
+        (
+            # ts24 - issue 124 old mpr file
+            "issue_124.mpr.old.nc",
+            {
+                "columns": [
+                    {"key": "Ns", "as": "Ns"},  # int
+                    {"key": "I Range", "as": "I range"},  # str
+                    {"key": "control_I", "as": "control_I"},  # float
+                    {"key": "Ewe", "as": "Ewe"},  # float
+                ]
+            },
+            "ref.issue_124.mpr.old.pkl",
+        ),
+        (
+            # ts25 - issue 124 new mpr file
+            "issue_124.mpr.new.nc",
+            {
+                "columns": [
+                    {"key": "Ns", "as": "Ns"},  # int
+                    {"key": "I Range", "as": "I range"},  # str
+                    {"key": "control_I", "as": "control_I"},  # float abs
+                    {"key": "Ewe", "as": "Ewe"},  # float rel
+                ]
+            },
+            "ref.issue_124.mpr.new.pkl",
+        ),
+        (
+            # ts26 - issue 124 new gc file
+            "issue_124.gc.new.nc",
+            {
+                "columns": [
+                    {"key": "area", "as": "area"},  # float abs
+                    {"key": "xout", "as": "xout"},  # float sig
+                ]
+            },
+            "ref.issue_124.gc.new.pkl",
+        ),
     ],
 )
 def test_extract_single(inpath, spec, outpath, datadir):

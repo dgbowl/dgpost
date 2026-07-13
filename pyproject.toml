@@ -35,7 +35,7 @@ dependencies = [
     "h5netcdf >= 1.0",
     "xarray >= 2024.10.0",
     "dgbowl-schemas >= 122",
-    "matplotlib >= 3.5.0",
+    "matplotlib >= 3.5.0, < 3.11",
 ]
 
 [project.optional-dependencies]
