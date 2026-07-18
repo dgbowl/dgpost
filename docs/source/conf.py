@@ -80,4 +80,6 @@ intersphinx_mapping = {
     "dgbowl_schemas": ("https://dgbowl.github.io/dgbowl-schemas/main", None),
     "yadg": ("https://dgbowl.github.io/yadg/main", None),
     "matplotlib": ("https://matplotlib.org/stable", None),
+    "pandas": ("https://pandas.pydata.org/docs/", None),
+    "pd": ("https://pandas.pydata.org/docs/", None),
 }
