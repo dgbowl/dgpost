@@ -1,0 +1,6 @@
+**impedance**: fitting electrochemical impedance spectra
+========================================================
+.. automodule:: dgpost.transform.impedance
+   :members:
+   :undoc-members:
+   :show-inheritance:

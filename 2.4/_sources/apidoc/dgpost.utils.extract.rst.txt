@@ -1,0 +1,6 @@
+**extract**: extract and interpolate data into tables
+=====================================================
+.. automodule:: dgpost.utils.extract
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,6 @@
+**plot**: create reproducible plots from tables
+===============================================
+.. automodule:: dgpost.utils.plot
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,6 @@
+**mixtures**: converting representations of mixtures
+====================================================
+.. automodule:: dgpost.transform.mixtures
+   :members:
+   :undoc-members:
+   :show-inheritance:
