@@ -1,5 +1,5 @@
 **dgpost**-v2.3
----------------
+```````````````
 
 .. image:: https://img.shields.io/static/v1?label=dgpost&message=v2.3&color=blue&logo=github
     :target: https://github.com/dgbowl/dgpost/tree/2.3

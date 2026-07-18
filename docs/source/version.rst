@@ -1,14 +1,17 @@
 **dgpost** version history
 --------------------------
 
-.. toctree::
-   :maxdepth: 1
+.. include:: version.v2.4.rst
 
-   version.v2.4
-   version.v2.3
-   version.v2.2
-   version.v2.1
-   version.v2.0
-   version.v1.1
-   version.v1.0
+.. include:: version.v2.3.rst
+
+.. include:: version.v2.2.rst
+
+.. include:: version.v2.1.rst
+
+.. include:: version.v2.0.rst
+
+.. include:: version.v1.1.rst
+
+.. include:: version.v1.0.rst
 
