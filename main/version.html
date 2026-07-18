@@ -21,7 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="dgpost-v2.4" href="version.v2.4.html" />
+    <link rel="next" title="catalysis: common calculations in catalytic testing" href="apidoc/dgpost.transform.catalysis.html" />
     <link rel="prev" title="dgpost features" href="features.html" /> 
 </head>
 
@@ -51,13 +51,13 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html"><strong>dgpost</strong> usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html"><strong>dgpost</strong> features</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>dgpost</strong> version history</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="version.v2.4.html"><strong>dgpost</strong>-v2.4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v2.3.html"><strong>dgpost</strong>-v2.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v2.2.html"><strong>dgpost</strong>-v2.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v2.1.html"><strong>dgpost</strong>-v2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v2.0.html"><strong>dgpost</strong>-v2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v1.1.html"><strong>dgpost</strong>-v1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v1.0.html"><strong>dgpost</strong>-v1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost-v2-4"><strong>dgpost</strong>-v2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost-v2-3"><strong>dgpost</strong>-v2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost-v2-2"><strong>dgpost</strong>-v2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost-v2-1"><strong>dgpost</strong>-v2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost-v2-0"><strong>dgpost</strong>-v2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost-v1-1"><strong>dgpost</strong>-v1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dgpost-v1-0"><strong>dgpost</strong>-v1.0</a></li>
 </ul>
 </li>
 </ul>
@@ -115,17 +115,155 @@
              
   <section id="dgpost-version-history">
 <h1><strong>dgpost</strong> version history<a class="headerlink" href="#dgpost-version-history" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="version.v2.4.html"><strong>dgpost</strong>-v2.4</a></li>
-<li class="toctree-l1"><a class="reference internal" href="version.v2.3.html"><strong>dgpost</strong>-v2.3</a></li>
-<li class="toctree-l1"><a class="reference internal" href="version.v2.2.html"><strong>dgpost</strong>-v2.2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="version.v2.1.html"><strong>dgpost</strong>-v2.1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="version.v2.0.html"><strong>dgpost</strong>-v2.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="version.v1.1.html"><strong>dgpost</strong>-v1.1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="version.v1.0.html"><strong>dgpost</strong>-v1.0</a></li>
-</ul>
+<section id="dgpost-v2-4">
+<h2><strong>dgpost</strong>-v2.4<a class="headerlink" href="#dgpost-v2-4" title="Link to this heading"></a></h2>
+<a class="reference external image-reference" href="https://github.com/dgbowl/dgpost/tree/2.4"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.4&amp;color=blue&amp;logo=github" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.4&amp;color=blue&amp;logo=github" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/dgpost/2.4/"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.4&amp;color=blue&amp;logo=pypi" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.4&amp;color=blue&amp;logo=pypi" /></a>
+<img alt="https://img.shields.io/static/v1?label=release%20date&amp;message=2026-07-18&amp;color=red&amp;logo=pypi" src="https://img.shields.io/static/v1?label=release%20date&amp;message=2026-07-18&amp;color=red&amp;logo=pypi" />
+<p><em>Section author: Peter Kraus</em></p>
+<p>Developed in the <a class="reference external" href="https://tu.berlin/en/concat">ConCat lab</a> at Technische Universität Berlin.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Minimum version of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">uncertainties</span></code> package has been increased to <code class="docutils literal notranslate"><span class="pre">uncertainties&gt;=3.2.0</span></code>. Pickle files created with previous versions of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">uncertainties</span></code> package may not be compatible.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Support for processing <code class="docutils literal notranslate"><span class="pre">json</span></code> datagrams from <code class="docutils literal notranslate"><span class="pre">yadg-4.0</span></code> is deprecated and will stop working in <code class="docutils literal notranslate"><span class="pre">dgpost-3.0</span></code>. Please convert any existing datagrams from the <code class="docutils literal notranslate"><span class="pre">json</span></code> format to the “new” NetCDF format using <code class="docutils literal notranslate"><span class="pre">yadg-7.0</span></code>.</p>
+</div>
+<p>An update to <code class="docutils literal notranslate"><span class="pre">dgpost-2.3</span></code>, including the following changes:</p>
+<ul class="simple">
+<li><p>Added the <a class="reference internal" href="apidoc/dgpost.transform.permittivity.html#module-dgpost.transform.permittivity" title="dgpost.transform.permittivity"><code class="xref py py-mod docutils literal notranslate"><span class="pre">permittivity</span></code></a> module for calculations related to complex permittivity and various corrections.</p></li>
+<li><p>Added a <code class="docutils literal notranslate"><span class="pre">prominence</span></code> parameter to pruning functions in <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#module-dgpost.transform.reflection" title="dgpost.transform.reflection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reflection</span></code></a> module, allowing users a better control of peak picking using peak prominence.</p></li>
+<li><p>Removed the default <code class="docutils literal notranslate"><span class="pre">height=0.2</span></code> value used in <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#dgpost.transform.reflection.prune_cutoff" title="dgpost.transform.reflection.prune_cutoff"><code class="xref py py-func docutils literal notranslate"><span class="pre">prune_cutoff()</span></code></a> and <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#dgpost.transform.reflection.prune_gradient" title="dgpost.transform.reflection.prune_gradient"><code class="xref py py-func docutils literal notranslate"><span class="pre">prune_gradient()</span></code></a> functions.</p></li>
+<li><p>Fixed more <code class="xref py py-obj docutils literal notranslate"><span class="pre">np.nan</span></code> issues in the <a class="reference internal" href="apidoc/dgpost.transform.catalysis.html#module-dgpost.transform.catalysis" title="dgpost.transform.catalysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">catalysis</span></code></a> module.</p></li>
+<li><p>Support for the new uncertainty format introduced in <code class="docutils literal notranslate"><span class="pre">yadg-7.0</span></code>, in particular:</p>
+<ul>
+<li><p>When extracting from NetCDF files, the <code class="docutils literal notranslate"><span class="pre">ancillary_variables</span></code> attribute is now used to find uncertainties.</p></li>
+<li><p>Added support for <code class="docutils literal notranslate"><span class="pre">yadg_uncertainty_type</span></code> fields when processing uncertainties.</p></li>
+</ul>
+</li>
+</ul>
+<p><em>Code author: Peter Kraus</em></p>
+</section>
+<section id="dgpost-v2-3">
+<h2><strong>dgpost</strong>-v2.3<a class="headerlink" href="#dgpost-v2-3" title="Link to this heading"></a></h2>
+<a class="reference external image-reference" href="https://github.com/dgbowl/dgpost/tree/2.3"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.3&amp;color=blue&amp;logo=github" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.3&amp;color=blue&amp;logo=github" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/dgpost/2.3/"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.3&amp;color=blue&amp;logo=pypi" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.3&amp;color=blue&amp;logo=pypi" /></a>
+<img alt="https://img.shields.io/static/v1?label=release%20date&amp;message=2025-06-29&amp;color=red&amp;logo=pypi" src="https://img.shields.io/static/v1?label=release%20date&amp;message=2025-06-29&amp;color=red&amp;logo=pypi" />
+<p><em>Section author: Peter Kraus</em></p>
+<p>Developed in the <a class="reference external" href="https://tu.berlin/en/concat">ConCat lab</a> at Technische Universität Berlin.</p>
+<p>An update to <code class="docutils literal notranslate"><span class="pre">dgpost-2.2</span></code>, including the following changes:</p>
+<ul class="simple">
+<li><p>Added the <a class="reference internal" href="apidoc/dgpost.transform.complex.html#module-dgpost.transform.complex" title="dgpost.transform.complex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">complex</span></code></a> module for converting complex numbers between their polar and rectangular forms.</p></li>
+<li><p>Added the <a class="reference internal" href="apidoc/dgpost.transform.mixtures.html#module-dgpost.transform.mixtures" title="dgpost.transform.mixtures"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mixtures</span></code></a> module for converting between different representation of mixtures.</p></li>
+<li><p>Added the <a class="reference internal" href="apidoc/dgpost.transform.table.html#dgpost.transform.table.apply_linear" title="dgpost.transform.table.apply_linear"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_linear()</span></code></a> and <a class="reference internal" href="apidoc/dgpost.transform.table.html#dgpost.transform.table.apply_inverse" title="dgpost.transform.table.apply_inverse"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_inverse()</span></code></a> functions to allow application of calibrations or scaling factors to columns / namespaces.</p></li>
+<li><p>Added the <a class="reference internal" href="apidoc/dgpost.transform.table.html#dgpost.transform.table.sum_namespace" title="dgpost.transform.table.sum_namespace"><code class="xref py py-func docutils literal notranslate"><span class="pre">sum_namespace()</span></code></a> function to provide a way to sum namespaces into a single column.</p></li>
+<li><p>Bug fixes to many division-by-zero bugs in the <a class="reference internal" href="apidoc/dgpost.transform.catalysis.html#module-dgpost.transform.catalysis" title="dgpost.transform.catalysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">catalysis</span></code></a> module.</p></li>
+<li><p>Bug fix in <a class="reference internal" href="apidoc/dgpost.transform.electrochemistry.html#dgpost.transform.electrochemistry.fe" title="dgpost.transform.electrochemistry.fe"><code class="xref py py-func docutils literal notranslate"><span class="pre">fe()</span></code></a> to count electrons properly when using charged species.</p></li>
+</ul>
+<p><em>Code author: Ueli Sauter,
+Peter Kraus</em></p>
+</section>
+<section id="dgpost-v2-2">
+<h2><strong>dgpost</strong>-v2.2<a class="headerlink" href="#dgpost-v2-2" title="Link to this heading"></a></h2>
+<a class="reference external image-reference" href="https://github.com/dgbowl/dgpost/tree/2.2"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.2&amp;color=blue&amp;logo=github" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.2&amp;color=blue&amp;logo=github" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/dgpost/2.2/"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.2&amp;color=blue&amp;logo=pypi" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.2&amp;color=blue&amp;logo=pypi" /></a>
+<img alt="https://img.shields.io/static/v1?label=release%20date&amp;message=2025-02-02&amp;color=red&amp;logo=pypi" src="https://img.shields.io/static/v1?label=release%20date&amp;message=2025-02-02&amp;color=red&amp;logo=pypi" />
+<p><em>Section author: Peter Kraus</em></p>
+<p>Developed in the <a class="reference external" href="https://tu.berlin/en/concat">ConCat lab</a> at Technische Universität Berlin.</p>
+<p>An update to <code class="docutils literal notranslate"><span class="pre">dgpost-2.1</span></code>, including the following changes:</p>
+<ul class="simple">
+<li><p>Dropped support for <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">&lt;</span> <span class="pre">3.10</span></code>.</p></li>
+<li><p>Modified peak-picking in <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#module-dgpost.transform.reflection" title="dgpost.transform.reflection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reflection</span></code></a> to use <code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.signal.find_peaks()</span></code>.</p></li>
+<li><p>Removed version checking from <a class="reference internal" href="apidoc/dgpost.html#module-dgpost" title="dgpost"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost</span></code></a> and its dependency on <code class="xref py py-mod docutils literal notranslate"><span class="pre">requests</span></code>.</p></li>
+<li><p>Implemented integration tests for compatibility with <a class="reference external" href="https://dgbowl.github.io/yadg/main/apidoc/yadg.html#module-yadg" title="(in yadg v6.2.dev15)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yadg</span></code></a>.</p></li>
+</ul>
+<p><em>Code author: Ueli Sauter,
+Peter Kraus</em></p>
+</section>
+<section id="dgpost-v2-1">
+<h2><strong>dgpost</strong>-v2.1<a class="headerlink" href="#dgpost-v2-1" title="Link to this heading"></a></h2>
+<a class="reference external image-reference" href="https://github.com/dgbowl/dgpost/tree/2.1"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.1&amp;color=blue&amp;logo=github" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.1&amp;color=blue&amp;logo=github" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/dgpost/2.1/"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.1&amp;color=blue&amp;logo=pypi" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.1&amp;color=blue&amp;logo=pypi" /></a>
+<img alt="https://img.shields.io/static/v1?label=release%20date&amp;message=2023-10-16&amp;color=red&amp;logo=pypi" src="https://img.shields.io/static/v1?label=release%20date&amp;message=2023-10-16&amp;color=red&amp;logo=pypi" />
+<p><em>Section author: Peter Kraus</em></p>
+<p>Developed in the <a class="reference external" href="https://tu.berlin/en/concat">ConCat lab</a> at Technische Universität Berlin.</p>
+<p>An update to <code class="docutils literal notranslate"><span class="pre">dgpost-2.0</span></code>, including the following features:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="apidoc/dgpost.utils.load.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a>: support for reading <code class="docutils literal notranslate"><span class="pre">NetCDF</span></code> files created by <code class="docutils literal notranslate"><span class="pre">yadg-5.0</span></code>;</p></li>
+<li><p><a class="reference internal" href="apidoc/dgpost.utils.pivot.html#module-dgpost.utils.pivot" title="dgpost.utils.pivot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pivot</span></code></a>: added a new functionality, allowing the users to reorganise
+data by grouping them into arrays from multiple rows;</p></li>
+<li><p><a class="reference internal" href="apidoc/dgpost.utils.save.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">save</span></code></a>: added a new <code class="docutils literal notranslate"><span class="pre">columns</span></code> argument, allowing the user to select
+which columns of a table are to be exported;</p></li>
+</ul>
+<p><em>Code author: Ueli Sauter,
+Peter Kraus</em></p>
+</section>
+<section id="dgpost-v2-0">
+<h2><strong>dgpost</strong>-v2.0<a class="headerlink" href="#dgpost-v2-0" title="Link to this heading"></a></h2>
+<a class="reference external image-reference" href="https://github.com/dgbowl/dgpost/tree/2.0"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.0&amp;color=blue&amp;logo=github" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.0&amp;color=blue&amp;logo=github" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/dgpost/2.0/"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.0&amp;color=blue&amp;logo=pypi" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.0&amp;color=blue&amp;logo=pypi" /></a>
+<img alt="https://img.shields.io/static/v1?label=release%20date&amp;message=2023-01-13&amp;color=red&amp;logo=pypi" src="https://img.shields.io/static/v1?label=release%20date&amp;message=2023-01-13&amp;color=red&amp;logo=pypi" />
+<p><em>Section author: Peter Kraus</em></p>
+<p>Developed in the Materials for Energy Conversion lab at Empa, in Dübendorf, and
+in the Centre for Advanced Ceramic Materials at the Technische Universität Berlin.</p>
+<p>Second major release. Including all bug-fixes from the <code class="docutils literal notranslate"><span class="pre">dgpost-1.x</span></code> series, and
+the following new features:</p>
+<ul class="simple">
+<li><p>support for <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code> in <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrames</span></code>;</p></li>
+<li><p>the <a class="reference internal" href="apidoc/dgpost.transform.table.html#module-dgpost.transform.table" title="dgpost.transform.table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">table</span></code></a> module of functions for basic operations on tables;</p></li>
+<li><p>the <a class="reference internal" href="apidoc/dgpost.transform.chromatography.html#module-dgpost.transform.chromatography" title="dgpost.transform.chromatography"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chromatography</span></code></a> module, including functions for post-processing
+chromatographic traces;</p></li>
+<li><p>the <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#module-dgpost.transform.reflection" title="dgpost.transform.reflection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reflection</span></code></a> module, containing utilities for post-processing
+reflection traces, including pruning and fitting functions.</p></li>
+</ul>
+<p><em>Code author: Ueli Sauter,
+Peter Kraus</em></p>
+</section>
+<section id="dgpost-v1-1">
+<h2><strong>dgpost</strong>-v1.1<a class="headerlink" href="#dgpost-v1-1" title="Link to this heading"></a></h2>
+<a class="reference external image-reference" href="https://github.com/dgbowl/dgpost/tree/1.1"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.1&amp;color=blue&amp;logo=github" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.1&amp;color=blue&amp;logo=github" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/dgpost/1.1/"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.1&amp;color=blue&amp;logo=pypi" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.1&amp;color=blue&amp;logo=pypi" /></a>
+<img alt="https://img.shields.io/static/v1?label=release%20date&amp;message=2022-06-28&amp;color=red&amp;logo=pypi" src="https://img.shields.io/static/v1?label=release%20date&amp;message=2022-06-28&amp;color=red&amp;logo=pypi" />
+<p><em>Section author: Peter Kraus</em></p>
+<p>Developed in the Materials for Energy Conversion lab at Empa, in Dübendorf.</p>
+<p>This is a bugfix release, including:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--patch</span></code> functionality, allowing the user to specify a file prefix on a command
+line when dgpost is executed;</p></li>
+<li><p>additional <a class="reference internal" href="apidoc/dgpost.transform.catalysis.html#module-dgpost.transform.catalysis" title="dgpost.transform.catalysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">catalysis</span></code></a> functionality for calculating
+conversion using rates;</p></li>
+<li><p>fixes to index-based x-axes in single-column figures in the <a class="reference internal" href="apidoc/dgpost.utils.plot.html#module-dgpost.utils.plot" title="dgpost.utils.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code></a>
+module,</p></li>
+<li><p>support for the <code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_1_1</span></code> schema.</p></li>
+</ul>
+<p><em>Code author: Ueli Sauter,
+Peter Kraus</em></p>
+</section>
+<section id="dgpost-v1-0">
+<h2><strong>dgpost</strong>-v1.0<a class="headerlink" href="#dgpost-v1-0" title="Link to this heading"></a></h2>
+<a class="reference external image-reference" href="https://github.com/dgbowl/dgpost/tree/1.0"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.0&amp;color=blue&amp;logo=github" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.0&amp;color=blue&amp;logo=github" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/dgpost/1.0/"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.0&amp;color=blue&amp;logo=pypi" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v1.0&amp;color=blue&amp;logo=pypi" /></a>
+<img alt="https://img.shields.io/static/v1?label=release%20date&amp;message=2022-04-26&amp;color=red&amp;logo=pypi" src="https://img.shields.io/static/v1?label=release%20date&amp;message=2022-04-26&amp;color=red&amp;logo=pypi" />
+<p><em>Section author: Peter Kraus</em></p>
+<p>Developed in the Materials for Energy Conversion lab at Empa, in Dübendorf.</p>
+<p>This initial release includes:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="apidoc/dgpost.utils.html#module-dgpost.utils" title="dgpost.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.utils</span></code></a> module, including an initial implementation of the
+<a class="reference internal" href="apidoc/dgpost.utils.load.html#module-dgpost.utils.load" title="dgpost.utils.load"><code class="xref py py-mod docutils literal notranslate"><span class="pre">load</span></code></a>, <a class="reference internal" href="apidoc/dgpost.utils.extract.html#module-dgpost.utils.extract" title="dgpost.utils.extract"><code class="xref py py-mod docutils literal notranslate"><span class="pre">extract</span></code></a>,
+<a class="reference internal" href="apidoc/dgpost.utils.transform.html#module-dgpost.utils.transform" title="dgpost.utils.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">transform</span></code></a>, <a class="reference internal" href="apidoc/dgpost.utils.plot.html#module-dgpost.utils.plot" title="dgpost.utils.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code></a>, and
+<a class="reference internal" href="apidoc/dgpost.utils.save.html#module-dgpost.utils.save" title="dgpost.utils.save"><code class="xref py py-mod docutils literal notranslate"><span class="pre">save</span></code></a> functionalities,</p></li>
+<li><p><a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> module, including the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">load_data()</span></code> decorator and functions required
+to support the basic <a class="reference internal" href="apidoc/dgpost.utils.transform.html#module-dgpost.utils.transform" title="dgpost.utils.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">transform</span></code></a> functionality,</p></li>
+<li><p>several libraries within the <a class="reference internal" href="apidoc/dgpost.transform.html#module-dgpost.transform" title="dgpost.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dgpost.transform</span></code></a> modules, including
+<a class="reference internal" href="apidoc/dgpost.transform.catalysis.html#module-dgpost.transform.catalysis" title="dgpost.transform.catalysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">catalysis</span></code></a>, <a class="reference internal" href="apidoc/dgpost.transform.electrochemistry.html#module-dgpost.transform.electrochemistry" title="dgpost.transform.electrochemistry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">electrochemistry</span></code></a>,
+<a class="reference internal" href="apidoc/dgpost.transform.impedance.html#module-dgpost.transform.impedance" title="dgpost.transform.impedance"><code class="xref py py-mod docutils literal notranslate"><span class="pre">impedance</span></code></a>, and <a class="reference internal" href="apidoc/dgpost.transform.rates.html#module-dgpost.transform.rates" title="dgpost.transform.rates"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rates</span></code></a>,</p></li>
+<li><p>the <a class="reference external" href="https://dgbowl.github.io/dgbowl-schemas/main/apidoc/dgbowl_schemas.dgpost.recipe_1_0.html#module-dgbowl_schemas.dgpost.recipe_1_0" title="(in dgbowl-schemas v126rc1.dev2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_1_0</span></code></a> schema.</p></li>
+</ul>
+<p><em>Code author: Ueli Sauter,
+Peter Kraus</em></p>
+</section>
 </section>
 
 
@@ -133,7 +271,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="features.html" class="btn btn-neutral float-left" title="dgpost features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="version.v2.4.html" class="btn btn-neutral float-right" title="dgpost-v2.4" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="apidoc/dgpost.transform.catalysis.html" class="btn btn-neutral float-right" title="catalysis: common calculations in catalytic testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

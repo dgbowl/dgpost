@@ -20,9 +20,7 @@
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="dgpost-v2.3" href="version.v2.3.html" />
-    <link rel="prev" title="dgpost version history" href="version.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,20 +44,11 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">dgpost user manual</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html"><strong>dgpost</strong> installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html"><strong>dgpost</strong> usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html"><strong>dgpost</strong> features</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="version.html"><strong>dgpost</strong> version history</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>dgpost</strong>-v2.4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v2.3.html"><strong>dgpost</strong>-v2.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v2.2.html"><strong>dgpost</strong>-v2.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v2.1.html"><strong>dgpost</strong>-v2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v2.0.html"><strong>dgpost</strong>-v2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v1.1.html"><strong>dgpost</strong>-v1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.v1.0.html"><strong>dgpost</strong>-v1.0</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="version.html"><strong>dgpost</strong> version history</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">dgpost function library</span></p>
 <ul>
@@ -103,7 +92,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="version.html"><strong>dgpost</strong> version history</a></li>
       <li class="breadcrumb-item active"><strong>dgpost</strong>-v2.4</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/version.v2.4.rst.txt" rel="nofollow"> View page source</a>
@@ -116,11 +104,18 @@
              
   <section id="dgpost-v2-4">
 <h1><strong>dgpost</strong>-v2.4<a class="headerlink" href="#dgpost-v2-4" title="Link to this heading"></a></h1>
+<a class="reference external image-reference" href="https://github.com/dgbowl/dgpost/tree/2.4"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.4&amp;color=blue&amp;logo=github" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.4&amp;color=blue&amp;logo=github" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/dgpost/2.4/"><img alt="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.4&amp;color=blue&amp;logo=pypi" src="https://img.shields.io/static/v1?label=dgpost&amp;message=v2.4&amp;color=blue&amp;logo=pypi" /></a>
+<img alt="https://img.shields.io/static/v1?label=release%20date&amp;message=2026-07-18&amp;color=red&amp;logo=pypi" src="https://img.shields.io/static/v1?label=release%20date&amp;message=2026-07-18&amp;color=red&amp;logo=pypi" />
 <p><em>Section author: Peter Kraus</em></p>
 <p>Developed in the <a class="reference external" href="https://tu.berlin/en/concat">ConCat lab</a> at Technische Universität Berlin.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Minimum version of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">uncertainties</span></code> package has been increased to <code class="docutils literal notranslate"><span class="pre">uncertainties&gt;=3.2.0</span></code>. Pickle files created with previous versions of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">uncertainties</span></code> package may not be compatible.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Support for processing <code class="docutils literal notranslate"><span class="pre">json</span></code> datagrams from <code class="docutils literal notranslate"><span class="pre">yadg-4.0</span></code> is deprecated and will stop working in <code class="docutils literal notranslate"><span class="pre">dgpost-3.0</span></code>. Please convert any existing datagrams from the <code class="docutils literal notranslate"><span class="pre">json</span></code> format to the “new” NetCDF format using <code class="docutils literal notranslate"><span class="pre">yadg-7.0</span></code>.</p>
 </div>
 <p>An update to <code class="docutils literal notranslate"><span class="pre">dgpost-2.3</span></code>, including the following changes:</p>
 <ul class="simple">
@@ -128,7 +123,7 @@
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">prominence</span></code> parameter to pruning functions in <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#module-dgpost.transform.reflection" title="dgpost.transform.reflection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reflection</span></code></a> module, allowing users a better control of peak picking using peak prominence.</p></li>
 <li><p>Removed the default <code class="docutils literal notranslate"><span class="pre">height=0.2</span></code> value used in <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#dgpost.transform.reflection.prune_cutoff" title="dgpost.transform.reflection.prune_cutoff"><code class="xref py py-func docutils literal notranslate"><span class="pre">prune_cutoff()</span></code></a> and <a class="reference internal" href="apidoc/dgpost.transform.reflection.html#dgpost.transform.reflection.prune_gradient" title="dgpost.transform.reflection.prune_gradient"><code class="xref py py-func docutils literal notranslate"><span class="pre">prune_gradient()</span></code></a> functions.</p></li>
 <li><p>Fixed more <code class="xref py py-obj docutils literal notranslate"><span class="pre">np.nan</span></code> issues in the <a class="reference internal" href="apidoc/dgpost.transform.catalysis.html#module-dgpost.transform.catalysis" title="dgpost.transform.catalysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">catalysis</span></code></a> module.</p></li>
-<li><p>Support for the new uncertainty format introduces in <code class="docutils literal notranslate"><span class="pre">yadg-7.0</span></code>, in particular:</p>
+<li><p>Support for the new uncertainty format introduced in <code class="docutils literal notranslate"><span class="pre">yadg-7.0</span></code>, in particular:</p>
 <ul>
 <li><p>When extracting from NetCDF files, the <code class="docutils literal notranslate"><span class="pre">ancillary_variables</span></code> attribute is now used to find uncertainties.</p></li>
 <li><p>Added support for <code class="docutils literal notranslate"><span class="pre">yadg_uncertainty_type</span></code> fields when processing uncertainties.</p></li>
@@ -141,10 +136,7 @@
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="version.html" class="btn btn-neutral float-left" title="dgpost version history" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="version.v2.3.html" class="btn btn-neutral float-right" title="dgpost-v2.3" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 
