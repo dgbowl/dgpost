@@ -17,6 +17,11 @@ Developed in the `ConCat lab <https://tu.berlin/en/concat>`_ at Technische Unive
 
     Minimum version of the :mod:`uncertainties` package has been increased to ``uncertainties>=3.2.0``. Pickle files created with previous versions of the :mod:`uncertainties` package may not be compatible.
 
+.. warning::
+
+    Support for processing ``json`` datagrams from ``yadg-4.0`` is deprecated and will stop working in ``dgpost-3.0``. Please convert any existing datagrams from the ``json`` format to the "new" NetCDF format using ``yadg-7.0``.
+
+
 An update to ``dgpost-2.3``, including the following changes:
 
 - Added the :mod:`~dgpost.transform.permittivity` module for calculations related to complex permittivity and various corrections.

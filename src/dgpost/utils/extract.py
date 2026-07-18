@@ -70,6 +70,7 @@ import uncertainties.unumpy as unp
 from typing import Union, Any, Optional, Iterable
 import logging
 from functools import singledispatch
+import warnings
 
 from dgpost.utils.helpers import (
     arrow_to_multiindex,
@@ -101,6 +102,12 @@ def get_step(
         else:
             return obj
     elif isinstance(obj, dict):
+        warnings.warn(
+            "Extraction from json datagrams is deprecated "
+            "and will stop working in dgpost-3.0. Please "
+            "consider updating your datagrams using yadg-7.0.",
+            DeprecationWarning,
+        )
         steps = []
         if "step" in at:
             steps.append(at["step"])
